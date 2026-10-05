@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="100%" height="100%" style="font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc;">
+  
+  <!-- TITULO SUPERIOR -->
+  <text x="40" y="50" font-size="32" font-weight="900" fill="#1e3a8a">INSPIRATEC</text>
+  <text x="40" y="80" font-size="24" font-weight="bold" fill="#2563eb">Ventana Estándar</text>
+  <text x="40" y="105" font-size="12" fill="#475569">Esta ventana sirve como modelo para el diseño de las demás interfaces del software.</text>
+  <text x="40" y="125" font-size="12" fill="#475569">Está organizada por secciones funcionales que facilitan la navegación, la interacción</text>
+  <text x="40" y="145" font-size="12" fill="#475569">y la comprensión del contenido.</text>
+
+  <!-- PANELES LATERALES IZQUIERDOS (LEYENDAS) -->
+  <!-- 1. Header -->
+  <rect x="20" y="180" width="160" height="30" rx="4" fill="#1d4ed8" />
+  <text x="30" y="200" font-size="14" font-weight="bold" fill="#ffffff">1. HEADER</text>
+  <rect x="20" y="210" width="160" height="40" fill="#ffffff" stroke="#1d4ed8" stroke-width="2" />
+  <text x="30" y="225" font-size="11" fill="#1e293b">Identidad y</text>
+  <text x="30" y="240" font-size="11" fill="#1e293b">navegación principal</text>
+  <path d="M 180 195 Q 220 195 220 220" fill="none" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-header)" />
+
+  <!-- 2. Menú -->
+  <rect x="20" y="260" width="160" height="30" rx="4" fill="#2563eb" />
+  <text x="30" y="280" font-size="14" font-weight="bold" fill="#ffffff">2. MENÚ</text>
+  <rect x="20" y="290" width="160" height="40" fill="#ffffff" stroke="#2563eb" stroke-width="2" />
+  <text x="30" y="305" font-size="11" fill="#1e293b">Acceso a módulos</text>
+  <text x="30" y="320" font-size="11" fill="#1e293b">principales</text>
+  <path d="M 180 275 L 220 275" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-menu)" />
+
+  <!-- 3. Contenido -->
+  <rect x="20" y="360" width="160" height="30" rx="4" fill="#10b981" />
+  <text x="30" y="380" font-size="14" font-weight="bold" fill="#ffffff">3. CONTENIDO</text>
+  <rect x="20" y="390" width="160" height="40" fill="#ffffff" stroke="#10b981" stroke-width="2" />
+  <text x="30" y="405" font-size="11" fill="#1e293b">Información o</text>
+  <text x="30" y="420" font-size="11" fill="#1e293b">actividad principal</text>
+  <path d="M 180 375 Q 260 375 260 410" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrow-content)" />
+
+  <!-- 4. Acciones -->
+  <rect x="20" y="480" width="160" height="30" rx="4" fill="#f59e0b" />
+  <text x="30" y="500" font-size="14" font-weight="bold" fill="#ffffff">4. ACCIONES</text>
+  <rect x="20" y="510" width="160" height="30" fill="#ffffff" stroke="#f59e0b" stroke-width="2" />
+  <text x="30" y="528" font-size="11" fill="#1e293b">Botones e interacción</text>
+  <path d="M 180 495 L 280 495" fill="none" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-actions)" />
+
+  <!-- 5. Footer -->
+  <rect x="20" y="560" width="160" height="30" rx="4" fill="#8b5cf6" />
+  <text x="30" y="580" font-size="14" font-weight="bold" fill="#ffffff">5. FOOTER</text>
+  <rect x="20" y="590" width="160" height="40" fill="#ffffff" stroke="#8b5cf6" stroke-width="2" />
+  <text x="30" y="605" font-size="11" fill="#1e293b">Información</text>
+  <text x="30" y="620" font-size="11" fill="#1e293b">complementaria</text>
+  <path d="M 180 575 L 210 575" fill="none" stroke="#8b5cf6" stroke-width="2" marker-end="url(#arrow-footer)" />
+
+  <!-- ==================== VENTANA PRINCIPAL (MOCKUP INTERFAZ) ==================== -->
+  
+  <g transform="translate(240, 160)">
+    <!-- Base App Window -->
+    <rect x="0" y="0" width="700" height="420" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+    
+    <!-- 1. HEADER AREA -->
+    <rect x="0" y="0" width="700" height="60" rx="6" fill="#ffffff" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="4" />
+    <text x="15" y="30" font-size="16" font-weight="bold" fill="#1e3a8a">INSPIRATEC</text>
+    <rect x="110" y="18" width="80" height="16" rx="8" fill="#dbeafe" />
+    <text x="118" y="29" font-size="8" font-weight="bold" fill="#1d4ed8">DOCENTE PRO</text>
+    <text x="15" y="45" font-size="9" fill="#64748b">Tu inspiración para la enseñanza de tecnología e informática en Colombia.</text>
+    
+    <rect x="530" y="15" width="150" height="30" rx="15" fill="#f8fafc" stroke="#e2e8f0" />
+    <circle cx="545" cy="30" r="8" fill="#10b981" />
+    <text x="560" y="28" font-size="9" font-weight="bold" fill="#0f172a">Inclusión DUA</text>
+    <text x="560" y="38" font-size="8" fill="#64748b">Color &amp; Tamaño</text>
+
+    <!-- 2. MENÚ AREA -->
+    <rect x="10" y="65" width="400" height="30" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="2" stroke-dasharray="4" />
+    <rect x="15" y="68" width="60" height="24" rx="12" fill="#2563eb" />
+    <text x="32" y="84" font-size="10" font-weight="bold" fill="#ffffff">Inicio</text>
+    <text x="85" y="84" font-size="10" fill="#475569">Mis Planes</text>
+    <text x="145" y="84" font-size="10" fill="#475569">Experiencias</text>
+    <text x="215" y="84" font-size="10" fill="#475569">Biblioteca</text>
+    <text x="275" y="84" font-size="10" fill="#475569">Plantillas</text>
+    <text x="330" y="84" font-size="10" fill="#475569">Foro</text>
+
+    <!-- Perfil / Acciones Secundarias (Parte del Header/Menú en el diseño real) -->
+    <circle cx="450" cy="80" r="12" fill="#3b82f6" />
+    <text x="444" y="84" font-size="10" fill="#ffffff">CM</text>
+    <text x="470" y="76" font-size="10" font-weight="bold" fill="#0f172a">Prof. Docente</text>
+    <text x="470" y="88" font-size="8" fill="#64748b">Colegio San José</text>
+    
+    <rect x="550" y="70" width="80" height="20" rx="10" fill="#f1f5f9" />
+    <text x="565" y="84" font-size="9" fill="#2563eb">API Key IA</text>
+    <text x="650" y="84" font-size="10" fill="#475569">Salir</text>
+
+    <!-- 3. CONTENIDO AREA -->
+    <rect x="100" y="110" width="500" height="260" rx="8" fill="#ffffff" stroke="#10b981" stroke-width="2" stroke-dasharray="4" />
+    
+    <!-- Progress Stepper -->
+    <circle cx="180" cy="140" r="12" fill="#2563eb" />
+    <text x="177" y="144" font-size="12" fill="#ffffff">1</text>
+    <text x="180" y="165" font-size="9" text-anchor="middle" fill="#0f172a">Datos Generales</text>
+    
+    <circle cx="290" cy="140" r="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+    <text x="287" y="144" font-size="12" fill="#64748b">2</text>
+    <text x="290" y="165" font-size="9" text-anchor="middle" fill="#64748b">Contexto y Entorno</text>
+
+    <circle cx="400" cy="140" r="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+    <text x="397" y="144" font-size="12" fill="#64748b">3</text>
+    <text x="400" y="165" font-size="9" text-anchor="middle" fill="#64748b">Competencias</text>
+
+    <circle cx="510" cy="140" r="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" />
+    <text x="507" y="144" font-size="12" fill="#64748b">4</text>
+    <text x="510" y="165" font-size="9" text-anchor="middle" fill="#64748b">Metodología</text>
+
+    <line x1="200" y1="140" x2="270" y2="140" stroke="#cbd5e1" stroke-width="2" />
+    <line x1="310" y1="140" x2="380" y2="140" stroke="#cbd5e1" stroke-width="2" />
+    <line x1="420" y1="140" x2="490" y2="140" stroke="#cbd5e1" stroke-width="2" />
+
+    <!-- Formulario -->
+    <text x="130" y="200" font-size="9" font-weight="bold" fill="#2563eb">PASO 1 DE 4</text>
+    <text x="130" y="220" font-size="16" font-weight="bold" fill="#0f172a">Información Básica</text>
+    <text x="130" y="235" font-size="9" fill="#64748b">Completa los datos fundamentales del plan de clase para contextualizar.</text>
+    
+    <rect x="130" y="250" width="440" height="4" rx="2" fill="#e2e8f0" />
+    <rect x="130" y="250" width="110" height="4" rx="2" fill="#2563eb" />
+    <text x="560" y="254" font-size="9" font-weight="bold" fill="#2563eb">25%</text>
+
+    <text x="130" y="280" font-size="10" font-weight="bold" fill="#334155">1. ¿Qué área o asignatura vas a trabajar?</text>
+    <rect x="130" y="290" width="440" height="30" rx="4" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="140" y="309" font-size="10" fill="#0f172a">Tecnología e Informática</text>
+
+    <!-- 4. ACCIONES AREA (DENTRO DEL CONTENIDO) -->
+    <rect x="100" y="330" width="500" height="40" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4" />
+    <rect x="130" y="335" width="120" height="30" rx="4" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="150" y="354" font-size="10" fill="#334155">Guardar borrador</text>
+    
+    <rect x="420" y="335" width="150" height="30" rx="4" fill="#2563eb" />
+    <text x="440" y="354" font-size="10" fill="#ffffff">Siguiente: Contexto →</text>
+    
+    <!-- 5. FOOTER AREA -->
+    <rect x="0" y="380" width="700" height="40" rx="4" fill="#1e40af" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="4" />
+    <text x="350" y="398" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">INSPIRATEC Colombia © 2025</text>
+    <text x="350" y="412" font-size="9" fill="#cbd5e1" text-anchor="middle">Diseñado acorde con los Lineamientos Curriculares del MEN.</text>
+
+  </g>
+
+  <!-- LEYENDAS INFERIORES (COLUMNAS) -->
+  <g transform="translate(20, 650)">
+    <!-- Columna 1 -->
+    <rect x="0" y="0" width="220" height="25" fill="#1d4ed8" />
+    <text x="10" y="17" font-size="12" font-weight="bold" fill="#ffffff">1. HEADER</text>
+    <rect x="0" y="25" width="220" height="100" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="10" y="45" font-size="10" fill="#334155">• Muestra la identidad de INSPIRATEC.</text>
+    <text x="10" y="60" font-size="10" fill="#334155">• Incluye el logo, el nombre del proyecto</text>
+    <text x="18" y="72" font-size="10" fill="#334155">y el perfil del docente.</text>
+    <text x="10" y="87" font-size="10" fill="#334155">• Permite acceder a funcionalidades</text>
+    <text x="18" y="99" font-size="10" fill="#334155">globales como la Inclusión DUA.</text>
+
+    <!-- Columna 2 -->
+    <rect x="230" y="0" width="220" height="25" fill="#2563eb" />
+    <text x="240" y="17" font-size="12" font-weight="bold" fill="#ffffff">2. MENÚ</text>
+    <rect x="230" y="25" width="220" height="100" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="240" y="45" font-size="10" fill="#334155">• Acceso rápido a las secciones</text>
+    <text x="248" y="57" font-size="10" fill="#334155">principales del sistema.</text>
+    <text x="240" y="72" font-size="10" fill="#334155">• Incluye: Inicio, Mis Planes,</text>
+    <text x="248" y="84" font-size="10" fill="#334155">Experiencias, Biblioteca, etc.</text>
+    <text x="240" y="99" font-size="10" fill="#334155">• Facilita la navegación ágil.</text>
+
+    <!-- Columna 3 -->
+    <rect x="460" y="0" width="220" height="25" fill="#10b981" />
+    <text x="470" y="17" font-size="12" font-weight="bold" fill="#ffffff">3. CONTENIDO</text>
+    <rect x="460" y="25" width="220" height="100" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="470" y="45" font-size="10" fill="#334155">• Área principal donde se muestra</text>
+    <text x="478" y="57" font-size="10" fill="#334155">la información o actividad actual.</text>
+    <text x="470" y="72" font-size="10" fill="#334155">• En esta ventana se visualiza el</text>
+    <text x="478" y="84" font-size="10" fill="#334155">Paso 1 del generador de planes.</text>
+    <text x="470" y="99" font-size="10" fill="#334155">• Se desarrollan los formularios.</text>
+
+    <!-- Columna 4 -->
+    <rect x="690" y="0" width="220" height="25" fill="#f59e0b" />
+    <text x="700" y="17" font-size="12" font-weight="bold" fill="#ffffff">4. ACCIONES</text>
+    <rect x="690" y="25" width="220" height="100" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="700" y="45" font-size="10" fill="#334155">• Botones que permiten interactuar</text>
+    <text x="708" y="57" font-size="10" fill="#334155">con la funcionalidad actual.</text>
+    <text x="700" y="72" font-size="10" fill="#334155">• Incluye opciones como:</text>
+    <text x="708" y="84" font-size="10" fill="#334155">Guardar borrador, Siguiente.</text>
+    <text x="700" y="99" font-size="10" fill="#334155">• Cambian según la sección.</text>
+
+    <!-- Columna 5 -->
+    <rect x="920" y="0" width="240" height="25" fill="#8b5cf6" />
+    <text x="930" y="17" font-size="12" font-weight="bold" fill="#ffffff">5. FOOTER</text>
+    <rect x="920" y="25" width="240" height="100" fill="#ffffff" stroke="#cbd5e1" />
+    <text x="930" y="45" font-size="10" fill="#334155">• Información institucional</text>
+    <text x="938" y="57" font-size="10" fill="#334155">y de derechos de autor.</text>
+    <text x="930" y="72" font-size="10" fill="#334155">• Refleja el propósito educativo.</text>
+    <text x="930" y="87" font-size="10" fill="#334155">• Se mantiene para garantizar</text>
+    <text x="938" y="99" font-size="10" fill="#334155">coherencia visual y académica.</text>
+  </g>
+
+  <!-- Markers -->
+  <defs>
+    <marker id="arrow-header" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1d4ed8" />
+    </marker>
+    <marker id="arrow-menu" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2563eb" />
+    </marker>
+    <marker id="arrow-content" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+    </marker>
+    <marker id="arrow-actions" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b" />
+    </marker>
+    <marker id="arrow-footer" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#8b5cf6" />
+    </marker>
+  </defs>
+
+</svg>

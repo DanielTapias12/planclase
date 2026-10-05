@@ -1,0 +1,177 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1050" style="background-color: #f8fafc; font-family: 'Inter', 'Segoe UI', sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569" />
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 8; ry: 8; }
+      .box-main { fill: #ffffff; stroke: #3b82f6; stroke-width: 3; rx: 8; ry: 8; }
+      .title { font-size: 16px; font-weight: bold; fill: #0f172a; }
+      .id-badge { font-size: 12px; font-weight: bold; fill: #ffffff; }
+      .id-bg { fill: #3b82f6; rx: 4; ry: 4; }
+      .desc { font-size: 13px; fill: #475569; }
+      .line { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .line-no-arrow { stroke: #475569; stroke-width: 2; fill: none; }
+      .dashed { stroke-dasharray: 5,5; }
+      .global-box { fill: #f1f5f9; stroke: #94a3b8; stroke-width: 2; rx: 8; ry: 8; stroke-dasharray: 4,4; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="30" font-size="22" font-weight="bold" fill="#0f172a" text-anchor="middle">Mapa de Navegación del Software Educativo INSPIRATEC</text>
+  
+  <!-- V1 Autenticación -->
+  <g transform="translate(30, 60)">
+    <rect class="box" width="220" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V1</text>
+    <text x="50" y="25" class="title">Autenticación</text>
+    <text x="15" y="50" class="desc">Login y registro de</text>
+    <text x="15" y="68" class="desc">docentes.</text>
+  </g>
+
+  <!-- V2 Generador -->
+  <g transform="translate(350, 40)">
+    <rect class="box-main" width="250" height="150" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V2</text>
+    <text x="50" y="25" class="title">Inicio / Generador</text>
+    <text x="15" y="50" class="desc" font-weight="bold">Flujo Interno del Asistente:</text>
+    <text x="15" y="70" class="desc" fill="#2563eb">• Paso 1: Datos Generales</text>
+    <text x="15" y="90" class="desc" fill="#2563eb">• Paso 2: Metodología</text>
+    <text x="15" y="110" class="desc" fill="#2563eb">• Paso 3: Estándares</text>
+    <text x="15" y="130" class="desc" fill="#2563eb">• Paso 4: Inclusión DUA</text>
+  </g>
+
+  <!-- V3 Resultado -->
+  <g transform="translate(680, 40)">
+    <rect class="box-main" width="250" height="150" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V3</text>
+    <text x="50" y="25" class="title">Resultado del Plan</text>
+    <text x="15" y="50" class="desc" font-weight="bold">Herramientas Derivadas:</text>
+    <text x="15" y="70" class="desc" fill="#059669">• Rúbricas de Evaluación</text>
+    <text x="15" y="90" class="desc" fill="#059669">• Diapositivas (OVA)</text>
+    <text x="15" y="110" class="desc" fill="#059669">• Cuestionarios y Juegos</text>
+    <text x="15" y="130" class="desc" fill="#059669">• Exportación PDF / Word</text>
+  </g>
+
+  <!-- Arrow V1 to V2 -->
+  <path class="line" d="M 250 100 L 340 100" />
+  
+  <!-- Arrow V2 to V3 -->
+  <path class="line" d="M 600 80 L 670 80" />
+  <text x="635" y="70" font-size="11" fill="#64748b" text-anchor="middle">Generar Plan</text>
+
+  <!-- Arrow V3 to V2 -->
+  <path class="line" d="M 680 120 L 610 120" />
+  <text x="645" y="135" font-size="11" fill="#64748b" text-anchor="middle">Nuevo Plan</text>
+
+  <!-- Global Spine (Sidebar) -->
+  <path class="line-no-arrow" d="M 310 140 L 310 960" />
+  <rect x="210" y="200" width="90" height="30" fill="#e2e8f0" rx="4" ry="4" />
+  <text x="255" y="219" font-size="12" fill="#475569" text-anchor="middle" font-weight="bold">Menú Global</text>
+  <text x="255" y="240" font-size="10" fill="#94a3b8" text-anchor="middle">(Sidebar)</text>
+
+  <!-- Spine connections to right nodes -->
+  <path class="line-no-arrow" d="M 310 140 L 350 140" /> <!-- To V2 -->
+  <path class="line" d="M 310 260 L 340 260" /> <!-- To V4 -->
+  <path class="line" d="M 310 360 L 340 360" /> <!-- To V5 -->
+  <path class="line" d="M 310 460 L 340 460" /> <!-- To V6 -->
+  <path class="line" d="M 310 560 L 340 560" /> <!-- To V7 -->
+  <path class="line" d="M 310 660 L 340 660" /> <!-- To V8 -->
+  <path class="line" d="M 310 760 L 340 760" /> <!-- To V9 -->
+  <path class="line" d="M 310 860 L 340 860" /> <!-- To V10 -->
+  <path class="line" d="M 310 960 L 340 960" /> <!-- To V11 -->
+
+  <!-- V4 Mis Planes -->
+  <g transform="translate(350, 220)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V4</text>
+    <text x="50" y="25" class="title">Mis Planes</text>
+    <text x="15" y="50" class="desc">Repositorio personal de</text>
+    <text x="15" y="68" class="desc">planes guardados.</text>
+  </g>
+
+  <!-- V5 Biblioteca -->
+  <g transform="translate(350, 320)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V5</text>
+    <text x="50" y="25" class="title">Biblioteca</text>
+    <text x="15" y="50" class="desc">Repositorio comunitario</text>
+    <text x="15" y="68" class="desc">de planes STEAM.</text>
+  </g>
+
+  <!-- V6 Plantillas -->
+  <g transform="translate(350, 420)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V6</text>
+    <text x="50" y="25" class="title">Plantillas</text>
+    <text x="15" y="50" class="desc">Gestión y carga de</text>
+    <text x="15" y="68" class="desc">formatos institucionales PEI.</text>
+  </g>
+
+  <!-- V7 Experiencias -->
+  <g transform="translate(350, 520)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V7</text>
+    <text x="50" y="25" class="title">Experiencias Sig.</text>
+    <text x="15" y="50" class="desc">Sistematización de</text>
+    <text x="15" y="68" class="desc">evidencias de aula.</text>
+  </g>
+
+  <!-- V8 Foro -->
+  <g transform="translate(350, 620)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V8</text>
+    <text x="50" y="25" class="title">Foro</text>
+    <text x="15" y="50" class="desc">Comunidad docente para</text>
+    <text x="15" y="68" class="desc">intercambio de ideas.</text>
+  </g>
+
+  <!-- V9 Soporte -->
+  <g transform="translate(350, 720)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V9</text>
+    <text x="50" y="25" class="title">Soporte</text>
+    <text x="15" y="50" class="desc">Sistema de creación de</text>
+    <text x="15" y="68" class="desc">tickets técnicos.</text>
+  </g>
+
+  <!-- V10 Ayuda -->
+  <g transform="translate(350, 820)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V10</text>
+    <text x="50" y="25" class="title">Ayuda</text>
+    <text x="15" y="50" class="desc">Documentación y guías</text>
+    <text x="15" y="68" class="desc">de uso de la plataforma.</text>
+  </g>
+
+  <!-- V11 Admin -->
+  <g transform="translate(350, 920)">
+    <rect class="box" width="250" height="80" />
+    <rect class="id-bg" x="10" y="10" width="30" height="20" />
+    <text x="25" y="24" class="id-badge" text-anchor="middle">V11</text>
+    <text x="50" y="25" class="title">Panel Admin</text>
+    <text x="15" y="50" class="desc">Tablero de métricas</text>
+    <text x="15" y="68" class="desc">(Exclusivo para rol admin).</text>
+  </g>
+
+  <!-- Global Elements Box -->
+  <g transform="translate(680, 250)">
+    <rect class="global-box" width="250" height="140" />
+    <text x="125" y="25" font-size="15" font-weight="bold" fill="#0f172a" text-anchor="middle">Elementos Globales</text>
+    <text x="15" y="50" class="desc" font-weight="bold">• Asistente DUA (Accesibilidad)</text>
+    <text x="15" y="70" class="desc" font-weight="bold">• Tour Tutorial (Asistente IA)</text>
+    <text x="15" y="90" class="desc" font-weight="bold">• Perfil / Cerrar Sesión</text>
+    <text x="15" y="120" class="desc" font-size="11" font-style="italic" fill="#64748b">Visibles en todas las ventanas.</text>
+  </g>
+
+</svg>
