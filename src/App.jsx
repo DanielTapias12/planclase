@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import WizardPage from './pages/WizardPage';
 import EditorPage from './pages/EditorPage';
@@ -17,12 +17,25 @@ import ForoPage from './pages/ForoPage';
 import SoportePage from './pages/SoportePage';
 import AyudaPage from './pages/AyudaPage';
 import AdministracionPage from './pages/AdministracionPage';
+import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
 import OnboardingTour from './components/OnboardingTour';
-
+import UserMenu from './components/UserMenu';
+import { Settings, MoreHorizontal, Lightbulb, PlayCircle } from 'lucide-react';
 function App() {
-  const { userId, userProfile } = useAppStore();
-  const [planesCount, setPlanesCount] = React.useState(0);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const moreMenuRef = useRef(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target)) {
+        setShowMoreMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
 
   useEffect(() => {
     initAuth();
@@ -40,17 +53,20 @@ function App() {
     }
   }, [userId]);
 
-  const navItems = [
+  const primaryNavItems = [
     { path: '/', label: 'Inicio', exact: true },
     { path: '/mis-planes', label: 'Mis Planes', badge: planesCount > 0 ? planesCount : null },
+    { path: '/plantillas', label: 'Plantillas' },
+    { path: '/administracion', label: 'Administración' }
+  ];
+
+  const secondaryNavItems = [
     { path: '/experiencias', label: 'Experiencias' },
     { path: '/biblioteca', label: 'Biblioteca' },
-    { path: '/plantillas', label: 'Plantillas' },
     { path: '/foro', label: 'Foro' },
     { path: '/soporte', label: 'Soporte' },
-    { path: '/ayuda', label: 'Ayuda' },
-    { path: '/administracion', label: 'Administración' },
-    { path: '/config', label: 'API' }
+    { path: '/acerca', label: 'Acerca del Proyecto' },
+    { path: '/ayuda', label: 'Ayuda' }
   ];
 
   if (!userId) {
@@ -61,12 +77,12 @@ function App() {
     <BrowserRouter>
       <div className="app-container top-layout">
         <OnboardingTour />
-        <div className="header-container" style={{ display: 'flex', alignItems: 'center', padding: '0 40px', width: '100%', boxSizing: 'border-box' }}>
-          <div className="brand-logo" style={{ marginRight: 'auto' }}>INSPIRATEC</div>
+        <div className="header-container" style={{ width: '100%', boxSizing: 'border-box' }}>
+          <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
           
           <header className="top-nav" style={{ border: 'none', background: 'transparent' }}>
             <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-              {navItems.map((item) => {
+              {primaryNavItems.map((item) => {
                 const isAdmin = userProfile?.rol === 'Admin' || (auth.currentUser?.email && auth.currentUser.email.toLowerCase().trim() === 'danieltapiasacosta39@gmail.com');
                 if (item.path === '/administracion' && !isAdmin) return null;
                 
@@ -87,27 +103,47 @@ function App() {
                 );
               })}
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
-                <span style={{ fontSize: '15px', color: 'var(--text-main)', fontWeight: '600' }}>
-                  {(userProfile?.rol === 'Admin' || (auth.currentUser?.email && auth.currentUser.email.toLowerCase().trim() === 'danieltapiasacosta39@gmail.com')) ? 'Admin' : (userProfile?.rol || 'Docente')}
-                </span>
+              <div ref={moreMenuRef} style={{ position: 'relative' }}>
                 <button 
-                  onClick={() => logoutUser()} 
-                  className="nav-link"
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    padding: 0, 
-                    color: 'var(--text-secondary)', 
-                    cursor: 'pointer',
-                    fontSize: '15px',
-                    fontWeight: 500
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#EF4444'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+                  id="nav-mas-recursos"
+                  onClick={() => setShowMoreMenu(!showMoreMenu)}
+                  className={`nav-link ${showMoreMenu ? 'active' : ''}`}
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  Cerrar Sesión
+                  Más Recursos <MoreHorizontal size={16} />
                 </button>
+                
+                {showMoreMenu && (
+                  <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '16px', background: 'white', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid #E2E8F0', width: '220px', zIndex: 1000, overflow: 'hidden' }}>
+                    {secondaryNavItems.map((item) => (
+                      <NavLink 
+                        key={item.path}
+                        to={item.path} 
+                        onClick={() => setShowMoreMenu(false)}
+                        className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}
+                        style={{ display: 'block', padding: '12px 16px', width: '100%', boxSizing: 'border-box' }}
+                      >
+                        {item.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
+                <button 
+                  onClick={() => { window.dispatchEvent(new Event('start-tour')); }}
+                  className="nav-link" 
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <PlayCircle size={16} /> Tutorial
+                </button>
+                <NavLink to="/config" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Settings size={16} />
+                  Config IA
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: (apiKey && apiKey.length > 10 ? '#10B981' : '#F59E0B') }} title="Estado API"></span>
+                </NavLink>
+                <UserMenu />
               </div>
             </nav>
           </header>
@@ -124,6 +160,7 @@ function App() {
             <Route path="/plantillas" element={<PlantillasPage />} />
             <Route path="/foro" element={<ForoPage />} />
             <Route path="/soporte" element={<SoportePage />} />
+            <Route path="/acerca" element={<AboutPage />} />
             <Route path="/ayuda" element={<AyudaPage />} />
             <Route path="/administracion" element={<AdministracionPage />} />
           </Routes>

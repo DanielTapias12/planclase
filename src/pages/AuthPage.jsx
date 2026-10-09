@@ -1,22 +1,31 @@
 import React, { useState } from 'react';
 import { loginUser, registerUser } from '../services/authService';
+import TermsAndConditionsModal from '../components/TermsAndConditionsModal';
+import { Shield, Lock, Eye, EyeOff } from 'lucide-react';
+import miniyo from '../assets/miniyo.png';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     nombre: '',
     institucion: '',
-    nivel: ''
+    nivel: '',
+    aceptaTerminos: false
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -27,10 +36,21 @@ export default function AuthPage() {
       if (isLogin) {
         await loginUser(formData.email, formData.password);
       } else {
+        if (!formData.aceptaTerminos) {
+          throw new Error('Debes aceptar los Términos y Condiciones y la Política de Protección de Datos (Ley 1581 de 2012) para registrarte.');
+        }
         if (formData.password.length < 6) {
           throw new Error('La contraseña debe tener mínimo 6 caracteres.');
         }
-        await registerUser(formData.nombre, formData.institucion, formData.nivel, formData.email, formData.password);
+        await registerUser(
+          formData.nombre,
+          formData.institucion,
+          formData.nivel,
+          formData.email,
+          formData.password,
+          '',
+          formData.aceptaTerminos
+        );
       }
     } catch (err) {
       setError(err.message || 'Error en la autenticación.');
@@ -46,25 +66,25 @@ export default function AuthPage() {
       title: "🪄 El Creador de Secuencias",
       explanation: "El motor principal donde nace la magia pedagógica.",
       functionality: "Ingresa el contexto de tu clase y la IA generará un plan estructurado, sugiriendo objetivos y detectando necesidades de inclusión (DUA).",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      image: "/images/auth_wizard.jpg"
     },
     {
       title: "🧠 El Laboratorio Inteligente",
       explanation: "Tu mesa de trabajo interactiva y editor Markdown.",
       functionality: "Edita el plan manualmente o utiliza el Chatbot Co-Docente para reescribir párrafos. Además, genera diapositivas, rúbricas y juegos en formato ROCA automáticamente.",
-      image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      image: "/images/auth_lab.jpg"
     },
     {
       title: "🗂️ Tu Bóveda Personal",
       explanation: "Organiza tu año escolar en la nube segura.",
       functionality: "Guarda tus clases en 'Mis Planes' para descargarlas en PDF/Word. Crea plantillas personalizadas para que la IA se adapte exactamente al formato de tu colegio.",
-      image: "https://images.unsplash.com/photo-1497032208257-9e1eb2460146?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      image: "/images/auth_vault.jpg"
     },
     {
       title: "🌐 La Plaza Pública",
       explanation: "La red social del conocimiento docente.",
       functionality: "Publica tus mejores clases y sistematiza tus experiencias para que otros docentes en Colombia puedan inspirarse y utilizarlas en sus aulas.",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+      image: "/images/auth_plaza.jpg"
     }
   ];
 
@@ -78,53 +98,72 @@ export default function AuthPage() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', overflow: 'hidden', backgroundColor: '#F8FAFC' }}>
       {/* Lado Izquierdo: Formulario de Login */}
-      <div style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', padding: '40px', zIndex: 2, boxShadow: '10px 0 30px rgba(0,0,0,0.04)' }}>
-        <div style={{ width: '100%', maxWidth: '400px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h2 style={{ color: 'var(--primary-active)', fontSize: '32px', marginBottom: '12px', fontFamily: 'Georgia, serif', letterSpacing: '1px' }}>
+      <div style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', padding: '40px', zIndex: 2, boxShadow: '10px 0 30px rgba(0,0,0,0.04)', overflowY: 'auto' }}>
+        <div style={{ width: '100%', maxWidth: '440px', paddingTop: '20px', paddingBottom: '20px', position: 'relative' }}>
+          
+          {/* Mascota asomándose en el login */}
+          <img 
+            src={miniyo} 
+            alt="Asistente" 
+            style={{ 
+              position: 'absolute', 
+              top: '-30px', 
+              right: '-40px', 
+              width: '130px', 
+              zIndex: -1,
+              filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.1))'
+            }} 
+          />
+
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <h2 style={{ color: 'var(--primary-active)', fontSize: '32px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px' }}>
               INSPIRATEC
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>
-              {isLogin ? 'Inicia sesión para continuar' : 'Crea tu cuenta docente'}
+              {isLogin ? 'Inicia sesión para continuar' : 'Crea tu cuenta docente protegida'}
             </p>
           </div>
 
           {error && (
-            <div style={{ backgroundColor: '#FEE2E2', color: '#B91C1C', padding: '12px', borderRadius: '8px', marginBottom: '24px', fontSize: '14px', textAlign: 'center' }}>
+            <div style={{ backgroundColor: '#FEE2E2', color: '#B91C1C', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '14px', textAlign: 'center', border: '1px solid #FCA5A5' }}>
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             {!isLogin && (
               <>
                 <div className="input-group" style={{ margin: 0 }}>
-                  <label style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: '600' }}>Nombre Completo</label>
-                  <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required style={{ padding: '12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '15px' }} />
+                  <label style={{ fontSize: '13px', color: 'var(--text-main)', fontWeight: '600' }}>Nombre Completo</label>
+                  <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Ej. Profe María Pérez" style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }} />
                 </div>
-                <div className="input-group" style={{ margin: 0 }}>
-                  <label style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: '600' }}>Institución Educativa</label>
-                  <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} required placeholder="Ej. Colegio San José" style={{ padding: '12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '15px' }} />
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                  <div className="input-group" style={{ margin: 0 }}>
+                    <label style={{ fontSize: '13px', color: 'var(--text-main)', fontWeight: '600' }}>Institución Educativa</label>
+                    <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} required placeholder="Ej. Colegio San José" style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }} />
+                  </div>
+                  <div className="input-group" style={{ margin: 0 }}>
+                    <label style={{ fontSize: '13px', color: 'var(--text-main)', fontWeight: '600' }}>Nivel Educativo</label>
+                    <select name="nivel" value={formData.nivel} onChange={handleChange} required style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}>
+                      <option value="">Selecciona...</option>
+                      <option value="Primaria">Primaria</option>
+                      <option value="Secundaria">Secundaria</option>
+                      <option value="Media">Media</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="input-group" style={{ margin: 0 }}>
-                  <label style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: '600' }}>Nivel Educativo</label>
-                  <select name="nivel" value={formData.nivel} onChange={handleChange} required style={{ padding: '12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '15px' }}>
-                    <option value="">Selecciona un nivel...</option>
-                    <option value="Primaria">Primaria</option>
-                    <option value="Secundaria">Secundaria</option>
-                    <option value="Media">Media</option>
-                  </select>
-                </div>
+
               </>
             )}
 
             <div className="input-group" style={{ margin: 0 }}>
-              <label style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: '600' }}>Correo Electrónico</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required style={{ padding: '12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '15px', width: '100%', boxSizing: 'border-box' }} />
+              <label style={{ fontSize: '13px', color: 'var(--text-main)', fontWeight: '600' }}>Correo Electrónico</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="tu.correo@institucion.edu.co" style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', width: '100%', boxSizing: 'border-box' }} />
             </div>
             
             <div className="input-group" style={{ margin: 0, position: 'relative' }}>
-              <label style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: '600' }}>Contraseña</label>
+              <label style={{ fontSize: '13px', color: 'var(--text-main)', fontWeight: '600' }}>Contraseña</label>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <input 
                   type={showPassword ? "text" : "password"} 
@@ -133,33 +172,83 @@ export default function AuthPage() {
                   onChange={handleChange} 
                   required 
                   minLength="6" 
-                  style={{ padding: '12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '15px', width: '100%', boxSizing: 'border-box', paddingRight: '40px' }} 
+                  placeholder="••••••••"
+                  style={{ padding: '10px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', width: '100%', boxSizing: 'border-box', paddingRight: '40px' }} 
                 />
                 <button 
                   type="button" 
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ position: 'absolute', right: '12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', padding: 0, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}
+                  style={{ position: 'absolute', right: '12px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}
                   title={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {!isLogin && <small style={{ color: 'var(--text-secondary)', marginTop: '6px', display: 'block' }}>Mínimo 6 caracteres</small>}
+              {!isLogin && <small style={{ color: 'var(--text-secondary)', marginTop: '4px', display: 'block', fontSize: '11px' }}>Mínimo 6 caracteres</small>}
             </div>
+
+            {/* Checkbox de Términos y Condiciones (Habeas Data Ley 1581 de 2012) */}
+            {!isLogin && (
+              <div style={{
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                borderRadius: '8px',
+                padding: '12px',
+                marginTop: '4px'
+              }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '12px', color: '#334155', lineHeight: '1.4' }}>
+                  <input
+                    type="checkbox"
+                    name="aceptaTerminos"
+                    checked={formData.aceptaTerminos}
+                    onChange={handleChange}
+                    style={{ marginTop: '2px', cursor: 'pointer', accentColor: 'var(--primary-active)' }}
+                  />
+                  <span>
+                    He leído y acepto los{' '}
+                    <button
+                      type="button"
+                      onClick={() => setShowTermsModal(true)}
+                      style={{ background: 'none', border: 'none', padding: 0, color: 'var(--primary-active)', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer', fontSize: '12px' }}
+                    >
+                      Términos y Condiciones y la Política de Tratamiento de Datos Personales
+                    </button>{' '}
+                    (Ley 1581 de 2012 / Habeas Data).
+                  </span>
+                </label>
+              </div>
+            )}
 
             <button 
               type="submit" 
-              style={{ marginTop: '16px', width: '100%', padding: '14px', backgroundColor: 'var(--primary-active)', color: '#FFFFFF', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
+              style={{ marginTop: '8px', width: '100%', padding: '13px', backgroundColor: 'var(--primary-active)', color: '#FFFFFF', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center' }} 
               disabled={loading}
             >
-              {loading ? 'Cargando...' : isLogin ? 'Ingresar' : 'Registrarse'}
+              {loading ? 'Procesando...' : isLogin ? 'Ingresar' : 'Registrarme de forma segura'}
             </button>
           </form>
 
-          <div style={{ textAlign: 'center', marginTop: '32px' }}>
+          {/* Badge de Seguridad y Cifrado */}
+          <div style={{
+            marginTop: '20px',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            backgroundColor: '#F1F5F9',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            fontSize: '12px',
+            color: '#475569'
+          }}>
+            <Shield size={14} color="#315B54" />
+            <span>Protección con JWT y Cifrado de Datos Personales (Colombia)</span>
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '24px' }}>
             <button 
               type="button" 
-              onClick={() => setIsLogin(!isLogin)} 
+              onClick={() => { setIsLogin(!isLogin); setError(null); }} 
               style={{ background: 'none', border: 'none', color: 'var(--primary-active)', fontWeight: '700', cursor: 'pointer', fontSize: '14px', textDecoration: 'none' }}
             >
               {isLogin ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión'}
@@ -177,7 +266,7 @@ export default function AuthPage() {
           </span>
         </div>
 
-        {/* Imagen del pantallazo (Placeholder) */}
+        {/* Imagen del pantallazo */}
         <div style={{ 
           width: '100%', 
           maxWidth: '600px', 
@@ -227,6 +316,13 @@ export default function AuthPage() {
           ))}
         </div>
       </div>
+
+      {/* Modal de Términos y Condiciones */}
+      <TermsAndConditionsModal
+        isOpen={showTermsModal}
+        onClose={() => setShowTermsModal(false)}
+        onAccept={() => setFormData(prev => ({ ...prev, aceptaTerminos: true }))}
+      />
     </div>
   );
 }

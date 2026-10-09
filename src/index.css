@@ -50,9 +50,11 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  padding-top: 16px;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 72px;
 }
 
 .brand-logo {
@@ -60,8 +62,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--primary-sage);
   letter-spacing: 1px;
-  margin-bottom: 16px;
   font-family: var(--font-heading);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
 }
 
 .top-nav {
@@ -526,4 +531,63 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--bg-surface);
   color: var(--primary-active);
   font-weight: 600;
+}
+
+/* =========================================
+   ELEMENTOS FLOTANTES MODERNOS (FLOATING UI)
+   Uso correcto de elementos flotantes con position fixed/sticky,
+   glassmorphism y micro-animaciones (evitando float antiguo)
+   ========================================= */
+.floating-quick-bar {
+  position: fixed;
+  bottom: 24px;
+  right: 32px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 229, 222, 0.85);
+  border-radius: 40px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  z-index: 900;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.floating-quick-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.16);
+}
+
+.floating-pill-btn {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.floating-pill-btn:hover {
+  background-color: var(--bg-sage-soft);
+  color: var(--primary-active);
+  border-color: var(--primary-sage);
+}
+
+.floating-pill-btn.primary {
+  background-color: var(--primary-active);
+  color: #FFFFFF;
+  border-color: var(--primary-active);
+}
+
+.floating-pill-btn.primary:hover {
+  background-color: var(--primary-sage);
 }

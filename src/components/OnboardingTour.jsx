@@ -1,45 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Joyride, STATUS } from 'react-joyride';
 import WelcomeModal from './WelcomeModal';
 
 export default function OnboardingTour() {
   const [run, setRun] = useState(false);
 
+  useEffect(() => {
+    const handleStartTourEvent = () => {
+      localStorage.removeItem('tourCompletado');
+      setRun(true);
+    };
+
+    window.addEventListener('start-tour', handleStartTourEvent);
+    return () => {
+      window.removeEventListener('start-tour', handleStartTourEvent);
+    };
+  }, []);
+
   const steps = [
     {
       target: '#nav-inicio',
       content: (
         <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🏠 Inicio (Creador)</h3>
-          <p style={{ margin: 0 }}>Vuelve aquí siempre que quieras crear una nueva secuencia didáctica desde cero con el planificador de IA.</p>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🏠 Inicio (El Creador)</h3>
+          <p style={{ margin: 0 }}>Bienvenido a INSPIRATEC. Aquí es donde comienza la magia: el planificador asistido por Inteligencia Artificial.</p>
         </div>
       ),
       disableBeacon: true,
     },
     {
+      target: '#tour-wizard-progress',
+      content: (
+        <div>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>📊 4 Fases Pedagógicas</h3>
+          <p style={{ margin: 0 }}>El planificador está dividido en cuatro fases críticas: Información básica, Metodología, Estándares y DUA (Inclusión). ¡La IA te guiará en cada paso!</p>
+        </div>
+      ),
+    },
+    {
+      target: '#tour-wizard-start',
+      content: (
+        <div>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>✍️ Tema de la Clase</h3>
+          <p style={{ margin: 0 }}>Simplemente escribe el tema que deseas enseñar hoy. Puede ser algo general o muy específico.</p>
+        </div>
+      ),
+    },
+    {
+      target: '#tour-wizard-format',
+      content: (
+        <div>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>📋 Formato de Salida</h3>
+          <p style={{ margin: 0 }}>Elige la estructura que tendrá el documento final. Puedes usar la predeterminada o crear una propia desde Plantillas.</p>
+        </div>
+      ),
+    },
+    {
+      target: '#tour-wizard-resources',
+      content: (
+        <div>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🎒 Recursos Disponibles</h3>
+          <p style={{ margin: 0 }}>¡Muy importante! Dile a la IA con qué recursos cuentas en tu aula. Así las actividades que diseñe serán 100% realistas y aplicables.</p>
+        </div>
+      ),
+    },
+    {
+      target: '#tour-wizard-next',
+      content: (
+        <div>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>👉 Siguiente</h3>
+          <p style={{ margin: 0 }}>Avanza por las fases. Al finalizar, generarás la clase y pasarás al Laboratorio Inteligente (Editor).</p>
+        </div>
+      ),
+    },
+    {
       target: '#nav-mis-planes',
       content: (
         <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🗂️ Mis Planes</h3>
-          <p style={{ margin: 0 }}>Tu bóveda personal. Aquí puedes ver, organizar y exportar todas las clases que hayas generado a PDF o Word.</p>
-        </div>
-      ),
-    },
-    {
-      target: '#nav-experiencias',
-      content: (
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🌐 Experiencias</h3>
-          <p style={{ margin: 0 }}>Una plaza pública donde puedes compartir tus prácticas exitosas y descubrir las de otros docentes del país.</p>
-        </div>
-      ),
-    },
-    {
-      target: '#nav-biblioteca',
-      content: (
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>📚 Biblioteca</h3>
-          <p style={{ margin: 0 }}>Un repositorio donde encontrarás materiales complementarios, rúbricas y juegos educativos adicionales.</p>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🗂️ Tu Bóveda Personal</h3>
+          <p style={{ margin: 0 }}>Todas las clases que guardes en el Laboratorio aparecerán aquí. Podrás exportarlas a PDF o Word en cualquier momento.</p>
         </div>
       ),
     },
@@ -48,34 +87,16 @@ export default function OnboardingTour() {
       content: (
         <div>
           <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>📝 Plantillas</h3>
-          <p style={{ margin: 0 }}>¿Tu colegio usa un formato específico? Configúralo aquí para que la IA adapte siempre sus respuestas a tu medida.</p>
+          <p style={{ margin: 0 }}>Sube el formato oficial de tu colegio (en texto) para que la IA se adapte a tu estilo institucional exacto.</p>
         </div>
       ),
     },
     {
-      target: '#nav-foro',
+      target: '#nav-mas-recursos',
       content: (
         <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>💬 Foro</h3>
-          <p style={{ margin: 0 }}>Espacio de debate, colaboración y resolución de dudas con toda la comunidad docente de Inspiratec.</p>
-        </div>
-      ),
-    },
-    {
-      target: '#nav-soporte',
-      content: (
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🎧 Soporte</h3>
-          <p style={{ margin: 0 }}>¿Problemas técnicos? Escríbenos aquí y te ayudaremos directamente.</p>
-        </div>
-      ),
-    },
-    {
-      target: '#nav-ayuda',
-      content: (
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>❓ Ayuda</h3>
-          <p style={{ margin: 0 }}>Consulta manuales, tutoriales en video y guías detalladas sobre cómo exprimir la plataforma.</p>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🌐 La Plaza Pública</h3>
+          <p style={{ margin: 0 }}>Aquí encontrarás Experiencias de otros docentes, la Biblioteca comunitaria, el Foro de debate y la sección de Soporte.</p>
         </div>
       ),
     },
@@ -83,17 +104,8 @@ export default function OnboardingTour() {
       target: '#nav-config',
       content: (
         <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🔑 API / Config</h3>
-          <p style={{ margin: 0 }}>Conecta aquí tu llave de Google Gemini para darle inteligencia a la plataforma. ¡Sin esto, la IA no funcionará!</p>
-        </div>
-      ),
-    },
-    {
-      target: '#tour-wizard-start',
-      content: (
-        <div>
-          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🪄 Comienza la Magia</h3>
-          <p style={{ margin: 0 }}>Selecciona tu Área Curricular, ingresa el tema de tu clase aquí, dale a Siguiente y deja que la IA construya los objetivos, metodologías y materiales. ¡Feliz diseño!</p>
+          <h3 style={{ margin: '0 0 8px 0', color: 'var(--primary-active)' }}>🔑 Configuración de IA</h3>
+          <p style={{ margin: 0 }}>Finalmente, no olvides poner tu API Key de Google Gemini aquí para encender el motor de inteligencia artificial.</p>
         </div>
       ),
     }

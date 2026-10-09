@@ -1,28 +1,105 @@
-const fetchWithRetry = async (url, options, maxRetries = 4) => {
-  for (let i = 0; i < maxRetries; i++) {
-    try {
-      const response = await fetch(url, options);
-      if ((response.status === 503 || response.status === 429 || response.status >= 500) && i < maxRetries - 1) {
-        await new Promise(res => setTimeout(res, 2000));
-        continue;
+/**
+ * AI Service para INSPIRATEC
+ * Gestión de llamadas a Google Gemini con cascada de modelos inteligente,
+ * recuperación automática ante saturación (503), cuotas (429) y obsolescencia (404).
+ */
+
+// Cascada de modelos disponibles y soportados para v1beta
+const CANDIDATE_MODELS = [
+  'gemini-flash-latest',
+  'gemini-3.5-flash',
+  'gemini-3.5-flash-lite',
+  'gemini-3.8-flash',
+  'gemini-2.5-flash'
+];
+
+let activeWorkingModel = CANDIDATE_MODELS[0];
+
+/**
+ * Llamada centralizada y resiliente a la API de Gemini.
+ * Realiza fallback automático entre modelos soportados y reintentos ante fallas transitorias.
+ */
+export const callGeminiApi = async (apiKey, requestBody, maxRetriesPerModel = 2) => {
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error('API Key no configurada. Por favor, ingresa tu clave en Configuración.');
+  }
+
+  // Ordenamos los modelos para probar primero el último que funcionó exitosamente
+  const modelsToTry = [
+    activeWorkingModel,
+    ...CANDIDATE_MODELS.filter(m => m !== activeWorkingModel)
+  ];
+
+  let lastError = null;
+
+  for (const model of modelsToTry) {
+    for (let attempt = 0; attempt < maxRetriesPerModel; attempt++) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey.trim()}`;
+        
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        // Si el modelo no existe o no soporta el método (404), pasamos de inmediato al siguiente modelo
+        if (response.status === 404) {
+          console.warn(`[Inspiratec AI] El modelo ${model} no está disponible (404). Probando alternativa...`);
+          break; // Salta al siguiente modelo
+        }
+
+        // Si hay congestión (503) o límite de tasa temporal (429)
+        if (response.status === 503 || response.status === 429) {
+          console.warn(`[Inspiratec AI] Modelo ${model} devolvió ${response.status} (intento ${attempt + 1}).`);
+          if (attempt < maxRetriesPerModel - 1) {
+            await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+            continue;
+          }
+          // Si agotamos intentos con este modelo, pasamos al siguiente candidato
+          break;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          const apiMsg = data.error?.message || `Error HTTP ${response.status}`;
+          lastError = new Error(apiMsg);
+          
+          // Si es error de API Key inválida, no tiene sentido seguir probando otros modelos
+          if (response.status === 400 && apiMsg.includes('API_KEY_INVALID')) {
+            throw new Error('La API Key proporcionada no es válida. Por favor, verifica tu clave de Google AI Studio.');
+          }
+          break; // Prueba siguiente modelo
+        }
+
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+          // Guardamos el modelo funcional como preferido para llamadas futuras
+          activeWorkingModel = model;
+          return data.candidates[0].content.parts[0].text;
+        }
+
+        if (data.promptFeedback?.blockReason) {
+          throw new Error(`El contenido fue bloqueado por políticas de seguridad: ${data.promptFeedback.blockReason}`);
+        }
+
+        lastError = new Error('Respuesta sin texto generado por el modelo.');
+      } catch (err) {
+        lastError = err;
+        if (err.message.includes('API Key no configurada') || err.message.includes('no es válida')) {
+          throw err;
+        }
+        // Error de red
+        if (attempt < maxRetriesPerModel - 1) {
+          await new Promise(r => setTimeout(r, 1500));
+        }
       }
-      if (!response.ok && i === maxRetries - 1) {
-        throw new Error(`API Error: ${response.status}`);
-      }
-      return response;
-    } catch (e) {
-      if (i === maxRetries - 1) {
-        // Return a mock successful response to bypass quota/overload limits
-        return {
-          ok: true,
-          json: async () => ({
-            candidates: [{ content: { parts: [{ text: "Esta es una respuesta simulada por el sistema debido a que tu API Key agotó su límite de uso diario (Quota Exceeded) o hay congestión en Google. ¡El sistema de botones ahora funciona perfectamente para cuando tengas cuota!" }] } }]
-          })
-        };
-      }
-      await new Promise(res => setTimeout(res, 2000));
     }
   }
+
+  throw new Error(`Error en el servicio de IA: ${lastError?.message || 'No fue posible conectar con ningún modelo de Gemini.'}`);
 };
 
 const REGLAS_MEN = {
@@ -32,30 +109,25 @@ const REGLAS_MEN = {
   "Inglés": "Debes basarte en los DBA de Inglés de Colombia y el Marco Común Europeo (MCER). Incluye explícitamente secciones para Listening, Speaking, Reading y Writing."
 };
 
+/**
+ * Prueba de conexión a la API de Gemini
+ */
 export const testApiConnection = async (apiKey) => {
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: "Responde solo con la palabra OK" }] }]
-      })
+    const result = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: "Responde únicamente con: OK" }] }],
+      generationConfig: { maxOutputTokens: 10 }
     });
-    
-    // Si la respuesta no es OK, logueamos el error para depurar pero permitimos pasar
-    if (!response.ok) {
-      const err = await response.json();
-      console.warn("Fallo en la validación de API KEY (Bypass activado):", err);
-    }
-    
-    // Bypass: Forzamos true para que el usuario pueda sincronizar y ver el error real al generar
-    return true; 
+    return Boolean(result && result.length > 0);
   } catch (error) {
-    console.warn("Fallo de red en validación:", error);
-    return true; // Bypass
+    console.warn("[Inspiratec AI] Error al probar conexión:", error.message);
+    return false;
   }
 };
 
+/**
+ * Sugerencia de objetivos de aprendizaje basada en el contexto curricular
+ */
 export const suggestObjectives = async (apiKey, wizardData) => {
   const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
   const prompt = `Como experto pedagogo alineado con los lineamientos oficiales, sugiere propósitos y objetivos de aprendizaje (1 o 2 párrafos cortos) para una clase con el siguiente contexto:
@@ -68,21 +140,19 @@ Recursos: ${wizardData.recursos}
 Responde SOLO con el texto de los objetivos formativos coherentes con las orientaciones, sin saludos ni formato markdown adicional.`;
 
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 8192 } })
+    const text = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
     });
-    const data = await response.json();
-    if (!data.candidates) {
-      throw new Error(data.error?.message || "Respuesta inválida de la API");
-    }
-    return data.candidates[0].content.parts[0].text.trim();
+    return text.trim();
   } catch (error) {
     throw new Error('Error al sugerir objetivos: ' + error.message);
   }
 };
 
+/**
+ * Sugerencia de estándares MEN y DBA
+ */
 export const suggestStandards = async (apiKey, wizardData) => {
   const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
   const prompt = `Como experto curricular en Colombia, sugiere qué competencias y desempeños aplican para esta clase:
@@ -94,21 +164,19 @@ Objetivos: ${wizardData.objetivos}
 Responde SOLO con una lista de los componentes y estándares aplicables, sin saludos.`;
 
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.5, maxOutputTokens: 8192 } })
+    const text = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.5, maxOutputTokens: 2048 }
     });
-    const data = await response.json();
-    if (!data.candidates) {
-      throw new Error(data.error?.message || "Respuesta inválida de la API");
-    }
-    return data.candidates[0].content.parts[0].text.trim();
+    return text.trim();
   } catch (error) {
     throw new Error('Error al sugerir estándares: ' + error.message);
   }
 };
 
+/**
+ * Generación completa del plan de clase
+ */
 export const generatePlan = async (apiKey, wizardData) => {
   let formatInstructions = '';
 
@@ -191,24 +259,19 @@ Inclusión (DUA): ${wizardData.inclusion.join(', ')} ${wizardData.otrasNecesidad
 ${formatInstructions}`;
 
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
-      })
+    const planText = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
     });
-    const data = await response.json();
-    if (!data.candidates) {
-      throw new Error(data.error?.message || "Respuesta inválida de la API");
-    }
-    return data.candidates[0].content.parts[0].text;
+    return planText;
   } catch (error) {
     throw new Error('Error al generar el plan: ' + error.message);
   }
 };
 
+/**
+ * Modificación del plan existente mediante chat
+ */
 export const modifyPlan = async (apiKey, planActual, instruccion) => {
   const prompt = `Eres un asistente experto en la edición de planes de clase. El usuario te proporcionará un plan en formato Markdown y te dará instrucciones para modificarlo. Tu respuesta DEBE SER ÚNICAMENTE el plan de clase completo y actualizado en formato Markdown. No incluyas saludos ni explicaciones. Solo el código Markdown.
 
@@ -218,21 +281,12 @@ ${planActual}
 Aplica esta instrucción: ${instruccion}`;
 
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.5, maxOutputTokens: 8192 }
-      })
+    let text = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.5, maxOutputTokens: 8192 }
     });
-    const data = await response.json();
-    if (!data.candidates) {
-      throw new Error(data.error?.message || "Respuesta inválida de la API al modificar");
-    }
-    let text = data.candidates[0].content.parts[0].text;
-    if (text.startsWith('\`\`\`markdown')) {
-      text = text.replace(/\`\`\`markdown\n?/g, '').replace(/\`\`\`\n?/g, '');
+    if (text.startsWith('```markdown')) {
+      text = text.replace(/```markdown\n?/g, '').replace(/```\n?/g, '');
     }
     return text.trim();
   } catch (error) {
@@ -240,22 +294,29 @@ Aplica esta instrucción: ${instruccion}`;
   }
 };
 
+/**
+ * Generación de material complementario (rúbricas, diapositivas, quizzes, juegos)
+ */
 export const generateComplementaryMaterial = async (apiKey, planActual, type) => {
   let materialPrompt = '';
 
   if (type === 'rubrica') {
-    materialPrompt = `Basado en el siguiente plan de clase, genera una Rúbrica de Evaluación detallada para calificar a los estudiantes.
-Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Utiliza etiquetas <table>, <thead>, <tbody>, <tr>, <th> y <td>.
-Aplica estilos en línea CSS profesionales y modernos (colores verde salvia, bordes limpios, tipografía sans-serif).`;
+    materialPrompt = `Basado en el siguiente plan de clase, genera una Rúbrica de Evaluación interactiva para calificar a los estudiantes.
+Tu respuesta debe ser un HTML completo. Utiliza <table> para la estructura de la rúbrica.
+MUY IMPORTANTE: Incluye código JavaScript embebido para que la rúbrica sea interactiva: el profesor debe poder hacer clic en las celdas de calificación para seleccionarlas (resaltándolas visualmente) y la aplicación debe calcular automáticamente una puntuación final en la parte inferior.
+Aplica estilos en línea CSS profesionales y modernos (colores verde salvia, estados de hover, etc).`;
   } else if (type === 'diapositivas') {
-    materialPrompt = `Basado en el siguiente plan de clase, genera el contenido para unas Diapositivas de Presentación (máximo 5 diapositivas).
-Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Representa cada diapositiva como un <div class="slide" style="min-height: 400px; padding: 40px; margin-bottom: 20px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); page-break-after: always; text-align: center;"> con estilos en línea CSS muy modernos, usando flexbox, colores de fondo suaves, y tipografía grande y legible.`;
+    materialPrompt = `Basado en el siguiente plan de clase, genera el contenido para unas Diapositivas de Presentación interactivas (máximo 5 diapositivas).
+Tu respuesta debe ser un HTML completo. MUY IMPORTANTE: Incluye código JavaScript embebido para que funcione como una presentación real (añade botones o teclas de flecha para 'Siguiente' y 'Anterior' que cambien la diapositiva visible ocultando las demás).
+Representa cada diapositiva usando estilos CSS muy modernos, animaciones de transición suaves, flexbox, y tipografía grande y legible.`;
   } else if (type === 'preguntas') {
-    materialPrompt = `Basado en el siguiente plan de clase, genera un Banco de Preguntas (5 de selección múltiple y 2 abiertas).
-Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa listas limpias con estilos en línea CSS profesionales y amigables. No uses markdown.`;
+    materialPrompt = `Basado en el siguiente plan de clase, genera un Quiz Interactivo (5 de selección múltiple y 2 abiertas).
+Tu respuesta debe ser un HTML completo. MUY IMPORTANTE: Incluye código JavaScript embebido para que el estudiante pueda seleccionar opciones, hacer clic en 'Comprobar' y ver feedback inmediato (marcando en verde las correctas y en rojo las incorrectas), y calcular un puntaje final.
+Usa una interfaz de usuario limpia y moderna similar a un formulario interactivo.`;
   } else if (type === 'juegos') {
-    materialPrompt = `Basado en el siguiente plan de clase, genera una actividad lúdica textual, específicamente una Sopa de Letras con 10 conceptos clave de la clase y una lista de las palabras a buscar. (Si el área es inglés, debe generarse en idioma inglés para inmersión, aunque la explicación para el docente esté en español).
-Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa una <table> con estilos en línea CSS (bordes gruesos, letras centradas, celdas cuadradas y simétricas) que parezca un juego impreso profesional.`;
+    materialPrompt = `Basado en el siguiente plan de clase, genera un Juego interactivo, específicamente una Sopa de Letras con 10 conceptos clave de la clase y una lista de las palabras a buscar.
+Tu respuesta debe ser un HTML completo. MUY IMPORTANTE: Incluye todo el código JavaScript necesario para que la sopa de letras sea 100% jugable: el usuario debe poder arrastrar el cursor o hacer clic sobre las letras para seleccionar palabras. Si encuentra una palabra de la lista, debe tacharse automáticamente y la palabra en la grilla debe quedar resaltada permanentemente. Añade un mensaje de victoria al completar.
+Diseña la cuadrícula y el panel de forma lúdica y amigable usando CSS.`;
   } else if (type === 'taller_contexto') {
     materialPrompt = `Basado en el siguiente plan de clase, genera un Taller de Contexto Real con 5 problemas matemáticos aplicados a la vida cotidiana.
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
@@ -269,8 +330,9 @@ Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea
     materialPrompt = `Basado en el siguiente plan de clase, genera un guion de Juego de Roles (Role-Play). ${type === 'roleplay_en' ? 'En inglés para practicar Speaking.' : 'Ejercicio literario, de dramatización o debate basado en el tema.'}
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
   } else if (type === 'flashcards') {
-    materialPrompt = `Basado en el siguiente plan de clase, genera unas Flashcards de Vocabulario (lista de palabras clave, con uso en contexto y pronunciación aproximada).
-Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Representa cada flashcard como un <div> con estilos de tarjeta (border, padding, flexbox).`;
+    materialPrompt = `Basado en el siguiente plan de clase, genera unas Flashcards de Vocabulario Interactivas (lista de palabras clave, con uso en contexto y pronunciación aproximada).
+Tu respuesta debe ser un HTML completo. MUY IMPORTANTE: Incluye lógica de JavaScript y CSS 3D Transforms para que al hacer clic en cada tarjeta, esta gire (efecto flip 3D) mostrando la definición/traducción en el reverso.
+Diseña las tarjetas como un carrusel navegable o una cuadrícula de cartas interactivas.`;
   } else if (type === 'taller_lectura') {
     materialPrompt = `Basado en el siguiente plan de clase, genera un Taller de Comprensión y Lectura Crítica (un texto argumentativo o narrativo con preguntas de análisis crítico).
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
@@ -285,28 +347,30 @@ Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
   }
 
-  const prompt = `Actúa como un experto en desarrollo de HTML para educación. ${materialPrompt}
-  No uses markdown, no uses \`\`\`html. Devuelve directamente la estructura HTML.
-  Utiliza los parámetros de la estructura ROCA (Razón, Objetivo, Contexto, Actividad) definidos al final del plan para darle un enfoque real y pedagógico a este material.
+  const systemInstruction = `Eres un desarrollador web experto. Tu objetivo es crear un recurso educativo interactivo, visualmente atractivo y completamente funcional en un único archivo HTML.
+El usuario te dará una descripción del recurso que necesita.
+Debes utilizar todo el potencial de HTML, CSS Puro (NO USES Tailwind ni otras librerías CSS por CDN, escribe los estilos en línea o en una etiqueta <style>) y JavaScript.
+El resultado debe ser un archivo HTML portable que funcione sin conexión.
+Asegúrate de que el diseño sea responsivo, limpio y educativo.
+IMPORTANTE: NO inventes URLs de imágenes externas. Si necesitas iconos, usa emojis, o dibuja los elementos necesarios usando CSS o SVG integrado.
+OBLIGATORIO: DEBES ESCRIBIR LÓGICA DE JAVASCRIPT FUNCIONAL DENTRO DE ETIQUETAS <script> PARA QUE EL RECURSO SEA INTERACTIVO. 
+CRÍTICO: NO uses atributos de eventos en línea en el HTML (como onclick="mifuncion()"). En su lugar, usa document.getElementById('id').addEventListener('click', mifuncion) dentro del <script> para evitar errores de Scope (ReferenceError).
+Devuelve ÚNICAMENTE el código HTML completo, comenzando con <!DOCTYPE html> y terminando con </html>. No incluyas explicaciones ni bloques de código markdown.`;
 
-PLAN DE CLASE:
-${planActual}`;
+  const prompt = `${systemInstruction}
+  
+  Crea un recurso educativo interactivo en HTML basado en este material: ${materialPrompt}
+  Utiliza los parámetros de la estructura ROCA (Razón, Objetivo, Contexto, Actividad) definidos al final del plan para darle un enfoque real y pedagógico a este material.
+  
+  PLAN DE CLASE:
+  ${planActual}`;
 
   try {
-    const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
-      })
+    let htmlResult = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
     });
-    const data = await response.json();
-    if (!data.candidates) {
-      throw new Error(data.error?.message || "Respuesta inválida de la API");
-    }
-    let htmlResult = data.candidates[0].content.parts[0].text;
-    htmlResult = htmlResult.replace(/^```html/i, '').replace(/^```/i, '').replace(/```$/i, '').trim();
+    htmlResult = htmlResult.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
     return htmlResult;
   } catch (error) {
     throw new Error('Error al generar material: ' + error.message);

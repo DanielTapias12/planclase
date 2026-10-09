@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 
 export default function MisPlanesPage() {
   const navigate = useNavigate();
-  const { loadPlan, userId } = useAppStore();
+  const { loadPlan, userId, setPlanesCount } = useAppStore();
   
   const [planes, setPlanes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +18,7 @@ export default function MisPlanesPage() {
       try {
         const fetchedPlanes = await getMisPlanes(userId);
         setPlanes(fetchedPlanes);
+        setPlanesCount(fetchedPlanes.length);
       } catch (error) {
         console.error("Error al cargar planes", error);
       } finally {
@@ -38,7 +39,9 @@ export default function MisPlanesPage() {
       if (action === 'delete') {
         if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
         await deletePlanFromDB(planId);
-        setPlanes(planes.filter(p => p.id !== planId));
+        const newPlanes = planes.filter(p => p.id !== planId);
+        setPlanes(newPlanes);
+        setPlanesCount(newPlanes.length);
       } else if (action === 'sistematizar') {
         await updatePlanStatus(planId, { estado: 'Sistematizado' });
         setPlanes(planes.map(p => p.id === planId ? { ...p, estado: 'Sistematizado' } : p));

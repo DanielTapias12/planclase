@@ -1,19 +1,31 @@
 import { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { testApiConnection } from '../services/aiService';
+import { updateUserProfile } from '../services/authService';
 import { CheckCircle, XCircle, Key, Loader } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ConfigPage() {
-  const { apiKey, setApiKey } = useAppStore();
+  const { apiKey, setApiKey, userId } = useAppStore();
   const [inputKey, setInputKey] = useState(apiKey);
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
 
   const handleSaveAndTest = async () => {
     setStatus('loading');
-    setApiKey(inputKey);
     const isValid = await testApiConnection(inputKey);
-    setStatus(isValid ? 'success' : 'error');
+    if (isValid) {
+      setApiKey(inputKey);
+      setStatus('success');
+      if (userId) {
+        try {
+          await updateUserProfile(userId, { apiKey: inputKey });
+        } catch (e) {
+          console.error("Error guardando API Key en perfil:", e);
+        }
+      }
+    } else {
+      setStatus('error');
+    }
   };
 
   return (

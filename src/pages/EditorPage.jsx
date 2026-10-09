@@ -3,16 +3,17 @@ import { useAppStore } from '../store/useAppStore';
 import { modifyPlan } from '../services/aiService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { useNavigate } from 'react-router-dom';
 import { Save, Edit, FileText, FileCode, PlusCircle, 
-  ListChecks, MonitorPlay, HelpCircle, Puzzle, Send, Loader2, X, Download
+  ListChecks, MonitorPlay, HelpCircle, Puzzle, Send, Loader2, X, Download, Maximize2, Sparkles, ChevronDown
 } from 'lucide-react';
 
 import { savePlanToDB, updatePlanInDB } from '../services/dbService';
 import { generateComplementaryMaterial } from '../services/aiService';
 
 export default function EditorPage() {
-  const { planGenerado, setPlanGenerado, apiKey, sesionChatIA, addMensajeChatIA, wizardData, planStatus, setPlanStatus, resetWizard, userId, planId, setPlanId } = useAppStore();
+  const { planGenerado, setPlanGenerado, apiKey, sesionChatIA, addMensajeChatIA, wizardData, planStatus, setPlanStatus, resetWizard, userId, planId, setPlanId, recursosAnexos, addRecursoAnexo, planesCount, setPlanesCount } = useAppStore();
   const [prompt, setPrompt] = useState('');
   const [isModifying, setIsModifying] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -20,6 +21,7 @@ export default function EditorPage() {
   const [editablePlan, setEditablePlan] = useState(planGenerado);
   
   // Modal states for complementary materials
+  const [showMaterialMenu, setShowMaterialMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('');
   const [modalContentHtml, setModalContentHtml] = useState('');
@@ -70,12 +72,13 @@ export default function EditorPage() {
     setIsSaving(true);
     try {
       if (planId) {
-        await updatePlanInDB(planId, planGenerado);
+        await updatePlanInDB(planId, planGenerado, recursosAnexos);
         setPlanStatus('guardado');
       } else {
-        const newPlanId = await savePlanToDB(userId, wizardData, planGenerado);
+        const newPlanId = await savePlanToDB(userId, wizardData, planGenerado, recursosAnexos);
         setPlanId(newPlanId);
         setPlanStatus('guardado');
+        setPlanesCount(planesCount + 1);
       }
     } catch (e) {
       alert("Error al guardar: " + e.message);
@@ -89,10 +92,24 @@ export default function EditorPage() {
   };
 
   const handleDownloadWord = () => {
+    let anexosText = '';
+    if (recursosAnexos && recursosAnexos.length > 0) {
+      anexosText = '\n\n---\n<h3>Recursos Interactivos Anexos</h3>\n<ul>';
+      recursosAnexos.forEach(r => {
+        anexosText += `<li><strong>${r.title}</strong>: (Este recurso es interactivo. Ábrelo desde la plataforma Inspiratec para visualizarlo o descárgalo en HTML).</li>`;
+      });
+      anexosText += '</ul>';
+    }
+
+    const contentElement = document.getElementById('plan-content-wrapper');
+    // Si no encuentra el div, usa planGenerado (aunque se verá raw)
+    const renderedHtml = contentElement ? contentElement.innerHTML : `<div style="white-space: pre-wrap;">${planGenerado}</div>`;
+
     const htmlContent = `
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset='utf-8'><title>Plan de Clase</title></head><body>
-      <div style="font-family: Arial, sans-serif; white-space: pre-wrap;">${planGenerado}</div>
+      <div style="font-family: Arial, sans-serif;">${renderedHtml}</div>
+      ${anexosText}
       </body></html>
     `;
     const blob = new Blob(['\ufeff', htmlContent], { type: "application/msword" });
@@ -127,8 +144,7 @@ export default function EditorPage() {
   };
 
   const downloadMaterialHtml = () => {
-    const fullHtml = `<!DOCTYPE html><html><head><title>${modalTitle}</title><style>body{font-family:sans-serif; margin:40px;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #ccc;padding:8px;}</style></head><body>${modalContentHtml}</body></html>`;
-    const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+    const blob = new Blob([modalContentHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -137,10 +153,10 @@ export default function EditorPage() {
   };
 
   const handleAnexarAlPlan = () => {
-    // Se anexa el material como un bloque de código HTML y una instrucción clara
-    const anexo = `\n\n---\n\n### 📎 Anexo: ${modalTitle}\n\nA continuación se adjunta el código fuente del material generado. Puedes copiar este bloque y guardarlo como un archivo \`.html\` para visualizarlo en cualquier navegador, o utilizar la plataforma Inspiratec para exportarlo.\n\n\`\`\`html\n${modalContentHtml}\n\`\`\`\n`;
-    setPlanGenerado(planGenerado + anexo);
-    setPlanStatus('borrador');
+    addRecursoAnexo({
+      title: modalTitle,
+      html: modalContentHtml
+    });
     setIsModalOpen(false);
   };
 
@@ -183,14 +199,44 @@ export default function EditorPage() {
     );
   };
 
+  const getMaterialOptions = () => {
+    switch (wizardData?.materia) {
+      case 'Matemáticas': return [
+        { id: 'taller_contexto', label: 'Taller de Contexto Real', icon: <ListChecks size={16}/> },
+        { id: 'guia_modelacion', label: 'Guía de Modelación', icon: <MonitorPlay size={16}/> },
+        { id: 'preguntas', label: 'Quiz Interactivo', icon: <HelpCircle size={16}/> },
+        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
+      ];
+      case 'Inglés': return [
+        { id: 'reading', label: 'Reading Comprehension', icon: <FileText size={16}/> },
+        { id: 'roleplay_en', label: 'Role-Play Scripts', icon: <FileCode size={16}/> },
+        { id: 'flashcards', label: 'Flashcards Interactivas', icon: <MonitorPlay size={16}/> },
+        { id: 'juegos', label: 'Sopa de Letras (EN)', icon: <Puzzle size={16}/> },
+        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
+      ];
+      case 'Lenguaje (Español)': return [
+        { id: 'taller_lectura', label: 'Taller de Comprensión', icon: <FileText size={16}/> },
+        { id: 'produccion_textual', label: 'Producción Textual', icon: <Edit size={16}/> },
+        { id: 'roleplay_lit', label: 'Juego de Roles Literario', icon: <FileCode size={16}/> },
+        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
+      ];
+      default: return [
+        { id: 'reto_lab', label: 'Reto de Laboratorio', icon: <MonitorPlay size={16}/> },
+        { id: 'estudio_caso', label: 'Estudio de Caso', icon: <FileText size={16}/> },
+        { id: 'diapositivas', label: 'Presentación Interactiva', icon: <MonitorPlay size={16}/> },
+        { id: 'preguntas', label: 'Banco de Preguntas', icon: <HelpCircle size={16}/> },
+        { id: 'juegos', label: 'Juegos y Recursos Lúdicos', icon: <Puzzle size={16}/> }
+      ];
+    }
+  };
+
   return (
     <div className="plan-generado-view" style={{ padding: '20px 40px', maxWidth: '1400px', position: 'relative' }}>
       
-      {/* Barra de acciones adaptada a la captura de pantalla */}
+      {/* Barra de acciones centralizada para reducir carga cognitiva */}
       <div style={{ backgroundColor: '#F7F3ED', padding: '24px 32px', marginBottom: '32px', borderRadius: '12px' }}>
         
-        {/* Fila 1: Acciones principales */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
           <button 
             className="btn" 
             onClick={handleSaveToBackend}
@@ -201,7 +247,7 @@ export default function EditorPage() {
           </button>
           
           <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => setIsEditMode(!isEditMode)}>
-            <Edit size={16} style={{ color: '#475569' }} /> Editar manualmente
+            <Edit size={16} style={{ color: '#475569' }} /> Editar
           </button>
           <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={handlePrintPdf}>
             <FileText size={16} style={{ color: '#475569' }} /> PDF
@@ -209,80 +255,42 @@ export default function EditorPage() {
           <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={handleDownloadWord}>
             <FileCode size={16} style={{ color: '#475569' }} /> Word
           </button>
+          
+          <div style={{ width: '1px', height: '24px', backgroundColor: '#CBD5E1', margin: '0 8px' }}></div>
+          
           <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => { resetWizard(); navigate('/'); }}>
             <PlusCircle size={16} style={{ color: '#475569' }} /> Nuevo
           </button>
-        </div>
-        
-        {/* Fila 2: Materiales Complementarios IA */}
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          {wizardData?.materia === 'Matemáticas' ? (
-            <>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('taller_contexto', 'Taller de Contexto Real')}>
-                <ListChecks size={16} style={{ color: '#475569' }} /> Taller de Contexto Real
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('guia_modelacion', 'Guía de Modelación')}>
-                <MonitorPlay size={16} style={{ color: '#475569' }} /> Guía de Modelación
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('preguntas', 'Quiz')}>
-                <HelpCircle size={16} style={{ color: '#475569' }} /> Quiz
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('rubrica', 'Rúbrica de Evaluación')}>
-                <ListChecks size={16} style={{ color: '#475569' }} /> Rúbrica
-              </button>
-            </>
-          ) : wizardData?.materia === 'Inglés' ? (
-            <>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('reading', 'Reading Comprehension')}>
-                <FileText size={16} style={{ color: '#475569' }} /> Reading Comprehension
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('roleplay_en', 'Role-Play Scripts')}>
-                <FileCode size={16} style={{ color: '#475569' }} /> Role-Play Scripts
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('flashcards', 'Flashcards de Vocabulario')}>
-                <MonitorPlay size={16} style={{ color: '#475569' }} /> Flashcards
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('juegos', 'Sopa de Letras (EN)')}>
-                <Puzzle size={16} style={{ color: '#475569' }} /> Sopa de Letras (EN)
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('rubrica', 'Rúbrica de Evaluación')}>
-                <ListChecks size={16} style={{ color: '#475569' }} /> Rúbrica
-              </button>
-            </>
-          ) : wizardData?.materia === 'Lenguaje (Español)' ? (
-            <>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('taller_lectura', 'Taller de Comprensión')}>
-                <FileText size={16} style={{ color: '#475569' }} /> Taller de Comprensión
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('produccion_textual', 'Pautas de Producción Textual')}>
-                <Edit size={16} style={{ color: '#475569' }} /> Producción Textual
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('roleplay_lit', 'Juego de Roles Literario')}>
-                <FileCode size={16} style={{ color: '#475569' }} /> Juego de Roles Literario
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('rubrica', 'Rúbrica de Evaluación')}>
-                <ListChecks size={16} style={{ color: '#475569' }} /> Rúbrica
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('reto_lab', 'Reto de Laboratorio')}>
-                <MonitorPlay size={16} style={{ color: '#475569' }} /> Reto de Laboratorio
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('estudio_caso', 'Estudio de Caso Tecnológico')}>
-                <FileText size={16} style={{ color: '#475569' }} /> Estudio de Caso
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('diapositivas', 'Presentación (Diapositivas)')}>
-                <MonitorPlay size={16} style={{ color: '#475569' }} /> Diapositivas
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('preguntas', 'Banco de Preguntas')}>
-                <HelpCircle size={16} style={{ color: '#475569' }} /> Banco de Preguntas
-              </button>
-              <button className="btn-outline" style={{ backgroundColor: '#FFF', border: '1px solid #E2E8F0', padding: '10px 20px', color: '#334155' }} onClick={() => handleGenerateMaterial('juegos', 'Juegos y Recursos Lúdicos')}>
-                <Puzzle size={16} style={{ color: '#475569' }} /> Juegos y Recursos
-              </button>
-            </>
-          )}
+
+          {/* Menú Dropdown para Materiales - Reduce carga cognitiva */}
+          <div style={{ position: 'relative', marginLeft: 'auto' }}>
+            <button 
+              className="btn" 
+              style={{ backgroundColor: 'var(--primary-active)', padding: '10px 20px', display: 'flex', alignItems: 'center', gap: '8px' }} 
+              onClick={() => setShowMaterialMenu(!showMaterialMenu)}
+            >
+              <Sparkles size={16} /> Crear Material Interactivo <ChevronDown size={14} />
+            </button>
+            
+            {showMaterialMenu && (
+              <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '8px', backgroundColor: '#FFF', borderRadius: '8px', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)', border: '1px solid #E2E8F0', zIndex: 50, minWidth: '240px', overflow: 'hidden' }}>
+                <div style={{ padding: '12px 16px', backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0', fontSize: '13px', fontWeight: 'bold', color: '#64748B' }}>
+                  Recomendados para {wizardData?.materia || 'tu clase'}
+                </div>
+                {getMaterialOptions().map(opt => (
+                  <button 
+                    key={opt.id}
+                    onClick={() => { handleGenerateMaterial(opt.id, opt.label); setShowMaterialMenu(false); }}
+                    style={{ width: '100%', textAlign: 'left', padding: '14px 16px', background: 'none', border: 'none', borderBottom: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer', color: '#334155', transition: 'background 0.2s', fontSize: '14px' }}
+                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#F8FAFC'}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    {opt.icon} {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -304,9 +312,10 @@ export default function EditorPage() {
               </div>
             </div>
           ) : (
-            <div className="markdown-content">
+            <div className="markdown-content" id="plan-content-wrapper">
               <ReactMarkdown 
                 remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
                 components={{
                   table: ({node, ...props}) => <table className="plan-sequence-table" {...props} />,
                   h3: ({node, ...props}) => <h3 style={{ color: 'var(--primary-active)', fontSize: '20px', borderBottom: '1px solid #E2E8F0', paddingBottom: '8px', marginTop: '32px', marginBottom: '16px', fontFamily: 'var(--font-heading)' }} {...props} />
@@ -314,6 +323,58 @@ export default function EditorPage() {
               >
                 {planGenerado.replace(/\[GENERAR_(RUBRICA|DIAPOSITIVAS|PREGUNTAS|JUEGO)\]/g, '')}
               </ReactMarkdown>
+              
+              {/* Render de Materiales Anexos (Iframes aislados) */}
+              {recursosAnexos && recursosAnexos.length > 0 && (
+                <div style={{ marginTop: '40px', borderTop: '2px dashed var(--border-color)', paddingTop: '32px' }}>
+                  <h3 style={{ color: 'var(--primary-active)', fontSize: '24px', marginBottom: '24px' }}>📚 Recursos Interactivos Anexos</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    {recursosAnexos.map((recurso, idx) => (
+                      <div key={idx} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+                        <div style={{ padding: '16px 24px', borderBottom: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#FFF' }}>
+                          <h4 style={{ margin: 0, color: '#334155', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><MonitorPlay size={18} style={{ color: 'var(--primary-sage)' }} /> {recurso.title}</h4>
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button 
+                              className="btn-outline" 
+                              onClick={() => {
+                                const blob = new Blob([recurso.html], { type: 'text/html' });
+                                const url = URL.createObjectURL(blob);
+                                window.open(url, '_blank');
+                              }}
+                              style={{ padding: '6px 12px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', color: '#334155' }}
+                            >
+                              <Maximize2 size={14} /> Ampliar
+                            </button>
+                            <button 
+                              className="btn" 
+                              onClick={() => {
+                                const blob = new Blob([recurso.html], { type: 'text/html' });
+                                const url = URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.href = url;
+                                a.download = `${recurso.title.replace(/ /g, '_')}.html`;
+                                a.click();
+                              }}
+                              style={{ padding: '6px 12px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--primary-sage)' }}
+                            >
+                              <Download size={14} /> Descargar HTML
+                            </button>
+                          </div>
+                        </div>
+                        <div style={{ padding: '0', height: '400px', width: '100%', backgroundColor: '#FFF' }}>
+                          <iframe 
+                            srcDoc={recurso.html}
+                            sandbox="allow-scripts"
+                            style={{ width: '100%', height: '100%', border: 'none' }}
+                            title={recurso.title}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {renderGeneradorInteligente()}
             </div>
           )}
@@ -364,7 +425,7 @@ export default function EditorPage() {
           {isEditMode && <div style={{ fontSize: '12px', color: 'var(--error-color)', marginTop: '8px' }}>Desactiva el modo de edición manual para usar la IA.</div>}
         </div>
 
-      </div>
+    </div>
       
       {/* Modal para Material Complementario HTML */}
       {isModalOpen && (
@@ -394,16 +455,18 @@ export default function EditorPage() {
             </div>
 
             {/* Contenido HTML */}
-            <div style={{ padding: '32px', overflowY: 'auto', flex: 1, backgroundColor: '#F8FAFC' }}>
+            <div style={{ padding: '0', overflow: 'hidden', flex: 1, backgroundColor: '#FFF', display: 'flex' }}>
               {isGeneratingMaterial ? (
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#64748B', gap: '16px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', color: '#64748B', gap: '16px', padding: '32px' }}>
                   <Loader2 size={40} className="spin" style={{ color: 'var(--primary-sage)' }} />
                   <p>La Inteligencia Artificial está diseñando tu material en HTML...</p>
                 </div>
               ) : (
-                <div 
-                  style={{ backgroundColor: '#FFF', padding: '24px', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
-                  dangerouslySetInnerHTML={{ __html: modalContentHtml }} 
+                <iframe 
+                  srcDoc={modalContentHtml}
+                  sandbox="allow-scripts"
+                  style={{ width: '100%', height: '100%', minHeight: '500px', border: 'none', backgroundColor: '#FFF' }}
+                  title="Material Generado"
                 />
               )}
             </div>

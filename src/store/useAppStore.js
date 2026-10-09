@@ -14,6 +14,9 @@ export const useAppStore = create((set) => ({
   addMensajeChatIA: (mensaje) => set((state) => ({ sesionChatIA: [...state.sesionChatIA, mensaje] })),
   clearChatIA: () => set({ sesionChatIA: [] }),
   
+  recursosAnexos: [],
+  addRecursoAnexo: (recurso) => set((state) => ({ recursosAnexos: [...state.recursosAnexos, recurso], estadoCambios: true, planStatus: 'borrador' })),
+  
   setApiKey: (key) => {
     localStorage.setItem('inspiratec_api_key', key);
     set({ apiKey: key });
@@ -46,6 +49,8 @@ export const useAppStore = create((set) => ({
   setUserProfile: (profile) => set({ userProfile: profile }),
   planId: null,
   setPlanId: (id) => set({ planId: id }),
+  planesCount: 0,
+  setPlanesCount: (count) => set({ planesCount: count }),
 
   misPlantillas: [],
   addPlantilla: (plantilla) => set((state) => ({
@@ -59,7 +64,8 @@ export const useAppStore = create((set) => ({
     planId: planId,
     planStatus: 'guardado',
     estadoCambios: false,
-    sesionChatIA: []
+    sesionChatIA: [],
+    recursosAnexos: planMetadata.recursosAnexos || []
   })),
 
   resetWizard: () => set({
@@ -68,6 +74,7 @@ export const useAppStore = create((set) => ({
     },
     planGenerado: '',
     planId: null,
-    sesionChatIA: []
+    sesionChatIA: [],
+    recursosAnexos: []
   })
 }));

@@ -100,7 +100,7 @@ export default function WizardPage() {
       </div>
       
       {/* Indicador de Progreso Mejorado */}
-      <div className="planificador-progress" style={{ marginBottom: '48px', padding: '0 40px' }}>
+      <div id="tour-wizard-progress" className="planificador-progress" style={{ marginBottom: '48px', padding: '0 40px' }}>
         {stepsInfo.map(s => (
           <div key={s.num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2, width: '120px', marginLeft: '-45px', marginRight: '-45px' }}>
             <div className={`planificador-step ${step === s.num ? 'active' : ''} ${step > s.num ? 'completed' : ''}`} style={{ marginBottom: '12px', width: '40px', height: '40px', fontSize: '16px' }}>
@@ -133,7 +133,7 @@ export default function WizardPage() {
               <div className="planificador-row" style={{ gap: '32px' }}>
                 <div className="input-group" style={{ margin: 0 }}>
                   <label>Formato de plan de clase</label>
-                  <select name="formato" value={wizardData.formato} onChange={handleChange}>
+                  <select id="tour-wizard-format" name="formato" value={wizardData.formato} onChange={handleChange}>
                     <option value="Estructura estándar INSPIRATEC">Estructura estándar INSPIRATEC</option>
                     <option value="Plantilla Comunitaria Básica">Plantilla Comunitaria Básica</option>
                     {wizardData.formato && !['Estructura estándar INSPIRATEC', 'Plantilla Comunitaria Básica'].includes(wizardData.formato) && (
@@ -184,7 +184,7 @@ export default function WizardPage() {
                 </div>
                 <div className="input-group" style={{ margin: 0 }}>
                   <label>Disponibilidad de recursos <span style={{color: 'var(--error-color)'}}>*</span></label>
-                  <select name="recursos" value={wizardData.recursos} onChange={handleChange}>
+                  <select id="tour-wizard-resources" name="recursos" value={wizardData.recursos} onChange={handleChange}>
                     <option value="">Selecciona una opción de recursos</option>
                     {wizardData.materia === 'Matemáticas' ? (
                       <>
@@ -338,7 +338,7 @@ export default function WizardPage() {
               </button>
               
               {step < 4 ? (
-                <button type="button" className="btn" onClick={handleNext} style={{ minWidth: '140px' }}>
+                <button id="tour-wizard-next" type="button" className="btn" onClick={handleNext} style={{ minWidth: '140px' }}>
                   Siguiente <ArrowRight size={18} style={{ marginLeft: '8px' }} />
                 </button>
               ) : (

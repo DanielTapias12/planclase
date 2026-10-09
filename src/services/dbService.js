@@ -1,12 +1,13 @@
 import { db } from '../firebase';
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, serverTimestamp, orderBy } from 'firebase/firestore';
 
-export const savePlanToDB = async (userId, planData, markdown) => {
+export const savePlanToDB = async (userId, planData, markdown, recursosAnexos = []) => {
   try {
     const docRef = await addDoc(collection(db, "planes"), {
       userId,
       ...planData,
       markdown,
+      recursosAnexos,
       estado: 'Guardado',
       createdAt: serverTimestamp()
     });
@@ -17,11 +18,12 @@ export const savePlanToDB = async (userId, planData, markdown) => {
   }
 };
 
-export const updatePlanInDB = async (planId, updatedMarkdown) => {
+export const updatePlanInDB = async (planId, updatedMarkdown, recursosAnexos = []) => {
   try {
     const planRef = doc(db, "planes", planId);
     await updateDoc(planRef, {
       markdown: updatedMarkdown,
+      recursosAnexos,
       updatedAt: serverTimestamp()
     });
   } catch (e) {

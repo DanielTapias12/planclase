@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, BrainCircuit, Network, BookOpen, X, ArrowRight } from 'lucide-react';
+import miniyo from '../assets/miniyo.png';
 
 export default function WelcomeModal({ onStartTour, onClose }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +45,21 @@ export default function WelcomeModal({ onStartTour, onClose }) {
         display: 'flex',
         flexDirection: 'column'
       }}>
+        
+        {/* Mascota flotante */}
+        <img 
+          src={miniyo} 
+          alt="Asistente Inspiratec" 
+          style={{ 
+            position: 'absolute', 
+            bottom: '-10px', 
+            left: '-80px', 
+            width: '200px', 
+            zIndex: 20, 
+            filter: 'drop-shadow(5px 5px 15px rgba(0,0,0,0.3))'
+          }} 
+        />
+
         {/* Botón Cerrar */}
         <button 
           onClick={handleClose}
@@ -94,9 +110,9 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#EFF6FF', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <Sparkles size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>Planificador Asistido (DUA)</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Creador de Secuencias</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                Crea secuencias didácticas completas alineadas a los estándares del MEN, con adaptaciones de inclusión automáticas basadas en el Diseño Universal para el Aprendizaje.
+                Ingresa el contexto de tu clase y la IA generará un plan estructurado, sugiriendo objetivos y detectando necesidades de inclusión (DUA).
               </p>
             </div>
 
@@ -105,9 +121,9 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#F0FDF4', color: '#22C55E', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <Network size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Tejedor ROCA</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Laboratorio Inteligente</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                Genera material interconectado al instante. ¿Necesitas Rúbricas, Diapositivas o Sopas de letras? La IA los crea con base en tu plan usando la metodología ROCA (Razón, Objetivo, Contexto, Actividad).
+                Edita el plan manualmente o utiliza el Chatbot Co-Docente para reescribir párrafos. Además, genera diapositivas, rúbricas y juegos en formato ROCA automáticamente.
               </p>
             </div>
 
@@ -116,9 +132,9 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#FAF5FF', color: '#A855F7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <BrainCircuit size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>Co-Docente Proactivo</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>Tu Bóveda Personal</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                En el Laboratorio (Editor), tendrás un chatbot dispuesto a reescribir párrafos, cambiar metodologías o afinar tu texto en tiempo real con solo pedírselo.
+                Guarda tus clases en 'Mis Planes' para descargarlas en PDF/Word. Crea plantillas personalizadas para que la IA se adapte exactamente al formato de tu colegio.
               </p>
             </div>
 
@@ -127,9 +143,9 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#FFF7ED', color: '#F97316', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <BookOpen size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>Plaza y Sistematización</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>La Plaza Pública</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                Toda tu gestión queda en la Bóveda. Puedes sistematizar tus mejores prácticas y compartirlas en la Biblioteca Pública con docentes de todo el país.
+                Publica tus mejores clases y sistematiza tus experiencias para que otros docentes en Colombia puedan inspirarse y utilizarlas en sus aulas.
               </p>
             </div>
 
