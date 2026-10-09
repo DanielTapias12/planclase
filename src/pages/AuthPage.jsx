@@ -110,7 +110,7 @@ export default function AuthPage() {
               top: '-30px', 
               right: '-40px', 
               width: '130px', 
-              zIndex: -1,
+              zIndex: 10,
               filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.1))'
             }} 
           />
