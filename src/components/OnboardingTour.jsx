@@ -112,10 +112,10 @@ export default function OnboardingTour() {
   ];
 
   const handleJoyrideCallback = (data) => {
-    const { status } = data;
+    const { status, action } = data;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
     
-    if (finishedStatuses.includes(status)) {
+    if (finishedStatuses.includes(status) || action === 'close') {
       setRun(false);
       localStorage.setItem('tourCompletado', 'true');
     }

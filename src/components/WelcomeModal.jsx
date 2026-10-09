@@ -6,7 +6,10 @@ export default function WelcomeModal({ onStartTour, onClose }) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(true);
+    const isCompleted = localStorage.getItem('tourCompletado');
+    if (!isCompleted) {
+      setIsOpen(true);
+    }
   }, []);
 
   const handleClose = () => {
