@@ -100,20 +100,7 @@ export default function AuthPage() {
       {/* Lado Izquierdo: Formulario de Login */}
       <div style={{ flex: '1', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF', padding: '40px', zIndex: 2, boxShadow: '10px 0 30px rgba(0,0,0,0.04)', overflowY: 'auto' }}>
         <div style={{ width: '100%', maxWidth: '440px', paddingTop: '20px', paddingBottom: '20px', position: 'relative' }}>
-          
-          {/* Mascota asomándose en el login */}
-          <img 
-            src={miniyo} 
-            alt="Asistente" 
-            style={{ 
-              position: 'absolute', 
-              top: '-30px', 
-              right: '-40px', 
-              width: '130px', 
-              zIndex: 10,
-              filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.1))'
-            }} 
-          />
+
 
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <h2 style={{ color: 'var(--primary-active)', fontSize: '32px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px' }}>

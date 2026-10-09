@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, BrainCircuit, Network, BookOpen, X, ArrowRight } from 'lucide-react';
-import miniyo from '../assets/miniyo.png';
 
 export default function WelcomeModal({ onStartTour, onClose }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,21 +47,6 @@ export default function WelcomeModal({ onStartTour, onClose }) {
         display: 'flex',
         flexDirection: 'column'
       }}>
-        
-        {/* Mascota flotante */}
-        <img 
-          src={miniyo} 
-          alt="Asistente Inspiratec" 
-          style={{ 
-            position: 'absolute', 
-            bottom: '-10px', 
-            left: '-80px', 
-            width: '200px', 
-            zIndex: 20, 
-            filter: 'drop-shadow(5px 5px 15px rgba(0,0,0,0.3))'
-          }} 
-        />
-
         {/* Botón Cerrar */}
         <button 
           onClick={handleClose}

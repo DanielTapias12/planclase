@@ -3,20 +3,6 @@ import { Joyride, STATUS } from 'react-joyride';
 import WelcomeModal from './WelcomeModal';
 
 export default function OnboardingTour() {
-  const [run, setRun] = useState(false);
-
-  useEffect(() => {
-    const handleStartTourEvent = () => {
-      localStorage.removeItem('tourCompletado');
-      setRun(true);
-    };
-
-    window.addEventListener('start-tour', handleStartTourEvent);
-    return () => {
-      window.removeEventListener('start-tour', handleStartTourEvent);
-    };
-  }, []);
-
   const steps = [
     {
       target: '#nav-inicio',
@@ -111,50 +97,72 @@ export default function OnboardingTour() {
     }
   ];
 
+  const [run, setRun] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
+
+  useEffect(() => {
+    const handleStartTourEvent = () => {
+      localStorage.removeItem('tourCompletado');
+      setStepIndex(0);
+      setRun(true);
+    };
+
+    window.addEventListener('start-tour', handleStartTourEvent);
+    return () => {
+      window.removeEventListener('start-tour', handleStartTourEvent);
+    };
+  }, []);
+
   const handleJoyrideCallback = (data) => {
-    const { status, action } = data;
+    const { status, action, index, type } = data;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
     
-    if (finishedStatuses.includes(status) || action === 'close') {
+    if (finishedStatuses.includes(status) || action === 'close' || type === 'tour:end') {
       setRun(false);
+      setStepIndex(0);
       localStorage.setItem('tourCompletado', 'true');
+    } else if (type === 'step:after' || type === 'error') {
+      setStepIndex(index + (action === 'prev' ? -1 : 1));
     }
   };
 
   return (
     <>
-      <WelcomeModal onStartTour={() => setRun(true)} />
-      <Joyride
-        steps={steps}
-        run={run}
-        continuous={true}
-        scrollToFirstStep={true}
-        showProgress={true}
-        showSkipButton={true}
-        callback={handleJoyrideCallback}
-        styles={{
-          options: {
-            primaryColor: 'var(--primary-active)',
-            zIndex: 10000,
-          },
-          tooltipContainer: {
-            textAlign: 'left',
-          },
-          buttonNext: {
-            backgroundColor: 'var(--primary-sage)',
-          },
-          buttonBack: {
-            marginRight: 10,
-          }
-        }}
-        locale={{
-          back: 'Atrás',
-          close: 'Cerrar',
-          last: 'Finalizar',
-          next: 'Siguiente',
-          skip: 'Saltar tour'
-        }}
-      />
+      <WelcomeModal onStartTour={() => { setStepIndex(0); setRun(true); }} />
+      {run && (
+        <Joyride
+          steps={steps}
+          run={run}
+          stepIndex={stepIndex}
+          continuous={true}
+          scrollToFirstStep={true}
+          showProgress={true}
+          showSkipButton={true}
+          callback={handleJoyrideCallback}
+          styles={{
+            options: {
+              primaryColor: 'var(--primary-active)',
+              zIndex: 10000,
+            },
+            tooltipContainer: {
+              textAlign: 'left',
+            },
+            buttonNext: {
+              backgroundColor: 'var(--primary-sage)',
+            },
+            buttonBack: {
+              marginRight: 10,
+            }
+          }}
+          locale={{
+            back: 'Atrás',
+            close: 'Cerrar',
+            last: 'Finalizar',
+            next: 'Siguiente',
+            skip: 'Saltar tour'
+          }}
+        />
+      )}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import WizardPage from './pages/WizardPage';
 import EditorPage from './pages/EditorPage';
 import ConfigPage from './pages/ConfigPage';
@@ -21,10 +21,14 @@ import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
 import OnboardingTour from './components/OnboardingTour';
 import UserMenu from './components/UserMenu';
-import { Settings, MoreHorizontal, Lightbulb, PlayCircle } from 'lucide-react';
-function App() {
+import FondoAula from './components/FondoAula';
+import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay } from 'lucide-react';
+
+function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
+  const location = useLocation();
+  const isSimulation = location.pathname === '/simulacion';
   
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -36,12 +40,6 @@ function App() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
   const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
-
-  useEffect(() => {
-    initAuth();
-    // Inicializar el admin en segundo plano
-    initAdminAccount();
-  }, []);
 
   useEffect(() => {
     if (userId) {
@@ -69,15 +67,11 @@ function App() {
     { path: '/ayuda', label: 'Ayuda' }
   ];
 
-  if (!userId) {
-    return <AuthPage />;
-  }
-
   return (
-    <BrowserRouter>
+    <FondoAula dim={0} className="app-background" isSimulation={isSimulation}>
       <div className="app-container top-layout">
         <OnboardingTour />
-        <div className="header-container" style={{ width: '100%', boxSizing: 'border-box' }}>
+        <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
           <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
           
           <header className="top-nav" style={{ border: 'none', background: 'transparent' }}>
@@ -138,7 +132,11 @@ function App() {
                 >
                   <PlayCircle size={16} /> Tutorial
                 </button>
-                <NavLink to="/config" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <NavLink to="/simulacion" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <MonitorPlay size={16} />
+                  Simulación
+                </NavLink>
+                <NavLink id="nav-config" to="/config" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Settings size={16} />
                   Config IA
                   <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: (apiKey && apiKey.length > 10 ? '#10B981' : '#F59E0B') }} title="Estado API"></span>
@@ -148,7 +146,11 @@ function App() {
             </nav>
           </header>
         </div>
-        <main className="main-content">
+        <main className="main-content" style={{ 
+          backgroundColor: isSimulation ? 'transparent' : 'rgba(255, 255, 255, 0.85)', 
+          backdropFilter: isSimulation ? 'none' : 'blur(8px)',
+          transition: 'all 0.3s ease'
+        }}>
           <Routes>
             <Route path="/" element={<WizardPage />} />
             <Route path="/editor" element={<EditorPage />} />
@@ -163,9 +165,28 @@ function App() {
             <Route path="/acerca" element={<AboutPage />} />
             <Route path="/ayuda" element={<AyudaPage />} />
             <Route path="/administracion" element={<AdministracionPage />} />
+            <Route path="/simulacion" element={<div style={{ minHeight: '80vh' }}></div>} />
           </Routes>
         </main>
       </div>
+    </FondoAula>
+  );
+}
+
+function App() {
+  const { userId } = useAppStore();
+
+  useEffect(() => {
+    initAuth();
+    initAdminAccount();
+  }, []);
+
+  if (!userId) {
+    return <AuthPage />;
+  }
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
