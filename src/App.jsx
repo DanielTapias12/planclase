@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router
 import WizardPage from './pages/WizardPage';
 import EditorPage from './pages/EditorPage';
 import ConfigPage from './pages/ConfigPage';
-import { initAuth, initAdminAccount, logoutUser } from './services/authService';
+import { initAuth, logoutUser } from './services/authService';
 import { getMisPlanes } from './services/dbService';
 import { useAppStore } from './store/useAppStore';
 import { auth } from './firebase';
@@ -178,7 +178,6 @@ function App() {
 
   useEffect(() => {
     initAuth();
-    initAdminAccount();
   }, []);
 
   if (!userId) {
