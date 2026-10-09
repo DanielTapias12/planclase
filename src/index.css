@@ -6,14 +6,14 @@
   --bg-surface: #FFFDF9;
   --primary-sage: #477A72;
   --primary-active: #315B54;
-  --text-main: #26332F;
-  --text-secondary: #69736D;
-  --border-color: #E2E5DE;
+  --text-main: #141C1A;
+  --text-secondary: #4A5551;
+  --border-color: #D1D8D5;
   --bg-sage-soft: #E7EDE7;
   --bg-input: #FFFFFF;
-  --error-color: #D32F2F;
-  --warning-color: #F57C00;
-  --success-color: #388E3C;
+  --error-color: #DC2626;
+  --warning-color: #EA580C;
+  --success-color: #16A34A;
 
   /* Typography */
   --font-main: 'DM Sans', sans-serif;
@@ -109,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-link.active {
-  color: #3b82f6; /* Azul brillante como en la imagen para el tab activo */
+  color: var(--primary-active); /* Adjusted to match theme */
 }
 
 .nav-link.active::after {
@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #3b82f6; /* Línea azul inferior */
+  background-color: var(--primary-active); /* Adjusted to match theme */
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
 }
