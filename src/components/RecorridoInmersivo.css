@@ -1,0 +1,130 @@
+.recorrido-container {
+  /* Set a massive height so there's plenty of scrolling to go through the 9 images */
+  height: 900vh;
+  position: relative;
+  background-color: #0f172a; /* Dark background to match cinemantic feel */
+  z-index: 100; /* Ensure it stays above FondoPixel if necessary */
+}
+
+.recorrido-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0f172a;
+}
+
+.recorrido-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recorrido-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* Will be scaled by framer-motion, set transform-origin to center for subtle zoom */
+  transform-origin: center center;
+}
+
+.recorrido-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.2) 0%,
+    rgba(15, 23, 42, 0.7) 100%
+  );
+  pointer-events: none;
+}
+
+.recorrido-text {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  text-align: center;
+  padding: 0 20px;
+  color: #f8fafc;
+  margin-top: 20vh; /* Push text down slightly */
+}
+
+.recorrido-text h2 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.3;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Progress Bar */
+.recorrido-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 20;
+}
+
+.recorrido-progress-fill {
+  height: 100%;
+  background: var(--primary-active); /* Replaced #10b981 with semantic token */
+  width: 100%;
+}
+
+/* Exit Button */
+.recorrido-exit {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  z-index: 20;
+}
+
+.recorrido-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  color: white;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.recorrido-back-btn:hover {
+  background: rgba(15, 23, 42, 0.8);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recorrido-image {
+    transition: none !important;
+    transform: none !important; /* Disable scale/zoom for reduced motion */
+  }
+}
+
+/* Hide global layout issues for the animation page */
+body:has(.recorrido-container) {
+  overflow-x: hidden;
+}

@@ -136,10 +136,18 @@ export default function FondoPixel({ children, dim = 0.15, className = "", isSim
   const revealed = active + (["t2", "back", "idle"].includes(phase) ? 1 : 0);
   const cur = CAST[active];
 
+  if (isSimulation) {
+    return (
+      <section className={`px ${className}`} style={{ padding: 0, background: '#0f172a' }}>
+        <div className="px-content">{children}</div>
+      </section>
+    );
+  }
+
   return (
     <section className={`px ${className}`}>
       <style>{CSS}</style>
-      <div className="scene" style={isSimulation ? { width: '100vw', height: '100vh', borderRadius: 0, border: 'none' } : {}}>
+      <div className="scene">
         <div className="win">
           <svg viewBox="0 0 40 20" preserveAspectRatio="none" shapeRendering="crispEdges" aria-hidden="true">
             {R(0, 0, 40, 20, "#A6DDF5")}{R(0, 14, 40, 6, "#E7EDE7")}{R(3, 10, 5, 10, "#E7EDE7")}{R(14, 8, 6, 12, "#D1D8D5")}{R(27, 11, 5, 9, "#E7EDE7")}

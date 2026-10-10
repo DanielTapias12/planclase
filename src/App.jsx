@@ -22,6 +22,7 @@ import AuthPage from './pages/AuthPage';
 import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
+import RecorridoInmersivo from './components/RecorridoInmersivo';
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
@@ -189,13 +190,7 @@ function AppContent() {
             <Route path="/acerca" element={<AboutPage />} />
             <Route path="/ayuda" element={<AyudaPage />} />
             <Route path="/administracion" element={<AdministracionPage />} />
-            <Route path="/animacion" element={
-              <div style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1000 }}>
-                <NavLink to="/" style={{ padding: '14px 28px', background: 'var(--primary-active)', color: 'white', borderRadius: '12px', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-                  <ArrowLeft size={20} /> Regresar al Inicio
-                </NavLink>
-              </div>
-            } />
+            <Route path="/animacion" element={<RecorridoInmersivo />} />
           </Routes>
         </main>
       </div>
