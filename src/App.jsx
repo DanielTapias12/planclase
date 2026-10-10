@@ -158,11 +158,11 @@ function AppContent() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
                   <NavLink to="/animacion" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <MonitorPlay size={16} />
-                    Animación
+                    Inmersión
                   </NavLink>
                   <NavLink id="nav-config" to="/config" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Settings size={16} />
-                    Config IA
+                    IA
                     <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: (apiKey && apiKey.length > 10 ? '#10B981' : '#F59E0B') }} title="Estado API"></span>
                   </NavLink>
                   <UserMenu />
