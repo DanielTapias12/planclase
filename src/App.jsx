@@ -22,7 +22,7 @@ import AuthPage from './pages/AuthPage';
 import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
 import FondoAula from './components/FondoAula';
-import Joyride, { STATUS } from 'react-joyride';
+import { Joyride, STATUS } from 'react-joyride';
 import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
 
 function AppContent() {

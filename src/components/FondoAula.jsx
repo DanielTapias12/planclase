@@ -13,14 +13,22 @@ import { useEffect, useState } from "react";
    act = acción: both (manos arriba), camera (toma una foto), pocket (manos en bolsillos), wave (saluda) */
 const STEP = 6;
 const CAST = [
-  { id: "bob", act: "both", sleeve: "short", bracelet: true, skin: "#EFC1A2", hair: "#221A1C", shirt: "#F6D9DC", pants: "#5B7FB0", side: "L", x1: 385, y: 512, s: 0.98,
-    say: ["¡Hola, Robi! ¿Creamos un plan?", "¡Hola! Cuéntame el tema y el grado ✨"] },
-  { id: "cam", act: "camera", sleeve: "long", skin: "#C99068", hair: "#16141A", shirt: "#1E1B22", pants: "#2B2D3A", side: "R", x1: 615, y: 518, s: 1,
-    say: ["¿Te tomo una foto, Robi?", "¡Claro! ¡Sonrío! 📸"] },
-  { id: "curly", act: "pocket", sleeve: "none", skin: "#B9805C", hair: "#1A1210", shirt: "#EBDDBE", pants: "#EADFC9", side: "L", x1: 310, y: 552, s: 1.08,
-    say: ["¿Me ayudas con una rúbrica?", "¡Listo! Ya está en la pizarra ✓"] },
-  { id: "white", act: "wave", sleeve: "short", skin: "#C58D66", hair: "#15110F", shirt: "#F7F8FA", pants: "#2F3E5C", side: "R", x1: 695, y: 552, s: 1.08,
-    say: ["¡Buenos días! Quiero actividades", "Te preparé 3 con juegos 🎲"] },
+  {
+    id: "bob", act: "both", sleeve: "short", bracelet: true, skin: "#EFC1A2", hair: "#221A1C", shirt: "#F6D9DC", pants: "#5B7FB0", side: "L", x1: 385, y: 512, s: 0.98,
+    say: ["¡Hola, Robi! ¿Creamos un plan?", "¡Hola! Cuéntame el tema y el grado ✨"]
+  },
+  {
+    id: "cam", act: "camera", sleeve: "long", skin: "#C99068", hair: "#16141A", shirt: "#1E1B22", pants: "#2B2D3A", side: "R", x1: 615, y: 518, s: 1,
+    say: ["¿Te tomo una foto, Robi?", "¡Claro! ¡Sonrío! 📸"]
+  },
+  {
+    id: "curly", act: "pocket", sleeve: "none", skin: "#B9805C", hair: "#1A1210", shirt: "#EBDDBE", pants: "#EADFC9", side: "L", x1: 310, y: 552, s: 1.08,
+    say: ["¿Me ayudas con una rúbrica?", "¡Listo! Ya está en la pizarra ✓"]
+  },
+  {
+    id: "white", act: "wave", sleeve: "short", skin: "#C58D66", hair: "#15110F", shirt: "#F7F8FA", pants: "#2F3E5C", side: "R", x1: 695, y: 552, s: 1.08,
+    say: ["¡Buenos días! Quiero actividades", "Te preparé 3 con juegos 🎲"]
+  },
 ];
 
 const BOOKS = ["#E4572E", "#29A0B1", "#F3A712", "#6C5B7B", "#5EA85E", "#3B6BFF", "#E07BB5", "#A8C686"];
@@ -349,7 +357,7 @@ export default function FondoAula({ children, dim = 0.15, className = "", isSimu
           <radialGradient id="fa-reye" cx=".4" cy=".35" r=".8"><stop offset="0" stopColor="#CFFCFF" /><stop offset=".5" stopColor="#3DD0EC" /><stop offset="1" stopColor="#0E7FA3" /></radialGradient>
           <filter id="fa-dof"><feGaussianBlur stdDeviation=".9" /></filter>
           <radialGradient id="fa-warm" cx=".15" cy=".2" r=".7"><stop offset="0" stopColor="#FFE9B0" stopOpacity=".22" /><stop offset="1" stopColor="#FFE9B0" stopOpacity="0" /></radialGradient>
-          
+
           <linearGradient id="fa-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#CBE1E6" /><stop offset="1" stopColor="#B7D3DA" /></linearGradient>
           <linearGradient id="fa-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#CFA574" /><stop offset="1" stopColor="#A87C4F" /></linearGradient>
           <linearGradient id="fa-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#7CC8FF" /><stop offset="1" stopColor="#E3F4FF" /></linearGradient>
@@ -420,10 +428,10 @@ export default function FondoAula({ children, dim = 0.15, className = "", isSimu
 
         {/* ---------- Estudiantes sentados ---------- */}
         <g filter="url(#fa-dof)">
-        <Student x={92} y={468} s={0.85} skin="#E8B48C" hair="#3B2A20" shirt="#6EC1FF" delay={0} />
-        <Student x={182} y={452} s={0.78} skin="#8D5A3C" hair="#17120F" shirt="#FFC857" delay={4} />
-        <Student x={812} y={470} s={0.85} skin="#F5D0B5" hair="#7A3B1E" shirt="#FF8FC7" delay={2} />
-        <Student x={904} y={454} s={0.78} skin="#C98E64" hair="#1E1E2A" shirt="#5EE0B0" delay={6} />
+          <Student x={92} y={468} s={0.85} skin="#E8B48C" hair="#3B2A20" shirt="#6EC1FF" delay={0} />
+          <Student x={182} y={452} s={0.78} skin="#8D5A3C" hair="#17120F" shirt="#FFC857" delay={4} />
+          <Student x={812} y={470} s={0.85} skin="#F5D0B5" hair="#7A3B1E" shirt="#FF8FC7" delay={2} />
+          <Student x={904} y={454} s={0.78} skin="#C98E64" hair="#1E1E2A" shirt="#5EE0B0" delay={6} />
         </g>
 
         {/* ---------- Robot asistente ---------- */}
@@ -583,4 +591,4 @@ const CSS = `
   .brow{opacity:1}
   .fa-prog{transform:scaleX(1)}
 }
-
+`;
