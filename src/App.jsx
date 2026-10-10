@@ -30,6 +30,7 @@ function AppContent() {
   const moreMenuRef = useRef(null);
   const [runTour, setRunTour] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
+  const [tourKey, setTourKey] = useState(0);
   const location = useLocation();
   const isSimulation = location.pathname === '/animacion';
 
@@ -39,8 +40,20 @@ function AppContent() {
         setShowMoreMenu(false);
       }
     };
+    
+    const handleStartTutorial = () => {
+      setStepIndex(0);
+      setTourKey(prev => prev + 1);
+      setTimeout(() => setRunTour(true), 100);
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    window.addEventListener('start-tutorial', handleStartTutorial);
+    
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('start-tutorial', handleStartTutorial);
+    };
   }, []);
 
   const handleJoyrideCallback = (data) => {
@@ -117,6 +130,7 @@ function AppContent() {
   return (
     <FondoPixel dim={0} className="app-background" isSimulation={isSimulation}>
       <Joyride
+        key={`tour-${tourKey}`}
         steps={steps}
         run={runTour}
         stepIndex={stepIndex}
