@@ -94,7 +94,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
             
             {/* Feature 1 */}
             <div style={{ padding: '24px', borderRadius: '16px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', transition: 'transform 0.2s', cursor: 'default' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#EFF6FF', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: 'var(--bg-sage-soft)', color: 'var(--primary-active)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <Sparkles size={24} />
               </div>
               <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Creador de Secuencias</h3>

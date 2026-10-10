@@ -111,9 +111,9 @@ export default function PlantillasPage() {
     <div className="planificador-view" style={{ maxWidth: '1000px', margin: '0 auto' }}>
       
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', marginBottom: '32px' }}>
-        <FileText size={40} color="#3b82f6" />
+        <FileText size={40} color="var(--primary-active)" />
         <div>
-          <h2 style={{ color: '#1e40af', fontSize: '32px', marginBottom: '8px' }}>Mis Estructuras de Clase</h2>
+          <h2 style={{ color: 'var(--primary-active)', fontSize: '32px', marginBottom: '8px' }}>Mis Estructuras de Clase</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '16px' }}>Crea y gestiona tus propias estructuras de plan de clase sincronizadas en la nube.</p>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function PlantillasPage() {
 
       {isCreating && (
         <div className="card" style={{ padding: '32px 40px', backgroundColor: '#FFFFFF', marginBottom: '40px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
-          <h3 style={{ color: '#3b82f6', fontSize: '20px', marginBottom: '24px' }}>Nueva Estructura de Clase</h3>
+          <h3 style={{ color: 'var(--primary-active)', fontSize: '20px', marginBottom: '24px' }}>Nueva Estructura de Clase</h3>
           
           <div className="input-group">
             <label style={{ fontWeight: 600 }}>Título de la Estructura</label>
@@ -196,7 +196,7 @@ export default function PlantillasPage() {
             <div key={plan.id} className="example-card" onClick={() => handleUsar(plan)}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <span className="tag" style={{ marginBottom: '12px', display: 'inline-block' }}>{plan.formato}</span>
-                {plan.publico && <span style={{ fontSize: '12px', color: '#3b82f6', fontWeight: 600 }}>Público</span>}
+                {plan.publico && <span style={{ fontSize: '12px', color: 'var(--primary-active)', fontWeight: 600 }}>Público</span>}
               </div>
               <h3>{plan.titulo}</h3>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
@@ -249,7 +249,7 @@ export default function PlantillasPage() {
           <div style={{ backgroundColor: 'var(--bg-main)', padding: '32px', borderRadius: '12px', width: '90%', maxWidth: '600px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', maxHeight: '80vh', overflowY: 'auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
               <h3 style={{ color: 'var(--text-main)', fontSize: '20px', margin: 0 }}>{viewingPlan.titulo}</h3>
-              {viewingPlan.publico && <span style={{ fontSize: '12px', color: '#3b82f6', fontWeight: 600, backgroundColor: '#EFF6FF', padding: '4px 8px', borderRadius: '4px' }}>Público</span>}
+              {viewingPlan.publico && <span style={{ fontSize: '12px', color: 'var(--primary-active)', fontWeight: 600, backgroundColor: 'var(--bg-sage-soft)', padding: '4px 8px', borderRadius: '4px' }}>Público</span>}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
               <div>

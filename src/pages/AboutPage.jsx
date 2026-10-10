@@ -45,7 +45,7 @@ export default function AboutPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
           
           <div className="card" style={{ padding: '32px', textAlign: 'center', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', transition: 'transform 0.3s', cursor: 'default' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: '#EFF6FF', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: 'var(--bg-sage-soft)', color: 'var(--primary-active)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
               <Target size={32} />
             </div>
             <h3 style={{ fontSize: '20px', color: 'var(--primary-active)', marginBottom: '12px' }}>Nuestra Misión</h3>

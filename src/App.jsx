@@ -28,7 +28,7 @@ function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
   const location = useLocation();
-  const isSimulation = location.pathname === '/simulacion';
+  const isSimulation = location.pathname === '/animacion';
   
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -125,9 +125,9 @@ function AppContent() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
-                <NavLink to="/simulacion" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <NavLink to="/animacion" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <MonitorPlay size={16} />
-                  Simulación
+                  Animación
                 </NavLink>
                 <NavLink id="nav-config" to="/config" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Settings size={16} />
@@ -158,7 +158,7 @@ function AppContent() {
             <Route path="/acerca" element={<AboutPage />} />
             <Route path="/ayuda" element={<AyudaPage />} />
             <Route path="/administracion" element={<AdministracionPage />} />
-            <Route path="/simulacion" element={<div style={{ minHeight: '80vh' }}></div>} />
+            <Route path="/animacion" element={<div style={{ minHeight: '80vh' }}></div>} />
           </Routes>
         </main>
       </div>

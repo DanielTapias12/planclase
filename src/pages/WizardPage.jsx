@@ -93,7 +93,7 @@ export default function WizardPage() {
       
       {/* Moved header and progress inside card */}
 
-      <div className="card" style={{ padding: '40px 48px', backgroundColor: '#FFFFFF', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
+      <div className="card" style={{ padding: '40px 48px', backgroundColor: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(8px)', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
         
         {/* Header Centralizado */}
         <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '48px' }}>
