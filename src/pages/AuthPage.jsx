@@ -277,8 +277,8 @@ export default function AuthPage() {
             className="form-panel"
             style={{ 
               width: '440px', 
-              backgroundColor: 'rgba(255, 255, 255, 0.65)', 
-              backdropFilter: 'blur(24px)',
+              backgroundColor: 'rgba(24, 35, 34, 0.4)', 
+              backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(24px)',
               border: '1px solid rgba(255, 255, 255, 0.6)',
               borderRadius: '28px',
@@ -293,10 +293,10 @@ export default function AuthPage() {
             onMouseLeave={() => setIsHoveringForm(false)}
           >
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <h2 style={{ color: 'var(--primary-active)', fontSize: '28px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px', fontWeight: 'bold' }}>
+            <h2 style={{ color: '#F8FAFC', fontSize: '28px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px', fontWeight: 'bold' }}>
               INSPIRATEC
             </h2>
-            <p style={{ color: '#475569', fontSize: '14px', margin: 0, lineHeight: '1.4' }}>
+            <p style={{ color: '#E2E8F0', fontSize: '14px', margin: 0, lineHeight: '1.4' }}>
               {isLogin ? 'Inicia sesión para continuar creando experiencias educativas' : 'Crea tu cuenta docente protegida y únete a la comunidad'}
             </p>
           </div>
@@ -311,18 +311,18 @@ export default function AuthPage() {
             {!isLogin && (
               <>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <label style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Nombre Completo</label>
-                  <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Ej. Profe María Pérez" style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', backgroundColor: '#FFF' }} />
+                  <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Nombre Completo</label>
+                  <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Ej. Profe María Pérez" style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Institución</label>
-                    <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} required placeholder="Colegio..." style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', backgroundColor: '#FFF' }} />
+                    <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Institución</label>
+                    <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} required placeholder="Colegio..." style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <label style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Nivel</label>
-                    <select name="nivel" value={formData.nivel} onChange={handleChange} required style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', backgroundColor: '#FFF' }}>
+                    <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Nivel</label>
+                    <select name="nivel" value={formData.nivel} onChange={handleChange} required style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }}>
                       <option value="">Selecciona...</option>
                       <option value="Primaria">Primaria</option>
                       <option value="Secundaria">Secundaria</option>
@@ -334,12 +334,12 @@ export default function AuthPage() {
             )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Correo Electrónico</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="tu.correo@institucion.edu.co" style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', width: '100%', boxSizing: 'border-box', backgroundColor: '#FFF' }} />
+              <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Correo Electrónico</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="tu.correo@institucion.edu.co" style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} />
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative' }}>
-              <label style={{ fontSize: '13px', color: '#334155', fontWeight: '600' }}>Contraseña</label>
+              <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Contraseña</label>
               <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <input 
                   type={showPassword ? "text" : "password"} 
@@ -349,7 +349,7 @@ export default function AuthPage() {
                   required 
                   minLength="6" 
                   placeholder="••••••••"
-                  style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', width: '100%', boxSizing: 'border-box', paddingRight: '40px', backgroundColor: '#FFF' }} 
+                  style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', width: '100%', boxSizing: 'border-box', paddingRight: '40px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} 
                 />
                 <button 
                   type="button" 
@@ -360,19 +360,19 @@ export default function AuthPage() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              {!isLogin && <small style={{ color: '#64748B', marginTop: '2px', display: 'block', fontSize: '11px' }}>Mínimo 6 caracteres</small>}
+              {!isLogin && <small style={{ color: '#CBD5E1', marginTop: '2px', display: 'block', fontSize: '11px' }}>Mínimo 6 caracteres</small>}
             </div>
 
             {/* Checkbox de Términos y Condiciones */}
             {!isLogin && (
               <div style={{
-                backgroundColor: 'rgba(241, 245, 249, 0.7)',
-                border: '1px solid #E2E8F0',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '8px',
                 padding: '12px',
                 marginTop: '4px'
               }}>
-                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '12px', color: '#334155', lineHeight: '1.4' }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '12px', color: '#F8FAFC', lineHeight: '1.4' }}>
                   <input
                     type="checkbox"
                     name="aceptaTerminos"
@@ -411,24 +411,24 @@ export default function AuthPage() {
             marginTop: '24px',
             padding: '10px 14px',
             borderRadius: '8px',
-            backgroundColor: 'rgba(241, 245, 249, 0.7)',
-            border: '1px solid #E2E8F0',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '8px',
             fontSize: '12px',
-            color: '#475569'
+            color: '#F8FAFC'
           }}>
-            <Shield size={14} color="#315B54" />
+            <Shield size={14} color="#14b8a6" />
             <span>Protección con JWT y Cifrado</span>
           </div>
 
-          <div style={{ textAlign: 'center', marginTop: '24px', paddingTop: '20px', borderTop: '1px solid #E2E8F0' }}>
+          <div style={{ textAlign: 'center', marginTop: '24px', paddingTop: '20px', borderTop: '1px solid rgba(255, 255, 255, 0.2)' }}>
             <button 
               type="button" 
               onClick={() => { setIsLogin(!isLogin); setError(null); }} 
-              style={{ background: 'none', border: 'none', color: '#334155', cursor: 'pointer', fontSize: '14px', textDecoration: 'none' }}
+              style={{ background: 'none', border: 'none', color: '#F8FAFC', cursor: 'pointer', fontSize: '14px', textDecoration: 'none' }}
             >
               {isLogin ? (
                 <>¿No tienes cuenta? <span style={{ color: 'var(--primary-active)', fontWeight: '700' }}>Regístrate aquí</span></>
