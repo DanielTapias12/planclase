@@ -165,11 +165,19 @@ export default function AuthPage() {
               justify-content: flex-end !important;
               flex: 1 !important;
             }
+            .form-wrapper {
+              padding: 0 !important;
+              width: 100% !important;
+              align-items: flex-end !important;
+            }
             .form-panel {
               width: 100% !important;
               border-radius: 24px 24px 0 0 !important;
+              border: 1px solid rgba(255,255,255,0.4) !important;
+              border-bottom: none !important;
               padding: 32px 24px !important;
               flex: none !important;
+              max-height: 85vh !important;
             }
             .narrative-title {
               font-size: 32px !important;
@@ -265,24 +273,26 @@ export default function AuthPage() {
         </div>
 
         {/* Panel Derecho: Formulario */}
-        <div 
-          className="form-panel"
-          style={{ 
-            width: '460px', 
-            backgroundColor: 'rgba(255, 255, 255, 0.85)', 
-            backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            borderLeft: '1px solid rgba(255, 255, 255, 0.4)',
-            display: 'flex', 
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: '40px 50px',
-            boxShadow: '-10px 0 40px rgba(0,0,0,0.2)',
-            overflowY: 'auto'
-          }}
-          onMouseEnter={() => setIsHoveringForm(true)}
-          onMouseLeave={() => setIsHoveringForm(false)}
-        >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 60px 40px 40px', flexShrink: 0 }} className="form-wrapper">
+          <div 
+            className="form-panel"
+            style={{ 
+              width: '440px', 
+              backgroundColor: 'rgba(255, 255, 255, 0.65)', 
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255, 255, 255, 0.6)',
+              borderRadius: '28px',
+              display: 'flex', 
+              flexDirection: 'column',
+              padding: '48px 40px',
+              boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)',
+              maxHeight: 'calc(100vh - 80px)',
+              overflowY: 'auto'
+            }}
+            onMouseEnter={() => setIsHoveringForm(true)}
+            onMouseLeave={() => setIsHoveringForm(false)}
+          >
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <h2 style={{ color: 'var(--primary-active)', fontSize: '28px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px', fontWeight: 'bold' }}>
               INSPIRATEC
@@ -428,8 +438,8 @@ export default function AuthPage() {
               )}
             </button>
           </div>
+          </div>
         </div>
-
       </div>
 
       <TermsAndConditionsModal
