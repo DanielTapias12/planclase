@@ -22,7 +22,7 @@ const CAST = [
   { id: "c", skin: "#C48A62", hair: "#1E1512", top: "#FFFFFF", pants: "#2F3F78", chair: "#4A5551", bot: 2,
     p: [62, 59, 69, 76, 67, 46.9, 78, 80], say: "Byte, necesito un juego 🎲", reply: "¡Va! La pizza partida", line: "Inicio: juego de la pizza partida" },
   { id: "d", skin: "#D9A07A", hair: "#1B1624", top: "#2A2535", pants: "#3A66C8", chair: "#141C1A", bot: 3,
-    p: [82, 59, 69, 94, 67, 66.9, 78, 96], say: "¡Chispa, una foto! 📸", reply: "¡Click! Actividad en grupos", line: "Actividad: grupos de 4 con material" },
+    p: [82, 59, 69, 94, 67, 66.9, 78, 96], say: "Chispa, ¿qué actividad haremos? 🤝", reply: "¡Armé trabajo en equipos! 📚", line: "Desarrollo: grupos de 4 con material" },
 ];
 const BOTS = [
   { name: "Robi", p: [42, 76, 40, 80] }, { name: "Pixa", p: [42, 94, 40, 96] },
