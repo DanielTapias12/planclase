@@ -29,6 +29,7 @@ function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
   const [runTour, setRunTour] = useState(false);
+  const [stepIndex, setStepIndex] = useState(0);
   const location = useLocation();
   const isSimulation = location.pathname === '/animacion';
   
@@ -43,11 +44,17 @@ function AppContent() {
   }, []);
 
   const handleJoyrideCallback = (data) => {
-    const { status, action } = data;
+    const { status, action, type, index } = data;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
-    if (finishedStatuses.includes(status) || action === 'close') {
+    
+    if (finishedStatuses.includes(status) || action === 'close' || type === 'tour:end') {
       setRunTour(false);
+      setStepIndex(0); // Reset step index
       localStorage.setItem('tourCompletado', 'true');
+    } else if (type === 'step:after' || type === 'error:target_not_found') {
+      // Update step index automatically for next/prev
+      const nextStepIndex = index + (action === 'prev' ? -1 : 1);
+      setStepIndex(nextStepIndex);
     }
   };
 
@@ -112,6 +119,7 @@ function AppContent() {
       <Joyride
         steps={steps}
         run={runTour}
+        stepIndex={stepIndex}
         continuous={true}
         showProgress={true}
         showSkipButton={true}

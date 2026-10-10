@@ -13,6 +13,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
 
   const handleClose = () => {
     setIsOpen(false);
+    localStorage.setItem('tourCompletado', 'true');
     if (onClose) onClose();
   };
 
