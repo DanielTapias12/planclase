@@ -158,6 +158,9 @@ export default function OnboardingTour() {
           scrollToFirstStep={true}
           showProgress={true}
           showSkipButton={true}
+          showCloseButton={true}
+          disableOverlayClose={true}
+          disableScrolling={true}
           callback={handleJoyrideCallback}
           styles={{
             options: {
@@ -166,6 +169,7 @@ export default function OnboardingTour() {
               backgroundColor: '#ffffff',
               zIndex: 10000,
               arrowColor: '#ffffff',
+              overlayColor: 'rgba(0, 0, 0, 0)',
             },
             tooltip: {
               borderRadius: '12px',
