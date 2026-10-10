@@ -129,8 +129,9 @@ function AppContent() {
 
   return (
     <FondoPixel dim={0} className="app-background" isSimulation={isSimulation}>
-      <Joyride
-        key={`tour-${tourKey}`}
+      {runTour && (
+        <Joyride
+          key={`tour-${tourKey}`}
         steps={steps}
         run={runTour}
         stepIndex={stepIndex}
@@ -152,6 +153,7 @@ function AppContent() {
           }
         }}
       />
+      )}
       <div className="app-container top-layout">
         {!isSimulation && <WelcomeModal onStartTour={() => setRunTour(true)} />}
         {!isSimulation && (
