@@ -1,7 +1,7 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import './RecorridoInmersivo.css';
 
 const images = [
@@ -17,73 +17,97 @@ const images = [
 ];
 
 export default function RecorridoInmersivo() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef(null);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, []);
+
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
+  };
+
+  useEffect(() => {
+    if (!isHovered) {
+      timerRef.current = setInterval(nextSlide, 7000);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [currentIndex, isHovered, nextSlide]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nextSlide, prevSlide]);
+
+  // Prevent scroll locking when leaving the page
+  useEffect(() => {
+    document.body.classList.add('no-scroll');
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, []);
 
   return (
-    <div className="recorrido-container" ref={containerRef}>
-      <div className="recorrido-sticky">
-        {images.map((img, index) => {
-          // Calculate opacity and scale for each image based on scroll progress
-          const start = index / images.length;
-          const end = (index + 1) / images.length;
-          
-          // Crossfade: asymmetric curve to prevent background bleed
-          // The image fades in right before its 'start', stays solid until 'end', then fades out.
-          // Because they stack in DOM order, an image fading in covers the previous solid one perfectly.
-          // Ensure offsets remain in [0, 1] range to avoid Web Animations API crash
-          const fadeInStart = Math.max(0, start - 0.05);
-          const fadeOutEnd = Math.min(1, end + 0.05);
+    <div 
+      className="recorrido-slideshow"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="recorrido-exit">
+        <NavLink to="/" className="recorrido-back-btn">
+          <ArrowLeft size={20} /> Regresar al Inicio
+        </NavLink>
+      </div>
 
-          const opacity = useTransform(
-            scrollYProgress,
-            [fadeInStart, start, end, fadeOutEnd],
-            [0, 1, 1, 0]
-          );
-
-          // Subtle zoom in effect
-          const scale = useTransform(
-            scrollYProgress,
-            [start, end],
-            [1, 1.15]
-          );
-
-          return (
-            <motion.div
-              key={index}
-              className="recorrido-scene"
-              style={{ opacity }}
+      <AnimatePresence>
+        <motion.div
+          key={currentIndex}
+          className="recorrido-slide"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+        >
+          <img src={images[currentIndex].src} alt={`Escena ${currentIndex + 1}`} className="recorrido-image" />
+          <div className="recorrido-overlay" />
+          <div className="recorrido-text-container">
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
-              <motion.img 
-                src={img.src} 
-                alt={`Escena ${index + 1}`} 
-                className="recorrido-image"
-                style={{ scale }}
-              />
-              <div className="recorrido-overlay" />
-              <div className="recorrido-text">
-                <h2>{img.text}</h2>
-              </div>
-            </motion.div>
-          );
-        })}
+              {images[currentIndex].text}
+            </motion.h2>
+          </div>
+        </motion.div>
+      </AnimatePresence>
 
-        {/* Progress Indicator */}
-        <div className="recorrido-progress-bar">
-          <motion.div 
-            className="recorrido-progress-fill"
-            style={{ scaleX: scrollYProgress, transformOrigin: "left" }}
+      <div className="recorrido-nav-zone left" onClick={prevSlide}>
+        <ChevronLeft size={48} className="nav-icon" />
+      </div>
+      <div className="recorrido-nav-zone right" onClick={nextSlide}>
+        <ChevronRight size={48} className="nav-icon" />
+      </div>
+
+      <div className="recorrido-indicators">
+        {images.map((_, idx) => (
+          <button
+            key={idx}
+            className={`recorrido-indicator ${idx === currentIndex ? 'active' : ''}`}
+            onClick={() => goToSlide(idx)}
+            aria-label={`Ir a la escena ${idx + 1}`}
           />
-        </div>
-
-        <div className="recorrido-exit">
-          <NavLink to="/" className="recorrido-back-btn">
-            <ArrowLeft size={20} /> Regresar al Inicio
-          </NavLink>
-        </div>
+        ))}
       </div>
     </div>
   );
