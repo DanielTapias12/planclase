@@ -30,14 +30,14 @@ export default function ConfigPage() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card" style={{ maxWidth: '600px', margin: '40px auto', padding: '40px' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '32px', fontSize: '24px', color: '#1E293B' }}>Configura tu API Key de Gemini</h2>
+      <h2 style={{ textAlign: 'center', marginBottom: '32px', fontSize: '24px', color: 'var(--primary-active)' }}>Configura tu API Key de Gemini</h2>
       
-      <p style={{ color: '#475569', marginBottom: '32px', fontSize: '15px', lineHeight: '1.5' }}>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '32px', fontSize: '15px', lineHeight: '1.5' }}>
         Para utilizar Inspiratec, necesitas proporcionar tu propia clave de API de Google AI Studio.
       </p>
       
       <div className="input-group" style={{ marginBottom: '32px' }}>
-        <label style={{ fontSize: '14px', color: '#475569', fontWeight: 500, marginBottom: '8px', display: 'block' }}>Tu API Key</label>
+        <label style={{ fontSize: '14px', color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '8px', display: 'block' }}>Tu API Key</label>
         <input 
           type="password" 
           value={inputKey}
@@ -52,8 +52,8 @@ export default function ConfigPage() {
         Guardar y Continuar
       </button>
 
-      <p style={{ color: '#475569', fontSize: '15px' }}>
-        Puedes obtener tu clave en <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" style={{ color: '#6366F1', textDecoration: 'underline' }}>Google AI Studio</a>.
+      <p style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>
+        Puedes obtener tu clave en <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" style={{ color: 'var(--primary-active)', textDecoration: 'underline' }}>Google AI Studio</a>.
       </p>
 
       {status === 'success' && (

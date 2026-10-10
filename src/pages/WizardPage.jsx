@@ -91,30 +91,32 @@ export default function WizardPage() {
   return (
     <div className="planificador-view" style={{ padding: '0 20px 60px 20px', maxWidth: '900px', margin: '0 auto' }}>
       
-      {/* Header Centralizado */}
-      <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '48px', marginTop: '24px' }}>
-        <h2 style={{ fontSize: '36px', color: 'var(--primary-active)', marginBottom: '12px' }}>Planificador de Clases</h2>
-        <p style={{ fontSize: '18px', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-          Construye secuencias didácticas estructuradas con asistencia de Inteligencia Artificial.
-        </p>
-      </div>
-      
-      {/* Indicador de Progreso Mejorado */}
-      <div id="tour-wizard-progress" className="planificador-progress" style={{ marginBottom: '48px', padding: '0 40px' }}>
-        {stepsInfo.map(s => (
-          <div key={s.num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2, width: '120px', marginLeft: '-45px', marginRight: '-45px' }}>
-            <div className={`planificador-step ${step === s.num ? 'active' : ''} ${step > s.num ? 'completed' : ''}`} style={{ marginBottom: '12px', width: '40px', height: '40px', fontSize: '16px' }}>
-              {s.num}
-            </div>
-            <span style={{ fontSize: '13px', fontWeight: step === s.num ? '700' : '500', color: step === s.num ? 'var(--primary-active)' : 'var(--text-secondary)', textAlign: 'center' }}>
-              {s.title}
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* Moved header and progress inside card */}
 
-      <div className="card" style={{ padding: '40px 48px', backgroundColor: '#FFFFFF', boxShadow: '0 8px 30px rgba(0,0,0,0.04)' }}>
+      <div className="card" style={{ padding: '40px 48px', backgroundColor: '#FFFFFF', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', borderRadius: '16px', border: '1px solid var(--border-color)' }}>
         
+        {/* Header Centralizado */}
+        <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <h2 style={{ fontSize: '36px', color: 'var(--primary-active)', marginBottom: '12px' }}>Planificador de Clases</h2>
+          <p style={{ fontSize: '18px', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
+            Construye secuencias didácticas estructuradas con asistencia de Inteligencia Artificial.
+          </p>
+        </div>
+        
+        {/* Indicador de Progreso Mejorado */}
+        <div id="tour-wizard-progress" className="planificador-progress" style={{ marginBottom: '48px', padding: '0 20px' }}>
+          {stepsInfo.map(s => (
+            <div key={s.num} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2, width: '120px', marginLeft: '-45px', marginRight: '-45px' }}>
+              <div className={`planificador-step ${step === s.num ? 'active' : ''} ${step > s.num ? 'completed' : ''}`} style={{ marginBottom: '12px', width: '40px', height: '40px', fontSize: '16px' }}>
+                {s.num}
+              </div>
+              <span style={{ fontSize: '13px', fontWeight: step === s.num ? '700' : '500', color: step === s.num ? 'var(--primary-active)' : 'var(--text-secondary)', textAlign: 'center' }}>
+                {s.title}
+              </span>
+            </div>
+          ))}
+        </div>
+
         {/* Título interno de la fase */}
         <div style={{ marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid var(--border-color)' }}>
           <h3 style={{ fontSize: '22px', color: 'var(--primary-active)', marginBottom: '8px' }}>Fase {step}: {stepsInfo[step-1].title}</h3>
@@ -255,7 +257,7 @@ export default function WizardPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '8px' }}>
                   <label style={{ margin: 0 }}>¿Qué quieres que aprendan tus estudiantes?</label>
                   <button type="button" className="btn btn-secondary" onClick={handleSuggestObjectives} disabled={isSuggestingObj || !wizardData.metodologiaSTEAM} style={{ padding: '6px 14px', minHeight: '36px', fontSize: '13px', borderRadius: '20px' }} title={!wizardData.metodologiaSTEAM ? 'Debes seleccionar una metodología STEAM primero' : ''}>
-                    {isSuggestingObj ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} color="#8b5cf6" />} Sugerir con IA
+                    {isSuggestingObj ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} color="var(--primary-active)" />} Sugerir con IA
                   </button>
                 </div>
                 <textarea 
@@ -276,7 +278,7 @@ export default function WizardPage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '8px' }}>
                   <label style={{ margin: 0 }}>Estándares y objetivos de aprendizaje</label>
                   <button type="button" className="btn btn-secondary" onClick={handleSuggestStandards} disabled={isSuggestingStd} style={{ padding: '6px 14px', minHeight: '36px', fontSize: '13px', borderRadius: '20px' }}>
-                    {isSuggestingStd ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} color="#8b5cf6" />} Sugerir estándares
+                    {isSuggestingStd ? <Loader2 size={16} className="spin" /> : <Sparkles size={16} color="var(--primary-active)" />} Sugerir estándares
                   </button>
                 </div>
                 <textarea 

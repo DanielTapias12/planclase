@@ -140,8 +140,8 @@ function AppContent() {
           </header>
         </div>
         <main className="main-content" style={{ 
-          backgroundColor: isSimulation ? 'transparent' : 'rgba(255, 255, 255, 0.85)', 
-          backdropFilter: isSimulation ? 'none' : 'blur(8px)',
+          backgroundColor: 'transparent', 
+          backdropFilter: 'none',
           transition: 'all 0.3s ease'
         }}>
           <Routes>
