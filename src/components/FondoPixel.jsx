@@ -209,12 +209,12 @@ export default function FondoPixel({ children, dim = 0.15, className = "", isSim
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
-.px{position:relative;min-height:100vh;display:grid;place-items:center;padding:clamp(10px,3vw,32px);background:var(--bg-general);box-sizing:border-box;font-family:Silkscreen,monospace;overflow:hidden;}
+.px{position:relative;min-height:100vh;display:grid;place-items:center;padding:clamp(10px,3vw,32px);background:var(--bg-general);box-sizing:border-box;overflow:hidden;}
 .px *{box-sizing:border-box}
 .scene{--u:9;--mw:8;--fl:56;--rt:66;position:relative;container-type:inline-size;width:min(100%,1100px);aspect-ratio:16/9;overflow:hidden;
   border-radius:1.4cqw;border:.7cqw solid var(--primary-active);image-rendering:pixelated;
   background:repeating-linear-gradient(90deg,var(--bg-sage-soft) 0 12.5%,var(--border-color) 12.5% 12.9%);z-index:0;
-  box-shadow: 0 2cqw 4cqw rgba(49, 91, 84, 0.15);}
+  box-shadow: 0 2cqw 4cqw rgba(49, 91, 84, 0.15);font-family:Silkscreen,monospace;}
 .scene::before{content:"";position:absolute;left:0;right:0;top:0;height:3cqw;background:var(--primary-sage)}
 .floor{position:absolute;left:0;right:0;top:calc(var(--fl)*1%);bottom:0;border-top:1cqw solid var(--border-color);
   background:repeating-linear-gradient(90deg,transparent 0 7.9cqw,rgba(71, 122, 114, 0.05) 7.9cqw 8.2cqw),repeating-linear-gradient(0deg,transparent 0 7.9cqw,rgba(71, 122, 114, 0.05) 7.9cqw 8.2cqw),var(--bg-general)}
