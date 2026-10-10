@@ -4,12 +4,12 @@ import miniyo from '../assets/miniyo.png';
 
 export default function AboutPage() {
   const teamMembers = [
-    { id: 1, name: "Daniel Tapias", role: "Desarrollador / Creador", github: "https://github.com/DanielTapias12", avatar: miniyo },
-    { id: 2, name: "Integrante 2", role: "Desarrollador / Creador", github: "#", avatar: "https://ui-avatars.com/api/?name=I+2&background=random&color=fff&size=128" },
-    { id: 3, name: "Integrante 3", role: "Desarrollador / Creador", github: "#", avatar: "https://ui-avatars.com/api/?name=I+3&background=random&color=fff&size=128" },
-    { id: 4, name: "Integrante 4", role: "Desarrollador / Creador", github: "#", avatar: "https://ui-avatars.com/api/?name=I+4&background=random&color=fff&size=128" },
-    { id: 5, name: "Integrante 5", role: "Desarrollador / Creador", github: "#", avatar: "https://ui-avatars.com/api/?name=I+5&background=random&color=fff&size=128" },
-    { id: 6, name: "Integrante 6", role: "Desarrollador / Creador", github: "#", avatar: "https://ui-avatars.com/api/?name=I+6&background=random&color=fff&size=128" },
+    { id: 1, name: "Zoe Peñata", role: "Scrum Master", github: "#", avatar: "https://ui-avatars.com/api/?name=Zoe+Peñata&background=random&color=fff&size=128" },
+    { id: 2, name: "María Soto", role: "Product Owner", github: "#", avatar: "https://ui-avatars.com/api/?name=María+Soto&background=random&color=fff&size=128" },
+    { id: 3, name: "María Ubarne", role: "Product Owner", github: "#", avatar: "https://ui-avatars.com/api/?name=María+Ubarne&background=random&color=fff&size=128" },
+    { id: 4, name: "Luis Caldera", role: "Development Team", github: "#", avatar: "https://ui-avatars.com/api/?name=Luis+Caldera&background=random&color=fff&size=128" },
+    { id: 5, name: "Daniel Tapias", role: "Development Team", github: "https://github.com/DanielTapias12", avatar: miniyo },
+    { id: 6, name: "Maira Ortega", role: "Development Team", github: "#", avatar: "https://ui-avatars.com/api/?name=Maira+Ortega&background=random&color=fff&size=128" },
   ];
 
   return (
