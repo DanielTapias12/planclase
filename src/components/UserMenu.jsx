@@ -9,11 +9,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function UserMenu() {
   const { userProfile } = useAppStore();
   const navigate = useNavigate();
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const menuRef = useRef();
 
   useEffect(() => {
@@ -31,8 +31,8 @@ export default function UserMenu() {
 
   return (
     <div ref={menuRef} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-      
-      <button 
+
+      <button
         onClick={() => setIsOpen(!isOpen)}
         style={{
           display: 'flex', alignItems: 'center', gap: '10px',
@@ -51,7 +51,7 @@ export default function UserMenu() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -65,7 +65,7 @@ export default function UserMenu() {
               <p style={{ margin: 0, fontWeight: 'bold', color: '#1E293B' }}>{userProfile?.nombre || 'Usuario'}</p>
               <p style={{ margin: 0, fontSize: '12px', color: '#64748B' }}>{auth.currentUser?.email}</p>
             </div>
-            
+
             <div style={{ padding: '8px' }}>
               <button className="dropdown-item" onClick={() => { setIsOpen(false); setShowProfile(true); }}>
                 <User size={16} /> Mi Perfil
@@ -74,7 +74,7 @@ export default function UserMenu() {
                 <Key size={16} /> Cambiar Contraseña
               </button>
             </div>
-            
+
             <div style={{ padding: '8px', borderTop: '1px solid #E2E8F0' }}>
               <button className="dropdown-item danger" onClick={() => { setIsOpen(false); logoutUser(); }}>
                 <LogOut size={16} /> Cerrar Sesión
@@ -86,7 +86,7 @@ export default function UserMenu() {
 
       <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} profile={userProfile} email={auth.currentUser?.email} role={roleName} />
       <PasswordModal isOpen={showPassword} onClose={() => setShowPassword(false)} />
-      
+
       <style>{`
         .user-menu-btn:hover { background: #F1F5F9; }
         .dropdown-item {
@@ -109,8 +109,8 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
 
   useEffect(() => {
     if (isOpen && profile) {
-      setEditData({ 
-        nombre: profile.nombre || '', 
+      setEditData({
+        nombre: profile.nombre || '',
         institucion: profile.institucion || '',
         celular: profile.celularDesencriptado || profile.celular || ''
       });
@@ -124,8 +124,8 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
     setLoading(true);
     try {
       await updateUserProfile(userId, editData);
-      setUserProfile({ 
-        ...profile, 
+      setUserProfile({
+        ...profile,
         ...editData,
         celularDesencriptado: editData.celular
       });
@@ -142,7 +142,7 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', width: '420px', maxWidth: '90%', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}><X size={20} /></button>
-        
+
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h2 style={{ margin: 0, color: '#1E293B', fontSize: '20px' }}>Información del Docente</h2>
           {!isEditing && (
@@ -156,12 +156,12 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
         <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #DCFCE7', borderRadius: '8px', padding: '8px 12px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#166534' }}>
           <span>🔒 <strong>Sesión JWT Verificada</strong> & Cifrado Habeas Data Activo</span>
         </div>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ fontSize: '11px', color: '#64748B', fontWeight: 'bold', textTransform: 'uppercase' }}>Nombre Completo</label>
             {isEditing ? (
-              <input value={editData.nombre} onChange={e => setEditData({...editData, nombre: e.target.value})} style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
+              <input value={editData.nombre} onChange={e => setEditData({ ...editData, nombre: e.target.value })} style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
             ) : (
               <p style={{ margin: '4px 0 0 0', color: '#1E293B', fontSize: '15px' }}>{profile?.nombre || 'No definido'}</p>
             )}
@@ -173,7 +173,7 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
           <div>
             <label style={{ fontSize: '11px', color: '#64748B', fontWeight: 'bold', textTransform: 'uppercase' }}>Celular / WhatsApp (Protegido)</label>
             {isEditing ? (
-              <input value={editData.celular} onChange={e => setEditData({...editData, celular: e.target.value})} placeholder="Ej. +57 300 123 4567" style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
+              <input value={editData.celular} onChange={e => setEditData({ ...editData, celular: e.target.value })} placeholder="Ej. +57 300 123 4567" style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
             ) : (
               <p style={{ margin: '4px 0 0 0', color: '#1E293B', fontSize: '15px' }}>{profile?.celularDesencriptado || profile?.celular || 'No registrado'}</p>
             )}
@@ -189,12 +189,12 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
           <div>
             <label style={{ fontSize: '11px', color: '#64748B', fontWeight: 'bold', textTransform: 'uppercase' }}>Institución</label>
             {isEditing ? (
-              <input value={editData.institucion} onChange={e => setEditData({...editData, institucion: e.target.value})} style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
+              <input value={editData.institucion} onChange={e => setEditData({ ...editData, institucion: e.target.value })} style={{ width: '100%', padding: '8px 12px', marginTop: '4px', borderRadius: '6px', border: '1px solid #CBD5E1' }} />
             ) : (
               <p style={{ margin: '4px 0 0 0', color: '#1E293B', fontSize: '15px' }}>{profile?.institucion || 'No definida'}</p>
             )}
           </div>
-          
+
           {isEditing && (
             <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
               <button onClick={() => setIsEditing(false)} style={{ flex: 1, padding: '10px', background: '#F1F5F9', border: 'none', borderRadius: '8px', cursor: 'pointer', color: '#475569', fontWeight: '500' }}>Cancelar</button>
@@ -222,12 +222,12 @@ function PasswordModal({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     if (newPass !== confirmNewPass) {
       setError('Las contraseñas nuevas no coinciden.');
       return;
     }
-    
+
     setLoading(true);
     try {
       await changeUserPassword(currentPass, newPass);
@@ -254,7 +254,7 @@ function PasswordModal({ isOpen, onClose }) {
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', width: '400px', maxWidth: '90%', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}><X size={20} /></button>
         <h2 style={{ margin: '0 0 24px 0', color: '#1E293B', fontSize: '20px' }}>Cambiar Contraseña</h2>
-        
+
         {success ? (
           <div style={{ textAlign: 'center', color: '#10B981', padding: '20px 0' }}>
             <CheckCircle size={48} style={{ margin: '0 auto 16px auto' }} />
@@ -264,23 +264,23 @@ function PasswordModal({ isOpen, onClose }) {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
               <label style={{ fontSize: '13px', color: '#475569', fontWeight: '500', marginBottom: '8px', display: 'block' }}>Contraseña Actual</label>
-              <input type="password" required value={currentPass} onChange={e=>setCurrentPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
+              <input type="password" required value={currentPass} onChange={e => setCurrentPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
             </div>
             <div>
               <label style={{ fontSize: '13px', color: '#475569', fontWeight: '500', marginBottom: '8px', display: 'block' }}>Nueva Contraseña</label>
-              <input type="password" required value={newPass} onChange={e=>setNewPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
+              <input type="password" required value={newPass} onChange={e => setNewPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
             </div>
             <div>
               <label style={{ fontSize: '13px', color: '#475569', fontWeight: '500', marginBottom: '8px', display: 'block' }}>Confirmar Nueva Contraseña</label>
-              <input type="password" required value={confirmNewPass} onChange={e=>setConfirmNewPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
+              <input type="password" required value={confirmNewPass} onChange={e => setConfirmNewPass(e.target.value)} style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1' }} />
             </div>
-            
+
             {error && (
               <div style={{ padding: '10px', background: '#FEF2F2', color: '#EF4444', borderRadius: '8px', fontSize: '13px', display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <AlertCircle size={16} /> {error}
               </div>
             )}
-            
+
             <button type="submit" disabled={loading} style={{ background: 'var(--primary-color)', color: 'white', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', marginTop: '8px' }}>
               {loading ? 'Actualizando...' : 'Actualizar Contraseña'}
             </button>
