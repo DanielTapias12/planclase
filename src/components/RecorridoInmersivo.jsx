@@ -34,9 +34,13 @@ export default function RecorridoInmersivo() {
           // Crossfade: asymmetric curve to prevent background bleed
           // The image fades in right before its 'start', stays solid until 'end', then fades out.
           // Because they stack in DOM order, an image fading in covers the previous solid one perfectly.
+          // Ensure offsets remain in [0, 1] range to avoid Web Animations API crash
+          const fadeInStart = Math.max(0, start - 0.05);
+          const fadeOutEnd = Math.min(1, end + 0.05);
+
           const opacity = useTransform(
             scrollYProgress,
-            [start - 0.05, start, end, end + 0.05],
+            [fadeInStart, start, end, fadeOutEnd],
             [0, 1, 1, 0]
           );
 
