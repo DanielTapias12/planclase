@@ -72,10 +72,10 @@ export default function WelcomeModal({ onStartTour, onClose }) {
           <div style={{ position: 'absolute', top: '-20px', left: '-20px', width: '150px', height: '150px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(20px)' }}></div>
           <div style={{ position: 'absolute', bottom: '-40px', right: '-40px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', filter: 'blur(30px)' }}></div>
           
-          <h1 style={{ fontSize: '42px', fontWeight: '800', marginBottom: '16px', letterSpacing: '-0.5px', position: 'relative', zIndex: 2 }}>
+          <h1 style={{ fontSize: '42px', fontWeight: '800', marginBottom: '16px', letterSpacing: '-0.5px', position: 'relative', zIndex: 2, color: '#FFFFFF' }}>
             ¡Bienvenido a INSPIRATEC!
           </h1>
-          <p style={{ fontSize: '20px', fontWeight: '400', maxWidth: '600px', margin: '0 auto', opacity: 0.9, position: 'relative', zIndex: 2, lineHeight: '1.5', marginBottom: '16px' }}>
+          <p style={{ fontSize: '20px', fontWeight: '400', maxWidth: '600px', margin: '0 auto', opacity: 0.9, position: 'relative', zIndex: 2, lineHeight: '1.5', marginBottom: '16px', color: '#FFFFFF' }}>
             Tu Ecosistema Inteligente para el diseño de experiencias de aprendizaje y material educativo avanzado.
           </p>
           <div style={{ display: 'inline-block', backgroundColor: '#FFFFFF', color: 'var(--primary-active)', padding: '6px 16px', borderRadius: '20px', fontSize: '14px', fontWeight: 'bold', position: 'relative', zIndex: 2 }}>
