@@ -19,7 +19,7 @@ import AyudaPage from './pages/AyudaPage';
 import AdministracionPage from './pages/AdministracionPage';
 import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
-import OnboardingTour from './components/OnboardingTour';
+import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
 import FondoAula from './components/FondoAula';
 import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay } from 'lucide-react';
@@ -70,7 +70,7 @@ function AppContent() {
   return (
     <FondoAula dim={0} className="app-background" isSimulation={isSimulation}>
       <div className="app-container top-layout">
-        <OnboardingTour />
+        <WelcomeModal />
         <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
           <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
           
@@ -125,13 +125,6 @@ function AppContent() {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
-                <button 
-                  onClick={() => { window.dispatchEvent(new Event('start-tour')); }}
-                  className="nav-link" 
-                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  <PlayCircle size={16} /> Tutorial
-                </button>
                 <NavLink to="/simulacion" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <MonitorPlay size={16} />
                   Simulación

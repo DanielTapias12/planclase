@@ -146,16 +146,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#F1F5F9'; e.currentTarget.style.color = '#0F172A'; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#FFFFFF'; e.currentTarget.style.color = '#475569'; }}
             >
-              Explorar por mi cuenta
-            </button>
-            
-            <button 
-              onClick={handleStartTour}
-              style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '14px 28px', borderRadius: '12px', border: 'none', backgroundColor: 'var(--primary-active)', color: '#FFFFFF', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 14px rgba(49, 91, 84, 0.3)' }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-sage)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(49, 91, 84, 0.4)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'var(--primary-active)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(49, 91, 84, 0.3)'; }}
-            >
-              Iniciar Tour Rápido <ArrowRight size={18} />
+              Comenzar a Explorar
             </button>
           </div>
         </div>
