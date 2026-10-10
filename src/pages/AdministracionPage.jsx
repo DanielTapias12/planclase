@@ -290,7 +290,7 @@ export default function AdministracionPage() {
                 </span>
               </div>
               <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '8px' }}>De: {t.nombre} ({t.email})</p>
-              <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>
+              <div style={{ backgroundColor: '#F8FAFC', padding: '12px', borderRadius: '8px', marginBottom: '16px', fontSize: '14px' }}>
                 {t.descripcion}
               </div>
               
