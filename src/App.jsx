@@ -29,6 +29,8 @@ import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft
 function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
+  const location = useLocation();
+  const isSimulation = location.pathname === '/animacion';
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (moreMenuRef.current && !moreMenuRef.current.contains(event.target)) {
