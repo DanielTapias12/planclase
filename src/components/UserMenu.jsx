@@ -3,8 +3,9 @@ import { useAppStore } from '../store/useAppStore';
 import { auth } from '../firebase';
 import { logoutUser, changeUserPassword, updateUserProfile } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
-import { User, Key, LogOut, X, AlertCircle, CheckCircle, Edit2, Save } from 'lucide-react';
+import { User, Key, LogOut, X, AlertCircle, CheckCircle, Edit2, Save, PlayCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 
 export default function UserMenu() {
   const { userProfile } = useAppStore();
@@ -73,6 +74,9 @@ export default function UserMenu() {
               <button className="dropdown-item" onClick={() => { setIsOpen(false); setShowPassword(true); }}>
                 <Key size={16} /> Cambiar Contraseña
               </button>
+              <button className="dropdown-item" onClick={() => { setIsOpen(false); window.dispatchEvent(new Event('start-tutorial')); }}>
+                <PlayCircle size={16} /> Tutorial
+              </button>
             </div>
 
             <div style={{ padding: '8px', borderTop: '1px solid #E2E8F0' }}>
@@ -138,8 +142,8 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
     }
   };
 
-  return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+  return createPortal(
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999999 }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', width: '420px', maxWidth: '90%', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}><X size={20} /></button>
 
@@ -205,7 +209,8 @@ function ProfileModal({ isOpen, onClose, profile, email, role }) {
           )}
         </div>
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -249,8 +254,8 @@ function PasswordModal({ isOpen, onClose }) {
     }
   };
 
-  return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+  return createPortal(
+    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 999999 }}>
       <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} style={{ background: 'white', borderRadius: '16px', padding: '32px', width: '400px', maxWidth: '90%', position: 'relative' }}>
         <button onClick={onClose} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}><X size={20} /></button>
         <h2 style={{ margin: '0 0 24px 0', color: '#1E293B', fontSize: '20px' }}>Cambiar Contraseña</h2>
@@ -287,6 +292,7 @@ function PasswordModal({ isOpen, onClose }) {
           </form>
         )}
       </motion.div>
-    </div>
+    </div>,
+    document.body
   );
 }
