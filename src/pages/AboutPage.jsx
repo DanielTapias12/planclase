@@ -13,7 +13,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div style={{ backgroundColor: '#F8FAFC', minHeight: '100vh', paddingBottom: '80px' }}>
+    <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(8px)', minHeight: '100vh', paddingBottom: '80px', margin: '24px', borderRadius: '16px' }}>
       
       {/* Hero Section */}
       <div style={{ 

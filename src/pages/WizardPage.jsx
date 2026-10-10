@@ -89,7 +89,7 @@ export default function WizardPage() {
   ];
 
   return (
-    <div className="planificador-view" style={{ padding: '0 20px 60px 20px', maxWidth: '900px', margin: '0 auto' }}>
+    <div style={{ padding: '0 20px 60px 20px', maxWidth: '900px', margin: '0 auto' }}>
       
       {/* Moved header and progress inside card */}
 
