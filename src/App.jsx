@@ -22,18 +22,13 @@ import AuthPage from './pages/AuthPage';
 import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
-import { Joyride, STATUS } from 'react-joyride';
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
 
 function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
-  const [runTour, setRunTour] = useState(false);
-  const [stepIndex, setStepIndex] = useState(0);
-  const [tourKey, setTourKey] = useState(0);
-  const location = useLocation();
-  const isSimulation = location.pathname === '/animacion';
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (moreMenuRef.current && !moreMenuRef.current.contains(event.target)) {
@@ -42,9 +37,25 @@ function AppContent() {
     };
     
     const handleStartTutorial = () => {
-      setStepIndex(0);
-      setTourKey(prev => prev + 1);
-      setTimeout(() => setRunTour(true), 100);
+      const driverObj = driver({
+        showProgress: true,
+        nextBtnText: 'Siguiente',
+        prevBtnText: 'Atrás',
+        doneBtnText: 'Finalizar',
+        steps: [
+          { popover: { title: '¡Bienvenido a INSPIRATEC!', description: 'Te daremos un breve recorrido por nuestra plataforma. Puedes saltarlo si prefieres explorar por tu cuenta.' } },
+          { element: '#nav-inicio', popover: { title: 'Inicio', description: 'Aquí es donde comienza la magia. Utiliza el Creador de Secuencias para planear tus clases con ayuda de IA.' } },
+          { element: '#nav-mis-planes', popover: { title: 'Mis Planes', description: 'Encuentra todos los planes que has guardado. Puedes exportarlos a PDF o Word en cualquier momento.' } },
+          { element: '#nav-plantillas', popover: { title: 'Plantillas', description: 'Crea plantillas personalizadas adaptadas a los formatos que te pide tu colegio.' } },
+          { element: '#nav-mas-recursos', popover: { title: 'Más Recursos', description: 'Descubre más herramientas, el foro de la comunidad y nuestra biblioteca de recursos compartidos.' } },
+          { element: '#nav-config', popover: { title: 'Configuración', description: 'Configura tu propia clave de API aquí para desbloquear todo el potencial de la Inteligencia Artificial.' } },
+        ],
+        onDestroyStarted: () => {
+          localStorage.setItem('tourCompletado', 'true');
+          driverObj.destroy();
+        }
+      });
+      driverObj.drive();
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -55,50 +66,6 @@ function AppContent() {
       window.removeEventListener('start-tutorial', handleStartTutorial);
     };
   }, []);
-
-  const handleJoyrideCallback = (data) => {
-    const { status, action, type, index } = data;
-    const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
-
-    if (finishedStatuses.includes(status) || action === 'close' || type === 'tour:end') {
-      setRunTour(false);
-      setStepIndex(0); // Reset step index
-      localStorage.setItem('tourCompletado', 'true');
-    } else if (type === 'step:after' || type === 'error:target_not_found') {
-      // Update step index automatically for next/prev
-      const nextStepIndex = index + (action === 'prev' ? -1 : 1);
-      setStepIndex(nextStepIndex);
-    }
-  };
-
-  const steps = [
-    {
-      target: 'body',
-      content: '¡Bienvenido a INSPIRATEC! Te daremos un breve recorrido por nuestra plataforma. Puedes saltarlo si prefieres explorar por tu cuenta.',
-      placement: 'center',
-      disableBeacon: true,
-    },
-    {
-      target: '#nav-inicio',
-      content: 'Aquí es donde comienza la magia. Utiliza el Creador de Secuencias para planear tus clases con ayuda de IA.',
-    },
-    {
-      target: '#nav-mis-planes',
-      content: 'Encuentra todos los planes que has guardado. Puedes exportarlos a PDF o Word en cualquier momento.',
-    },
-    {
-      target: '#nav-plantillas',
-      content: 'Crea plantillas personalizadas adaptadas a los formatos que te pide tu colegio.',
-    },
-    {
-      target: '#nav-mas-recursos',
-      content: 'Descubre más herramientas, el foro de la comunidad y nuestra biblioteca de recursos compartidos.',
-    },
-    {
-      target: '#nav-config',
-      content: 'Configura tu propia clave de API aquí para desbloquear todo el potencial de la Inteligencia Artificial.',
-    }
-  ];
   const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
 
   useEffect(() => {
@@ -129,33 +96,8 @@ function AppContent() {
 
   return (
     <FondoPixel dim={0} className="app-background" isSimulation={isSimulation}>
-      {runTour && (
-        <Joyride
-          key={`tour-${tourKey}`}
-        steps={steps}
-        run={runTour}
-        stepIndex={stepIndex}
-        continuous={true}
-        showProgress={true}
-        showSkipButton={true}
-        callback={handleJoyrideCallback}
-        locale={{
-          back: 'Atrás',
-          close: 'Cerrar',
-          last: 'Finalizar',
-          next: 'Siguiente',
-          skip: 'Saltar Tutorial'
-        }}
-        styles={{
-          options: {
-            primaryColor: 'var(--primary-active)',
-            zIndex: 10000,
-          }
-        }}
-      />
-      )}
       <div className="app-container top-layout">
-        {!isSimulation && <WelcomeModal onStartTour={() => setRunTour(true)} />}
+        {!isSimulation && <WelcomeModal onStartTour={() => window.dispatchEvent(new Event('start-tutorial'))} />}
         {!isSimulation && (
           <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
             <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
