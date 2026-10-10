@@ -65,42 +65,42 @@ export default function AuthPage() {
     {
       id: "campus",
       image: "/login-scenes/campus.jpg",
-      titleStart: "Una ",
-      titleHighlight: "educación",
-      titleEnd: " que inspira",
-      description: "Un espacio para crear, compartir y transformar la enseñanza con tecnología."
+      titleStart: "Ideas hoy, ",
+      titleHighlight: "mejores aulas",
+      titleEnd: " mañana.",
+      description: "Explora nuevas posibilidades educativas con tecnología, creatividad y propósito pedagógico."
     },
     {
       id: "criterio-docente",
       image: "/login-scenes/criterio-docente.jpg",
       titleStart: "Tu ",
       titleHighlight: "criterio docente",
-      titleEnd: " importa",
+      titleEnd: " importa.",
       description: "La IA propone; tú contextualizas, contrastas, validas y decides."
     },
     {
       id: "inclusion",
       image: "/login-scenes/inclusion.jpg",
       titleStart: "Inclusión ",
-      titleHighlight: "desde el diseño",
+      titleHighlight: "desde el diseño.",
       titleEnd: "",
-      description: "Diseña propuestas que consideren diferentes formas de aprender, participar y demostrar lo aprendido."
+      description: "Considera diferentes formas de aprender, participar y demostrar lo aprendido."
     },
     {
       id: "colaboracion",
       image: "/login-scenes/colaboracion.jpg",
       titleStart: "Aprender también es ",
-      titleHighlight: "compartir",
+      titleHighlight: "compartir.",
       titleEnd: "",
       description: "Conecta experiencias, contrasta ideas y construye conocimiento educativo con otros docentes."
     },
     {
       id: "innovacion",
       image: "/login-scenes/innovacion.jpg",
-      titleStart: "Ideas hoy, ",
-      titleHighlight: "mejores aulas",
-      titleEnd: " mañana",
-      description: "Explora nuevas posibilidades educativas con tecnología, creatividad y propósito pedagógico."
+      titleStart: "Innovar con ",
+      titleHighlight: "propósito.",
+      titleEnd: "",
+      description: "Transforma necesidades educativas en propuestas que puedas revisar y llevar a la práctica."
     }
   ];
 
@@ -269,13 +269,15 @@ export default function AuthPage() {
           className="form-panel"
           style={{ 
             width: '460px', 
-            backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-            backdropFilter: 'blur(20px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.85)', 
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+            borderLeft: '1px solid rgba(255, 255, 255, 0.4)',
             display: 'flex', 
             flexDirection: 'column',
             justifyContent: 'center',
             padding: '40px 50px',
-            boxShadow: '-10px 0 40px rgba(0,0,0,0.3)',
+            boxShadow: '-10px 0 40px rgba(0,0,0,0.2)',
             overflowY: 'auto'
           }}
           onMouseEnter={() => setIsHoveringForm(true)}
@@ -285,8 +287,8 @@ export default function AuthPage() {
             <h2 style={{ color: 'var(--primary-active)', fontSize: '28px', marginBottom: '8px', fontFamily: 'Georgia, serif', letterSpacing: '1px', fontWeight: 'bold' }}>
               INSPIRATEC
             </h2>
-            <p style={{ color: '#475569', fontSize: '14px', margin: 0 }}>
-              {isLogin ? 'Inicia sesión para continuar' : 'Crea tu cuenta docente protegida'}
+            <p style={{ color: '#475569', fontSize: '14px', margin: 0, lineHeight: '1.4' }}>
+              {isLogin ? 'Inicia sesión para continuar creando experiencias educativas' : 'Crea tu cuenta docente protegida y únete a la comunidad'}
             </p>
           </div>
 
