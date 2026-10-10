@@ -86,7 +86,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
         {/* Contenido / Features */}
         <div style={{ padding: '40px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <h2 style={{ fontSize: '24px', color: 'var(--text-main)', marginBottom: '8px' }}>¿Qué puedes lograr aquí?</h2>
+            <h2 style={{ fontSize: '24px', color: 'var(--primary-active)', marginBottom: '8px' }}>¿Qué puedes lograr aquí?</h2>
             <p style={{ color: 'var(--text-secondary)' }}>Descubre las herramientas de inteligencia artificial a tu disposición.</p>
           </div>
 
@@ -97,7 +97,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: 'var(--bg-sage-soft)', color: 'var(--primary-active)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <Sparkles size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Creador de Secuencias</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--primary-active)', marginBottom: '8px' }}>El Creador de Secuencias</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 Ingresa el contexto de tu clase y la IA generará un plan estructurado, sugiriendo objetivos y detectando necesidades de inclusión (DUA).
               </p>
@@ -108,7 +108,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#F0FDF4', color: '#22C55E', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <Network size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>El Laboratorio Inteligente</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--primary-active)', marginBottom: '8px' }}>El Laboratorio Inteligente</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 Edita el plan manualmente o utiliza el Chatbot Co-Docente para reescribir párrafos. Además, genera diapositivas, rúbricas y juegos en formato ROCA automáticamente.
               </p>
@@ -119,7 +119,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#FAF5FF', color: '#A855F7', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <BrainCircuit size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>Tu Bóveda Personal</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--primary-active)', marginBottom: '8px' }}>Tu Bóveda Personal</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 Guarda tus clases en 'Mis Planes' para descargarlas en PDF/Word. Crea plantillas personalizadas para que la IA se adapte exactamente al formato de tu colegio.
               </p>
@@ -130,7 +130,7 @@ export default function WelcomeModal({ onStartTour, onClose }) {
               <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#FFF7ED', color: '#F97316', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
                 <BookOpen size={24} />
               </div>
-              <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>La Plaza Pública</h3>
+              <h3 style={{ fontSize: '18px', color: 'var(--primary-active)', marginBottom: '8px' }}>La Plaza Pública</h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
                 Publica tus mejores clases y sistematiza tus experiencias para que otros docentes en Colombia puedan inspirarse y utilizarlas en sus aulas.
               </p>

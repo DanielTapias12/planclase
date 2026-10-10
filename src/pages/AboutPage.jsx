@@ -31,7 +31,7 @@ export default function AboutPage() {
         <div style={{ position: 'absolute', bottom: '-40px', right: '10%', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', filter: 'blur(30px)' }}></div>
         
         <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <h1 style={{ fontSize: '46px', fontWeight: '800', marginBottom: '24px', letterSpacing: '-1px' }}>
+          <h1 style={{ fontSize: '46px', fontWeight: '800', marginBottom: '24px', letterSpacing: '-1px', color: '#FFFFFF' }}>
             Transformando la Educación
           </h1>
           <p style={{ fontSize: '20px', lineHeight: '1.6', opacity: 0.9, fontWeight: '400' }}>
@@ -82,7 +82,7 @@ export default function AboutPage() {
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
             <Users size={28} color="var(--primary-active)" />
-            <h2 style={{ fontSize: '32px', color: 'var(--text-main)', margin: 0 }}>El Equipo Creador</h2>
+            <h2 style={{ fontSize: '32px', color: 'var(--primary-active)', margin: 0 }}>El Equipo Creador</h2>
           </div>
           <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
             Un grupo multidisciplinario de mentes brillantes, apasionados por el desarrollo de software y la educación en Colombia.
