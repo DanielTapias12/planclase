@@ -148,6 +148,14 @@ export default function WelcomeModal({ onStartTour, onClose }) {
             >
               Comenzar a Explorar
             </button>
+            <button 
+              onClick={handleStartTour}
+              style={{ padding: '14px 28px', borderRadius: '12px', border: 'none', backgroundColor: 'var(--primary-active)', color: '#FFFFFF', fontSize: '16px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)'; }}
+            >
+              Ver Tutorial Guiado <ArrowRight size={20} />
+            </button>
           </div>
         </div>
       </div>

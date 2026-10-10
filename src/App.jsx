@@ -22,11 +22,13 @@ import AuthPage from './pages/AuthPage';
 import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
 import FondoAula from './components/FondoAula';
-import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay } from 'lucide-react';
+import Joyride, { STATUS } from 'react-joyride';
+import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
 
 function AppContent() {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const moreMenuRef = useRef(null);
+  const [runTour, setRunTour] = useState(false);
   const location = useLocation();
   const isSimulation = location.pathname === '/animacion';
   
@@ -39,6 +41,44 @@ function AppContent() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const handleJoyrideCallback = (data) => {
+    const { status } = data;
+    const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
+    if (finishedStatuses.includes(status)) {
+      setRunTour(false);
+      localStorage.setItem('tourCompletado', 'true');
+    }
+  };
+
+  const steps = [
+    {
+      target: 'body',
+      content: '¡Bienvenido a INSPIRATEC! Te daremos un breve recorrido por nuestra plataforma. Puedes saltarlo si prefieres explorar por tu cuenta.',
+      placement: 'center',
+      disableBeacon: true,
+    },
+    {
+      target: '#nav-inicio',
+      content: 'Aquí es donde comienza la magia. Utiliza el Creador de Secuencias para planear tus clases con ayuda de IA.',
+    },
+    {
+      target: '#nav-mis-planes',
+      content: 'Encuentra todos los planes que has guardado. Puedes exportarlos a PDF o Word en cualquier momento.',
+    },
+    {
+      target: '#nav-plantillas',
+      content: 'Crea plantillas personalizadas adaptadas a los formatos que te pide tu colegio.',
+    },
+    {
+      target: '#nav-mas-recursos',
+      content: 'Descubre más herramientas, el foro de la comunidad y nuestra biblioteca de recursos compartidos.',
+    },
+    {
+      target: '#nav-config',
+      content: 'Configura tu propia clave de API aquí para desbloquear todo el potencial de la Inteligencia Artificial.',
+    }
+  ];
   const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
 
   useEffect(() => {
@@ -69,9 +109,31 @@ function AppContent() {
 
   return (
     <FondoAula dim={0} className="app-background" isSimulation={isSimulation}>
+      <Joyride
+        steps={steps}
+        run={runTour}
+        continuous={true}
+        showProgress={true}
+        showSkipButton={true}
+        callback={handleJoyrideCallback}
+        locale={{
+          back: 'Atrás',
+          close: 'Cerrar',
+          last: 'Finalizar',
+          next: 'Siguiente',
+          skip: 'Saltar Tutorial'
+        }}
+        styles={{
+          options: {
+            primaryColor: 'var(--primary-active)',
+            zIndex: 10000,
+          }
+        }}
+      />
       <div className="app-container top-layout">
-        <WelcomeModal />
-        <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
+        {!isSimulation && <WelcomeModal onStartTour={() => setRunTour(true)} />}
+        {!isSimulation && (
+          <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
           <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
           
           <header className="top-nav" style={{ border: 'none', background: 'transparent' }}>
@@ -139,6 +201,7 @@ function AppContent() {
             </nav>
           </header>
         </div>
+        )}
         <main className="main-content" style={{ 
           backgroundColor: 'transparent', 
           backdropFilter: 'none',
@@ -158,7 +221,13 @@ function AppContent() {
             <Route path="/acerca" element={<AboutPage />} />
             <Route path="/ayuda" element={<AyudaPage />} />
             <Route path="/administracion" element={<AdministracionPage />} />
-            <Route path="/animacion" element={<div style={{ minHeight: '80vh' }}></div>} />
+            <Route path="/animacion" element={
+              <div style={{ position: 'fixed', bottom: '32px', right: '32px', zIndex: 1000 }}>
+                <NavLink to="/" style={{ padding: '14px 28px', background: 'var(--primary-active)', color: 'white', borderRadius: '12px', textDecoration: 'none', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+                  <ArrowLeft size={20} /> Regresar al Inicio
+                </NavLink>
+              </div>
+            } />
           </Routes>
         </main>
       </div>
