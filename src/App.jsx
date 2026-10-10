@@ -21,7 +21,7 @@ import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
 import WelcomeModal from './components/WelcomeModal';
 import UserMenu from './components/UserMenu';
-import FondoAula from './components/FondoAula';
+import FondoPixel from './components/FondoPixel';
 import { Joyride, STATUS } from 'react-joyride';
 import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
 
@@ -108,7 +108,7 @@ function AppContent() {
   ];
 
   return (
-    <FondoAula dim={0} className="app-background" isSimulation={isSimulation}>
+    <FondoPixel dim={0} className="app-background" isSimulation={isSimulation}>
       <Joyride
         steps={steps}
         run={runTour}
@@ -231,7 +231,7 @@ function AppContent() {
           </Routes>
         </main>
       </div>
-    </FondoAula>
+    </FondoPixel>
   );
 }
 
