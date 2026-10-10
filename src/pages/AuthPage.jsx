@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { loginUser, registerUser } from '../services/authService';
 import TermsAndConditionsModal from '../components/TermsAndConditionsModal';
-import { Shield, Lock, Eye, EyeOff } from 'lucide-react';
-import miniyo from '../assets/miniyo.png';
+import { Shield, Eye, EyeOff } from 'lucide-react';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
