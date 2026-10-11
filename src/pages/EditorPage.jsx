@@ -319,13 +319,25 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="editor-view">
+    <div className="editor-view" style={{ maxWidth: '1280px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Barra de Acciones Centralizada de Cristal Translúcido */}
-      <header className="editor-toolbar-card">
+      {/* Barra de Acciones Centralizada de Cristal Translúcido (Mismo desenfoque y estilo de Inicio) */}
+      <header 
+        className="editor-toolbar-card"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '24px 34px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="editor-toolbar-meta">
           <div className="editor-title-row">
-            <h1 className="editor-title">
+            <h1 className="editor-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', fontWeight: 700, letterSpacing: '-0.015em' }}>
               {wizardData?.tema || 'Secuencia Didáctica'}
             </h1>
             <span className={`editor-badge ${planStatus === 'guardado' ? 'saved' : 'draft'}`}>
@@ -511,7 +523,17 @@ export default function EditorPage() {
           className="editor-doc-pane" 
           style={{ display: activeMobileTab === 'doc' || window.innerWidth >= 992 ? 'flex' : 'none' }}
         >
-          <div className="editor-doc-card">
+          <div 
+            className="editor-doc-card"
+            style={{
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             {isEditMode ? (
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
@@ -647,7 +669,17 @@ export default function EditorPage() {
           className="editor-chat-pane" 
           style={{ display: activeMobileTab === 'chat' || window.innerWidth >= 992 ? 'block' : 'none' }}
         >
-          <div className="editor-chat-card">
+          <div 
+            className="editor-chat-card"
+            style={{
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             
             <div className="editor-chat-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
