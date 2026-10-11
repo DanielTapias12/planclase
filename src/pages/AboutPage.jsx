@@ -13,21 +13,35 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1060px', width: '100%', boxSizing: 'border-box' }}>
+    <div className="mgmt-container" style={{ maxWidth: '1060px', width: '100%', margin: '0 auto', padding: '36px 32px 64px', boxSizing: 'border-box' }}>
       
-      {/* Cabecera Editorial Institucional */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial Institucional (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
-          <div className="mgmt-header-icon">
-            <Users size={26} />
+          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '16px', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Users size={28} />
           </div>
           <div>
             <div className="editorial-badge">
               <Sparkles size={13} color="#2B524A" />
               <span>Identidad, Enfoque y Propósito</span>
             </div>
-            <h1 className="mgmt-title">Transformando la Educación Colombiana</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Transformando la Educación Colombiana
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               INSPIRATEC es un ecosistema pedagógico potenciado por Inteligencia Artificial diseñado por y para docentes, con rigurosidad metodológica, accesibilidad universal y respeto por el contexto escolar.
             </p>
           </div>
@@ -49,7 +63,19 @@ export default function AboutPage() {
       <section style={{ marginBottom: '44px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
           
-          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '30px 26px', 
+              textAlign: 'center',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
               <Target size={28} />
             </div>
@@ -61,7 +87,19 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '30px 26px', 
+              textAlign: 'center',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(22, 163, 74, 0.14)', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
               <Heart size={28} />
             </div>
@@ -73,7 +111,19 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '30px 26px', 
+              textAlign: 'center',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(109, 40, 217, 0.14)', color: '#6D28D9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
               <Lightbulb size={28} />
             </div>
@@ -88,19 +138,20 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Sección del Equipo Desarrollador con Panel de Cristal de Alto Contraste */}
+      {/* Sección del Equipo Desarrollador con Panel de Cristal */}
       <section style={{ marginBottom: '40px' }}>
         <div 
           className="mgmt-card" 
           style={{ 
             textAlign: 'center', 
             marginBottom: '26px',
-            padding: '28px 32px',
-            background: 'rgba(255, 253, 249, 0.88)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid rgba(255, 255, 255, 0.95)',
-            boxShadow: '0 10px 30px rgba(20, 42, 38, 0.08)'
+            padding: '32px 36px',
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
           }}
         >
           <div className="editorial-badge" style={{ margin: '0 auto 12px auto', display: 'inline-flex' }}>
@@ -121,11 +172,17 @@ export default function AboutPage() {
               key={member.id} 
               className="mgmt-card" 
               style={{
-                padding: '24px 20px',
+                padding: '26px 22px',
                 textAlign: 'center',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '22px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
                 transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
