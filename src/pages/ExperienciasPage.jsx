@@ -99,18 +99,32 @@ export default function ExperienciasPage() {
   });
 
   return (
-    <div className="mgmt-container">
+    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera Editorial del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div>
             <div className="editorial-badge">
               <Sparkles size={14} color="#2B524A" />
               <span>Sistematización de Práctica Docente</span>
             </div>
-            <h1 className="mgmt-title">Experiencias Pedagógicas</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Experiencias Pedagógicas
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Sistematiza el impacto didáctico de tus clases en el aula y descubre prácticas transformadoras compartidas por otros educadores de la comunidad.
             </p>
           </div>
@@ -180,9 +194,21 @@ export default function ExperienciasPage() {
         </button>
       </div>
 
-      {/* Buscador */}
+      {/* Buscador (Mismo desenfoque de cristal) */}
       {!loading && experiencias.length > 0 && (
-        <div className="mgmt-filter-bar">
+        <div 
+          className="mgmt-filter-bar"
+          style={{
+            backgroundColor: 'rgba(255, 254, 250, 0.86)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '18px',
+            padding: '12px 18px',
+            marginBottom: '26px',
+            boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+          }}
+        >
           <div className="mgmt-search-box">
             <Search size={16} style={{ color: 'var(--text-secondary)' }} />
             <input 
@@ -204,8 +230,18 @@ export default function ExperienciasPage() {
           <p style={{ fontSize: '14.5px' }}>Cargando experiencias docentes...</p>
         </div>
       ) : filteredExperiencias.length === 0 ? (
-        /* Estado Vacío */
-        <div className="mgmt-empty-card">
+        /* Estado Vacío (Mismo desenfoque y panel de cristal) */
+        <div 
+          className="mgmt-empty-card"
+          style={{
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          }}
+        >
           <div className="mgmt-empty-icon">
             <Sparkles size={30} />
           </div>
@@ -241,6 +277,14 @@ export default function ExperienciasPage() {
                 role="button"
                 onKeyDown={(e) => { if (e.key === 'Enter') handleAction(exp.id, 'view'); }}
                 aria-label={`Ver experiencia ${exp.tema || 'Sin título'}`}
+                style={{
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
               >
                 <div className="mgmt-card-header">
                   <span className={`editor-badge ${isPublic ? 'saved' : 'draft'}`} style={{ fontSize: '11.5px', padding: '2px 8px' }}>
