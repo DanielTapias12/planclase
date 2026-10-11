@@ -165,13 +165,14 @@ export default function MisPlanesPage() {
               className={`btn-outline ${statusFilter === 'todos' ? 'active' : ''}`}
               onClick={() => setStatusFilter('todos')}
               style={{ 
-                padding: '7px 15px', 
+                padding: '7px 16px', 
                 fontSize: '13px',
                 borderRadius: '10px',
-                backgroundColor: statusFilter === 'todos' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
-                borderColor: statusFilter === 'todos' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
-                color: statusFilter === 'todos' ? '#142B25' : '#283F37',
-                fontWeight: statusFilter === 'todos' ? 700 : 500
+                backgroundColor: statusFilter === 'todos' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.92)',
+                borderColor: statusFilter === 'todos' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+                color: '#142B25',
+                fontWeight: statusFilter === 'todos' ? 700 : 600,
+                boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
               }}
             >
               Todos ({planes.length})
@@ -180,13 +181,14 @@ export default function MisPlanesPage() {
               className={`btn-outline ${statusFilter === 'guardados' ? 'active' : ''}`}
               onClick={() => setStatusFilter('guardados')}
               style={{ 
-                padding: '7px 15px', 
+                padding: '7px 16px', 
                 fontSize: '13px',
                 borderRadius: '10px',
-                backgroundColor: statusFilter === 'guardados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
-                borderColor: statusFilter === 'guardados' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
-                color: statusFilter === 'guardados' ? '#142B25' : '#283F37',
-                fontWeight: statusFilter === 'guardados' ? 700 : 500
+                backgroundColor: statusFilter === 'guardados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.92)',
+                borderColor: statusFilter === 'guardados' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+                color: '#142B25',
+                fontWeight: statusFilter === 'guardados' ? 700 : 600,
+                boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
               }}
             >
               Guardados
@@ -195,13 +197,14 @@ export default function MisPlanesPage() {
               className={`btn-outline ${statusFilter === 'sistematizados' ? 'active' : ''}`}
               onClick={() => setStatusFilter('sistematizados')}
               style={{ 
-                padding: '7px 15px', 
+                padding: '7px 16px', 
                 fontSize: '13px',
                 borderRadius: '10px',
-                backgroundColor: statusFilter === 'sistematizados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
-                borderColor: statusFilter === 'sistematizados' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
-                color: statusFilter === 'sistematizados' ? '#142B25' : '#283F37',
-                fontWeight: statusFilter === 'sistematizados' ? 700 : 500
+                backgroundColor: statusFilter === 'sistematizados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.92)',
+                borderColor: statusFilter === 'sistematizados' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+                color: '#142B25',
+                fontWeight: statusFilter === 'sistematizados' ? 700 : 600,
+                boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
               }}
             >
               Sistematizados
@@ -210,13 +213,14 @@ export default function MisPlanesPage() {
               className={`btn-outline ${statusFilter === 'biblioteca' ? 'active' : ''}`}
               onClick={() => setStatusFilter('biblioteca')}
               style={{ 
-                padding: '7px 15px', 
+                padding: '7px 16px', 
                 fontSize: '13px',
                 borderRadius: '10px',
-                backgroundColor: statusFilter === 'biblioteca' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
-                borderColor: statusFilter === 'biblioteca' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
-                color: statusFilter === 'biblioteca' ? '#142B25' : '#283F37',
-                fontWeight: statusFilter === 'biblioteca' ? 700 : 500
+                backgroundColor: statusFilter === 'biblioteca' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.92)',
+                borderColor: statusFilter === 'biblioteca' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+                color: '#142B25',
+                fontWeight: statusFilter === 'biblioteca' ? 700 : 600,
+                boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
               }}
             >
               En Biblioteca

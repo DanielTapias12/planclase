@@ -69,14 +69,14 @@ export default function HomePage() {
         <section 
           className="home-editorial-welcome-panel"
           style={{
-            backgroundColor: 'rgba(255, 253, 249, 0.68)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            border: '1px solid rgba(255, 255, 255, 0.82)',
+            backgroundColor: 'rgba(255, 254, 250, 0.86)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
             borderRadius: '22px',
             padding: '38px 42px',
             marginBottom: '26px',
-            boxShadow: '0 10px 32px rgba(20, 42, 38, 0.08)'
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
           }}
         >
           {/* Badge institucional */}
@@ -221,13 +221,13 @@ export default function HomePage() {
           <div 
             onClick={() => navigate('/mis-planes')}
             style={{ 
-              backgroundColor: 'rgba(255, 253, 249, 0.72)', 
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
               padding: '22px 26px', 
               borderRadius: '18px', 
-              border: '1px solid rgba(255, 255, 255, 0.85)', 
-              boxShadow: '0 6px 20px rgba(20, 42, 38, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.94)', 
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
               cursor: 'pointer',
               transition: 'all 0.18s ease',
               display: 'flex',
@@ -278,13 +278,13 @@ export default function HomePage() {
           <div 
             onClick={() => navigate('/config')}
             style={{ 
-              backgroundColor: 'rgba(255, 253, 249, 0.72)', 
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
               padding: '22px 26px', 
               borderRadius: '18px', 
-              border: '1px solid rgba(255, 255, 255, 0.85)', 
-              boxShadow: '0 6px 20px rgba(20, 42, 38, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.94)', 
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
               cursor: 'pointer',
               transition: 'all 0.18s ease',
               display: 'flex',
@@ -344,13 +344,13 @@ export default function HomePage() {
         <section 
           className="home-models-container"
           style={{
-            backgroundColor: 'rgba(255, 253, 249, 0.68)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            border: '1px solid rgba(255, 255, 255, 0.80)',
+            backgroundColor: 'rgba(255, 254, 250, 0.86)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
             borderRadius: '22px',
             padding: '32px 34px',
-            boxShadow: '0 8px 28px rgba(20, 42, 38, 0.07)'
+            boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
           }}
         >
           <div style={{ 
@@ -425,10 +425,10 @@ export default function HomePage() {
                 <div 
                   key={tpl.id || tpl.titulo} 
                   style={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.58)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid rgba(255, 255, 255, 0.88)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.95)',
                     borderRadius: '16px',
                     padding: '22px',
                     cursor: 'pointer',
@@ -436,7 +436,7 @@ export default function HomePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    boxShadow: '0 2px 10px rgba(20, 42, 38, 0.04)'
+                    boxShadow: '0 4px 14px rgba(16, 36, 32, 0.06)'
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.transform = 'translateY(-2px)';
