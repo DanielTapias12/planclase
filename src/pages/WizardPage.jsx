@@ -192,18 +192,30 @@ export default function WizardPage() {
   const progressPercentage = ((step - 1) / (stepsInfo.length - 1)) * 100;
 
   return (
-    <div className="wizard-container">
-      {/* 1. Panel Editorial de Bienvenida y Progreso (Misma estética y desenfoque de Inicio) */}
-      <section className="planificador-header-panel">
+    <div className="wizard-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+      {/* 1. Panel Editorial de Cabecera y Stepper (Mismo desenfoque y estilo de Inicio) */}
+      <section 
+        className="planificador-header-panel"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div className="editorial-badge" style={{ margin: '0 auto 14px auto' }}>
             <Sparkles size={14} color="#2B524A" />
             <span>Secuencia Didáctica Guiada</span>
           </div>
-          <h1 style={{ fontSize: '32px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 10px 0', fontWeight: 700, letterSpacing: '-0.015em' }}>
+          <h1 style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
             Planificador de Clases
           </h1>
-          <p style={{ fontSize: '15.5px', color: '#243630', maxWidth: '680px', margin: '0 auto', lineHeight: '1.6', fontWeight: 500 }}>
+          <p style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: '0 auto', lineHeight: '1.65', fontWeight: 500 }}>
             Configura los propósitos pedagógicos, metodología y adaptaciones DUA para generar tu secuencia didáctica estructurada con asistencia de IA.
           </p>
         </div>
@@ -236,8 +248,18 @@ export default function WizardPage() {
         </div>
       </section>
 
-      {/* 2. Tarjeta de Formulario y Fase Pedagógica */}
-      <div className="wizard-card">
+      {/* 2. Tarjeta de Formulario y Fase Pedagógica (Mismo desenfoque y panel de cristal) */}
+      <div 
+        className="wizard-card"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '24px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         {/* Encabezado de la Fase Actual */}
         <div className="wizard-section-header">
           <h3 className="wizard-section-title">
