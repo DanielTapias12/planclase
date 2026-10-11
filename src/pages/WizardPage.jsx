@@ -193,10 +193,9 @@ export default function WizardPage() {
 
   return (
     <div className="wizard-container">
-      <div className="wizard-card">
-        
-        {/* Encabezado Editorial del Asistente */}
-        <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '32px' }}>
+      {/* 1. Panel Editorial de Bienvenida y Progreso (Misma estética y desenfoque de Inicio) */}
+      <section className="planificador-header-panel">
+        <div className="planificador-header" style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div className="editorial-badge" style={{ margin: '0 auto 14px auto' }}>
             <Sparkles size={14} color="#2B524A" />
             <span>Secuencia Didáctica Guiada</span>
@@ -210,7 +209,7 @@ export default function WizardPage() {
         </div>
         
         {/* Stepper / Indicador de Progreso Responsive */}
-        <div id="tour-wizard-progress" className="wizard-stepper">
+        <div id="tour-wizard-progress" className="wizard-stepper" style={{ marginBottom: 0 }}>
           <div className="wizard-stepper-track">
             <div 
               className="wizard-stepper-progress-fill" 
@@ -235,7 +234,10 @@ export default function WizardPage() {
             );
           })}
         </div>
+      </section>
 
+      {/* 2. Tarjeta de Formulario y Fase Pedagógica */}
+      <div className="wizard-card">
         {/* Encabezado de la Fase Actual */}
         <div className="wizard-section-header">
           <h3 className="wizard-section-title">

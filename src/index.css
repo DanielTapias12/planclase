@@ -1048,6 +1048,22 @@ h1, h2, h3, h4, h5, h6 {
   padding: 16px 20px 56px;
 }
 
+.planificador-header-panel {
+  background-color: var(--glass-bg-ambient);
+  backdrop-filter: blur(var(--glass-blur-ambient));
+  -webkit-backdrop-filter: blur(var(--glass-blur-ambient));
+  border: 1px solid var(--glass-border-light);
+  border-radius: 24px;
+  padding: clamp(28px, 4vw, 38px) clamp(24px, 4vw, 42px);
+  margin-bottom: 24px;
+  box-shadow: var(--glass-shadow-surface);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.planificador-header-panel:hover {
+  border-color: var(--glass-border-highlight);
+}
+
 .wizard-card {
   background-color: var(--glass-bg-surface);
   backdrop-filter: blur(var(--glass-blur-surface));
