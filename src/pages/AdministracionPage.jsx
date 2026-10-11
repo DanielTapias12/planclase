@@ -192,8 +192,22 @@ export default function AdministracionPage() {
         </div>
       </header>
 
-      {/* 2. Selector de Pestañas con Píldoras de Cristal */}
-      <div className="mgmt-filter-bar" style={{ marginBottom: '24px', padding: '10px 14px', width: '100%', boxSizing: 'border-box' }}>
+      {/* 2. Selector de Pestañas con Píldoras de Cristal (Mismo desenfoque de Inicio) */}
+      <div 
+        className="mgmt-filter-bar" 
+        style={{ 
+          marginBottom: '26px', 
+          padding: '12px 18px', 
+          width: '100%', 
+          boxSizing: 'border-box',
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '18px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+        }}
+      >
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', width: '100%' }}>
           <button 
             type="button"
