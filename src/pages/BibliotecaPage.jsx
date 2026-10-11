@@ -163,9 +163,11 @@ export default function BibliotecaPage() {
               minWidth: '180px', 
               padding: '9px 14px', 
               fontSize: '13.5px',
-              backgroundColor: '#FFFFFF',
+              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               border: '1px solid rgba(49, 91, 84, 0.22)',
-              borderRadius: '10px',
+              borderRadius: '12px',
               color: '#142B25'
             }}
             aria-label="Filtrar por grado escolar"
@@ -182,8 +184,18 @@ export default function BibliotecaPage() {
           <p style={{ fontSize: '14.5px' }}>Explorando la biblioteca comunitaria...</p>
         </div>
       ) : filteredRecursos.length === 0 ? (
-        /* Estado Vacío */
-        <div className="mgmt-empty-card">
+        /* Estado Vacío (Mismo desenfoque y panel de cristal) */
+        <div 
+          className="mgmt-empty-card"
+          style={{
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          }}
+        >
           <div className="mgmt-empty-icon">
             <Library size={30} />
           </div>
@@ -292,7 +304,18 @@ export default function BibliotecaPage() {
           aria-modal="true"
           aria-labelledby="preview-plan-title"
         >
-          <div className="modal-glass-card" style={{ maxWidth: '860px' }}>
+          <div 
+            className="modal-glass-card" 
+            style={{ 
+              maxWidth: '860px',
+              backgroundColor: 'rgba(255, 254, 250, 0.92)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.95)',
+              borderRadius: '24px',
+              boxShadow: '0 20px 50px rgba(16, 36, 32, 0.18)'
+            }}
+          >
             <div className="modal-glass-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                 <div style={{
