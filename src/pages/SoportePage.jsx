@@ -23,14 +23,18 @@ export default function SoportePage() {
 
   if (enviado) {
     return (
-      <div className="mgmt-container" style={{ maxWidth: '780px', width: '100%', boxSizing: 'border-box' }}>
+      <div className="mgmt-container" style={{ maxWidth: '780px', width: '100%', margin: '0 auto', padding: '36px 32px 64px', boxSizing: 'border-box' }}>
         <div 
           className="mgmt-card" 
           style={{ 
             textAlign: 'center', 
             padding: '56px 36px', 
-            background: 'linear-gradient(135deg, rgba(255, 253, 249, 0.85) 0%, rgba(220, 252, 231, 0.65) 100%)',
-            border: '1px solid rgba(255, 255, 255, 0.90)'
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
           }}
         >
           <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(22, 163, 74, 0.16)', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
@@ -75,21 +79,35 @@ export default function SoportePage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '920px', width: '100%', boxSizing: 'border-box' }}>
+    <div className="mgmt-container" style={{ maxWidth: '920px', width: '100%', margin: '0 auto', padding: '36px 32px 64px', boxSizing: 'border-box' }}>
       
-      {/* Cabecera Editorial Institucional */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial Institucional (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
-          <div className="mgmt-header-icon">
-            <LifeBuoy size={26} />
+          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '16px', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <LifeBuoy size={28} />
           </div>
           <div>
             <div className="editorial-badge">
               <ShieldCheck size={13} color="#2B524A" />
               <span>Mesa de Ayuda y Soporte Técnico</span>
             </div>
-            <h1 className="mgmt-title">Soporte Técnico Institucional</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Soporte Técnico Institucional
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               ¿Tienes dificultades con el asistente de IA, generación de planes o configuración de tu cuenta? Estamos aquí para acompañarte.
             </p>
           </div>
@@ -110,8 +128,19 @@ export default function SoportePage() {
       {/* Grid de Formulario y Consejos Rápidos */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px' }}>
         
-        {/* Formulario Principal de Ticket */}
-        <div className="mgmt-card" style={{ padding: '28px 32px' }}>
+        {/* Formulario Principal de Ticket (Mismo desenfoque de cristal) */}
+        <div 
+          className="mgmt-card" 
+          style={{ 
+            padding: '30px 34px',
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          }}
+        >
           <div style={{ marginBottom: '20px', borderBottom: '1px solid rgba(49, 91, 84, 0.14)', paddingBottom: '12px' }}>
             <h2 style={{ fontSize: '18px', color: '#142B25', margin: 0, fontWeight: 700 }}>
               Crear Nuevo Ticket de Asistencia
@@ -130,6 +159,11 @@ export default function SoportePage() {
                 value={asunto}
                 onChange={(e) => setAsunto(e.target.value)}
                 className="wizard-input"
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.80)',
+                  border: '1.5px solid rgba(49, 91, 84, 0.20)',
+                  borderRadius: '12px'
+                }}
                 required
               />
             </div>
@@ -144,7 +178,12 @@ export default function SoportePage() {
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 className="wizard-textarea"
-                style={{ height: '140px' }}
+                style={{ 
+                  height: '140px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.80)',
+                  border: '1.5px solid rgba(49, 91, 84, 0.20)',
+                  borderRadius: '12px'
+                }}
                 required
               />
               <span style={{ fontSize: '12.5px', color: '#4A635B', marginTop: '6px', display: 'block' }}>
@@ -166,10 +205,21 @@ export default function SoportePage() {
           </form>
         </div>
 
-        {/* Panel Lateral con Consejos Rápidos */}
+        {/* Panel Lateral con Consejos Rápidos (Mismo desenfoque de cristal) */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           
-          <div className="mgmt-card" style={{ padding: '22px 24px', backgroundColor: 'rgba(255, 255, 255, 0.72)' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '24px 26px', 
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '20px',
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
               <Sparkles size={20} color="#183630" />
               <h3 style={{ fontSize: '15px', color: '#142B25', margin: 0, fontWeight: 700 }}>
@@ -181,7 +231,18 @@ export default function SoportePage() {
             </p>
           </div>
 
-          <div className="mgmt-card" style={{ padding: '22px 24px', backgroundColor: 'rgba(255, 255, 255, 0.72)' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '24px 26px', 
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '20px',
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
               <AlertCircle size={20} color="#183630" />
               <h3 style={{ fontSize: '15px', color: '#142B25', margin: 0, fontWeight: 700 }}>
