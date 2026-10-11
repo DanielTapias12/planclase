@@ -101,18 +101,32 @@ export default function MisPlanesPage() {
   });
 
   return (
-    <div className="mgmt-container">
+    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera Editorial del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div>
             <div className="editorial-badge">
               <BookOpen size={14} color="#2B524A" />
               <span>Repositorio Curricular Personal</span>
             </div>
-            <h1 className="mgmt-title">Mis Planes de Clase</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Mis Planes de Clase
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Gestiona, edita y organiza tus secuencias pedagógicas sincronizadas en la nube. Reabre borradores, publica en la biblioteca comunitaria o sistematiza tus experiencias.
             </p>
           </div>
@@ -283,6 +297,14 @@ export default function MisPlanesPage() {
                 role="button"
                 onKeyDown={(e) => { if (e.key === 'Enter') handleEdit(plan); }}
                 aria-label={`Ver plan ${plan.tema || 'Sin título'}`}
+                style={{
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
               >
                 <div className="mgmt-card-header">
                   <span className={`editor-badge ${estado === 'Sistematizado' ? 'saved' : estado === 'Biblioteca' ? 'draft' : 'saved'}`} style={{ fontSize: '11.5px', padding: '2px 8px' }}>
