@@ -72,7 +72,7 @@ export default function ConfigPage() {
         initial={{ opacity: 0, y: 16 }} 
         animate={{ opacity: 1, y: 0 }} 
         className="mgmt-card" 
-        style={{ padding: '36px 32px', backgroundColor: '#FFFFFF' }}
+        style={{ padding: '36px 32px' }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
           <Sparkles size={18} style={{ color: 'var(--primary-active)' }} />

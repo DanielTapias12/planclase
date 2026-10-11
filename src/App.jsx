@@ -61,39 +61,8 @@ function AppContent() {
     }
   }, [userId, setPlanesCount]);
 
-  const getAmbientBackground = (pathname) => {
-    switch (pathname) {
-      case '/':
-        return '/images/PLANIFICADOR.png';
-      case '/mis-planes':
-        return '/images/MIS_PLANES.png';
-      case '/plantillas':
-        return '/images/PLANTILLAS.png';
-      case '/administracion':
-        return '/images/ADMINISTRADOR.png';
-      case '/biblioteca':
-        return '/images/BIBLIOTECA.png';
-      case '/experiencias':
-        return '/images/Experiencia.png';
-      case '/foro':
-        return '/images/FORO_SOCIAL.png';
-      case '/ayuda':
-        return '/images/AYUDA.png';
-      case '/soporte':
-        return '/images/SOPORTE.png';
-      case '/acerca':
-        return '/images/ACERCA.png';
-      case '/config':
-        return '/images/CONFIGURACION_IA.png';
-      case '/editor':
-        return '/images/PLANIFICADOR.png';
-      case '/home':
-      default:
-        return '/images/inicio-fondo.png';
-    }
-  };
-
-  const ambientBg = getAmbientBackground(location.pathname);
+  // Fondo ambiental unificado idéntico a Inicio para todo el recorrido
+  const ambientBg = '/images/inicio-fondo.png';
   const isAdmin = userProfile?.rol === 'Admin' || (auth.currentUser?.email && auth.currentUser.email.toLowerCase().trim() === 'danieltapiasacosta39@gmail.com');
 
   return (
