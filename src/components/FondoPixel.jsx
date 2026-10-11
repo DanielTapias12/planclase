@@ -113,12 +113,13 @@ const Cactus = () => (
 
 const CONF = ["#477A72", "#315B54", "#D1D8D5", "#E7EDE7"];
 
-export default function FondoPixel({ children, dim = 0.15, className = "", isSimulation = false }) {
+export default function FondoPixel({ children, dim = 0.15, className = "", enabled = false }) {
   const [tick, setTick] = useState(0);
   const [phase, setPhase] = useState("go");
   const active = tick % CAST.length;
 
   useEffect(() => {
+    if (!enabled) return;
     setPhase("go");
     const T = [
       setTimeout(() => setPhase("t1"), 1300),
@@ -128,7 +129,7 @@ export default function FondoPixel({ children, dim = 0.15, className = "", isSim
       setTimeout(() => setTick((n) => n + 1), 5200),
     ];
     return () => T.forEach(clearTimeout);
-  }, [tick]);
+  }, [tick, enabled]);
 
   const atSpot = ["go", "t1", "t2"].includes(phase);
   const walking = phase === "go" || phase === "back";
@@ -136,11 +137,11 @@ export default function FondoPixel({ children, dim = 0.15, className = "", isSim
   const revealed = active + (["t2", "back", "idle"].includes(phase) ? 1 : 0);
   const cur = CAST[active];
 
-  if (isSimulation) {
+  if (!enabled) {
     return (
-      <section className={`px ${className}`} style={{ padding: 0, background: '#0f172a' }}>
-        <div className="px-content">{children}</div>
-      </section>
+      <div className={`app-workspace-layout ${className}`} style={{ minHeight: '100vh', width: '100%', background: 'var(--color-bg-canvas)' }}>
+        {children}
+      </div>
     );
   }
 
@@ -291,7 +292,7 @@ const CSS = `
 .rb{border-left-color:var(--primary-active)}
 .cf{position:absolute;top:-3%;width:1.2cqw;height:1.2cqw;z-index:40;animation:fall 2.2s steps(12) both}
 .px-dim{position:absolute;inset:0;z-index:1;pointer-events:none; background: radial-gradient(circle, transparent 10%, var(--bg-general) 120%); opacity: 0.5;}
-.px-content{position:absolute;inset:0;z-index:2;overflow-y:auto;pointer-events:auto;}
+.px-content{position:absolute;inset:0;z-index:2;overflow-y:auto;overflow-x:hidden;pointer-events:auto;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
 
 @keyframes work{50%{transform:translateY(-.5px)}}
 @keyframes bob{0%{transform:translateY(0)}50%{transform:translateY(-1px)}}

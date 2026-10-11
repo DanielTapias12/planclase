@@ -1,156 +1,187 @@
 import React from 'react';
-import { Target, Heart, Lightbulb, Users } from 'lucide-react';
+import { Target, Heart, Lightbulb, Users, Sparkles, BookOpen, ExternalLink } from 'lucide-react';
 import miniyo from '../assets/miniyo.png';
 
 export default function AboutPage() {
   const teamMembers = [
-    { id: 1, name: "Zoe Peñata", role: "Scrum Master", github: "#", avatar: "https://ui-avatars.com/api/?name=Zoe+Peñata&background=random&color=fff&size=128" },
-    { id: 2, name: "María Soto", role: "Product Owner", github: "#", avatar: "https://ui-avatars.com/api/?name=María+Soto&background=random&color=fff&size=128" },
-    { id: 3, name: "María Ubarne", role: "Product Owner", github: "#", avatar: "https://ui-avatars.com/api/?name=María+Ubarne&background=random&color=fff&size=128" },
-    { id: 4, name: "Luis Caldera", role: "Development Team", github: "#", avatar: "https://ui-avatars.com/api/?name=Luis+Caldera&background=random&color=fff&size=128" },
+    { id: 1, name: "Zoe Peñata", role: "Scrum Master", github: "https://github.com", avatar: "https://ui-avatars.com/api/?name=Zoe+Peñata&background=315B54&color=fff&size=128" },
+    { id: 2, name: "María Soto", role: "Product Owner", github: "https://github.com", avatar: "https://ui-avatars.com/api/?name=María+Soto&background=477A72&color=fff&size=128" },
+    { id: 3, name: "María Ubarne", role: "Product Owner", github: "https://github.com", avatar: "https://ui-avatars.com/api/?name=María+Ubarne&background=183630&color=fff&size=128" },
+    { id: 4, name: "Luis Caldera", role: "Development Team", github: "https://github.com", avatar: "https://ui-avatars.com/api/?name=Luis+Caldera&background=2B524A&color=fff&size=128" },
     { id: 5, name: "Daniel Tapias", role: "Development Team", github: "https://github.com/DanielTapias12", avatar: miniyo },
-    { id: 6, name: "Maira Ortega", role: "Development Team", github: "#", avatar: "https://ui-avatars.com/api/?name=Maira+Ortega&background=random&color=fff&size=128" },
+    { id: 6, name: "Maira Ortega", role: "Development Team", github: "https://github.com", avatar: "https://ui-avatars.com/api/?name=Maira+Ortega&background=3C6760&color=fff&size=128" },
   ];
 
   return (
-    <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(8px)', minHeight: '100vh', paddingBottom: '80px', margin: '24px', borderRadius: '16px' }}>
+    <div className="mgmt-container" style={{ maxWidth: '1060px', width: '100%', boxSizing: 'border-box' }}>
+      
+      {/* Cabecera Editorial Institucional */}
+      <header className="mgmt-header">
+        <div className="mgmt-header-info">
+          <div className="mgmt-header-icon">
+            <Users size={26} />
+          </div>
+          <div>
+            <div className="editorial-badge">
+              <Sparkles size={13} color="#2B524A" />
+              <span>Identidad, Enfoque y Propósito</span>
+            </div>
+            <h1 className="mgmt-title">Transformando la Educación Colombiana</h1>
+            <p className="mgmt-subtitle">
+              INSPIRATEC es un ecosistema pedagógico potenciado por Inteligencia Artificial diseñado por y para docentes, con rigurosidad metodológica, accesibilidad universal y respeto por el contexto escolar.
+            </p>
+          </div>
+        </div>
 
-      {/* Hero Section */}
-      <div style={{
-        background: 'linear-gradient(135deg, var(--primary-active) 0%, var(--primary-sage) 100%)',
-        padding: '80px 20px',
-        textAlign: 'center',
-        color: 'white',
-        borderBottomLeftRadius: '40px',
-        borderBottomRightRadius: '40px',
-        marginBottom: '60px',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{ position: 'absolute', top: '-20px', left: '-20px', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', filter: 'blur(20px)' }}></div>
-        <div style={{ position: 'absolute', bottom: '-40px', right: '10%', width: '300px', height: '300px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', filter: 'blur(30px)' }}></div>
+        <div className="mgmt-stats-bar">
+          <div className="mgmt-stat-pill">
+            <BookOpen size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>Enfoque MEN & DUA</span>
+          </div>
+          <div className="mgmt-stat-pill">
+            <Users size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>6 Creadores</span>
+          </div>
+        </div>
+      </header>
 
-        <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <h1 style={{ fontSize: '46px', fontWeight: '800', marginBottom: '24px', letterSpacing: '-1px', color: '#FFFFFF' }}>
-            Transformando la Educación
-          </h1>
-          <p style={{ fontSize: '20px', lineHeight: '1.6', opacity: 0.9, fontWeight: '400' }}>
-            Inspiratec es un ecosistema pedagógico potenciado por Inteligencia Artificial diseñado por y para docentes. Nuestro propósito es democratizar el acceso a herramientas de planificación avanzadas, ahorrando tiempo invaluable y permitiendo que los maestros se enfoquen en lo más importante: inspirar a sus estudiantes.
+      {/* Valores del Proyecto (Tarjetas Translúcidas de Cristal) */}
+      <section style={{ marginBottom: '44px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+          
+          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+              <Target size={28} />
+            </div>
+            <h3 style={{ fontSize: '18px', color: '#142B25', marginBottom: '10px', fontWeight: 700 }}>
+              Nuestra Misión
+            </h3>
+            <p style={{ color: '#2B453E', lineHeight: '1.6', fontSize: '14.5px', margin: 0 }}>
+              Empoderar a los docentes de instituciones públicas y privadas de Colombia brindando una herramienta que une rigor curricular con la eficiencia de co-pilotos pedagógicos avanzados.
+            </p>
+          </div>
+
+          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(22, 163, 74, 0.14)', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+              <Heart size={28} />
+            </div>
+            <h3 style={{ fontSize: '18px', color: '#142B25', marginBottom: '10px', fontWeight: 700 }}>
+              Inclusión Total (DUA)
+            </h3>
+            <p style={{ color: '#2B453E', lineHeight: '1.6', fontSize: '14.5px', margin: 0 }}>
+              Diseñamos con el Diseño Universal para el Aprendizaje en mente, anticipando ajustes razonables y garantizando que ningún estudiante se quede atrás independientemente de sus capacidades.
+            </p>
+          </div>
+
+          <div className="mgmt-card" style={{ padding: '30px 26px', textAlign: 'center' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', backgroundColor: 'rgba(109, 40, 217, 0.14)', color: '#6D28D9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
+              <Lightbulb size={28} />
+            </div>
+            <h3 style={{ fontSize: '18px', color: '#142B25', marginBottom: '10px', fontWeight: 700 }}>
+              Innovación Pedagógica
+            </h3>
+            <p style={{ color: '#2B453E', lineHeight: '1.6', fontSize: '14.5px', margin: 0 }}>
+              La Inteligencia Artificial nunca reemplaza al maestro: lo acompaña. Actúa como un co-piloto pedagógico que acelera el trabajo operativo para permitirle concentrarse en la inspiración humana.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Sección del Equipo Desarrollador con Panel de Cristal de Alto Contraste */}
+      <section style={{ marginBottom: '40px' }}>
+        <div 
+          className="mgmt-card" 
+          style={{ 
+            textAlign: 'center', 
+            marginBottom: '26px',
+            padding: '28px 32px',
+            background: 'rgba(255, 253, 249, 0.88)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            border: '1px solid rgba(255, 255, 255, 0.95)',
+            boxShadow: '0 10px 30px rgba(20, 42, 38, 0.08)'
+          }}
+        >
+          <div className="editorial-badge" style={{ margin: '0 auto 12px auto', display: 'inline-flex' }}>
+            <Users size={13} color="#2B524A" />
+            <span>Talento Unicordobés</span>
+          </div>
+          <h2 style={{ fontSize: '26px', color: '#142B25', margin: '0 0 10px 0', fontFamily: 'var(--font-heading)', fontWeight: 700 }}>
+            El Equipo Creador
+          </h2>
+          <p style={{ fontSize: '15px', color: '#24423A', maxWidth: '640px', margin: '0 auto', lineHeight: '1.6', fontWeight: 500 }}>
+            Estudiantes e investigadores de la Universidad de Córdoba comprometidos con el desarrollo de software educativo de alta calidad.
           </p>
         </div>
-      </div>
 
-      {/* Valores del Proyecto */}
-      <div style={{ maxWidth: '1000px', margin: '0 auto 80px', padding: '0 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-
-          <div className="card" style={{ padding: '32px', textAlign: 'center', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', transition: 'transform 0.3s', cursor: 'default' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: 'var(--bg-sage-soft)', color: 'var(--primary-active)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-              <Target size={32} />
-            </div>
-            <h3 style={{ fontSize: '20px', color: 'var(--primary-active)', marginBottom: '12px' }}>Nuestra Misión</h3>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '15px' }}>
-              Empoderar a las instituciones educativas de Colombia brindando una plataforma integral que une tecnología de punta con las mejores metodologías pedagógicas.
-            </p>
-          </div>
-
-          <div className="card" style={{ padding: '32px', textAlign: 'center', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', transition: 'transform 0.3s', cursor: 'default' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: '#F0FDF4', color: '#22C55E', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-              <Heart size={32} />
-            </div>
-            <h3 style={{ fontSize: '20px', color: 'var(--primary-active)', marginBottom: '12px' }}>Inclusión Total</h3>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '15px' }}>
-              Diseñamos con el Diseño Universal para el Aprendizaje (DUA) en mente, asegurando que ningún estudiante se quede atrás sin importar sus necesidades.
-            </p>
-          </div>
-
-          <div className="card" style={{ padding: '32px', textAlign: 'center', backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '24px', transition: 'transform 0.3s', cursor: 'default' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'} onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: '#FAF5FF', color: '#A855F7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-              <Lightbulb size={32} />
-            </div>
-            <h3 style={{ fontSize: '20px', color: 'var(--primary-active)', marginBottom: '12px' }}>Innovación</h3>
-            <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontSize: '15px' }}>
-              La Inteligencia Artificial no reemplaza al docente, lo potencia. Actuamos como un co-piloto pedagógico que te acompaña en todo el proceso.
-            </p>
-          </div>
-
-        </div>
-      </div>
-
-      {/* Team Section */}
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 20px' }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
-            <Users size={28} color="var(--primary-active)" />
-            <h2 style={{ fontSize: '32px', color: 'var(--primary-active)', margin: 0 }}>El Equipo Creador</h2>
-          </div>
-          <p style={{ fontSize: '16px', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
-            Un grupo multidisciplinario de mentes brillantes, apasionados por el desarrollo de software y la educación en Colombia.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '22px' }}>
           {teamMembers.map((member) => (
-            <div key={member.id} className="card" style={{
-              backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              border: '1px solid #E2E8F0',
-              textAlign: 'center',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.05)',
-              transition: 'all 0.3s'
-            }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 20px 25px -5px rgba(0, 0, 0, 0.1)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.05)';
+            <div 
+              key={member.id} 
+              className="mgmt-card" 
+              style={{
+                padding: '24px 20px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
               }}
             >
-              <div style={{ height: '100px', backgroundColor: 'var(--bg-sage-soft)', borderBottom: '1px solid #E2E8F0' }}></div>
-
-              <div style={{ marginTop: '-50px', position: 'relative', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ position: 'relative', marginBottom: '16px' }}>
                 <img
                   src={member.avatar}
                   alt={member.name}
                   style={{
-                    width: '100px',
-                    height: '100px',
+                    width: '88px',
+                    height: '88px',
                     borderRadius: '50%',
-                    border: '4px solid #FFFFFF',
-                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                    border: '3px solid rgba(255, 255, 255, 0.90)',
+                    boxShadow: '0 6px 18px rgba(20, 42, 38, 0.12)',
                     objectFit: 'cover'
                   }}
                 />
               </div>
 
-              <div style={{ padding: '24px' }}>
-                <h3 style={{ fontSize: '18px', color: 'var(--text-main)', marginBottom: '4px' }}>{member.name}</h3>
-                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', fontWeight: '500', marginBottom: '16px' }}>{member.role}</p>
+              <h3 style={{ fontSize: '17px', color: '#142B25', margin: '0 0 4px 0', fontWeight: 700 }}>
+                {member.name}
+              </h3>
+              
+              <span style={{ 
+                fontSize: '12px', 
+                fontWeight: 700, 
+                color: '#183630', 
+                backgroundColor: 'rgba(71, 122, 114, 0.14)', 
+                padding: '3px 10px', 
+                borderRadius: '999px',
+                marginBottom: '16px'
+              }}>
+                {member.role}
+              </span>
 
-                <a href={member.github} target="_blank" rel="noopener noreferrer" style={{
-                  display: 'inline-block',
-                  padding: '8px 16px',
-                  backgroundColor: '#F1F5F9',
-                  color: '#475569',
-                  borderRadius: '20px',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s'
+              <a 
+                href={member.github} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn-outline"
+                style={{
+                  fontSize: '12.5px',
+                  padding: '6px 16px',
+                  borderRadius: '999px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  textDecoration: 'none'
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'var(--primary-active)'; e.currentTarget.style.color = '#FFFFFF'; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#F1F5F9'; e.currentTarget.style.color = '#475569'; }}
-                >
-                  Ver Perfil en GitHub
-                </a>
-              </div>
+              >
+                <span>Ver Perfil</span>
+                <ExternalLink size={13} />
+              </a>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
     </div>
   );

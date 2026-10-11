@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, NavLink, useLocation, Navigate } from 'react-router-dom';
 import WizardPage from './pages/WizardPage';
 import EditorPage from './pages/EditorPage';
 import ConfigPage from './pages/ConfigPage';
-import { initAuth, logoutUser } from './services/authService';
+import { initAuth } from './services/authService';
 import { getMisPlanes } from './services/dbService';
 import { useAppStore } from './store/useAppStore';
 import { auth } from './firebase';
@@ -19,56 +19,36 @@ import AyudaPage from './pages/AyudaPage';
 import AdministracionPage from './pages/AdministracionPage';
 import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
-import WelcomeModal from './components/WelcomeModal';
+import HomePage from './pages/HomePage';
+import BienvenidaNarrativa from './components/BienvenidaNarrativa';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
-import RecorridoInmersivo from './components/RecorridoInmersivo';
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
-import { Settings, MoreHorizontal, Lightbulb, PlayCircle, MonitorPlay, ArrowLeft } from 'lucide-react';
+import { 
+  Settings, 
+  Lightbulb, 
+  Menu, 
+  X, 
+  Home, 
+  Sparkles, 
+  FileText, 
+  BookOpen, 
+  Shield, 
+  Library, 
+  Compass, 
+  MessageSquare, 
+  HelpCircle, 
+  LifeBuoy, 
+  Info 
+} from 'lucide-react';
 
 function AppContent() {
-  const [showMoreMenu, setShowMoreMenu] = useState(false);
-  const moreMenuRef = useRef(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const isSimulation = location.pathname === '/animacion';
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target)) {
-        setShowMoreMenu(false);
-      }
-    };
-    
-    const handleStartTutorial = () => {
-      const driverObj = driver({
-        showProgress: true,
-        nextBtnText: 'Siguiente',
-        prevBtnText: 'Atrás',
-        doneBtnText: 'Finalizar',
-        steps: [
-          { popover: { title: '¡Bienvenido a INSPIRATEC!', description: 'Te daremos un breve recorrido por nuestra plataforma. Puedes saltarlo si prefieres explorar por tu cuenta.' } },
-          { element: '#nav-inicio', popover: { title: 'Inicio', description: 'Aquí es donde comienza la magia. Utiliza el Creador de Secuencias para planear tus clases con ayuda de IA.' } },
-          { element: '#nav-mis-planes', popover: { title: 'Mis Planes', description: 'Encuentra todos los planes que has guardado. Puedes exportarlos a PDF o Word en cualquier momento.' } },
-          { element: '#nav-plantillas', popover: { title: 'Plantillas', description: 'Crea plantillas personalizadas adaptadas a los formatos que te pide tu colegio.' } },
-          { element: '#nav-mas-recursos', popover: { title: 'Más Recursos', description: 'Descubre más herramientas, el foro de la comunidad y nuestra biblioteca de recursos compartidos.' } },
-          { element: '#nav-config', popover: { title: 'Configuración', description: 'Configura tu propia clave de API aquí para desbloquear todo el potencial de la Inteligencia Artificial.' } },
-        ],
-        onDestroyStarted: () => {
-          localStorage.setItem('tourCompletado', 'true');
-          driverObj.destroy();
-        }
-      });
-      driverObj.drive();
-    };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('start-tutorial', handleStartTutorial);
-    
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('start-tutorial', handleStartTutorial);
-    };
-  }, []);
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
 
   useEffect(() => {
@@ -79,120 +59,305 @@ function AppContent() {
     } else {
       setPlanesCount(0);
     }
-  }, [userId]);
+  }, [userId, setPlanesCount]);
 
-  const primaryNavItems = [
-    { path: '/', label: 'Inicio', exact: true },
-    { path: '/mis-planes', label: 'Mis Planes', badge: planesCount > 0 ? planesCount : null },
-    { path: '/plantillas', label: 'Plantillas' },
-    { path: '/administracion', label: 'Administración' }
-  ];
+  const getAmbientBackground = (pathname) => {
+    switch (pathname) {
+      case '/':
+        return '/images/PLANIFICADOR.png';
+      case '/mis-planes':
+        return '/images/MIS_PLANES.png';
+      case '/plantillas':
+        return '/images/PLANTILLAS.png';
+      case '/administracion':
+        return '/images/ADMINISTRADOR.png';
+      case '/biblioteca':
+        return '/images/BIBLIOTECA.png';
+      case '/experiencias':
+        return '/images/Experiencia.png';
+      case '/foro':
+        return '/images/FORO_SOCIAL.png';
+      case '/ayuda':
+        return '/images/AYUDA.png';
+      case '/soporte':
+        return '/images/SOPORTE.png';
+      case '/acerca':
+        return '/images/ACERCA.png';
+      case '/config':
+        return '/images/CONFIGURACION_IA.png';
+      case '/editor':
+        return '/images/PLANIFICADOR.png';
+      case '/home':
+      default:
+        return '/images/inicio-fondo.png';
+    }
+  };
 
-  const secondaryNavItems = [
-    { path: '/experiencias', label: 'Experiencias' },
-    { path: '/biblioteca', label: 'Biblioteca' },
-    { path: '/foro', label: 'Foro' },
-    { path: '/soporte', label: 'Soporte' },
-    { path: '/acerca', label: 'Acerca del Proyecto' },
-    { path: '/ayuda', label: 'Ayuda' }
-  ];
+  const ambientBg = getAmbientBackground(location.pathname);
+  const isAdmin = userProfile?.rol === 'Admin' || (auth.currentUser?.email && auth.currentUser.email.toLowerCase().trim() === 'danieltapiasacosta39@gmail.com');
 
   return (
-    <FondoPixel dim={0} className="app-background" isSimulation={isSimulation}>
-      <div className="app-container top-layout">
-        {!isSimulation && <WelcomeModal onStartTour={() => window.dispatchEvent(new Event('start-tutorial'))} />}
-        {!isSimulation && (
-          <div className="header-container" style={{ width: '100%', boxSizing: 'border-box', backgroundColor: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', position: 'relative', zIndex: 50 }}>
-            <div className="brand-logo"><Lightbulb size={24} color="var(--primary-sage)" /> INSPIRATEC</div>
+    <FondoPixel dim={0} className="app-background">
+      <div className="app-shell-layout has-ambient-backdrop">
+        {/* Fondo Ambiental Dinámico Institucional según Módulo */}
+        <div 
+          className="home-ambient-backdrop" 
+          style={{ backgroundImage: `linear-gradient(180deg, rgba(20, 42, 38, 0.22) 0%, rgba(20, 42, 38, 0.08) 32%, rgba(20, 42, 38, 0.26) 100%), url('${ambientBg}')` }}
+          aria-hidden="true" 
+        />
 
-            <header className="top-nav" style={{ border: 'none', background: 'transparent' }}>
-              <nav style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-                {primaryNavItems.map((item) => {
-                  const isAdmin = userProfile?.rol === 'Admin' || (auth.currentUser?.email && auth.currentUser.email.toLowerCase().trim() === 'danieltapiasacosta39@gmail.com');
-                  if (item.path === '/administracion' && !isAdmin) return null;
+        {/* Experiencia Narrativa Inmersiva de Bienvenida (11 escenas) */}
+        <BienvenidaNarrativa />
 
-                  // Add specific ID for joyride targets
-                  const id = item.path === '/' ? 'nav-inicio' : 'nav-' + item.path.replace('/', '');
+        {/* Barra superior compacta solo para vista móvil */}
+        <header className="mobile-header-bar">
+              <button
+                type="button"
+                className="mobile-nav-toggle"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú de navegación"}
+                aria-expanded={mobileMenuOpen}
+              >
+                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
 
-                  return (
-                    <NavLink
-                      key={item.path}
-                      to={item.path}
-                      end={item.exact}
-                      id={id}
-                      className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-                    >
-                      {item.label}
-                      {item.badge && <span className="badge">{item.badge}</span>}
-                    </NavLink>
-                  );
-                })}
+              <NavLink to="/home" className="mobile-brand-title">
+                <Lightbulb size={20} color="var(--color-brand-active)" /> INSPIRATEC
+              </NavLink>
 
-                <div ref={moreMenuRef} style={{ position: 'relative' }}>
-                  <button
-                    id="nav-mas-recursos"
-                    onClick={() => setShowMoreMenu(!showMoreMenu)}
-                    className={`nav-link ${showMoreMenu ? 'active' : ''}`}
-                    style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+              <UserMenu />
+            </header>
+
+            {/* Overlay para móvil */}
+            <div
+              className={`sidebar-backdrop ${mobileMenuOpen ? 'open' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+
+            {/* Menú Lateral Verde Petróleo Translúcido */}
+            <aside className={`app-sidebar-lateral ${mobileMenuOpen ? 'open' : ''}`} aria-label="Menú principal INSPIRATEC">
+              {/* Encabezado con Marca */}
+              <div className="sidebar-brand-header">
+                <NavLink to="/home" className="sidebar-brand-link" onClick={() => setMobileMenuOpen(false)}>
+                  <div className="sidebar-brand-icon">
+                    <Lightbulb size={22} color="#FFFDF9" />
+                  </div>
+                  <div className="sidebar-brand-texts">
+                    <span className="sidebar-brand-title">INSPIRATEC</span>
+                    <span className="sidebar-brand-subtitle">Plataforma Curricular</span>
+                  </div>
+                </NavLink>
+                <button
+                  type="button"
+                  className="sidebar-close-btn-mobile"
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-label="Cerrar menú"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              {/* Área de Navegación Vertical */}
+              <nav className="sidebar-scrollable-nav">
+                
+                {/* 1. Navegación Principal (Planeación) */}
+                <div className="sidebar-nav-group">
+                  <div className="sidebar-group-label">Planeación</div>
+
+                  <NavLink
+                    to="/home"
+                    id="nav-inicio"
+                    end
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
-                    Más Recursos <MoreHorizontal size={16} />
-                  </button>
+                    <Home size={18} />
+                    <span>Inicio</span>
+                  </NavLink>
 
-                  {showMoreMenu && (
-                    <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '16px', background: 'white', borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', border: '1px solid #E2E8F0', width: '220px', zIndex: 1000, overflow: 'hidden' }}>
-                      {secondaryNavItems.map((item) => (
-                        <NavLink
-                          key={item.path}
-                          to={item.path}
-                          onClick={() => setShowMoreMenu(false)}
-                          className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-                          style={{ display: 'block', padding: '12px 16px', width: '100%', boxSizing: 'border-box' }}
-                        >
-                          {item.label}
-                        </NavLink>
-                      ))}
-                    </div>
+                  <NavLink
+                    to="/"
+                    id="nav-planificador"
+                    end
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Sparkles size={18} />
+                    <span>Planificador</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/mis-planes"
+                    id="nav-mis-planes"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <FileText size={18} />
+                    <span>Mis Planes</span>
+                    {planesCount > 0 && <span className="sidebar-counter-badge">{planesCount}</span>}
+                  </NavLink>
+
+                  <NavLink
+                    to="/plantillas"
+                    id="nav-plantillas"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <BookOpen size={18} />
+                    <span>Plantillas</span>
+                  </NavLink>
+
+                  {isAdmin && (
+                    <NavLink
+                      to="/administracion"
+                      id="nav-administracion"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                    >
+                      <Shield size={18} />
+                      <span>Administración</span>
+                    </NavLink>
                   )}
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginLeft: '8px', borderLeft: '1px solid #CBD5E1', paddingLeft: '24px' }}>
-                  <NavLink to="/animacion" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <MonitorPlay size={16} />
-                    Inmersión
+                {/* 2. Sección Comunidad & Recursos */}
+                <div className="sidebar-nav-group" id="nav-mas-recursos">
+                  <div className="sidebar-group-label">Comunidad</div>
+
+                  <NavLink
+                    to="/biblioteca"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Library size={18} />
+                    <span>Biblioteca</span>
                   </NavLink>
-                  <NavLink id="nav-config" to="/config" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Settings size={16} />
-                    IA
-                    <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: (apiKey && apiKey.length > 10 ? '#10B981' : '#F59E0B') }} title="Estado API"></span>
+
+                  <NavLink
+                    to="/experiencias"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Compass size={18} />
+                    <span>Experiencias</span>
                   </NavLink>
-                  <UserMenu />
+
+                  <NavLink
+                    to="/foro"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <MessageSquare size={18} />
+                    <span>Foro Docente</span>
+                  </NavLink>
+                </div>
+
+                {/* 3. Sección Soporte y Guías */}
+                <div className="sidebar-nav-group">
+                  <div className="sidebar-group-label">Soporte</div>
+
+                  <NavLink
+                    to="/ayuda"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <HelpCircle size={18} />
+                    <span>Ayuda y Guías</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/soporte"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <LifeBuoy size={18} />
+                    <span>Soporte Técnico</span>
+                  </NavLink>
+
+                  <NavLink
+                    to="/acerca"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Info size={18} />
+                    <span>Acerca de</span>
+                  </NavLink>
+                </div>
+
+                {/* Sección exclusiva para Drawer Móvil con accesos directos */}
+                <div className="sidebar-nav-group mobile-only-nav-group">
+                  <div className="sidebar-group-label">Herramientas</div>
+                  <NavLink
+                    to="/config"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Settings size={18} />
+                    <span>Configuración IA</span>
+                  </NavLink>
                 </div>
               </nav>
-            </header>
-          </div>
-        )}
-        <main className="main-content" style={{
-          backgroundColor: 'transparent',
-          backdropFilter: 'none',
-          transition: 'all 0.3s ease'
-        }}>
-          <Routes>
-            <Route path="/" element={<WizardPage />} />
-            <Route path="/editor" element={<EditorPage />} />
-            <Route path="/config" element={<ConfigPage />} />
 
-            <Route path="/mis-planes" element={<MisPlanesPage />} />
-            <Route path="/experiencias" element={<ExperienciasPage />} />
-            <Route path="/biblioteca" element={<BibliotecaPage />} />
-            <Route path="/plantillas" element={<PlantillasPage />} />
-            <Route path="/foro" element={<ForoPage />} />
-            <Route path="/soporte" element={<SoportePage />} />
-            <Route path="/acerca" element={<AboutPage />} />
-            <Route path="/ayuda" element={<AyudaPage />} />
-            <Route path="/administracion" element={<AdministracionPage />} />
-            <Route path="/animacion" element={<RecorridoInmersivo />} />
-          </Routes>
-        </main>
+              {/* Pie Institucional del Menú Lateral */}
+              <div className="sidebar-footer-institutional">
+                <div className="sidebar-inst-badge">INSPIRATEC 2026</div>
+                <p className="sidebar-inst-text">
+                  Docencia con criterio, rigurosidad e innovación pedagógica.
+                </p>
+              </div>
+            </aside>
+
+        {/* Área de Contenido Principal */}
+        <div className="app-shell-main">
+          {/* Barra Superior Compacta de Utilidades (Esquina Superior Derecha en Escritorio) */}
+          <header className="app-top-utilities-bar" aria-label="Utilidades y cuenta de usuario">
+            <div className="top-utilities-group">
+              {/* 1. Configuración IA con indicador de estado */}
+                <NavLink 
+                  to="/config" 
+                  id="nav-config"
+                  className={({ isActive }) => isActive ? 'top-utility-link top-utility-ai active' : 'top-utility-link top-utility-ai'}
+                  title={apiKey && apiKey.length > 10 ? "IA Gemini configurada y activa" : "Configurar API Key de Gemini"}
+                >
+                  <Settings size={15} />
+                  <span>Configuración IA</span>
+                  <span className={`ai-status-indicator ${apiKey && apiKey.length > 10 ? 'active' : 'pending'}`}>
+                    <span className="ai-status-dot" />
+                    <span className="ai-status-label">{apiKey && apiKey.length > 10 ? 'Lista' : 'Configurar'}</span>
+                  </span>
+                </NavLink>
+
+                {/* Separador vertical */}
+                <div className="top-utilities-divider" />
+
+                {/* 3. Usuario y menú de cuenta */}
+                <div className="top-utility-user">
+                  <UserMenu />
+                </div>
+              </div>
+            </header>
+
+          <main className="app-main-content-scroll">
+            <Routes>
+              <Route path="/" element={<WizardPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/editor" element={<EditorPage />} />
+              <Route path="/config" element={<ConfigPage />} />
+
+              <Route path="/mis-planes" element={<MisPlanesPage />} />
+              <Route path="/experiencias" element={<ExperienciasPage />} />
+              <Route path="/biblioteca" element={<BibliotecaPage />} />
+              <Route path="/plantillas" element={<PlantillasPage />} />
+              <Route path="/foro" element={<ForoPage />} />
+              <Route path="/soporte" element={<SoportePage />} />
+              <Route path="/acerca" element={<AboutPage />} />
+              <Route path="/ayuda" element={<AyudaPage />} />
+              <Route path="/administracion" element={<AdministracionPage />} />
+              <Route path="/animacion" element={<Navigate to="/home" replace />} />
+            </Routes>
+          </main>
+        </div>
       </div>
     </FondoPixel>
   );
@@ -205,12 +370,9 @@ function App() {
     initAuth();
   }, []);
 
-  if (!userId) {
-    return <AuthPage />;
-  }
   return (
     <BrowserRouter>
-      <AppContent />
+      {!userId ? <AuthPage /> : <AppContent />}
     </BrowserRouter>
   );
 }

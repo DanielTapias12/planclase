@@ -48,9 +48,20 @@ Consulte la fundamentación completa en [docs/proyecto/METODOLOGIA.md](docs/proy
 ### Pasos
 1. Instalar dependencias:
    ```bash
-   npm install
+   pnpm install
    ```
 2. Ejecutar entorno de desarrollo:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
+
+---
+
+## 5. Sistema de Diseño Visual y Modales (Actualización 2026)
+
+La interfaz de usuario implementa un diseño editorial contemporáneo con:
+* **Glassmorphism institucional:** Paneles de cristal translúcido con desenfoque de 14px a 30px, bordes de luz blanca y sombras suaves integradas sobre fondos ambientales fotográficos.
+* **Sistema Unificado de Modales (`.modal-glass-*`):** Ventanas emergentes accesibles, con bloqueo de scroll, atajo `Escape`, tipografía contrastada y transiciones fluidas.
+* **Confirmaciones Seguras (`ConfirmModal.jsx`):** Diálogos de cristal para la eliminación y gestión de recursos sin alertas nativas del navegador.
+
+Consulte la documentación técnica detallada en [docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md](docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md).

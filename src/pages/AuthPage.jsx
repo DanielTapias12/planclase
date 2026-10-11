@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { loginUser, registerUser } from '../services/authService';
 import TermsAndConditionsModal from '../components/TermsAndConditionsModal';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 
 export default function AuthPage() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -53,6 +55,7 @@ export default function AuthPage() {
           formData.aceptaTerminos
         );
       }
+      navigate('/home');
     } catch (err) {
       setError(err.message || 'Error en la autenticación.');
     } finally {

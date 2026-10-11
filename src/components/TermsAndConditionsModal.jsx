@@ -1,126 +1,106 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShieldCheck, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(15, 23, 42, 0.65)',
-        backdropFilter: 'blur(4px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 10000,
-        padding: '20px'
-      }}>
+      <div 
+        className="modal-glass-backdrop"
+        onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="terms-modal-title"
+      >
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '16px',
-            maxWidth: '680px',
-            width: '100%',
-            maxHeight: '85vh',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            border: '1px solid #E2E8F0',
-            overflow: 'hidden'
-          }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="modal-glass-card"
+          style={{ maxWidth: '720px' }}
         >
           {/* Header */}
-          <div style={{
-            padding: '24px 28px',
-            borderBottom: '1px solid #E2E8F0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            background: 'linear-gradient(to right, #F8FAFC, #FFFFFF)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="modal-glass-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
               <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '10px',
-                backgroundColor: 'var(--bg-sage-soft)',
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                backgroundColor: 'rgba(71, 122, 114, 0.14)',
+                border: '1px solid rgba(71, 122, 114, 0.22)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: 'var(--primary-active)'
+                color: '#1C3D36',
+                flexShrink: 0
               }}>
                 <ShieldCheck size={22} />
               </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: '18px', color: '#1E293B', fontWeight: 'bold' }}>
-                  Términos y Política de Tratamiento de Datos Personales
+                <h3 id="terms-modal-title" className="modal-glass-title" style={{ fontSize: '18px' }}>
+                  Términos y Política de Datos Personales
                 </h3>
-                <p style={{ margin: '2px 0 0 0', fontSize: '13px', color: '#64748B' }}>
+                <p style={{ margin: '2px 0 0 0', fontSize: '12.5px', color: '#527068' }}>
                   Conforme a la Ley 1581 de 2012 y Normativa de Habeas Data en Colombia
                 </p>
               </div>
             </div>
             <button
               onClick={onClose}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                color: '#94A3B8',
-                padding: '4px',
-                borderRadius: '6px',
-                display: 'flex',
-                alignItems: 'center'
-              }}
+              className="modal-glass-close-btn"
+              aria-label="Cerrar modal de términos"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
           {/* Body Scrollable */}
-          <div style={{
-            padding: '24px 28px',
-            overflowY: 'auto',
-            fontSize: '14px',
-            lineHeight: '1.65',
-            color: '#334155',
-            flex: 1
-          }}>
+          <div className="modal-glass-body" style={{ fontSize: '14px', lineHeight: '1.65', color: '#1E352E' }}>
             <div style={{
-              backgroundColor: '#F0FDF4',
-              border: '1px solid #BBF7D0',
-              borderRadius: '8px',
+              backgroundColor: 'rgba(71, 122, 114, 0.08)',
+              border: '1px solid rgba(71, 122, 114, 0.2)',
+              borderRadius: '12px',
               padding: '12px 16px',
               marginBottom: '20px',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              color: '#166534',
+              gap: '12px',
+              color: '#142B25',
               fontSize: '13px'
             }}>
-              <Lock size={18} style={{ flexShrink: 0 }} />
+              <Lock size={18} style={{ flexShrink: 0, color: '#315B54' }} />
               <span>
                 <strong>Privacidad y Seguridad Garantizada:</strong> Tus datos de contacto (número celular y correo) se almacenan protegidos mediante cifrado criptográfico y tokens de autenticación JWT.
               </span>
             </div>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               1. Identificación del Responsable del Tratamiento
             </h4>
             <p style={{ marginBottom: '16px' }}>
               La plataforma <strong>INSPIRATEC</strong> actúa como responsable del tratamiento de los datos personales recolectados a través de su sitio web y aplicativo de planeación docente con Inteligencia Artificial.
             </p>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               2. Marco Normativo Aplicable
             </h4>
             <p style={{ marginBottom: '8px' }}>
@@ -133,7 +113,7 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
               <li><strong>Ley 1273 de 2009:</strong> De la protección de la información y de los datos (Delitos Informáticos).</li>
             </ul>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               3. Datos Recolectados y Finalidades Específicas
             </h4>
             <p style={{ marginBottom: '8px' }}>
@@ -146,14 +126,14 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
               <li><strong>Estadísticas Agregadas Anónimas:</strong> Medir el impacto pedagógico global sin revelar en ningún momento la identidad particular del docente ni de sus estudiantes.</li>
             </ul>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               4. Mecanismos de Encriptación y Seguridad
             </h4>
             <p style={{ marginBottom: '16px' }}>
               En cumplimiento del principio de seguridad, los datos sensibles —en particular el <strong>número celular</strong>— son procesados con <strong>encriptación simétrica en reposo</strong> y transmitidos bajo protocolos seguros HTTPS/TLS. Toda sesión y ejecución de pruebas dentro de la plataforma cuenta con firma criptográfica <strong>JWT</strong> para garantizar la autenticidad del emisor.
             </p>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               5. Derechos del Titular (Derechos de Habeas Data)
             </h4>
             <p style={{ marginBottom: '8px' }}>
@@ -167,7 +147,7 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
               <li>Acceder en forma gratuita a tus datos personales tratados por el sistema.</li>
             </ul>
 
-            <h4 style={{ color: 'var(--primary-active)', fontSize: '15px', marginBottom: '8px' }}>
+            <h4 style={{ color: '#142B25', fontSize: '15px', fontWeight: 700, marginBottom: '6px' }}>
               6. Canales para Ejercer tus Derechos
             </h4>
             <p style={{ marginBottom: '16px' }}>
@@ -176,15 +156,8 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
           </div>
 
           {/* Footer Actions */}
-          <div style={{
-            padding: '16px 28px',
-            borderTop: '1px solid #E2E8F0',
-            backgroundColor: '#F8FAFC',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <span style={{ fontSize: '12px', color: '#64748B' }}>
+          <div className="modal-glass-footer" style={{ justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '12px', color: '#527068' }}>
               Última actualización: Febrero 2026
             </span>
             <div style={{ display: 'flex', gap: '12px' }}>
@@ -199,7 +172,7 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
               {onAccept && (
                 <button
                   type="button"
-                  className="btn"
+                  className="btn btn-primary"
                   onClick={() => { onAccept(); onClose(); }}
                   style={{
                     padding: '8px 20px',
@@ -216,6 +189,7 @@ export default function TermsAndConditionsModal({ isOpen, onClose, onAccept }) {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

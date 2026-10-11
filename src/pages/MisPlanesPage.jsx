@@ -2,7 +2,22 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { getMisPlanes, deletePlanFromDB, updatePlanStatus } from '../services/dbService';
-import { Loader2 } from 'lucide-react';
+import { 
+  Loader2, 
+  BookOpen, 
+  PlusCircle, 
+  Search, 
+  Trash2, 
+  Share2, 
+  Sparkles, 
+  Eye, 
+  Calendar,
+  GraduationCap,
+  Layers,
+  FileCheck
+} from 'lucide-react';
+
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function MisPlanesPage() {
   const navigate = useNavigate();
@@ -10,6 +25,10 @@ export default function MisPlanesPage() {
   
   const [planes, setPlanes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('todos');
+  const [planToDelete, setPlanToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -27,103 +46,325 @@ export default function MisPlanesPage() {
     };
     
     fetchPlanes();
-  }, [userId]);
+  }, [userId, setPlanesCount]);
 
   const handleEdit = (plan) => {
     loadPlan(plan, plan.markdown, plan.id);
     navigate('/editor');
   };
 
-  const handleAction = async (planId, action) => {
+  const handleAction = async (plan, action) => {
+    const planId = typeof plan === 'object' ? plan.id : plan;
     try {
       if (action === 'delete') {
-        if (!window.confirm("¿Seguro que deseas eliminar este plan?")) return;
-        await deletePlanFromDB(planId);
-        const newPlanes = planes.filter(p => p.id !== planId);
-        setPlanes(newPlanes);
-        setPlanesCount(newPlanes.length);
+        const target = typeof plan === 'object' ? plan : planes.find(p => p.id === planId);
+        setPlanToDelete(target || { id: planId, tema: 'Plan de clase' });
       } else if (action === 'sistematizar') {
         await updatePlanStatus(planId, { estado: 'Sistematizado' });
         setPlanes(planes.map(p => p.id === planId ? { ...p, estado: 'Sistematizado' } : p));
-        alert("El plan ahora hace parte de tus Experiencias Sistematizadas.");
       } else if (action === 'compartir') {
         await updatePlanStatus(planId, { estado: 'Biblioteca' });
         setPlanes(planes.map(p => p.id === planId ? { ...p, estado: 'Biblioteca' } : p));
-        alert("El plan ha sido enviado a la Biblioteca Comunitaria Pública.");
       }
-    } catch (e) {
-      alert("Hubo un error al procesar tu solicitud.");
+    } catch (err) {
+      console.error("Error al ejecutar acción sobre el plan:", err);
     }
   };
 
+  const handleConfirmDelete = async () => {
+    if (!planToDelete) return;
+    setIsDeleting(true);
+    try {
+      await deletePlanFromDB(planToDelete.id);
+      const newPlanes = planes.filter(p => p.id !== planToDelete.id);
+      setPlanes(newPlanes);
+      setPlanesCount(newPlanes.length);
+      setPlanToDelete(null);
+    } catch (err) {
+      console.error("Error al eliminar plan:", err);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const filteredPlanes = planes.filter(plan => {
+    const matchesSearch = 
+      (plan.tema || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (plan.materia || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (plan.grado || '').toLowerCase().includes(searchTerm.toLowerCase());
+    
+    if (statusFilter === 'todos') return matchesSearch;
+    if (statusFilter === 'sistematizados') return matchesSearch && plan.estado === 'Sistematizado';
+    if (statusFilter === 'biblioteca') return matchesSearch && plan.estado === 'Biblioteca';
+    if (statusFilter === 'guardados') return matchesSearch && (plan.estado === 'Guardado' || !plan.estado);
+    return matchesSearch;
+  });
+
   return (
-    <div className="planificador-view">
-      <div className="planificador-header">
-        <h2>Mis Planes</h2>
-        <p>Gestiona tus planes de clase reales sincronizados en la nube.</p>
-      </div>
+    <div className="mgmt-container">
       
+      {/* Cabecera Editorial del Módulo */}
+      <header className="mgmt-header">
+        <div className="mgmt-header-info">
+          <div>
+            <div className="editorial-badge">
+              <BookOpen size={14} color="#2B524A" />
+              <span>Repositorio Curricular Personal</span>
+            </div>
+            <h1 className="mgmt-title">Mis Planes de Clase</h1>
+            <p className="mgmt-subtitle">
+              Gestiona, edita y organiza tus secuencias pedagógicas sincronizadas en la nube. Reabre borradores, publica en la biblioteca comunitaria o sistematiza tus experiencias.
+            </p>
+          </div>
+        </div>
+
+        <div className="mgmt-stats-bar">
+          <div className="mgmt-stat-pill">
+            <Layers size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>{planes.length} {planes.length === 1 ? 'Plan guardado' : 'Planes guardados'}</span>
+          </div>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => navigate('/')}
+            style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              minHeight: '42px', 
+              padding: '10px 20px',
+              backgroundColor: '#183630',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 14px rgba(20, 42, 38, 0.20)',
+              borderRadius: '10px',
+              fontWeight: 600,
+              cursor: 'pointer'
+            }}
+          >
+            <PlusCircle size={16} /> Crear Nuevo Plan
+          </button>
+        </div>
+      </header>
+
+      {/* Barra de Filtros y Búsqueda */}
+      {!isLoading && planes.length > 0 && (
+        <div className="mgmt-filter-bar">
+          <div className="mgmt-search-box">
+            <Search size={16} style={{ color: 'var(--text-secondary)' }} />
+            <input 
+              type="text"
+              placeholder="Buscar por tema, asignatura o grado..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mgmt-search-input"
+              aria-label="Buscar planes"
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <button 
+              className={`btn-outline ${statusFilter === 'todos' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('todos')}
+              style={{ 
+                padding: '7px 15px', 
+                fontSize: '13px',
+                borderRadius: '10px',
+                backgroundColor: statusFilter === 'todos' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
+                borderColor: statusFilter === 'todos' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
+                color: statusFilter === 'todos' ? '#142B25' : '#283F37',
+                fontWeight: statusFilter === 'todos' ? 700 : 500
+              }}
+            >
+              Todos ({planes.length})
+            </button>
+            <button 
+              className={`btn-outline ${statusFilter === 'guardados' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('guardados')}
+              style={{ 
+                padding: '7px 15px', 
+                fontSize: '13px',
+                borderRadius: '10px',
+                backgroundColor: statusFilter === 'guardados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
+                borderColor: statusFilter === 'guardados' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
+                color: statusFilter === 'guardados' ? '#142B25' : '#283F37',
+                fontWeight: statusFilter === 'guardados' ? 700 : 500
+              }}
+            >
+              Guardados
+            </button>
+            <button 
+              className={`btn-outline ${statusFilter === 'sistematizados' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('sistematizados')}
+              style={{ 
+                padding: '7px 15px', 
+                fontSize: '13px',
+                borderRadius: '10px',
+                backgroundColor: statusFilter === 'sistematizados' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
+                borderColor: statusFilter === 'sistematizados' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
+                color: statusFilter === 'sistematizados' ? '#142B25' : '#283F37',
+                fontWeight: statusFilter === 'sistematizados' ? 700 : 500
+              }}
+            >
+              Sistematizados
+            </button>
+            <button 
+              className={`btn-outline ${statusFilter === 'biblioteca' ? 'active' : ''}`}
+              onClick={() => setStatusFilter('biblioteca')}
+              style={{ 
+                padding: '7px 15px', 
+                fontSize: '13px',
+                borderRadius: '10px',
+                backgroundColor: statusFilter === 'biblioteca' ? 'rgba(71, 122, 114, 0.22)' : 'rgba(255, 255, 255, 0.75)',
+                borderColor: statusFilter === 'biblioteca' ? '#183630' : 'rgba(49, 91, 84, 0.24)',
+                color: statusFilter === 'biblioteca' ? '#142B25' : '#283F37',
+                fontWeight: statusFilter === 'biblioteca' ? 700 : 500
+              }}
+            >
+              En Biblioteca
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Estado de Carga */}
       {isLoading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', gap: '8px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={24} className="spin" /> Cargando tus planes desde Firebase...
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
+          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
+          <p style={{ fontSize: '14.5px' }}>Sincronizando tus secuencias pedagógicas...</p>
         </div>
       ) : planes.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '60px 24px', backgroundColor: '#F8FAFC' }}>
-          <h3 style={{ fontSize: '18px', color: 'var(--text-secondary)', marginBottom: '8px' }}>Aún no tienes planes guardados</h3>
-          <p style={{ color: 'var(--text-main)', marginBottom: '24px' }}>Crea tu primer plan usando el planificador con IA.</p>
-          <button className="btn" onClick={() => navigate('/')}>Crear Nuevo Plan</button>
+        /* Estado Vacío Sin Planes */
+        <div className="mgmt-empty-card">
+          <div className="mgmt-empty-icon">
+            <BookOpen size={30} />
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', color: 'var(--text-main)', marginBottom: '8px' }}>
+            Aún no tienes secuencias didácticas guardadas
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '24px' }}>
+            Comienza planificando una clase mediante el asistente pedagógico asistido por IA.
+          </p>
+          <button className="btn btn-primary" onClick={() => navigate('/')}>
+            <PlusCircle size={16} /> Crear mi primer plan
+          </button>
+        </div>
+      ) : filteredPlanes.length === 0 ? (
+        /* Estado Vacío Sin Resultados de Filtro */
+        <div className="mgmt-empty-card">
+          <div className="mgmt-empty-icon">
+            <Search size={28} />
+          </div>
+          <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', color: 'var(--text-main)', marginBottom: '8px' }}>
+            No se encontraron planes
+          </h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '20px' }}>
+            No hay secuencias que coincidan con el criterio "{searchTerm}".
+          </p>
+          <button className="btn-outline" onClick={() => { setSearchTerm(''); setStatusFilter('todos'); }}>
+            Limpiar filtros
+          </button>
         </div>
       ) : (
-        <div className="grid-list">
-          {planes.map(plan => {
-            // Firestore date formatting
-            const fecha = plan.createdAt?.toDate ? plan.createdAt.toDate().toLocaleDateString() : 'Desconocida';
+        /* Cuadrícula de Tarjetas de Planes */
+        <div className="mgmt-grid">
+          {filteredPlanes.map(plan => {
+            const fecha = plan.createdAt?.toDate ? plan.createdAt.toDate().toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Reciente';
+            const estado = plan.estado || 'Guardado';
             
             return (
-              <div key={plan.id} className="example-card" onClick={() => handleEdit(plan)}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <span className="tag" style={{ backgroundColor: plan.estado === 'Guardado' ? 'var(--bg-sage-soft)' : '#fef9c3', color: plan.estado === 'Guardado' ? 'var(--primary-sage)' : '#ca8a04' }}>
-                    {plan.estado || 'Guardado'}
+              <article 
+                key={plan.id} 
+                className="mgmt-card" 
+                onClick={() => handleEdit(plan)}
+                tabIndex={0}
+                role="button"
+                onKeyDown={(e) => { if (e.key === 'Enter') handleEdit(plan); }}
+                aria-label={`Ver plan ${plan.tema || 'Sin título'}`}
+              >
+                <div className="mgmt-card-header">
+                  <span className={`editor-badge ${estado === 'Sistematizado' ? 'saved' : estado === 'Biblioteca' ? 'draft' : 'saved'}`} style={{ fontSize: '11.5px', padding: '2px 8px' }}>
+                    <FileCheck size={12} /> {estado}
                   </span>
-                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{fecha}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <Calendar size={13} />
+                    <span>{fecha}</span>
+                  </div>
                 </div>
-                <h3>{plan.tema || 'Plan sin título'}</h3>
-                <p><strong>Grado:</strong> {plan.grado}</p>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
+
+                <h2 className="mgmt-card-title">{plan.tema || 'Plan de clase sin título'}</h2>
+                
+                <p className="mgmt-card-desc">
+                  {plan.objetivos ? (
+                    plan.objetivos.length > 110 ? `${plan.objetivos.substring(0, 110)}...` : plan.objetivos
+                  ) : (
+                    'Secuencia didáctica estructurada y lista para impartir en el aula.'
+                  )}
+                </p>
+
+                <div className="mgmt-card-meta">
+                  {plan.materia && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <BookOpen size={13} style={{ color: 'var(--primary-sage)' }} /> {plan.materia}
+                    </span>
+                  )}
+                  {plan.grado && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <GraduationCap size={13} style={{ color: 'var(--primary-sage)' }} /> {plan.grado}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mgmt-card-actions">
                   <button 
-                    className="btn" 
-                    style={{ flex: 1, padding: '6px 12px', minHeight: '32px', fontSize: '13px' }}
+                    className="btn btn-primary" 
+                    style={{ flex: 1, padding: '7px 12px', fontSize: '13px', minHeight: '36px' }}
                     onClick={(e) => { e.stopPropagation(); handleEdit(plan); }}
+                    title="Abrir y editar en el visor de documentos"
                   >
-                    Ver
+                    <Eye size={14} /> <span>Abrir</span>
                   </button>
                   <button 
                     className="btn-outline" 
-                    style={{ flex: 1, padding: '6px 12px', minHeight: '32px', fontSize: '13px', color: 'var(--primary-active)' }}
+                    style={{ padding: '7px 10px', fontSize: '13px', minHeight: '36px', color: 'var(--primary-active)' }}
                     onClick={(e) => { e.stopPropagation(); handleAction(plan.id, 'sistematizar'); }}
+                    title="Convertir en experiencia sistematizada"
                   >
-                    Sistematizar
+                    <Sparkles size={14} /> <span className="hide-mobile">Sistematizar</span>
                   </button>
                   <button 
                     className="btn-outline" 
-                    style={{ flex: 1, padding: '6px 12px', minHeight: '32px', fontSize: '13px' }}
+                    style={{ padding: '7px 10px', fontSize: '13px', minHeight: '36px' }}
                     onClick={(e) => { e.stopPropagation(); handleAction(plan.id, 'compartir'); }}
+                    title="Publicar en la biblioteca comunitaria"
                   >
-                    Compartir
+                    <Share2 size={14} />
                   </button>
                   <button 
                     className="btn-outline" 
-                    style={{ padding: '6px 12px', minHeight: '32px', fontSize: '13px', color: 'var(--error-color)' }}
-                    onClick={(e) => { e.stopPropagation(); handleAction(plan.id, 'delete'); }}
+                    style={{ padding: '7px 10px', fontSize: '13px', minHeight: '36px', color: 'var(--error-color)', borderColor: '#FECACA' }}
+                    onClick={(e) => { e.stopPropagation(); handleAction(plan, 'delete'); }}
+                    title="Eliminar este plan"
                   >
-                    Eliminar
+                    <Trash2 size={14} />
                   </button>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
       )}
+
+      {/* Modal de confirmación de eliminación con diseño de cristal */}
+      <ConfirmModal
+        isOpen={Boolean(planToDelete)}
+        onClose={() => setPlanToDelete(null)}
+        onConfirm={handleConfirmDelete}
+        title="¿Eliminar este plan de clase?"
+        message={`¿Estás seguro de que deseas eliminar permanentemente "${planToDelete?.tema || planToDelete?.metadata?.tema || 'este plan'}"? Esta acción removerá el archivo de tu cuenta y no podrá revertirse.`}
+        confirmText="Eliminar Plan"
+        cancelText="Conservar Plan"
+        isDestructive={true}
+        confirmLoading={isDeleting}
+      />
     </div>
   );
 }

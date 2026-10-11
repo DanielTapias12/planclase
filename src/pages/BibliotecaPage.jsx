@@ -3,7 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Loader2 } from 'lucide-react';
+import { 
+  Loader2, 
+  Library, 
+  Search, 
+  Copy, 
+  Eye, 
+  X, 
+  GraduationCap, 
+  User, 
+  BookOpen, 
+  Download,
+  Filter
+} from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -24,6 +36,20 @@ export default function BibliotecaPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!previewPlan) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setPreviewPlan(null);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = orig;
+    };
+  }, [previewPlan]);
+
+  useEffect(() => {
     const fetchRecursos = async () => {
       setLoading(true);
       try {
@@ -34,14 +60,15 @@ export default function BibliotecaPage() {
         setRecursos(data);
       } catch (e) {
         console.error("Error fetching library", e);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     fetchRecursos();
   }, []);
 
   const handleClonar = (rec) => {
-    loadPlan(rec.metadata, rec.markdown);
+    loadPlan(rec.metadata || rec, rec.markdown, null); // Clonar como nueva secuencia
     navigate('/editor');
   };
 
@@ -49,96 +76,251 @@ export default function BibliotecaPage() {
     const titulo = rec.tema || rec.metadata?.tema || '';
     const autor = rec.metadata?.autor || 'Docente';
     const grado = rec.grado || rec.metadata?.grado || '';
+    const materia = rec.materia || rec.metadata?.materia || '';
     
-    const matchesSearch = titulo.toLowerCase().includes(searchTerm.toLowerCase()) || autor.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = 
+      titulo.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      autor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      materia.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesGrade = selectedGrade === 'Todos los grados' || grado === selectedGrade;
     return matchesSearch && matchesGrade;
   });
 
   return (
-    <div className="planificador-view">
-      <div className="planificador-header">
-        <h2>Biblioteca de Planes</h2>
-        <p>Explora y utiliza planes de clase compartidos por otros docentes.</p>
+    <div className="mgmt-container">
+      
+      {/* Cabecera Editorial del Módulo */}
+      <header className="mgmt-header">
+        <div className="mgmt-header-info">
+          <div>
+            <div className="editorial-badge">
+              <Library size={14} color="#2B524A" />
+              <span>Recursos Didácticos Abiertos</span>
+            </div>
+            <h1 className="mgmt-title">Biblioteca Comunitaria</h1>
+            <p className="mgmt-subtitle">
+              Explora, consulta y clona secuencias didácticas compartidas abiertamente por la red de docentes. Adapta cualquier experiencia a las necesidades de tu contexto escolar.
+            </p>
+          </div>
+        </div>
+
+        <div className="mgmt-stats-bar">
+          <div className="mgmt-stat-pill">
+            <BookOpen size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>{recursos.length} {recursos.length === 1 ? 'Recurso disponible' : 'Recursos disponibles'}</span>
+          </div>
+        </div>
+      </header>
+
+      {/* Barra de Filtros y Búsqueda */}
+      <div className="mgmt-filter-bar">
+        <div className="mgmt-search-box">
+          <Search size={16} style={{ color: 'var(--text-secondary)' }} />
+          <input 
+            type="text" 
+            placeholder="Buscar por tema, asignatura o autor..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="mgmt-search-input"
+            aria-label="Buscar en la biblioteca"
+          />
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Filter size={15} style={{ color: 'var(--text-secondary)' }} />
+          <select 
+            value={selectedGrade}
+            onChange={(e) => setSelectedGrade(e.target.value)}
+            className="wizard-select"
+            style={{ 
+              width: 'auto', 
+              minWidth: '180px', 
+              padding: '9px 14px', 
+              fontSize: '13.5px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid rgba(49, 91, 84, 0.22)',
+              borderRadius: '10px',
+              color: '#142B25'
+            }}
+            aria-label="Filtrar por grado escolar"
+          >
+            {gradosOptions.map(g => <option key={g} value={g}>{g}</option>)}
+          </select>
+        </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '32px' }}>
-        <input 
-          type="text" 
-          placeholder="Buscar por tema o autor..." 
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ flex: 1, padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}
-        />
-        <select 
-          value={selectedGrade}
-          onChange={(e) => setSelectedGrade(e.target.value)}
-          style={{ width: '200px', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}
-        >
-          {gradosOptions.map(g => <option key={g} value={g}>{g}</option>)}
-        </select>
-      </div>
-
+      {/* Estado de Carga */}
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px', gap: '8px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={24} className="spin" /> Cargando biblioteca comunitaria...
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
+          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
+          <p style={{ fontSize: '14.5px' }}>Explorando la biblioteca comunitaria...</p>
+        </div>
+      ) : filteredRecursos.length === 0 ? (
+        /* Estado Vacío */
+        <div className="mgmt-empty-card">
+          <div className="mgmt-empty-icon">
+            <Library size={30} />
+          </div>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', color: 'var(--text-main)', marginBottom: '8px' }}>
+            No se encontraron recursos
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14.5px', marginBottom: '22px' }}>
+            {searchTerm || selectedGrade !== 'Todos los grados'
+              ? 'Prueba modificando los términos de búsqueda o el grado seleccionado.'
+              : 'Aún no hay secuencias compartidas en la biblioteca pública. ¡Sé el primero en compartir desde Mis Planes!'}
+          </p>
+          {(searchTerm || selectedGrade !== 'Todos los grados') && (
+            <button className="btn-outline" onClick={() => { setSearchTerm(''); setSelectedGrade('Todos los grados'); }}>
+              Restablecer filtros
+            </button>
+          )}
         </div>
       ) : (
-        <div className="grid-list">
-          {filteredRecursos.length === 0 && <p style={{ color: 'var(--text-secondary)' }}>No se encontraron recursos en la biblioteca.</p>}
-          {filteredRecursos.map(rec => (
-            <div key={rec.id} className="example-card" onClick={() => handleClonar(rec)} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}>
-              <span className="tag" style={{ marginBottom: '12px', display: 'inline-block', alignSelf: 'flex-start', backgroundColor: '#e0f2fe', color: '#0369a1' }}>Plan Compartido</span>
-              <h3 style={{ marginBottom: '8px' }}>{rec.tema || rec.metadata?.tema || 'Plan de Clase'}</h3>
-              <p style={{ fontWeight: 'bold', color: 'var(--text-main)', marginBottom: '8px' }}>Por: {rec.metadata?.autor || 'Docente'}</p>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '16px', flex: 1 }}>Grado sugerido: {rec.grado || rec.metadata?.grado}</p>
-            <div style={{ display: 'flex', gap: '8px', marginTop: 'auto' }}>
-              <button 
-                className="btn-outline" 
-                style={{ flex: 1, padding: '6px 16px', fontSize: '13px' }}
-                onClick={(e) => { e.stopPropagation(); setPreviewPlan(rec); }}
+        /* Cuadrícula de Recursos Comunitarios */
+        <div className="mgmt-grid">
+          {filteredRecursos.map(rec => {
+            const titulo = rec.tema || rec.metadata?.tema || 'Plan de Clase';
+            const autor = rec.metadata?.autor || 'Docente';
+            const grado = rec.grado || rec.metadata?.grado || 'Sin especificar';
+            const materia = rec.materia || rec.metadata?.materia || '';
+            const descargas = rec.descargas || 0;
+
+            return (
+              <article 
+                key={rec.id} 
+                className="mgmt-card" 
+                onClick={() => setPreviewPlan(rec)}
+                tabIndex={0}
+                role="button"
+                onKeyDown={(e) => { if (e.key === 'Enter') setPreviewPlan(rec); }}
+                aria-label={`Ver recurso ${titulo}`}
               >
-                Ver
-              </button>
-              <button 
-                className="btn" 
-                style={{ flex: 1, padding: '6px 16px', fontSize: '13px' }}
-                onClick={(e) => { e.stopPropagation(); handleClonar(rec); }}
-              >
-                Usar
-              </button>
-            </div>
-            <div style={{ textAlign: 'right', marginTop: '8px' }}>
-              <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>{rec.descargas} descargas</span>
-            </div>
-          </div>
-        ))}
-        {filteredRecursos.length === 0 && (
-          <p style={{ color: 'var(--text-secondary)' }}>No se encontraron planes que coincidan con la búsqueda.</p>
-        )}
-      </div>
+                <div className="mgmt-card-header">
+                  <span className="editor-badge saved" style={{ fontSize: '11.5px', padding: '2px 8px' }}>
+                    Plan Compartido
+                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <Download size={12} />
+                    <span>{descargas} usos</span>
+                  </div>
+                </div>
+
+                <h2 className="mgmt-card-title">{titulo}</h2>
+                
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: 'var(--text-main)', marginBottom: '12px' }}>
+                  <User size={14} style={{ color: 'var(--primary-sage)' }} />
+                  <span>Por: <strong>{autor}</strong></span>
+                </div>
+
+                <div className="mgmt-card-meta">
+                  {materia && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <BookOpen size={13} style={{ color: 'var(--primary-sage)' }} /> {materia}
+                    </span>
+                  )}
+                  {grado && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <GraduationCap size={13} style={{ color: 'var(--primary-sage)' }} /> {grado}
+                    </span>
+                  )}
+                </div>
+
+                <div className="mgmt-card-actions">
+                  <button 
+                    className="btn-outline" 
+                    style={{ flex: 1, padding: '7px 12px', fontSize: '13px', minHeight: '36px' }}
+                    onClick={(e) => { e.stopPropagation(); setPreviewPlan(rec); }}
+                    title="Vista previa del documento"
+                  >
+                    <Eye size={14} /> <span>Previsualizar</span>
+                  </button>
+                  <button 
+                    className="btn btn-primary" 
+                    style={{ flex: 1, padding: '7px 12px', fontSize: '13px', minHeight: '36px' }}
+                    onClick={(e) => { e.stopPropagation(); handleClonar(rec); }}
+                    title="Clonar esta secuencia didáctica en tu editor"
+                  >
+                    <Copy size={14} /> <span>Usar Plan</span>
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       )}
 
+      {/* Modal de Previsualización Completa con Diseño de Cristal */}
       {previewPlan && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: '#FFF', borderRadius: '12px', width: '90%', maxWidth: '800px', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid #E2E8F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ fontSize: '20px', color: '#0F172A', margin: 0 }}>Vista General: {previewPlan.tema || previewPlan.metadata?.tema}</h3>
-              <button onClick={() => setPreviewPlan(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '24px', color: '#64748B' }}>&times;</button>
-            </div>
-            <div style={{ padding: '32px', overflowY: 'auto', flex: 1 }} className="markdown-content">
-              <div style={{ marginBottom: '24px', padding: '16px', backgroundColor: 'var(--bg-sage-soft)', borderRadius: '8px' }}>
-                <p><strong>Autor:</strong> {previewPlan.metadata?.autor || 'Docente'}</p>
-                <p><strong>Materia:</strong> {previewPlan.metadata?.materia || previewPlan.materia}</p>
-                <p><strong>Grado:</strong> {previewPlan.metadata?.grado || previewPlan.grado}</p>
+        <div 
+          className="modal-glass-backdrop" 
+          onClick={(e) => { if (e.target === e.currentTarget) setPreviewPlan(null); }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="preview-plan-title"
+        >
+          <div className="modal-glass-card" style={{ maxWidth: '860px' }}>
+            <div className="modal-glass-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(71, 122, 114, 0.14)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#1C3D36',
+                  flexShrink: 0
+                }}>
+                  <BookOpen size={20} />
+                </div>
+                <div>
+                  <h3 id="preview-plan-title" className="modal-glass-title" style={{ fontSize: '18px' }}>
+                    {previewPlan.tema || previewPlan.metadata?.tema || 'Plan de Clase'}
+                  </h3>
+                  <span style={{ fontSize: '12.5px', color: '#527068' }}>
+                    Compartido por {previewPlan.metadata?.autor || 'Docente de la Comunidad'}
+                  </span>
+                </div>
               </div>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {previewPlan.markdown}
-              </ReactMarkdown>
+              <button 
+                onClick={() => setPreviewPlan(null)} 
+                className="modal-glass-close-btn"
+                aria-label="Cerrar vista previa"
+              >
+                <X size={18} />
+              </button>
             </div>
-            <div style={{ padding: '20px 24px', borderTop: '1px solid #E2E8F0', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+
+            <div className="modal-glass-body">
+              <div style={{ 
+                marginBottom: '20px', 
+                padding: '12px 18px', 
+                backgroundColor: 'rgba(71, 122, 114, 0.1)', 
+                border: '1px solid rgba(71, 122, 114, 0.2)',
+                borderRadius: '14px', 
+                display: 'flex', 
+                gap: '24px', 
+                flexWrap: 'wrap', 
+                fontSize: '13px', 
+                color: '#142B25' 
+              }}>
+                <span><strong>Materia:</strong> {previewPlan.metadata?.materia || previewPlan.materia || 'General'}</span>
+                <span><strong>Grado:</strong> {previewPlan.metadata?.grado || previewPlan.grado || 'General'}</span>
+              </div>
+
+              <article className="markdown-content" style={{ color: '#142B25' }}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {previewPlan.markdown || '_Sin contenido markdown disponible para este plan._'}
+                </ReactMarkdown>
+              </article>
+            </div>
+
+            <div className="modal-glass-footer">
               <button className="btn-outline" onClick={() => setPreviewPlan(null)}>Cerrar</button>
-              <button className="btn" onClick={() => handleClonar(previewPlan)}>Usar este plan</button>
+              <button className="btn btn-primary" onClick={() => { handleClonar(previewPlan); setPreviewPlan(null); }}>
+                <Copy size={14} /> Usar este plan en mi cuenta
+              </button>
             </div>
           </div>
         </div>

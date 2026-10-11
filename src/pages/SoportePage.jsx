@@ -2,71 +2,201 @@ import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { addTicket } from '../services/dbService';
 import { auth } from '../firebase';
+import { 
+  LifeBuoy, 
+  Send, 
+  CheckCircle2, 
+  Sparkles, 
+  AlertCircle, 
+  MessageSquare, 
+  Clock, 
+  ShieldCheck, 
+  Loader2 
+} from 'lucide-react';
 
 export default function SoportePage() {
   const [enviado, setEnviado] = useState(false);
   const [asunto, setAsunto] = useState('');
   const [desc, setDesc] = useState('');
+  const [enviando, setEnviando] = useState(false);
   const { userId, userProfile } = useAppStore();
 
   if (enviado) {
     return (
-      <div className="planificador-view" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', padding: '60px 20px' }}>
-        <h2 style={{ color: 'var(--primary-sage)', marginBottom: '16px' }}>¡Ticket Enviado con Éxito!</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>Nuestro equipo técnico revisará tu solicitud y se pondrá en contacto pronto.</p>
-        <button className="btn" onClick={() => { setEnviado(false); setAsunto(''); setDesc(''); }}>Enviar otro ticket</button>
+      <div className="mgmt-container" style={{ maxWidth: '780px', width: '100%', boxSizing: 'border-box' }}>
+        <div 
+          className="mgmt-card" 
+          style={{ 
+            textAlign: 'center', 
+            padding: '56px 36px', 
+            background: 'linear-gradient(135deg, rgba(255, 253, 249, 0.85) 0%, rgba(220, 252, 231, 0.65) 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.90)'
+          }}
+        >
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', backgroundColor: 'rgba(22, 163, 74, 0.16)', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+            <CheckCircle2 size={36} />
+          </div>
+          <h2 style={{ color: '#142B25', fontSize: '26px', fontWeight: 700, margin: '0 0 10px 0', fontFamily: 'var(--font-heading)' }}>
+            ¡Ticket Enviado con Éxito!
+          </h2>
+          <p style={{ color: '#2B453E', fontSize: '15.5px', maxWidth: '520px', margin: '0 auto 28px', lineHeight: '1.6' }}>
+            Hemos recibido tu solicitud técnica. Nuestro equipo de administración curricular la revisará y podrás consultar la respuesta en tu bandeja o en la pestaña de notificaciones.
+          </p>
+          <button 
+            type="button"
+            className="btn btn-primary" 
+            onClick={() => { setEnviado(false); setAsunto(''); setDesc(''); }}
+            style={{ padding: '10px 26px', fontSize: '14.5px' }}
+          >
+            Enviar otra solicitud
+          </button>
+        </div>
       </div>
     );
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!asunto.trim() || !desc.trim() || enviando) return;
+
+    setEnviando(true);
+    try {
+      const safeUserId = userId || 'anonymous';
+      const safeNombre = userProfile?.nombre || 'Docente Anónimo';
+      const safeEmail = auth.currentUser?.email || userProfile?.email || 'N/A';
+      await addTicket(safeUserId, safeNombre, safeEmail, asunto.trim(), desc.trim());
+      setEnviado(true);
+    } catch(err) {
+      console.error("Error al enviar ticket de soporte:", err);
+      alert("Error al enviar el ticket: " + err.message);
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   return (
-    <div className="planificador-view" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <div className="planificador-header">
-        <h2>Soporte Técnico</h2>
-        <p>¿Tienes problemas técnicos con INSPIRATEC? Estamos aquí para ayudarte.</p>
-      </div>
-      <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        <div>
-          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Asunto</label>
-          <input 
-            type="text" 
-            placeholder="Ej. Problema al generar un plan" 
-            value={asunto}
-            onChange={(e) => setAsunto(e.target.value)}
-            style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', fontFamily: 'inherit' }} 
-          />
+    <div className="mgmt-container" style={{ maxWidth: '920px', width: '100%', boxSizing: 'border-box' }}>
+      
+      {/* Cabecera Editorial Institucional */}
+      <header className="mgmt-header">
+        <div className="mgmt-header-info">
+          <div className="mgmt-header-icon">
+            <LifeBuoy size={26} />
+          </div>
+          <div>
+            <div className="editorial-badge">
+              <ShieldCheck size={13} color="#2B524A" />
+              <span>Mesa de Ayuda y Soporte Técnico</span>
+            </div>
+            <h1 className="mgmt-title">Soporte Técnico Institucional</h1>
+            <p className="mgmt-subtitle">
+              ¿Tienes dificultades con el asistente de IA, generación de planes o configuración de tu cuenta? Estamos aquí para acompañarte.
+            </p>
+          </div>
         </div>
-        <div>
-          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Descripción detallada</label>
-          <textarea 
-            placeholder="Describe el problema técnico que estás experimentando..." 
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            style={{ width: '100%', height: '120px', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', resize: 'none', fontFamily: 'inherit' }}
-          />
+
+        <div className="mgmt-stats-bar">
+          <div className="mgmt-stat-pill">
+            <Clock size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>Respuesta en &lt; 24h</span>
+          </div>
+          <div className="mgmt-stat-pill">
+            <MessageSquare size={14} style={{ color: 'var(--primary-sage)' }} />
+            <span>Atención Directa</span>
+          </div>
         </div>
-        <button 
-          className="btn" 
-          onClick={async () => {
-            if (asunto.trim() && desc.trim()) {
-              try {
-                const safeUserId = userId || 'anonymous';
-                const safeNombre = userProfile?.nombre || 'Docente Anónimo';
-                const safeEmail = auth.currentUser?.email || userProfile?.email || 'N/A';
-                await addTicket(safeUserId, safeNombre, safeEmail, asunto, desc);
-                setEnviado(true);
-              } catch(e) {
-                console.error("Error completo al enviar ticket:", e);
-                alert("Error al enviar el ticket: " + e.message);
-              }
-            }
-          }}
-          style={{ alignSelf: 'flex-start', padding: '12px 24px' }}
-          disabled={!asunto.trim() || !desc.trim()}
-        >
-          Enviar Ticket
-        </button>
+      </header>
+
+      {/* Grid de Formulario y Consejos Rápidos */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '22px' }}>
+        
+        {/* Formulario Principal de Ticket */}
+        <div className="mgmt-card" style={{ padding: '28px 32px' }}>
+          <div style={{ marginBottom: '20px', borderBottom: '1px solid rgba(49, 91, 84, 0.14)', paddingBottom: '12px' }}>
+            <h2 style={{ fontSize: '18px', color: '#142B25', margin: 0, fontWeight: 700 }}>
+              Crear Nuevo Ticket de Asistencia
+            </h2>
+          </div>
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+            <div className="input-group" style={{ margin: 0 }}>
+              <label htmlFor="soporte-asunto" style={{ fontWeight: 600, color: '#142B25', display: 'block', marginBottom: '8px', fontSize: '13.5px' }}>
+                Asunto del caso <span style={{ color: '#DC2626' }}>*</span>
+              </label>
+              <input 
+                id="soporte-asunto"
+                type="text" 
+                placeholder="Ej.: Error al exportar plan a Word o clave de IA" 
+                value={asunto}
+                onChange={(e) => setAsunto(e.target.value)}
+                className="wizard-input"
+                required
+              />
+            </div>
+
+            <div className="input-group" style={{ margin: 0 }}>
+              <label htmlFor="soporte-desc" style={{ fontWeight: 600, color: '#142B25', display: 'block', marginBottom: '8px', fontSize: '13.5px' }}>
+                Descripción detallada del problema <span style={{ color: '#DC2626' }}>*</span>
+              </label>
+              <textarea 
+                id="soporte-desc"
+                placeholder="Describe qué ocurrió, qué pasos estabas realizando y cualquier mensaje de error que hayas observado..." 
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
+                className="wizard-textarea"
+                style={{ height: '140px' }}
+                required
+              />
+              <span style={{ fontSize: '12.5px', color: '#4A635B', marginTop: '6px', display: 'block' }}>
+                Incluye detalles como la materia o si el problema ocurre en un dispositivo específico.
+              </span>
+            </div>
+
+            <div style={{ paddingTop: '8px' }}>
+              <button 
+                type="submit"
+                className="btn btn-primary" 
+                disabled={!asunto.trim() || !desc.trim() || enviando}
+                style={{ padding: '11px 26px', fontSize: '14px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                {enviando ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
+                <span>{enviando ? 'Enviando ticket...' : 'Enviar Solicitud'}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Panel Lateral con Consejos Rápidos */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          
+          <div className="mgmt-card" style={{ padding: '22px 24px', backgroundColor: 'rgba(255, 255, 255, 0.72)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <Sparkles size={20} color="#183630" />
+              <h3 style={{ fontSize: '15px', color: '#142B25', margin: 0, fontWeight: 700 }}>
+                ¿Falla la generación con IA?
+              </h3>
+            </div>
+            <p style={{ fontSize: '13.5px', color: '#2B453E', lineHeight: '1.55', margin: 0 }}>
+              Verifica que tu API Key de Google Gemini esté activa y sin espacios al inicio o final en la pestaña de <strong>Configuración IA</strong>. Puedes generar una nueva clave gratuita en Google AI Studio en menos de un minuto.
+            </p>
+          </div>
+
+          <div className="mgmt-card" style={{ padding: '22px 24px', backgroundColor: 'rgba(255, 255, 255, 0.72)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <AlertCircle size={20} color="#183630" />
+              <h3 style={{ fontSize: '15px', color: '#142B25', margin: 0, fontWeight: 700 }}>
+                Protección de tus Datos
+              </h3>
+            </div>
+            <p style={{ fontSize: '13.5px', color: '#2B453E', lineHeight: '1.55', margin: 0 }}>
+              Tus solicitudes son confidenciales y están respaldadas por nuestra política de tratamiento de datos personales (Ley 1581 de 2012). Ninguna información sensible es compartida públicamente.
+            </p>
+          </div>
+
+        </div>
+
       </div>
+
     </div>
   );
 }

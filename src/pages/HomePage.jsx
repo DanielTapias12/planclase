@@ -1,82 +1,523 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { Sparkles, PlusCircle, LayoutTemplate, ArrowRight } from 'lucide-react';
-import { Button, Card, Badge } from '../components/ui';
-import HairlineFigure from '../components/HairlineFigure';
+import { getPlantillas } from '../services/dbService';
+import { 
+  Sparkles, 
+  PlusCircle, 
+  ArrowRight, 
+  BookOpen, 
+  Settings, 
+  FileText, 
+  AlertTriangle,
+  Layers
+} from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const { userProfile, apiKey } = useAppStore();
-  
-  // Dummy data for "Descubre" templates
-  const templates = [
-    { id: 1, title: 'Laboratorio de Ciencias', desc: 'Plantilla para experimentos', tag: 'Ciencias' },
-    { id: 2, title: 'Debate Crítico', desc: 'Estructura para foros de discusión', tag: 'Sociales' },
-    { id: 3, title: 'Proyecto Maker', desc: 'Construcción paso a paso', tag: 'Tecnología' }
-  ];
+  const { 
+    userProfile, 
+    apiKey, 
+    planesCount, 
+    userId, 
+    misPlantillas, 
+    setMisPlantillas, 
+    updateWizardData 
+  } = useAppStore();
+
+  useEffect(() => {
+    if (!userId) return;
+    if (misPlantillas && misPlantillas.length > 0) return;
+
+    getPlantillas(userId)
+      .then((fetched) => {
+        const defaults = [{ 
+          id: 'default-1', 
+          titulo: 'Estructura estándar INSPIRATEC', 
+          formato: 'Estructura predeterminada', 
+          publico: true, 
+          instrucciones: '' 
+        }];
+        setMisPlantillas([...defaults, ...fetched]);
+      })
+      .catch((e) => console.error('Error cargando plantillas en HomePage:', e));
+  }, [userId, misPlantillas, setMisPlantillas]);
+
+  const plantillasDisponibles = (misPlantillas && misPlantillas.length > 0)
+    ? misPlantillas
+    : [{ 
+        id: 'default-1', 
+        titulo: 'Estructura estándar INSPIRATEC', 
+        formato: 'Estructura predeterminada', 
+        publico: true, 
+        instrucciones: '' 
+      }];
+
+  const handleUsarPlantilla = (tpl) => {
+    updateWizardData({ 
+      formato: tpl.titulo,
+      formatoInstrucciones: tpl.instrucciones || ''
+    });
+    navigate('/');
+  };
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '24px' }}>
-      {/* Header Profile */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
-        <div>
-          <h1 style={{ fontSize: '32px', marginBottom: '8px' }}>¡Hola, {userProfile?.nombre || 'Docente'}! 👋</h1>
-          <p style={{ color: 'var(--text-2)' }}>¿Qué vamos a enseñar hoy?</p>
-        </div>
-        <div style={{ textAlign: 'right', backgroundColor: 'var(--surface)', padding: '16px', borderRadius: 'var(--radius-md)', border: '1px solid var(--text-2)' }}>
-          <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: 'var(--text-2)' }}>Planes generados este mes</p>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--primary)' }}>0<span style={{ fontSize: '16px', color: 'var(--text-2)' }}>/5</span></div>
-        </div>
-      </div>
+    <div className="home-full-immersive-view">
+      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+        
+        {/* 1 y 2. Panel Editorial de Bienvenida y Acciones Principales */}
+        <section 
+          className="home-editorial-welcome-panel"
+          style={{
+            backgroundColor: 'rgba(255, 253, 249, 0.68)',
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            border: '1px solid rgba(255, 255, 255, 0.82)',
+            borderRadius: '22px',
+            padding: '38px 42px',
+            marginBottom: '26px',
+            boxShadow: '0 10px 32px rgba(20, 42, 38, 0.08)'
+          }}
+        >
+          {/* Badge institucional */}
+          <div style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '8px', 
+            padding: '5px 14px', 
+            backgroundColor: 'rgba(71, 122, 114, 0.14)', 
+            borderRadius: '999px', 
+            color: '#1C3A34', 
+            fontSize: '11.5px', 
+            fontWeight: '700', 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.08em', 
+            marginBottom: '16px'
+          }}>
+            <Sparkles size={14} color="#2B524A" />
+            Espacio Curricular Docente
+          </div>
 
-      {/* Main Action */}
-      <div style={{ backgroundColor: 'var(--primary)', color: 'white', padding: '48px', borderRadius: 'var(--radius-lg)', textAlign: 'center', marginBottom: '48px', position: 'relative', overflow: 'hidden' }}>
-        {/* Elementos interactivos decorativos */}
-        <div style={{ position: 'absolute', top: '-60px', left: '-20px', opacity: 0.2, pointerEvents: 'auto' }}>
-          <HairlineFigure name="laptop" style={{ width: '300px', height: '300px' }} />
-        </div>
-        <div style={{ position: 'absolute', bottom: '-40px', right: '-20px', opacity: 0.2, pointerEvents: 'auto' }}>
-          <HairlineFigure name="cube" style={{ width: '250px', height: '250px' }} />
-        </div>
+          {/* Título de bienvenida */}
+          <h1 style={{ 
+            fontSize: '34px', 
+            fontFamily: 'var(--font-heading)', 
+            color: '#142B25', 
+            margin: '0 0 12px 0',
+            fontWeight: 700,
+            letterSpacing: '-0.015em',
+            lineHeight: '1.25'
+          }}>
+            Bienvenido, {userProfile?.nombre || 'Docente'}
+          </h1>
 
-        <div style={{ position: 'relative', zIndex: 2 }}>
-          <Sparkles size={48} style={{ marginBottom: '24px', opacity: 0.9 }} />
-          <h2 style={{ fontSize: '28px', marginBottom: '16px' }}>Tu asistente de planeación te espera</h2>
-          <p style={{ fontSize: '16px', opacity: 0.9, maxWidth: '500px', margin: '0 auto 32px' }}>
-            Genera secuencias didácticas completas, adaptadas a tu contexto y con estrategias de inclusión, en menos de un minuto.
+          {/* Descripción editorial */}
+          <p style={{ 
+            color: '#243630', 
+            fontSize: '15.5px', 
+            maxWidth: '720px', 
+            margin: '0 0 26px 0',
+            lineHeight: '1.65',
+            fontWeight: 500
+          }}>
+            Diseña secuencias didácticas fundamentadas, rigurosas y adaptadas a tu contexto escolar con el soporte de inteligencia artificial pedagógica y principios DUA.
           </p>
-          <Button 
-            variant="surface" 
-            style={{ fontSize: '18px', padding: '16px 32px' }}
-            onClick={() => navigate('/creador')}
-          >
-            <PlusCircle style={{ marginRight: '8px' }} /> Crear mi primer plan
-          </Button>
-          {!apiKey && (
-            <p style={{ marginTop: '16px', fontSize: '13px', opacity: 0.8 }}>
-              ⚠️ Necesitas configurar tu IA en "Mi cuenta" primero.
-            </p>
-          )}
-        </div>
-      </div>
 
-      {/* Descubre Section */}
-      <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '24px' }}>Descubre</h2>
-          <button className="auth-link-btn" onClick={() => navigate('/plantillas')}>Ver todas <ArrowRight size={16} style={{ verticalAlign: 'middle' }}/></button>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-          {templates.map(tpl => (
-            <Card key={tpl.id} style={{ cursor: 'pointer', transition: 'transform 0.2s' }} onClick={() => navigate('/creador')}>
-              <Badge variant="ia" style={{ marginBottom: '12px' }}>{tpl.tag}</Badge>
-              <h3 style={{ fontSize: '18px', marginBottom: '8px' }}><LayoutTemplate size={18} style={{ verticalAlign: 'middle', marginRight: '8px', color: 'var(--primary)' }}/>{tpl.title}</h3>
-              <p style={{ color: 'var(--text-2)', fontSize: '14px', margin: 0 }}>{tpl.desc}</p>
-            </Card>
-          ))}
-        </div>
+          {/* Acciones principales */}
+          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <button 
+              type="button"
+              className="btn btn-primary"
+              style={{ 
+                fontSize: '14.5px', 
+                padding: '12px 24px', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '9px',
+                fontWeight: 600,
+                backgroundColor: '#183630',
+                color: '#FFFFFF',
+                borderRadius: '10px',
+                border: 'none',
+                boxShadow: '0 4px 14px rgba(20, 42, 38, 0.22)',
+                cursor: 'pointer'
+              }}
+              onClick={() => navigate('/')}
+            >
+              <PlusCircle size={18} /> Iniciar Planificador de Clases
+            </button>
+
+            <button 
+              type="button"
+              className="btn btn-secondary"
+              style={{ 
+                fontSize: '14.5px', 
+                padding: '12px 22px', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '8px',
+                fontWeight: 600,
+                backgroundColor: 'rgba(255, 255, 255, 0.65)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                color: '#183630',
+                border: '1px solid rgba(49, 91, 84, 0.35)',
+                borderRadius: '10px',
+                cursor: 'pointer'
+              }}
+              onClick={() => navigate('/plantillas')}
+            >
+              <BookOpen size={16} /> Ver Plantillas Curriculares
+            </button>
+          </div>
+
+          {!apiKey && (
+            <div style={{ 
+              marginTop: '20px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              fontSize: '12.5px', 
+              color: 'var(--color-state-warning)', 
+              backgroundColor: 'rgba(234, 88, 12, 0.08)', 
+              padding: '9px 14px', 
+              borderRadius: '8px',
+              border: '1px solid rgba(234, 88, 12, 0.2)'
+            }}>
+              <AlertTriangle size={15} style={{ flexShrink: 0 }} />
+              <span>
+                Para activar la asistencia automatizada de IA, registra tu clave en{' '}
+                <button 
+                  type="button" 
+                  onClick={() => navigate('/config')} 
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    color: 'inherit', 
+                    fontWeight: '700', 
+                    textDecoration: 'underline', 
+                    cursor: 'pointer', 
+                    padding: 0 
+                  }}
+                >
+                  Configuración de IA
+                </button>.
+              </span>
+            </div>
+          )}
+        </section>
+
+        {/* 3. Indicadores semitransparentes de estado */}
+        <section 
+          className="home-metrics-grid"
+          style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '16px', 
+            marginBottom: '26px' 
+          }}
+        >
+          {/* Métrica: Planes Guardados */}
+          <div 
+            onClick={() => navigate('/mis-planes')}
+            style={{ 
+              backgroundColor: 'rgba(255, 253, 249, 0.72)', 
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              padding: '22px 26px', 
+              borderRadius: '18px', 
+              border: '1px solid rgba(255, 255, 255, 0.85)', 
+              boxShadow: '0 6px 20px rgba(20, 42, 38, 0.06)',
+              cursor: 'pointer',
+              transition: 'all 0.18s ease',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+            title="Ver todos mis planes guardados"
+          >
+            <div>
+              <p style={{ 
+                margin: '0 0 6px 0', 
+                fontSize: '11.5px', 
+                fontWeight: '700', 
+                color: '#435750', 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.06em' 
+              }}>
+                Mis Planes Guardados
+              </p>
+              <div style={{ 
+                fontSize: '28px', 
+                fontWeight: '700', 
+                color: '#142B25', 
+                fontFamily: 'var(--font-heading)',
+                lineHeight: 1
+              }}>
+                {planesCount || 0}
+              </div>
+              <p style={{ margin: '6px 0 0 0', fontSize: '13px', color: '#275249', fontWeight: 600 }}>
+                Explorar historial curricular &rarr;
+              </p>
+            </div>
+            <div style={{ 
+              width: '44px', 
+              height: '44px', 
+              borderRadius: '12px', 
+              backgroundColor: 'rgba(71, 122, 114, 0.12)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              color: '#275249'
+            }}>
+              <FileText size={20} />
+            </div>
+          </div>
+
+          {/* Estado: Servicio de IA */}
+          <div 
+            onClick={() => navigate('/config')}
+            style={{ 
+              backgroundColor: 'rgba(255, 253, 249, 0.72)', 
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              padding: '22px 26px', 
+              borderRadius: '18px', 
+              border: '1px solid rgba(255, 255, 255, 0.85)', 
+              boxShadow: '0 6px 20px rgba(20, 42, 38, 0.06)',
+              cursor: 'pointer',
+              transition: 'all 0.18s ease',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+            title="Gestionar configuración del modelo de lenguaje"
+          >
+            <div>
+              <p style={{ 
+                margin: '0 0 6px 0', 
+                fontSize: '11.5px', 
+                fontWeight: '700', 
+                color: '#435750', 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.06em' 
+              }}>
+                Asistente Pedagógico (Gemini)
+              </p>
+              <div style={{ 
+                fontSize: '14.5px', 
+                fontWeight: '600', 
+                color: apiKey ? 'var(--color-state-success)' : 'var(--color-state-warning)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '7px'
+              }}>
+                <span style={{ 
+                  width: '9px', 
+                  height: '9px', 
+                  borderRadius: '50%', 
+                  backgroundColor: apiKey ? 'var(--color-state-success)' : 'var(--color-state-warning)',
+                  display: 'inline-block' 
+                }} />
+                {apiKey ? 'Servicio activo y verificado' : 'Configuración de clave requerida'}
+              </div>
+              <p style={{ margin: '6px 0 0 0', fontSize: '13px', color: '#275249', fontWeight: 600 }}>
+                Administrar credenciales y modelo &rarr;
+              </p>
+            </div>
+            <div style={{ 
+              width: '44px', 
+              height: '44px', 
+              borderRadius: '12px', 
+              backgroundColor: 'rgba(71, 122, 114, 0.12)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              color: '#275249'
+            }}>
+              <Settings size={20} />
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Modelos de Secuencia Curricular */}
+        <section 
+          className="home-models-container"
+          style={{
+            backgroundColor: 'rgba(255, 253, 249, 0.68)',
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            border: '1px solid rgba(255, 255, 255, 0.80)',
+            borderRadius: '22px',
+            padding: '32px 34px',
+            boxShadow: '0 8px 28px rgba(20, 42, 38, 0.07)'
+          }}
+        >
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'flex-end', 
+            marginBottom: '20px',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            <div>
+              <h2 style={{ 
+                fontSize: '22px', 
+                fontFamily: 'var(--font-heading)', 
+                color: 'var(--color-brand-active)', 
+                margin: '0 0 4px 0',
+                fontWeight: 700
+              }}>
+                Modelos de Secuencia Curricular
+              </h2>
+              <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', margin: 0 }}>
+                Estructuras pedagógicas reales listas para transferir al planificador.
+              </p>
+            </div>
+            <button 
+              type="button" 
+              className="btn btn-secondary" 
+              style={{ 
+                padding: '8px 16px', 
+                fontSize: '13.5px', 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '6px' 
+              }}
+              onClick={() => navigate('/plantillas')}
+            >
+              Gestionar plantillas <ArrowRight size={14} />
+            </button>
+          </div>
+
+          {plantillasDisponibles.length === 0 ? (
+            <div style={{ 
+              backgroundColor: 'var(--color-surface-base)',
+              border: '1px dashed var(--color-border-subtle)',
+              borderRadius: 'var(--radius-md)',
+              padding: '36px 24px',
+              textAlign: 'center'
+            }}>
+              <Layers size={32} style={{ color: 'var(--color-text-muted)', marginBottom: '12px' }} />
+              <h3 style={{ fontSize: '16px', color: 'var(--color-text-primary)', margin: '0 0 6px 0' }}>
+                No hay plantillas curriculares adicionales
+              </h3>
+              <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', margin: '0 0 16px 0', maxWidth: '460px', marginLeft: 'auto', marginRight: 'auto' }}>
+                Puedes crear estructuras personalizadas o importar modelos en la sección de Plantillas.
+              </p>
+              <button 
+                type="button" 
+                className="btn btn-primary"
+                style={{ fontSize: '13.5px', padding: '8px 16px' }}
+                onClick={() => navigate('/plantillas')}
+              >
+                Ir a Plantillas
+              </button>
+            </div>
+          ) : (
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+              gap: '18px' 
+            }}>
+              {plantillasDisponibles.slice(0, 6).map((tpl) => (
+                <div 
+                  key={tpl.id || tpl.titulo} 
+                  style={{ 
+                    backgroundColor: 'rgba(255, 255, 255, 0.58)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.88)',
+                    borderRadius: '16px',
+                    padding: '22px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    boxShadow: '0 2px 10px rgba(20, 42, 38, 0.04)'
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.80)';
+                    e.currentTarget.style.boxShadow = '0 6px 18px rgba(20, 42, 38, 0.07)';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.58)';
+                    e.currentTarget.style.boxShadow = '0 2px 10px rgba(20, 42, 38, 0.04)';
+                  }}
+                  onClick={() => handleUsarPlantilla(tpl)}
+                  className="editorial-model-card"
+                  title={`Usar estructura: ${tpl.titulo}`}
+                >
+                  <div>
+                    <span style={{ 
+                      display: 'inline-block', 
+                      fontSize: '11px', 
+                      fontWeight: '700', 
+                      textTransform: 'uppercase', 
+                      letterSpacing: '0.06em', 
+                      color: 'var(--color-brand-primary)', 
+                      backgroundColor: 'var(--color-brand-soft)', 
+                      padding: '3px 8px', 
+                      borderRadius: '4px', 
+                      marginBottom: '12px' 
+                    }}>
+                      {tpl.formato || (tpl.publico ? 'Pública' : 'Personalizada')}
+                    </span>
+                    <h3 style={{ 
+                      fontSize: '16px', 
+                      fontWeight: '700', 
+                      color: 'var(--color-text-primary)', 
+                      margin: '0 0 8px 0', 
+                      lineHeight: '1.4' 
+                    }}>
+                      {tpl.titulo}
+                    </h3>
+                    {tpl.instrucciones ? (
+                      <p style={{ 
+                        color: 'var(--color-text-secondary)', 
+                        fontSize: '13px', 
+                        lineHeight: '1.5', 
+                        margin: 0,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}>
+                        {tpl.instrucciones}
+                      </p>
+                    ) : (
+                      <p style={{ color: 'var(--color-text-muted)', fontSize: '13px', margin: 0, fontStyle: 'italic' }}>
+                        Estructura estándar oficial con fases didácticas completas y adaptaciones DUA.
+                      </p>
+                    )}
+                  </div>
+                  <div style={{ 
+                    marginTop: '18px', 
+                    paddingTop: '12px', 
+                    borderTop: '1px solid var(--color-border-subtle)', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between', 
+                    fontSize: '13px', 
+                    color: 'var(--color-brand-active)', 
+                    fontWeight: '600' 
+                  }}>
+                    <span>Transferir al planificador</span>
+                    <ArrowRight size={14} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+
       </div>
     </div>
   );
 }
+
+
