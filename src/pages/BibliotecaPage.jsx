@@ -87,18 +87,32 @@ export default function BibliotecaPage() {
   });
 
   return (
-    <div className="mgmt-container">
+    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera Editorial del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div>
             <div className="editorial-badge">
               <Library size={14} color="#2B524A" />
               <span>Recursos Didácticos Abiertos</span>
             </div>
-            <h1 className="mgmt-title">Biblioteca Comunitaria</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Biblioteca Comunitaria
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Explora, consulta y clona secuencias didácticas compartidas abiertamente por la red de docentes. Adapta cualquier experiencia a las necesidades de tu contexto escolar.
             </p>
           </div>
@@ -112,8 +126,20 @@ export default function BibliotecaPage() {
         </div>
       </header>
 
-      {/* Barra de Filtros y Búsqueda */}
-      <div className="mgmt-filter-bar">
+      {/* Barra de Filtros y Búsqueda (Mismo desenfoque de cristal) */}
+      <div 
+        className="mgmt-filter-bar"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '18px',
+          padding: '12px 18px',
+          marginBottom: '26px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+        }}
+      >
         <div className="mgmt-search-box">
           <Search size={16} style={{ color: 'var(--text-secondary)' }} />
           <input 
@@ -194,6 +220,14 @@ export default function BibliotecaPage() {
                 role="button"
                 onKeyDown={(e) => { if (e.key === 'Enter') setPreviewPlan(rec); }}
                 aria-label={`Ver recurso ${titulo}`}
+                style={{
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
               >
                 <div className="mgmt-card-header">
                   <span className="editor-badge saved" style={{ fontSize: '11.5px', padding: '2px 8px' }}>
