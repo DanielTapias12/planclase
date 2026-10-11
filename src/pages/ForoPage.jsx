@@ -86,18 +86,32 @@ export default function ForoPage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '920px' }}>
+    <div className="mgmt-container" style={{ maxWidth: '960px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera Editorial del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div>
             <div className="editorial-badge">
               <MessagesSquare size={14} color="#2B524A" />
               <span>Comunidad y Diálogo Pedagógico</span>
             </div>
-            <h1 className="mgmt-title">Foro de Diálogo Docente</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Foro de Diálogo Docente
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Comparte inquietudes, debate metodologías de aula e interactúa con otros educadores para enriquecer tu práctica formativa.
             </p>
           </div>
@@ -111,10 +125,19 @@ export default function ForoPage() {
         </div>
       </header>
 
-      {/* Editor para Publicar Nueva Discusión */}
+      {/* Editor para Publicar Nueva Discusión (Mismo desenfoque y panel de cristal) */}
       <section 
         className="plantilla-form-card" 
-        style={{ marginBottom: '30px' }} 
+        style={{ 
+          backgroundColor: 'rgba(255, 254, 250, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '24px',
+          padding: '30px 34px',
+          marginBottom: '30px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }} 
         aria-labelledby="nueva-discusion-title"
       >
         <h2 id="nueva-discusion-title" style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', color: '#142B25', margin: '0 0 14px 0', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
@@ -130,7 +153,13 @@ export default function ForoPage() {
             style={{ 
               minHeight: '110px', 
               marginBottom: '14px', 
-              resize: 'vertical'
+              resize: 'vertical',
+              backgroundColor: 'rgba(255, 255, 255, 0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1.5px solid rgba(49, 91, 84, 0.20)',
+              borderRadius: '14px',
+              color: '#142B25'
             }}
             disabled={isPosting}
             aria-label="Contenido del mensaje a publicar"
@@ -166,7 +195,17 @@ export default function ForoPage() {
           <p style={{ fontSize: '14.5px' }}>Cargando conversaciones del foro...</p>
         </div>
       ) : mensajes.length === 0 ? (
-        <div className="mgmt-empty-card">
+        <div 
+          className="mgmt-empty-card"
+          style={{
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          }}
+        >
           <div className="mgmt-empty-icon">
             <MessagesSquare size={30} />
           </div>
@@ -188,7 +227,15 @@ export default function ForoPage() {
               <article 
                 key={msg.id} 
                 className="mgmt-card" 
-                style={{ padding: '24px 28px' }}
+                style={{ 
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  padding: '24px 28px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
               >
                 {/* Cabecera del Mensaje */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
@@ -238,15 +285,34 @@ export default function ForoPage() {
                   )}
                 </div>
 
-                {/* Formulario de Respuesta Desplegable */}
+                {/* Formulario de Respuesta Desplegable (Panel de cristal) */}
                 {isOpenReply && (
-                  <div style={{ marginTop: '16px', padding: '16px', backgroundColor: 'var(--glass-bg-group)', backdropFilter: 'blur(10px)', borderRadius: '16px', border: '1px solid var(--glass-border-light)' }}>
+                  <div style={{ 
+                    marginTop: '16px', 
+                    padding: '16px', 
+                    backgroundColor: 'rgba(255, 255, 255, 0.70)', 
+                    backdropFilter: 'blur(12px)', 
+                    WebkitBackdropFilter: 'blur(12px)',
+                    borderRadius: '16px', 
+                    border: '1px solid rgba(255, 255, 255, 0.90)',
+                    boxShadow: '0 4px 16px rgba(16, 36, 32, 0.05)'
+                  }}>
                     <textarea
                       placeholder="Escribe tu aporte o respuesta pedagógica..."
                       value={replyText[msg.id] || ''}
                       onChange={(e) => setReplyText({ ...replyText, [msg.id]: e.target.value })}
                       className="wizard-textarea"
-                      style={{ minHeight: '80px', marginBottom: '10px', fontSize: '13.5px' }}
+                      style={{ 
+                        minHeight: '80px', 
+                        marginBottom: '10px', 
+                        fontSize: '13.5px',
+                        backgroundColor: 'rgba(255, 254, 250, 0.85)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(49, 91, 84, 0.20)',
+                        borderRadius: '12px',
+                        color: '#142B25'
+                      }}
                       disabled={isReplying}
                       aria-label="Texto de respuesta"
                     />
@@ -273,16 +339,27 @@ export default function ForoPage() {
                   </div>
                 )}
 
-                {/* Lista de Respuestas Anidadas */}
+                {/* Lista de Respuestas Anidadas (Cristal traslúcido) */}
                 {tieneRespuestas && (
-                  <div style={{ marginTop: '18px', paddingLeft: '18px', borderLeft: '2px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  <div style={{ marginTop: '18px', paddingLeft: '18px', borderLeft: '2px solid rgba(49, 91, 84, 0.22)', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     {msg.respuestas.map((resp, i) => {
                       const isRespAdmin = resp.rol === 'Admin';
 
                       return (
-                        <div key={i} style={{ backgroundColor: 'var(--bg-surface)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}>
+                        <div 
+                          key={i} 
+                          style={{ 
+                            backgroundColor: 'rgba(255, 254, 250, 0.80)', 
+                            backdropFilter: 'blur(10px)',
+                            WebkitBackdropFilter: 'blur(10px)',
+                            padding: '14px 18px', 
+                            borderRadius: '14px', 
+                            border: '1px solid rgba(255, 255, 255, 0.85)',
+                            boxShadow: '0 2px 8px rgba(16, 36, 32, 0.04)'
+                          }}
+                        >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                            <span style={{ fontWeight: 700, fontSize: '13.5px', color: 'var(--text-main)' }}>
+                            <span style={{ fontWeight: 700, fontSize: '13.5px', color: '#142B25' }}>
                               {resp.nombre}
                             </span>
                             {isRespAdmin && (
@@ -290,11 +367,11 @@ export default function ForoPage() {
                                 Admin
                               </span>
                             )}
-                            <span style={{ fontSize: '11.5px', color: 'var(--text-secondary)' }}>
+                            <span style={{ fontSize: '11.5px', color: '#3A544C' }}>
                               • {resp.rol || 'Docente'}
                             </span>
                           </div>
-                          <p style={{ fontSize: '13.5px', lineHeight: '1.55', color: 'var(--text-main)', margin: 0, whiteSpace: 'pre-wrap' }}>
+                          <p style={{ fontSize: '13.5px', lineHeight: '1.55', color: '#142B25', margin: 0, whiteSpace: 'pre-wrap' }}>
                             {resp.texto}
                           </p>
                         </div>
