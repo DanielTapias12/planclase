@@ -186,13 +186,14 @@ export default function AdministracionPage() {
               padding: '9px 20px', 
               fontSize: '14px', 
               borderRadius: '12px',
-              backgroundColor: activeTab === 'Analiticas' ? '#183630' : 'rgba(255, 255, 255, 0.70)',
+              backgroundColor: activeTab === 'Analiticas' ? '#142B25' : 'rgba(255, 255, 255, 0.92)',
               color: activeTab === 'Analiticas' ? '#FFFFFF' : '#142B25',
-              borderColor: activeTab === 'Analiticas' ? '#183630' : 'rgba(49, 91, 84, 0.25)',
-              fontWeight: activeTab === 'Analiticas' ? 700 : 500,
+              borderColor: activeTab === 'Analiticas' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+              fontWeight: activeTab === 'Analiticas' ? 700 : 600,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
             }}
           >
             <BarChart3 size={16} /> Analíticas y Métricas Gráficas
@@ -206,13 +207,14 @@ export default function AdministracionPage() {
               padding: '9px 20px', 
               fontSize: '14px', 
               borderRadius: '12px',
-              backgroundColor: activeTab === 'Directorio' ? '#183630' : 'rgba(255, 255, 255, 0.70)',
+              backgroundColor: activeTab === 'Directorio' ? '#142B25' : 'rgba(255, 255, 255, 0.92)',
               color: activeTab === 'Directorio' ? '#FFFFFF' : '#142B25',
-              borderColor: activeTab === 'Directorio' ? '#183630' : 'rgba(49, 91, 84, 0.25)',
-              fontWeight: activeTab === 'Directorio' ? 700 : 500,
+              borderColor: activeTab === 'Directorio' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+              fontWeight: activeTab === 'Directorio' ? 700 : 600,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
             }}
           >
             <Users size={16} /> Directorio de Docentes ({usuarios.length})
@@ -226,13 +228,14 @@ export default function AdministracionPage() {
               padding: '9px 20px', 
               fontSize: '14px', 
               borderRadius: '12px',
-              backgroundColor: activeTab === 'Tickets' ? '#183630' : 'rgba(255, 255, 255, 0.70)',
+              backgroundColor: activeTab === 'Tickets' ? '#142B25' : 'rgba(255, 255, 255, 0.92)',
               color: activeTab === 'Tickets' ? '#FFFFFF' : '#142B25',
-              borderColor: activeTab === 'Tickets' ? '#183630' : 'rgba(49, 91, 84, 0.25)',
-              fontWeight: activeTab === 'Tickets' ? 700 : 500,
+              borderColor: activeTab === 'Tickets' ? '#142B25' : 'rgba(255, 255, 255, 0.95)',
+              fontWeight: activeTab === 'Tickets' ? 700 : 600,
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '8px',
+              boxShadow: '0 2px 6px rgba(16, 36, 32, 0.04)'
             }}
           >
             <MessageSquare size={16} /> Tickets de Soporte

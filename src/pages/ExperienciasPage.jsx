@@ -127,15 +127,15 @@ export default function ExperienciasPage() {
       {/* Selector Editorial de Pestañas */}
       <div style={{ 
         display: 'inline-flex', 
-        backgroundColor: 'rgba(255, 253, 249, 0.72)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.85)',
+        backgroundColor: 'rgba(255, 254, 250, 0.86)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        border: '1px solid rgba(255, 255, 255, 0.95)',
         borderRadius: '14px',
         padding: '5px',
         marginBottom: '24px',
         gap: '6px',
-        boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)',
+        boxShadow: '0 6px 20px rgba(16, 36, 32, 0.08)',
         flexWrap: 'wrap'
       }}>
         <button 

@@ -124,8 +124,9 @@ export default function AyudaPage() {
                 style={{ 
                   padding: '20px 24px',
                   cursor: 'pointer',
-                  border: isExpanded ? '1px solid rgba(49, 91, 84, 0.40)' : '1px solid var(--glass-border-light)',
-                  backgroundColor: isExpanded ? 'rgba(255, 255, 255, 0.85)' : 'var(--glass-bg-card)',
+                  border: isExpanded ? '1px solid #142B25' : '1px solid rgba(255, 255, 255, 0.95)',
+                  backgroundColor: isExpanded ? '#FFFFFF' : 'var(--glass-bg-card)',
+                  boxShadow: '0 4px 16px rgba(16, 36, 32, 0.06)',
                   transition: 'all 0.2s ease'
                 }}
                 onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
