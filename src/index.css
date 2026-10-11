@@ -20,27 +20,27 @@
   --color-surface-muted: #F1EFEA;        /* Superficie neutra */
   --color-surface-soft: #E7EDE7;         /* Contenedores de apoyo */
 
-  /* --- 3. Tratamientos Glassmorphism Canónicos de Alto Contraste --- */
-  --glass-bg-ambient: rgba(255, 254, 250, 0.88);       /* Panel marfil translúcido de alto contraste (Fórmula Inicio) */
-  --glass-bg-surface: rgba(255, 254, 250, 0.88);       /* Para contenedor general wizard y tarjetas principales */
+  /* --- 3. Tratamientos Glassmorphism Canónicos de Alto Contraste (Fórmula Inicio) --- */
+  --glass-bg-ambient: rgba(255, 254, 250, 0.86);       /* Panel marfil translúcido de alto contraste canónico de Inicio */
+  --glass-bg-surface: rgba(255, 254, 250, 0.86);       /* Tarjetas de formulario, editores y contenedores */
   --glass-bg-subtle: rgba(255, 254, 250, 0.86);        /* Para barras secundarias, filtros, pills */
-  --glass-bg-group: rgba(255, 255, 255, 0.88);         /* Para agrupaciones de formulario limpias y legibles */
-  --glass-bg-card: rgba(255, 254, 250, 0.88);          /* Para tarjetas métricas, planes y plantillas */
-  --glass-bg-control: rgba(255, 255, 255, 0.96);       /* Para inputs, selects, textareas (máxima legibilidad) */
+  --glass-bg-group: rgba(255, 255, 255, 0.90);         /* Agrupaciones de formulario con contraste óptimo */
+  --glass-bg-card: rgba(255, 254, 250, 0.88);          /* Tarjetas métricas, planes y plantillas */
+  --glass-bg-control: rgba(255, 255, 255, 0.96);       /* Inputs, selects, textareas (máxima legibilidad) */
   --glass-bg-control-hover: #FFFFFF;
   --glass-bg-control-focus: #FFFFFF;
 
-  --glass-border-light: rgba(255, 255, 255, 0.94);     /* Borde fino claro perimetral definido */
+  --glass-border-light: rgba(255, 255, 255, 0.94);     /* Borde fino claro perimetral de Inicio */
   --glass-border-highlight: #FFFFFF;                   /* Borde con bisel sutil de luz */
   --glass-border-control: rgba(49, 91, 84, 0.32);      /* Borde accesible de control */
   --glass-border-focus: #183630;                        /* Borde de foco corporativo */
 
-  --glass-blur-ambient: 20px;                           /* Desenfoque borrado de imagen óptico */
-  --glass-blur-surface: 20px;
-  --glass-blur-group: 20px;
+  --glass-blur-ambient: 16px;                           /* Desenfoque borrado de imagen óptico exacto de Inicio */
+  --glass-blur-surface: 16px;
+  --glass-blur-group: 16px;
   --glass-blur-control: 8px;
 
-  --glass-shadow-surface: 0 12px 36px rgba(16, 36, 32, 0.10); /* Sombra de anclaje de alto contraste */
+  --glass-shadow-surface: 0 12px 36px rgba(16, 36, 32, 0.10); /* Sombra de anclaje canónica de Inicio */
   --glass-shadow-card: 0 8px 24px rgba(16, 36, 32, 0.08);     /* Sombra de tarjetas */
   --glass-shadow-focus: 0 0 0 3.5px rgba(49, 91, 84, 0.22);
   --glass-shadow-floating: 0 18px 44px -8px rgba(16, 36, 32, 0.16);
@@ -2530,9 +2530,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .mgmt-container {
   width: 100%;
-  max-width: 1140px;
+  max-width: 1060px;
   margin: 0 auto;
-  padding: 28px 24px 64px;
+  padding: 36px 32px 64px;
+  box-sizing: border-box;
 }
 
 .mgmt-header {
@@ -2540,8 +2541,8 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(var(--glass-blur-ambient));
   -webkit-backdrop-filter: blur(var(--glass-blur-ambient));
   border: 1px solid var(--glass-border-light);
-  border-radius: 24px;
-  padding: 32px 38px;
+  border-radius: 22px;
+  padding: 38px 42px;
   margin-bottom: 26px;
   display: flex;
   justify-content: space-between;
