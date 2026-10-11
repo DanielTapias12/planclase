@@ -43,18 +43,36 @@ export default function ConfigPage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '780px' }}>
+    <div className="mgmt-container" style={{ maxWidth: '820px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
-          <div className="mgmt-header-icon">
+          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '16px', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Key size={28} />
           </div>
           <div>
-            <h1 className="mgmt-title">Configuración de Inteligencia Artificial</h1>
-            <p className="mgmt-subtitle">
-              Administra tu clave privada BYOK (Bring Your Own Key) para conectar los servicios de Gemini.
+            <div className="editorial-badge">
+              <Sparkles size={13} color="#2B524A" />
+              <span>Conectividad e Inteligencia Artificial</span>
+            </div>
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Configuración de Inteligencia Artificial
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
+              Administra tu clave privada BYOK (Bring Your Own Key) para conectar los servicios de Gemini con máxima velocidad y privacidad.
             </p>
           </div>
         </div>
@@ -67,21 +85,29 @@ export default function ConfigPage() {
         </div>
       </header>
 
-      {/* Tarjeta de Formulario Principal */}
+      {/* Tarjeta de Formulario Principal (Mismo desenfoque y panel de cristal) */}
       <motion.div 
         initial={{ opacity: 0, y: 16 }} 
         animate={{ opacity: 1, y: 0 }} 
         className="mgmt-card" 
-        style={{ padding: '36px 32px' }}
+        style={{ 
+          padding: '36px 36px',
+          backgroundColor: 'rgba(255, 254, 250, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '24px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
           <Sparkles size={18} style={{ color: 'var(--primary-active)' }} />
-          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '19px', color: 'var(--primary-active)', margin: 0 }}>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', color: '#142B25', margin: 0, fontWeight: 700 }}>
             Google Gemini API Key
           </h2>
         </div>
         
-        <p style={{ color: 'var(--text-secondary)', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '28px' }}>
+        <p style={{ color: '#2B453E', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '28px' }}>
           Para que el planificador pedagógico, las sugerencias DUA y el co-docente interactivo funcionen con la máxima velocidad y autonomía, ingresa tu clave API personal de Google AI Studio.
         </p>
         
@@ -89,7 +115,7 @@ export default function ConfigPage() {
           <div className="input-group" style={{ marginBottom: '24px' }}>
             <label 
               htmlFor="gemini-api-key"
-              style={{ fontSize: '14px', color: 'var(--text-main)', fontWeight: 600, marginBottom: '8px', display: 'block' }}
+              style={{ fontSize: '14px', color: '#142B25', fontWeight: 600, marginBottom: '8px', display: 'block' }}
             >
               Clave de API de Gemini *
             </label>
@@ -102,7 +128,18 @@ export default function ConfigPage() {
                 onChange={(e) => { setInputKey(e.target.value); setStatus('idle'); }}
                 placeholder="AIzaSy..."
                 className="wizard-input"
-                style={{ width: '100%', paddingRight: '48px', fontFamily: 'monospace', fontSize: '14.5px' }}
+                style={{ 
+                  width: '100%', 
+                  paddingRight: '48px', 
+                  fontFamily: 'monospace', 
+                  fontSize: '14.5px',
+                  backgroundColor: 'rgba(255, 255, 255, 0.80)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1.5px solid rgba(49, 91, 84, 0.20)',
+                  borderRadius: '12px',
+                  color: '#142B25'
+                }}
                 disabled={status === 'loading'}
                 autoComplete="off"
               />
@@ -117,7 +154,7 @@ export default function ConfigPage() {
               </button>
             </div>
             
-            <p className="form-helper-text">
+            <p className="form-helper-text" style={{ color: '#4A635B', marginTop: '6px' }}>
               Tu clave se almacena de forma segura en tu navegador y en tu perfil docente. Nunca se comparte con terceros.
             </p>
           </div>
@@ -135,9 +172,9 @@ export default function ConfigPage() {
           </div>
         </form>
 
-        {/* Notificaciones de Estado de Validación */}
+        {/* Notificaciones de Estado de Validación (Panel de cristal) */}
         {status === 'success' && (
-          <div style={{ padding: '14px 18px', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: 'var(--success-color)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(16, 185, 129, 0.25)', marginBottom: '24px' }}>
+          <div style={{ padding: '14px 18px', backgroundColor: 'rgba(220, 252, 231, 0.75)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', color: '#166534', borderRadius: '14px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(22, 163, 74, 0.35)', marginBottom: '24px' }}>
             <CheckCircle size={22} style={{ flexShrink: 0 }} />
             <div>
               <strong style={{ display: 'block', fontSize: '14px' }}>¡Conexión verificada exitosamente!</strong>
@@ -147,7 +184,7 @@ export default function ConfigPage() {
         )}
 
         {status === 'error' && (
-          <div style={{ padding: '14px 18px', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: 'var(--error-color)', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(239, 68, 68, 0.25)', marginBottom: '24px' }}>
+          <div style={{ padding: '14px 18px', backgroundColor: 'rgba(254, 226, 226, 0.75)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', color: '#991B1B', borderRadius: '14px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(220, 38, 38, 0.35)', marginBottom: '24px' }}>
             <XCircle size={22} style={{ flexShrink: 0 }} />
             <div>
               <strong style={{ display: 'block', fontSize: '14px' }}>No se pudo validar la clave</strong>
@@ -157,8 +194,8 @@ export default function ConfigPage() {
         )}
 
         {/* Ayuda y Enlace a AI Studio */}
-        <div style={{ paddingTop: '20px', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-          <span style={{ fontSize: '13.5px', color: 'var(--text-secondary)' }}>
+        <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(49, 91, 84, 0.14)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <span style={{ fontSize: '13.5px', color: '#2B453E' }}>
             ¿Aún no tienes una clave de API gratuita?
           </span>
           <a 
