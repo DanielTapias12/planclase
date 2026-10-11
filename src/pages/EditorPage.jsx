@@ -564,13 +564,14 @@ export default function EditorPage() {
                     h3: ({ ...props }) => (
                       <h3 
                         style={{ 
-                          color: 'var(--primary-active)', 
+                          color: '#142B25', 
                           fontSize: '20px', 
-                          borderBottom: '1px solid var(--border-color)', 
+                          borderBottom: '1px solid rgba(49, 91, 84, 0.18)', 
                           paddingBottom: '8px', 
                           marginTop: '32px', 
                           marginBottom: '16px', 
-                          fontFamily: 'var(--font-heading)' 
+                          fontFamily: 'var(--font-heading)',
+                          fontWeight: 700
                         }} 
                         {...props} 
                       />
