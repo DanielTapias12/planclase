@@ -289,7 +289,20 @@ export default function AdministracionPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '16px', width: '100%' }}>
             
             {/* KPI 1: Docentes */}
-            <div className="mgmt-card" style={{ padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '22px 24px', 
+                position: 'relative', 
+                overflow: 'hidden',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '20px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontSize: '11.5px', color: '#3A544C', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Docentes Activos
@@ -313,7 +326,20 @@ export default function AdministracionPage() {
             </div>
 
             {/* KPI 2: Planes */}
-            <div className="mgmt-card" style={{ padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '22px 24px', 
+                position: 'relative', 
+                overflow: 'hidden',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '20px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontSize: '11.5px', color: '#3A544C', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Planes de Clase
@@ -336,7 +362,20 @@ export default function AdministracionPage() {
             </div>
 
             {/* KPI 3: Experiencias */}
-            <div className="mgmt-card" style={{ padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '22px 24px', 
+                position: 'relative', 
+                overflow: 'hidden',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '20px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontSize: '11.5px', color: '#3A544C', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Experiencias Abiertas
@@ -359,7 +398,20 @@ export default function AdministracionPage() {
             </div>
 
             {/* KPI 4: Estudiantes Impactados */}
-            <div className="mgmt-card" style={{ padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '22px 24px', 
+                position: 'relative', 
+                overflow: 'hidden',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '20px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <span style={{ fontSize: '11.5px', color: '#3A544C', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                   Impacto Escolar
@@ -387,7 +439,18 @@ export default function AdministracionPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', width: '100%' }}>
             
             {/* GRÁFICO 1: GRÁFICO DONUT SVG DE DISTRIBUCIÓN POR NIVEL */}
-            <div className="mgmt-card" style={{ padding: '26px 28px' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '26px 28px',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '22px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid rgba(49, 91, 84, 0.14)', paddingBottom: '12px' }}>
                 <h2 style={{ fontSize: '16.5px', color: '#142B25', margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <PieChart size={18} color="#183630" /> Gráfico de Distribución por Nivel
@@ -486,7 +549,18 @@ export default function AdministracionPage() {
             </div>
 
             {/* GRÁFICO 2: MEDIDORES DE ÁREAS CURRICULARES */}
-            <div className="mgmt-card" style={{ padding: '26px 28px' }}>
+            <div 
+              className="mgmt-card" 
+              style={{ 
+                padding: '26px 28px',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '22px',
+                boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', borderBottom: '1px solid rgba(49, 91, 84, 0.14)', paddingBottom: '12px' }}>
                 <h2 style={{ fontSize: '16.5px', color: '#142B25', margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <TrendingUp size={18} color="#183630" /> Producción Curricular por Área
@@ -548,7 +622,20 @@ export default function AdministracionPage() {
           </div>
 
           {/* GRÁFICO 3: TASA DE RESOLUCIÓN DE SOPORTE */}
-          <div className="mgmt-card" style={{ padding: '24px 28px', width: '100%', boxSizing: 'border-box' }}>
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '24px 28px', 
+              width: '100%', 
+              boxSizing: 'border-box',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '22px',
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <h3 style={{ fontSize: '16.5px', color: '#142B25', margin: '0 0 4px 0', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -632,8 +719,23 @@ export default function AdministracionPage() {
             </span>
           </div>
 
-          {/* Tabla Contenida con Scroll Horizontal Interno (Nunca se desborda) */}
-          <div className="mgmt-card" style={{ padding: '0', overflow: 'hidden', width: '100%', boxSizing: 'border-box', marginBottom: '32px' }}>
+          {/* Tabla Contenida con Scroll Horizontal Interno (Mismo desenfoque de cristal) */}
+          <div 
+            className="mgmt-card" 
+            style={{ 
+              padding: '0', 
+              overflow: 'hidden', 
+              width: '100%', 
+              boxSizing: 'border-box', 
+              marginBottom: '32px',
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '22px',
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+            }}
+          >
             <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '640px' }}>
                 <thead>
@@ -714,7 +816,7 @@ export default function AdministracionPage() {
             </div>
           </div>
 
-          {/* Modal Detalle de Usuario con Diseño de Cristal */}
+          {/* Modal Detalle de Usuario con Diseño de Cristal (Mismo desenfoque) */}
           {selectedUser && (
             <div 
               className="modal-glass-backdrop" 
@@ -723,7 +825,18 @@ export default function AdministracionPage() {
               aria-modal="true"
               aria-labelledby="user-detail-title"
             >
-              <div className="modal-glass-card" style={{ maxWidth: '520px' }}>
+              <div 
+                className="modal-glass-card" 
+                style={{ 
+                  maxWidth: '520px',
+                  backgroundColor: 'rgba(255, 254, 250, 0.92)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.95)',
+                  borderRadius: '24px',
+                  boxShadow: '0 20px 50px rgba(16, 36, 32, 0.18)'
+                }}
+              >
                 <div className="modal-glass-header">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div style={{
@@ -800,7 +913,19 @@ export default function AdministracionPage() {
       {activeTab === 'Tickets' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', width: '100%', boxSizing: 'border-box', marginBottom: '40px' }}>
           {tickets.length === 0 ? (
-            <div className="mgmt-empty-card" style={{ width: '100%', boxSizing: 'border-box' }}>
+            <div 
+              className="mgmt-empty-card" 
+              style={{ 
+                width: '100%', 
+                boxSizing: 'border-box',
+                backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '24px',
+                boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+              }}
+            >
               <ShieldAlert size={36} color="var(--primary-sage)" style={{ margin: '0 auto 14px' }} />
               <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', color: '#142B25', margin: '0 0 8px 0' }}>
                 No hay tickets de soporte pendientes
@@ -811,7 +936,21 @@ export default function AdministracionPage() {
             </div>
           ) : (
             tickets.map(t => (
-              <div key={t.id} className="mgmt-card" style={{ padding: '24px 28px', width: '100%', boxSizing: 'border-box' }}>
+              <div 
+                key={t.id} 
+                className="mgmt-card" 
+                style={{ 
+                  padding: '24px 28px', 
+                  width: '100%', 
+                  boxSizing: 'border-box',
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
+              >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
                   <h3 style={{ fontSize: '17px', color: '#142B25', margin: 0, fontWeight: 700 }}>{t.asunto}</h3>
                   <span style={{ 
