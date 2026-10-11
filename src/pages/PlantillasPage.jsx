@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { getPlantillas, savePlantillaToDB, deletePlantillaFromDB, updatePlantillaPublic } from '../services/dbService';
@@ -469,8 +470,8 @@ export default function PlantillasPage() {
         </div>
       )}
 
-      {/* Modal de Detalle de Plantilla con Diseño de Cristal */}
-      {viewingPlan && (
+      {/* Modal de Detalle de Plantilla con Diseño de Cristal montado en body mediante createPortal */}
+      {viewingPlan && createPortal(
         <div 
           className="modal-glass-backdrop" 
           onClick={(e) => { if (e.target === e.currentTarget) setViewingPlan(null); }}
@@ -478,7 +479,18 @@ export default function PlantillasPage() {
           aria-modal="true"
           aria-labelledby="detalle-plantilla-title"
         >
-          <div className="modal-glass-card" style={{ maxWidth: '640px' }}>
+          <div 
+            className="modal-glass-card" 
+            style={{ 
+              maxWidth: '640px',
+              backgroundColor: 'rgba(255, 254, 250, 0.94)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.96)',
+              borderRadius: '24px',
+              boxShadow: '0 24px 60px rgba(16, 36, 32, 0.22)'
+            }}
+          >
             <div className="modal-glass-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{
@@ -511,7 +523,7 @@ export default function PlantillasPage() {
 
             <div className="modal-glass-body">
               <div style={{ marginBottom: '18px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
                   <strong style={{ fontSize: '12px', color: '#3A544C', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>
                     Esquema Curricular & Momentos Pedagógicos
                   </strong>
@@ -522,76 +534,87 @@ export default function PlantillasPage() {
 
                 {viewingPlan.instrucciones ? (
                   <div style={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.85)', 
+                    backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
                     padding: '18px 20px', 
                     borderRadius: '16px', 
                     whiteSpace: 'pre-wrap', 
                     fontSize: '14px', 
                     lineHeight: '1.65', 
-                    border: '1px solid rgba(49, 91, 84, 0.14)', 
+                    border: '1px solid rgba(255, 255, 255, 0.94)', 
                     color: '#142B25', 
-                    boxShadow: '0 4px 14px rgba(20, 42, 38, 0.04)'
+                    boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
                   }}>
                     {viewingPlan.instrucciones}
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     <div style={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.85)', 
-                      padding: '14px 18px', 
-                      borderRadius: '14px', 
-                      border: '1px solid rgba(49, 91, 84, 0.12)',
-                      boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)'
+                      backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      padding: '16px 20px', 
+                      borderRadius: '16px', 
+                      border: '1px solid rgba(255, 255, 255, 0.94)',
+                      boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
-                        <strong style={{ fontSize: '13.5px', color: '#142B25' }}>1. Momento de Inicio (Exploración)</strong>
+                        <strong style={{ fontSize: '14px', color: '#142B25', fontWeight: 700 }}>1. Momento de Inicio (Exploración)</strong>
                       </div>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#3A544C', lineHeight: '1.5' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#2C443D', lineHeight: '1.55', fontWeight: 500 }}>
                         Activación de saberes previos, formulación de preguntas provocadoras y conexión con el contexto real del estudiante.
                       </p>
                     </div>
 
                     <div style={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.85)', 
-                      padding: '14px 18px', 
-                      borderRadius: '14px', 
-                      border: '1px solid rgba(49, 91, 84, 0.12)',
-                      boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)'
+                      backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      padding: '16px 20px', 
+                      borderRadius: '16px', 
+                      border: '1px solid rgba(255, 255, 255, 0.94)',
+                      boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
-                        <strong style={{ fontSize: '13.5px', color: '#142B25' }}>2. Momento de Desarrollo (Estructuración y Práctica)</strong>
+                        <strong style={{ fontSize: '14px', color: '#142B25', fontWeight: 700 }}>2. Momento de Desarrollo (Estructuración y Práctica)</strong>
                       </div>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#3A544C', lineHeight: '1.5' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#2C443D', lineHeight: '1.55', fontWeight: 500 }}>
                         Construcción guiada de conceptos, trabajo colaborativo, aplicación práctica y mediación docente con recursos didácticos.
                       </p>
                     </div>
 
                     <div style={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.85)', 
-                      padding: '14px 18px', 
-                      borderRadius: '14px', 
-                      border: '1px solid rgba(49, 91, 84, 0.12)',
-                      boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)'
+                      backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      padding: '16px 20px', 
+                      borderRadius: '16px', 
+                      border: '1px solid rgba(255, 255, 255, 0.94)',
+                      boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
                     }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                         <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
-                        <strong style={{ fontSize: '13.5px', color: '#142B25' }}>3. Momento de Cierre (Transferencia y Metacognición)</strong>
+                        <strong style={{ fontSize: '14px', color: '#142B25', fontWeight: 700 }}>3. Momento de Cierre (Transferencia y Metacognición)</strong>
                       </div>
-                      <p style={{ margin: 0, fontSize: '13px', color: '#3A544C', lineHeight: '1.5' }}>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#2C443D', lineHeight: '1.55', fontWeight: 500 }}>
                         Consolidación de aprendizajes, conclusiones reflexivas y autoevaluación formativa de la experiencia de clase.
                       </p>
                     </div>
 
                     <div style={{ 
-                      backgroundColor: 'rgba(71, 122, 114, 0.08)', 
-                      padding: '12px 16px', 
-                      borderRadius: '12px', 
-                      border: '1px solid rgba(71, 122, 114, 0.18)'
+                      backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      padding: '14px 18px', 
+                      borderRadius: '16px', 
+                      border: '1px solid rgba(255, 255, 255, 0.94)',
+                      boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
                     }}>
-                      <p style={{ margin: 0, fontSize: '12.5px', color: '#183630', lineHeight: '1.5' }}>
-                        ✨ <strong>Integración Transversal DUA:</strong> El asistente adaptará automáticamente este esquema incorporando múltiples formas de representación, expresión y motivación para atender la diversidad del aula.
+                      <p style={{ margin: 0, fontSize: '13px', color: '#183630', lineHeight: '1.55', fontWeight: 500 }}>
+                        ✨ <strong style={{ color: '#142B25' }}>Integración Transversal DUA:</strong> El asistente adaptará automáticamente este esquema incorporando múltiples formas de representación, expresión y motivación para atender la diversidad del aula.
                       </p>
                     </div>
                   </div>
@@ -608,7 +631,8 @@ export default function PlantillasPage() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Modal de confirmación de eliminación con diseño de cristal */}

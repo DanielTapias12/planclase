@@ -394,7 +394,6 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   background-color: transparent;
   position: relative;
-  z-index: 1;
 }
 
 /* Barra superior de utilidades (Esquina Superior Derecha) */
@@ -2798,7 +2797,7 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  z-index: 99999;
   padding: 20px;
   animation: modalFadeIn 0.22s ease-out;
 }

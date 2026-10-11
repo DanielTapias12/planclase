@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import ReactMarkdown from 'react-markdown';
@@ -296,7 +297,7 @@ export default function BibliotecaPage() {
       )}
 
       {/* Modal de Previsualización Completa con Diseño de Cristal */}
-      {previewPlan && (
+      {previewPlan && createPortal(
         <div 
           className="modal-glass-backdrop" 
           onClick={(e) => { if (e.target === e.currentTarget) setPreviewPlan(null); }}
@@ -308,12 +309,12 @@ export default function BibliotecaPage() {
             className="modal-glass-card" 
             style={{ 
               maxWidth: '860px',
-              backgroundColor: 'rgba(255, 254, 250, 0.92)',
+              backgroundColor: 'rgba(255, 254, 250, 0.94)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.95)',
+              border: '1px solid rgba(255, 255, 255, 0.96)',
               borderRadius: '24px',
-              boxShadow: '0 20px 50px rgba(16, 36, 32, 0.18)'
+              boxShadow: '0 24px 60px rgba(16, 36, 32, 0.22)'
             }}
           >
             <div className="modal-glass-header">
@@ -352,15 +353,18 @@ export default function BibliotecaPage() {
             <div className="modal-glass-body">
               <div style={{ 
                 marginBottom: '20px', 
-                padding: '12px 18px', 
-                backgroundColor: 'rgba(71, 122, 114, 0.1)', 
-                border: '1px solid rgba(71, 122, 114, 0.2)',
-                borderRadius: '14px', 
+                padding: '14px 18px', 
+                backgroundColor: 'rgba(255, 254, 250, 0.88)', 
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid rgba(255, 255, 255, 0.94)',
+                borderRadius: '16px', 
                 display: 'flex', 
                 gap: '24px', 
                 flexWrap: 'wrap', 
                 fontSize: '13px', 
-                color: '#142B25' 
+                color: '#142B25',
+                boxShadow: '0 4px 16px rgba(20, 42, 38, 0.05)'
               }}>
                 <span><strong>Materia:</strong> {previewPlan.metadata?.materia || previewPlan.materia || 'General'}</span>
                 <span><strong>Grado:</strong> {previewPlan.metadata?.grado || previewPlan.grado || 'General'}</span>
@@ -380,7 +384,8 @@ export default function BibliotecaPage() {
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

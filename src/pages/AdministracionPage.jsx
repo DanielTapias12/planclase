@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { getAllUsers, getGlobalStats, getTickets, respondTicket } from '../services/dbService';
 import { decryptSensitiveField, maskPhoneNumber } from '../utils/security';
 import { 
@@ -816,8 +817,8 @@ export default function AdministracionPage() {
             </div>
           </div>
 
-          {/* Modal Detalle de Usuario con Diseño de Cristal (Mismo desenfoque) */}
-          {selectedUser && (
+          {/* Modal Detalle de Usuario con Diseño de Cristal montado en body con createPortal */}
+          {selectedUser && createPortal(
             <div 
               className="modal-glass-backdrop" 
               onClick={(e) => { if (e.target === e.currentTarget) setSelectedUser(null); }}
@@ -829,12 +830,12 @@ export default function AdministracionPage() {
                 className="modal-glass-card" 
                 style={{ 
                   maxWidth: '520px',
-                  backgroundColor: 'rgba(255, 254, 250, 0.92)',
+                  backgroundColor: 'rgba(255, 254, 250, 0.94)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(255, 255, 255, 0.95)',
+                  border: '1px solid rgba(255, 255, 255, 0.96)',
                   borderRadius: '24px',
-                  boxShadow: '0 20px 50px rgba(16, 36, 32, 0.18)'
+                  boxShadow: '0 24px 60px rgba(16, 36, 32, 0.22)'
                 }}
               >
                 <div className="modal-glass-header">
@@ -866,31 +867,31 @@ export default function AdministracionPage() {
                 </div>
 
                 <div className="modal-glass-body" style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13.5px', color: '#142B25' }}>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Nombre:</strong> {selectedUser.nombre}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Email:</strong> {selectedUser.email}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Celular de Contacto:</strong>{' '}
                     <span style={{ fontFamily: 'monospace' }}>
                       {decryptSensitiveField(selectedUser.celular) || 'No registrado'}
                     </span>
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Rol:</strong> {selectedUser.rol || 'Docente'}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Institución:</strong> {selectedUser.institucion || 'N/A'}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Nivel Pedagógico:</strong> {selectedUser.nivel || 'N/A'}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <div style={{ padding: '10px 14px', backgroundColor: 'rgba(255, 254, 250, 0.88)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.94)', boxShadow: '0 2px 8px rgba(20, 42, 38, 0.03)' }}>
                     <strong>Consentimiento Habeas Data:</strong> {selectedUser.termsAccepted ? 'Aceptado (Ley 1581 de 2012)' : 'Pre-existente'}
                   </div>
-                  <div style={{ padding: '8px 12px', backgroundColor: 'rgba(71, 122, 114, 0.08)', borderRadius: '10px', border: '1px solid rgba(71, 122, 114, 0.2)' }}>
+                  <div style={{ padding: '12px 14px', backgroundColor: 'rgba(71, 122, 114, 0.08)', borderRadius: '12px', border: '1px solid rgba(71, 122, 114, 0.2)' }}>
                     <strong>Planes Creados en Plataforma:</strong> <strong style={{ color: '#183630', fontSize: '15px' }}>{selectedUser.planesCount}</strong>
                   </div>
                 </div>
@@ -901,7 +902,8 @@ export default function AdministracionPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div>,
+            document.body
           )}
 
         </div>
