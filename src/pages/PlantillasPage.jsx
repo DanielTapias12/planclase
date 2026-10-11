@@ -157,18 +157,32 @@ export default function PlantillasPage() {
   );
 
   return (
-    <div className="mgmt-container">
+    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
-      {/* Cabecera Editorial del Módulo */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div>
             <div className="editorial-badge">
               <Layers size={14} color="#2B524A" />
               <span>Arquitectura Curricular y Modelos</span>
             </div>
-            <h1 className="mgmt-title">Mis Estructuras de Clase</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Mis Estructuras de Clase
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Crea y administra formatos pedagógicos personalizados para que la IA se adapte a tu institución y respete los momentos didácticos institucionales.
             </p>
           </div>
@@ -203,11 +217,19 @@ export default function PlantillasPage() {
         </div>
       </header>
 
-      {/* Formulario de Creación de Estructura */}
+      {/* Formulario de Creación de Estructura (Mismo desenfoque y panel de cristal) */}
       {isCreating && (
         <section 
           className="plantilla-form-card" 
-          style={{ marginBottom: '32px' }} 
+          style={{
+            backgroundColor: 'rgba(255, 254, 250, 0.88)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: '1px solid rgba(255, 255, 255, 0.94)',
+            borderRadius: '24px',
+            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)',
+            marginBottom: '32px'
+          }} 
           aria-labelledby="nueva-estructura-title"
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '1px solid rgba(49, 91, 84, 0.16)', paddingBottom: '16px' }}>
@@ -366,6 +388,14 @@ export default function PlantillasPage() {
                 role="button"
                 onKeyDown={(e) => { if (e.key === 'Enter') handleUsar(plan); }}
                 aria-label={`Usar estructura ${plan.titulo}`}
+                style={{
+                  backgroundColor: 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255, 255, 255, 0.94)',
+                  borderRadius: '20px',
+                  boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+                }}
               >
                 <div className="mgmt-card-header">
                   <span className={`editor-badge ${isStandard ? 'saved' : 'draft'}`} style={{ fontSize: '11.5px', padding: '2px 8px' }}>
