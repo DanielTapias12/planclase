@@ -133,16 +133,31 @@ export default function AdministracionPage() {
     <div 
       className="mgmt-container" 
       style={{ 
-        maxWidth: '100%', 
+        maxWidth: '1060px', 
         width: '100%', 
+        margin: '0 auto',
         boxSizing: 'border-box', 
         overflowX: 'hidden',
-        padding: '24px clamp(14px, 2.8vw, 32px) 60px'
+        padding: '36px 32px 64px'
       }}
     >
       
-      {/* 1. Cabecera Institucional Translúcida */}
-      <header className="mgmt-header" style={{ width: '100%', boxSizing: 'border-box' }}>
+      {/* 1. Cabecera Institucional Translúcida (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header" 
+        style={{ 
+          width: '100%', 
+          boxSizing: 'border-box',
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
           <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630' }}>
             <ShieldCheck size={26} />
@@ -152,8 +167,10 @@ export default function AdministracionPage() {
               <ShieldCheck size={13} color="#2B524A" />
               <span>Gobernanza y Supervisión Curricular</span>
             </div>
-            <h1 className="mgmt-title">Panel de Administración y Control</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Panel de Administración y Control
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Métricas de impacto pedagógico en tiempo real, trazabilidad de datos docentes protegidos bajo Ley 1581 de 2012 y soporte activo.
             </p>
           </div>
