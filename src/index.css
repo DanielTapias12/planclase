@@ -37,7 +37,7 @@
 
   --glass-blur-ambient: 20px;                           /* Desenfoque borrado de imagen óptico */
   --glass-blur-surface: 20px;
-  --glass-blur-group: 16px;
+  --glass-blur-group: 20px;
   --glass-blur-control: 8px;
 
   --glass-shadow-surface: 0 12px 36px rgba(16, 36, 32, 0.10); /* Sombra de anclaje de alto contraste */
@@ -2612,8 +2612,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 24px;
   flex-wrap: wrap;
   background: var(--glass-bg-subtle);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border-light);
   border-radius: 18px;
   padding: 12px 18px;
@@ -2664,8 +2664,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .mgmt-card {
   background: var(--glass-bg-card);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border-light);
   border-radius: 20px;
   padding: 24px;
@@ -2745,8 +2745,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .mgmt-empty-card {
   background: var(--glass-bg-surface);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px dashed rgba(49, 91, 84, 0.35);
   border-radius: 22px;
   padding: 52px 32px;
