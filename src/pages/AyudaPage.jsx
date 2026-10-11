@@ -58,21 +58,35 @@ export default function AyudaPage() {
   );
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '960px', width: '100%', boxSizing: 'border-box' }}>
+    <div className="mgmt-container" style={{ maxWidth: '960px', width: '100%', margin: '0 auto', padding: '36px 32px 64px', boxSizing: 'border-box' }}>
       
-      {/* Cabecera Editorial Institucional */}
-      <header className="mgmt-header">
+      {/* Cabecera Editorial Institucional (Mismo desenfoque y panel de cristal de Inicio) */}
+      <header 
+        className="mgmt-header"
+        style={{
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '22px',
+          padding: '38px 42px',
+          marginBottom: '26px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+        }}
+      >
         <div className="mgmt-header-info">
-          <div className="mgmt-header-icon">
-            <HelpCircle size={26} />
+          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '16px', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <HelpCircle size={28} />
           </div>
           <div>
             <div className="editorial-badge">
               <Sparkles size={13} color="#2B524A" />
               <span>Base de Conocimiento y Guías</span>
             </div>
-            <h1 className="mgmt-title">Centro de Ayuda Pedagógica</h1>
-            <p className="mgmt-subtitle">
+            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+              Centro de Ayuda Pedagógica
+            </h1>
+            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
               Resuelve tus dudas sobre el asistente de secuencias didácticas, plantillas curriculares y adaptaciones de aula con IA.
             </p>
           </div>
@@ -90,8 +104,20 @@ export default function AyudaPage() {
         </div>
       </header>
 
-      {/* Barra de Búsqueda de Cristal */}
-      <div className="mgmt-filter-bar" style={{ marginBottom: '26px' }}>
+      {/* Barra de Búsqueda de Cristal (Mismo desenfoque) */}
+      <div 
+        className="mgmt-filter-bar" 
+        style={{ 
+          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '18px',
+          padding: '12px 18px',
+          marginBottom: '26px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
+        }}
+      >
         <div className="mgmt-search-box" style={{ maxWidth: '100%' }}>
           <Search size={16} color="var(--primary-sage)" />
           <input 
@@ -100,6 +126,7 @@ export default function AyudaPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mgmt-search-input"
+            aria-label="Buscar en las guías y preguntas"
           />
         </div>
       </div>
@@ -107,9 +134,19 @@ export default function AyudaPage() {
       {/* Lista de Preguntas Frecuentes en Tarjetas de Cristal */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '32px' }}>
         {filteredPreguntas.length === 0 ? (
-          <div className="mgmt-empty-card">
+          <div 
+            className="mgmt-empty-card"
+            style={{
+              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.94)',
+              borderRadius: '24px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            }}
+          >
             <HelpCircle size={36} color="var(--primary-sage)" style={{ margin: '0 auto 12px' }} />
-            <h3 style={{ fontSize: '17px', color: '#142B25', margin: '0 0 6px 0' }}>No se encontraron respuestas</h3>
+            <h3 style={{ fontSize: '17px', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700 }}>No se encontraron respuestas</h3>
             <p style={{ fontSize: '14px', color: '#2B453E', margin: 0 }}>
               Prueba con otro término de búsqueda o contacta directamente a nuestro soporte técnico.
             </p>
@@ -122,11 +159,14 @@ export default function AyudaPage() {
                 key={index} 
                 className="mgmt-card" 
                 style={{ 
-                  padding: '20px 24px',
+                  padding: '22px 26px',
                   cursor: 'pointer',
-                  border: isExpanded ? '1px solid #142B25' : '1px solid rgba(255, 255, 255, 0.95)',
-                  backgroundColor: isExpanded ? '#FFFFFF' : 'var(--glass-bg-card)',
-                  boxShadow: '0 4px 16px rgba(16, 36, 32, 0.06)',
+                  borderRadius: '20px',
+                  border: isExpanded ? '1px solid #142B25' : '1px solid rgba(255, 255, 255, 0.94)',
+                  backgroundColor: isExpanded ? 'rgba(255, 255, 255, 0.94)' : 'rgba(255, 254, 250, 0.88)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  boxShadow: isExpanded ? '0 10px 30px rgba(16, 36, 32, 0.12)' : '0 6px 20px rgba(16, 36, 32, 0.06)',
                   transition: 'all 0.2s ease'
                 }}
                 onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
@@ -161,15 +201,19 @@ export default function AyudaPage() {
         )}
       </div>
 
-      {/* Tarjeta Flotante: Recorrido Explicativo de Bienvenida */}
+      {/* Tarjeta Flotante: Recorrido Explicativo de Bienvenida (Mismo desenfoque de cristal) */}
       <div 
         className="mgmt-card" 
         style={{ 
-          padding: '28px 32px', 
+          padding: '32px 36px', 
           textAlign: 'center', 
           marginBottom: '20px',
-          background: 'linear-gradient(135deg, rgba(255, 253, 249, 0.75) 0%, rgba(231, 237, 231, 0.75) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.88)'
+          backgroundColor: 'rgba(255, 254, 250, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '24px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
         }}
       >
         <div style={{ width: '48px', height: '48px', borderRadius: '14px', backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
@@ -194,8 +238,20 @@ export default function AyudaPage() {
         </button>
       </div>
 
-      {/* Tarjeta Flotante: Contacto a Soporte */}
-      <div className="mgmt-card" style={{ padding: '24px 28px', textAlign: 'center', border: '1px solid var(--glass-border-light)' }}>
+      {/* Tarjeta Flotante: Contacto a Soporte (Mismo desenfoque de cristal) */}
+      <div 
+        className="mgmt-card" 
+        style={{ 
+          padding: '28px 32px', 
+          textAlign: 'center', 
+          backgroundColor: 'rgba(255, 254, 250, 0.88)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.94)',
+          borderRadius: '24px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+        }}
+      >
         <h3 style={{ fontSize: '17px', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700 }}>
           ¿Aún necesitas ayuda o reportar un caso?
         </h3>
