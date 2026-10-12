@@ -97,3 +97,57 @@
 |------------|-------------|-------|-----------|
 | Validar la integración del documento reconstruido y realizar el push definitivo | Daniel Tapias / Luis Caldera | Semana 6 | Alta |
 | Validar este documento y autorizar commit | Zoe Peñata | Semana 6 | Alta |
+
+---
+
+## ACT-013 — Consolidar el Diseño de Aprendizaje
+
+### Contexto
+- **Semana:** 6
+- **Actividad desarrollada:** ACT-013 — Consolidar el Diseño de Aprendizaje (MODESEC Componente 7).
+- **Objetivo:** Construir formalmente el documento `DISENO_DE_APRENDIZAJE.md` articulando competencias (MEN Guía 30), indicadores, modelo pedagógico, estrategias activas, actividades por momentos pedagógicos y evidencias tangibles.
+- **Participantes:** Todo el equipo (María Soto, María Ubarne, Zoe Peñata, Maira Ortega, Luis Caldera, Daniel Tapias).
+
+### Desarrollo
+1. Revisión de las Orientaciones Generales para la Educación en Tecnología (Guía 30 del MEN) en sus 4 componentes.
+2. Definición de la cadena metodológica descendente exigida por MODESEC.
+3. Formulación de indicadores de desempeño en los 4 niveles ministeriales (Superior, Alto, Básico, Bajo).
+4. Vinculación de las actividades didácticas con los 3 momentos del planificador de INSPIRATEC (Inicio, Desarrollo, Cierre).
+5. Especificación de los artefactos generados (rúbricas analíticas, diapositivas, trivias interactivas y planes de clase).
+6. Redacción del documento oficial en `docs/pedagogia/DISENO_DE_APRENDIZAJE.md` y su respectiva ficha técnica.
+
+### Decisiones Tomadas
+- Se acordó que ninguna actividad del software existe aislada, sino que todas tributan a una competencia ministerial explícita.
+- Se incorporaron las dimensiones transversales de Gamificación (Canvas) e Inclusión DUA/PIAR en la matriz de aprendizaje.
+
+---
+
+## ACT-015 — Auditoría de Usabilidad y Accesibilidad Pantalla por Pantalla
+
+### Contexto
+- **Semana:** 6
+- **Actividad desarrollada:** ACT-015 — Validar Usabilidad y Accesibilidad.
+- **Objetivo:** Ejecutar una evaluación heurística rigurosa sobre cada pantalla del sistema, verificando Control del Usuario (regreso/cancelación), Carga Cognitiva (densidad/memoria/iconos) y Consistencia (paleta/botones/tipografía).
+- **Participantes:** Todo el equipo (Daniel Tapias, Luis Caldera, Zoe Peñata, Maira Ortega, María Soto, María Ubarne).
+
+### Desarrollo
+1. Inspección de las 12 pantallas y componentes de la aplicación: Wizard (4 pasos), Editor, Mis Planes, Plantillas, Biblioteca, Foro, Configuración IA, Administración, Ayuda, Acerca de, Login y Modales.
+2. Comprobación del mecanismo de escape (`Escape`) y cierre en modales montados por `createPortal`.
+3. Verificación de contraste cromático sobre paneles Glassmorphism esmerilados (`backdrop-filter: blur(20px)`).
+4. Identificación de hallazgos y acciones de mejora para el próximo sprint (toolbar sticky en editor, stepper circular en móviles).
+5. Documentación completa en la ficha `ACT-015_USABILIDAD_ACCESIBILIDAD.md`.
+
+---
+
+## ACT-016 — Registro de los 7 Hábitos por Actividad y Participante
+
+### Contexto
+- **Semana:** 6
+- **Actividad desarrollada:** ACT-016 — Análisis de los 7 Hábitos de Stephen Covey.
+- **Objetivo:** Mapear la aplicación individual y colectiva de los 7 hábitos en cada una de las actividades desarrolladas en el proyecto (ACT-001 a ACT-015).
+- **Participantes:** Todo el equipo.
+
+### Desarrollo
+1. Revisión de las 10 actividades técnicas y pedagógicas desarrolladas a la fecha.
+2. Identificación de los hábitos dominantes en cada actividad (H1 Proactividad, H2 Fin en mente, H3 Primero lo primero, H4 Ganar-ganar, H5 Primero entender, H6 Sinergia, H7 Afilar la sierra).
+3. Elaboración de la matriz de aplicación por participante para cada actividad en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md`.

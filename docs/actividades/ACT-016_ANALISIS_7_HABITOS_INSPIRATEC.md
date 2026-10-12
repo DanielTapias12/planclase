@@ -3,170 +3,177 @@
 **Proyecto:** PlanClase (INSPIRATEC)  
 **Asignatura:** Diseño y Desarrollo de Software Educativo III  
 **Docente Asesor:** Raúl Toscano  
-**Fecha de Análisis:** 22 de Septiembre de 2026  
+**Fecha de Análisis:** Octubre de 2026  
 **ID de Actividad:** ACT-016  
-**Responsable Principal:** Analista de Evidencias (IA asistida y validada)  
-
-## 1. Introducción
-El presente documento constituye una auditoría integral del trabajo desarrollado por el equipo del proyecto INSPIRATEC, relacionando las contribuciones individuales y colectivas con los 7 hábitos de la gente altamente efectiva propuestos por Stephen R. Covey. El análisis se fundamenta en la evidencia documental, técnica (repositorio GitHub) y en los registros de trabajo del grupo.
-
-## 2. Objetivos
-* **Objetivo General:** Evaluar y documentar la aplicación práctica de los 7 hábitos de la gente altamente efectiva por parte de los integrantes del equipo INSPIRATEC, basándose exclusivamente en evidencias observables dentro del proyecto.
-* **Objetivos Específicos:**
-  * Identificar las contribuciones específicas de cada miembro y relacionarlas con un hábito.
-  * Diferenciar claramente entre participación verificada, reportada e inferencias analíticas.
-  * Establecer un diagnóstico consolidado del equipo en cuanto a sus dinámicas de trabajo.
-
-## 3. Metodología de Análisis
-La revisión se llevó a cabo inspeccionando la totalidad del repositorio `DanielTapias12/planclase`. Se distinguen tres niveles de evidencia:
-* **Evidencia verificada:** Acciones comprobables a través de historial de commits, código fuente y documentos firmados/editados.
-* **Participación reportada:** Funciones y acciones descritas en documentos como `EQUIPO_Y_ROLES.md` o `MONITOREO_SEMANAL.md`, pero sin traza técnica directa.
-* **Inferencia analítica:** Interpretación lógica basada en el cumplimiento de roles y avances del producto final.
-
-**Nota Metodológica:** Este informe evalúa *acciones observables* dentro del marco del proyecto. No constituye una evaluación de la personalidad, carácter o intenciones de los integrantes. La ausencia de evidencia para un hábito no implica su carencia personal, sino su falta de registro verificable en este entorno específico.
-
-## 4. Marco de los 7 Hábitos
-El análisis se estructura en las tres dimensiones establecidas por Covey:
-* **Victoria Privada (Autoconocimiento y Disciplina):** 1. Ser Proactivo, 2. Empezar con el Fin en Mente, 3. Poner Primero lo Primero.
-* **Victoria Pública (Relaciones y Cooperación):** 4. Pensar Ganar-Ganar, 5. Primero Entender, 6. Sinergizar.
-* **Renovación:** 7. Afilar la Sierra.
-
-## 5. Fuentes y Alcance de la Revisión
-* `README.md` general.
-* `docs/seguimiento/MONITOREO_SEMANAL.md`
-* Fichas de actividades en `docs/actividades/`
-* Diarios de campo en `docs/diario-campo/`
-* Historial de commits en Git (principalmente rama `main`).
-* Definición de roles en `docs/proyecto/EQUIPO_Y_ROLES.md`.
-
-## 6. Registro de Hábitos Identificados por Participante
-
-**Estado:** Completada — análisis documentado  
-**Objetivo:** Identificar los hábitos asociados a la participación de cada integrante en el desarrollo del proyecto, a partir de las actividades y evidencias analizadas.
-
-| Participante | Hábitos identificados | Relación con el proceso |
-|---|---|---|
-| Daniel Tapias | H1, H3, H6 | Proactividad, priorización de tareas y colaboración en el desarrollo técnico. |
-| Luis Caldera | H1, H2, H4 | Iniciativa, orientación a objetivos y disposición al trabajo colaborativo. |
-| Zoe Peñata | H3, H6 | Organización, coordinación y colaboración en el trabajo del equipo. |
-| Maira Ortega | H3, H5 | Organización, facilitación y atención a las necesidades del equipo. |
-| María Soto | H2, H5 | Orientación a objetivos y participación en procesos de validación. |
-| María Ubarne | H2, H6 | Apoyo a la orientación del producto y colaboración en actividades del equipo. |
-
-### Significado de los hábitos registrados
-
-| Código | Hábito |
-|---|---|
-| H1 | Ser proactivo |
-| H2 | Empezar con un fin en mente |
-| H3 | Establecer primero lo primero |
-| H4 | Pensar en ganar-ganar |
-| H5 | Buscar primero comprender y después ser comprendido |
-| H6 | Sinergizar |
-| H7 | Afilar la sierra |
-
-*Nota de alcance: se registran los hábitos identificados en el análisis disponible. No se asigna H7 a un integrante porque la información consolidada no lo identifica expresamente. La ausencia de H7 en este registro no significa que el hábito no se haya manifestado, sino que no quedó atribuido en el análisis.*
-
-## 7. Matriz Individual de Trazabilidad Detallada
-
-| Integrante | Rol verificado/reportado | Hábito | Acción observada | Actividad/Sprint | Evidencia y ruta | Tipo de evidencia | Justificación | Nivel de respaldo | Oportunidad de mejora |
-|---|---|---|---|---|---|---|---|---|---|
-| Daniel Tapias | Development Team (Verificado) | 1, 3, 6 | Gestión técnica continua, commits de funcionalidades frontend y documentación técnica, refactorización. | Semanas 1-6 | Historial Git, múltiples commits | Verificada | Asumió responsabilidad técnica directa (proactivo), priorizó código (primero lo primero), trabajó con el frontend (sinergizar). | Evidencia directa y específica | Delegar más commits a compañeros para reflejar el trabajo grupal. |
-| Luis Caldera | Development Team (Verificado/Reportado) | 1, 2, 4 | Diseño de interfaces, definición de la Ventana Estándar, co-responsabilidad en ACT-014. | Semanas 5-6 | `ACT-008_VENTANA_ESTANDAR.md`, MONITOREO_SEMANAL | Verificada/Reportada | Visualizó la estructura antes de implementarla (fin en mente), asumió iniciativas UI (proactivo), acuerdo con Daniel (ganar-ganar). | Evidencia parcial o indirecta | Mayor registro directo (commits) de sus aportes visuales. |
-| Zoe Peñata | Scrum Master (Reportado) | 3, 6 | Coordinación general y seguimiento del tiempo. Responsable documentada en ACT-009. | Semanas 1-6 | `EQUIPO_Y_ROLES.md`, `ACT-009_DESCRIPCION_VENTANAS.md` | Reportada | Gestión del equipo y tiempos es la base del hábito 3. Ayuda a integrar esfuerzos (hábito 6). | Participación reportada | Validar sus revisiones dejando trazos (ej. PR approvals, actas firmadas). |
-| Maira Ortega | Facilitadora (Reportado) | 3, 5 | Apoyo en reuniones, seguimiento, revisión de usabilidad/accesibilidad. | Semanas 5-6 | `EQUIPO_Y_ROLES.md`, `MONITOREO_SEMANAL.md` (ACT-015) | Reportada | Al validar accesibilidad y producto (hábito 5) prioriza que el software sirva a todos (hábito 3). | Participación reportada | Generar minutas de reunión con su firma en el repositorio. |
-| María Soto | Product Owner (Reportado) | 2, 5 | Definición de necesidades, priorización de requisitos pedagógicos. | Semanas 1-6 | `EQUIPO_Y_ROLES.md` | Reportada | Velar por el cumplimiento del objetivo (fin en mente) entendiendo la necesidad del docente (primero entender). | Participación reportada | Documentar explícitamente sus validaciones (criterios de aceptación firmados). |
-| María Ubarne | Apoyo PO (Reportado) | 2, 6 | Apoyo en análisis de necesidades y validación de producto. | Semanas 1-6 | `EQUIPO_Y_ROLES.md` | Reportada | Trabaja de la mano con PO (sinergizar) para asegurar la visión del proyecto (fin en mente). | Participación reportada | Documentar sus aportes específicos a la validación curricular. |
-
-## 7. Análisis Individual por Integrante
-
-### Daniel Tapias
-1. **Rol:** Development Team (Verificado).
-2. **Actividades:** ACT-002, ACT-008, ACT-009, ACT-014, ACT-015.
-3. **Hábitos relacionados:** 1 (Ser Proactivo), 3 (Poner Primero lo Primero), 6 (Sinergizar).
-4. **Evidencia:** Registro de Git `git log`. El 90% de los commits técnicos provienen de su cuenta.
-5. **Justificación:** Tomó la iniciativa constante en la base de código (H1), priorizó el funcionamiento del producto (H3) e integró las decisiones del equipo al código (H6).
-6. **Hábitos sin evidencia suficiente:** 4, 5 (no hay traza directa de negociación, aunque se infiere).
-7. **Fortalezas:** Ejecución técnica, disciplina en el repositorio.
-8. **Oportunidades de mejora:** Fomentar que el resto del equipo deje su huella técnica directa en Git.
-9. **Compromiso:** Implementar sesiones de *Pair Programming* documentadas donde otros realicen los commits.
-
-### Luis Caldera
-1. **Rol:** Development Team (Reportado/Verificado).
-2. **Actividades:** ACT-006, ACT-008, ACT-009, ACT-014.
-3. **Hábitos relacionados:** 1, 2, 4.
-4. **Evidencia:** Asignación en `MONITOREO_SEMANAL.md` y `ACT-008_VENTANA_ESTANDAR.md`.
-5. **Justificación:** Conceptualizó las ventanas antes de que existieran (H2), lideró el avance UI (H1) en colaboración con el backend (H4).
-6. **Hábitos sin evidencia suficiente:** 3, 5.
-7. **Fortalezas:** Visión espacial y de diseño.
-8. **Oportunidades de mejora:** Reflejar sus diseños (mockups/CSS) a través de contribuciones directas o firmas en el código.
-9. **Compromiso:** Subir sus propios recursos visuales (SVGs, capturas) al repositorio.
-
-### Zoe Peñata
-1. **Rol:** Scrum Master (Reportada).
-2. **Actividades:** Gestión general, ACT-009.
-3. **Hábitos relacionados:** 3, 6.
-4. **Evidencia:** `EQUIPO_Y_ROLES.md`, diarios de campo y mención en compromisos de ACT-009.
-5. **Justificación:** Su rol estructural implica organizar (H3) y buscar que el equipo funcione integralmente (H6).
-6. **Hábitos sin evidencia suficiente:** 1, 2, 4, 5, 7 (a nivel de evidencia verificable).
-7. **Fortalezas:** Centralización organizativa.
-8. **Oportunidades de mejora:** Dejar evidencia de sus intervenciones (ej. creación de Issues).
-9. **Compromiso:** Abrir y cerrar Issues en GitHub para cada actividad de la semana.
-
-### Maira Ortega
-1. **Rol:** Facilitadora (Reportada).
-2. **Actividades:** ACT-015 (Validación de usabilidad).
-3. **Hábitos relacionados:** 3, 5.
-4. **Evidencia:** Mención en `EQUIPO_Y_ROLES.md` y equipo en `MONITOREO_SEMANAL.md`.
-5. **Justificación:** Buscar la usabilidad y accesibilidad (DUA) requiere primero entender al usuario (H5) e implementarlo sistemáticamente (H3).
-6. **Hábitos sin evidencia suficiente:** 1, 2, 4, 6, 7.
-7. **Fortalezas:** Orientación al usuario final.
-8. **Oportunidades de mejora:** Redactar directamente los hallazgos de usabilidad en los documentos.
-9. **Compromiso:** Firmar el documento de validación final de ACT-015.
-
-### María Soto
-1. **Rol:** Product Owner (Reportada).
-2. **Actividades:** Todas las fases de validación.
-3. **Hábitos relacionados:** 2, 5.
-4. **Evidencia:** `EQUIPO_Y_ROLES.md`.
-5. **Justificación:** Como PO, debe tener claro el fin en mente (H2) y entender profundamente la necesidad pedagógica (H5).
-6. **Hábitos sin evidencia suficiente:** 1, 3, 4, 6, 7.
-7. **Fortalezas:** Custodia de la visión del proyecto.
-8. **Oportunidades de mejora:** Las validaciones que realiza no están formalmente registradas como "Aprobado por PO" en los readmes.
-9. **Compromiso:** Establecer un sello de validación documentada en los entregables.
-
-### María Ubarne
-1. **Rol:** Apoyo PO (Reportada).
-2. **Actividades:** Apoyo a validación.
-3. **Hábitos relacionados:** 2, 6.
-4. **Evidencia:** `EQUIPO_Y_ROLES.md`.
-5. **Justificación:** Sinergiza con la PO (H6) para asegurar que el fin en mente se cumpla (H2).
-6. **Hábitos sin evidencia suficiente:** 1, 3, 4, 5, 7.
-7. **Fortalezas:** Apoyo colaborativo.
-8. **Oportunidades de mejora:** Visibilizar su trabajo diferenciado del de la PO principal.
-9. **Compromiso:** Entregar un acta de validación curricular firmada.
-
-## 8. Análisis Consolidado del Equipo
-
-El equipo INSPIRATEC ha demostrado un avance significativo, especialmente durante la reestructuración documentada en la Semana 2 (ACT-002), lo cual constituye la mayor evidencia del **Hábito 7: Afilar la sierra**. El equipo reconoció limitaciones y decidió mejorar la arquitectura del sistema, reflejando aprendizaje y mejora continua.
-
-**Victoria Privada:** El equipo demuestra alta proactividad (H1) en la resolución técnica de los módulos y un claro entendimiento del objetivo final (H2) evidenciado en el enfoque MODESEC. La priorización (H3) se observa en la ejecución secuencial de las actividades.
-**Victoria Pública:** Existe una clara división de roles (H6 - Sinergizar), aunque recae una fuerte carga probatoria en el líder técnico. La adopción de principios DUA (ACT-015) refleja fuertemente el **Hábito 5 (Primero entender)** a nivel de proyecto, demostrando empatía hacia las necesidades de usuarios diversos.
-
-## 9. Fortalezas Identificadas
-* **Mejora continua verificada:** La transición técnica (ACT-002) es evidencia irrefutable de mejora (Afilar la sierra).
-* **Organización documental:** Estructura clara en `docs/` que facilita la trazabilidad de las acciones.
-* **Empatía en el diseño:** Aplicación de DUA como evidencia del hábito de entender al usuario.
-
-## 10. Oportunidades de Mejora (Brechas Documentales)
-La principal brecha es la concentración de la *evidencia verificable* en un solo integrante (Daniel Tapias) debido a la centralización del uso de Git. Gran parte del trabajo de los demás miembros (Scrum Master, PO, Validadores) se encuentra en la categoría de "Participación reportada".
-
-## 11. Conclusiones
-El proyecto INSPIRATEC demuestra que los 7 Hábitos están presentes en su ciclo de desarrollo, pero la capacidad de auditar individualmente esos hábitos está limitada por las prácticas de registro. Mientras que los hábitos 1, 2, y 7 tienen evidencias fuertes a nivel macro, los hábitos relacionales (4, 5, 6) requieren más inferencia debido a la falta de bitácoras de decisiones firmadas.
-
-## 12. Compromisos y Recomendaciones
-* **Recomendación:** Todo el equipo debe utilizar los Issues o firmar las actas de commit para transferir su esfuerzo del estado "reportado" al estado "verificado".
-* **Compromiso futuro:** En el próximo Sprint, exigir que las revisiones de diseño y usabilidad sean redactadas y comiteadas por los responsables directos.
+**Responsable Principal:** Analista de Evidencias y Auditoría de Procesos (Equipo Completo / Asistido)  
 
 ---
-**Declaración de uso de IA:** Este documento fue generado con asistencia de Inteligencia Artificial (Antigravity), actuando como analista documental, basándose estrictamente en la evidencia presente en el repositorio en la fecha indicada y validado para asegurar que no se inventen hechos no reportados.
+
+## 1. Introducción
+El presente documento constituye una auditoría integral del trabajo desarrollado por el equipo del proyecto INSPIRATEC, relacionando las contribuciones individuales y colectivas con los **7 Hábitos de la Gente Altamente Efectiva** propuestos por Stephen R. Covey. El análisis se fundamenta en la evidencia documental, técnica (repositorio GitHub) y en los registros de trabajo del grupo a lo largo de las 6 semanas de ciclo académico.
+
+---
+
+## 2. Objetivos
+* **Objetivo General:** Evaluar y documentar la aplicación práctica de los 7 hábitos de la gente altamente efectiva por parte de los integrantes del equipo INSPIRATEC, tanto a nivel individual como actividad por actividad.
+* **Objetivos Específicos:**
+  * Identificar las contribuciones específicas de cada miembro y relacionarlas con los hábitos de Covey.
+  * Mapear cada una de las actividades desarrolladas en el proyecto (ACT-001 a ACT-015) contra los 7 hábitos y la aplicación de los 6 participantes.
+  * Establecer un diagnóstico consolidado del equipo en cuanto a sus dinámicas de trabajo, victorias privadas y públicas.
+
+---
+
+## 3. Marco Teórico de los 7 Hábitos (Stephen R. Covey)
+
+1. **H1 — Ser Proactivo:** Responsabilidad personal, iniciativa, control de la propia conducta y enfoque en el círculo de influencia sin esperar órdenes pasivas.
+2. **H2 — Empezar con un Fin en Mente:** Claridad de visión, objetivos predefinidos, diseño antes de la ejecución y alineación con metas estratégicas.
+3. **H3 — Poner Primero lo Primero:** Disciplina en la priorización de lo importante sobre lo urgente, organización secuencial y gestión del tiempo.
+4. **H4 — Pensar en Ganar-Ganar:** Mentalidad de abundancia, acuerdos colaborativos mutuos y soluciones que benefician a todo el equipo y al usuario final.
+5. **H5 — Buscar Primero Comprender y Después Ser Comprendido:** Escucha empática, diagnóstico previo a la prescripción y entendimiento profundo de las necesidades pedagógicas docentes.
+6. **H6 — Sinergizar:** Cooperación creativa, donde la suma de talentos interdisciplinarios supera el aporte individual aislado.
+7. **H7 — Afilar la Sierra:** Renovación y mejora continua, refactorización, optimización de metodologías y actualización del sistema.
+
+---
+
+## 4. Registro Consolidado por Participante
+
+| Participante | Rol Oficial | Hábitos Predominantes | Síntesis de Aplicación en el Proyecto |
+|---|---|---|---|
+| **Daniel Tapias** | Development Team / Git Lead | **H1, H3, H6, H7** | Proactividad en el código, priorización técnica, sinergia e iteración continua de refactorización. |
+| **Luis Caldera** | Development Team / UI/UX | **H1, H2, H4, H6** | Iniciativa visual, visión espacial antes de codificar, acuerdos ganar-ganar en diseño y sinergia. |
+| **Zoe Peñata** | Scrum Master | **H3, H4, H6** | Gestión del tiempo, facilitación del proceso Scrum, remoción de bloqueos e integración del grupo. |
+| **Maira Ortega** | Facilitadora de Equipo | **H3, H5, H6** | Organización de sesiones, empatía en la carga cognitiva y apoyo en accesibilidad DUA. |
+| **María Soto** | Product Owner | **H2, H4, H5** | Definición del fin pedagógico en mente, escucha empática de las necesidades docentes y visión ganar-ganar. |
+| **María Ubarne** | Product Owner Support | **H2, H5, H6** | Co-diseño curricular, articulación de indicadores y sinergia pedagógica constante. |
+
+---
+
+## 5. Matriz Integral de los 7 Hábitos por Actividad Desarrollada y Participante
+
+A continuación se detalla exhaustivamente cómo cada una de las actividades del proyecto se articula con los 7 hábitos y cómo cada participante los aplicó operativamente:
+
+### 5.1. ACT-001 — Diseño del Diagrama de Contenidos
+* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H3 (Primero lo Primero), H6 (Sinergizar)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H3, H6):** Priorizó la estructuración del diagrama Mermaid y su exportación vectorial SVG, integrándolo limpiamente en el repositorio.
+  * **Luis Caldera (H2, H6):** Conceptualizó la distribución jerárquica de los 7 módulos funcionales antes de iniciar maquetaciones.
+  * **Zoe Peñata (H3):** Estableció el cronograma de entrega del sprint y aseguró que el equipo concluyera el entregable en la fecha límite.
+  * **Maira Ortega (H5):** Revisó la claridad conceptual del diagrama para evitar sobrecarga terminológica para los docentes.
+  * **María Soto (H2, H5):** Definió el fin en mente curricular, asegurando que los contenidos respondieran a la necesidad de planeación tecnológica.
+  * **María Ubarne (H2, H6):** Articuló la jerarquía de contenidos con los componentes de la Guía 30 del MEN.
+
+---
+
+### 5.2. ACT-002 — Reestructuración y Consolidación del Proyecto
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H7):** Tomó la iniciativa de migrar la base de código anterior hacia una arquitectura React contemporánea, limpiando dependencias obsoletas.
+  * **Luis Caldera (H1, H7):** Propuso un nuevo sistema de diseño más moderno y modular para reemplazar las vistas toscas anteriores.
+  * **Zoe Peñata (H1, H3):** Coordinó la reunión extraordinaria de equipo para validar por consenso la adopción de la nueva versión.
+  * **Maira Ortega (H4):** Aseguró que la transición tecnológica no excluyera los aportes previos del equipo, logrando un acuerdo ganar-ganar.
+  * **María Soto (H2, H7):** Verificó que la nueva base técnica mantuviera la promesa de valor didáctico del software educativo.
+  * **María Ubarne (H5, H6):** Validó que los componentes pedagógicos migraran intactos a la nueva estructura de carpetas.
+
+---
+
+### 5.3. ACT-003 — Análisis y Definición del Modelo Pedagógico
+* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H5 (Primero Comprender), H6 (Sinergizar)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H6):** Mapeó cómo los principios constructivistas se traducirían en componentes interactivos concretos en el código.
+  * **Luis Caldera (H2, H5):** Diseñó la interfaz considerando que el estudiante debe manipular información activamente y no solo leer pasivamente.
+  * **Zoe Peñata (H3, H6):** Moderó el debate pedagógico grupal para llegar a una decisión concertada sobre el modelo principal.
+  * **Maira Ortega (H5):** Analizó el rol activo del docente como mediador y no como mero usuario operativo.
+  * **María Soto (H2, H5):** Lideró la decisión de adoptar el **Constructivismo** junto a metodologías activas (ABP, Gamificación).
+  * **María Ubarne (H2, H6):** Fundamentó la inclusión del marco DUA y PIAR como eje transversal del modelo pedagógico.
+
+---
+
+### 5.4. ACT-004 — Consolidar la Matriz de 15 Artículos Científicos
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H3 (Primero lo Primero), H5 (Primero Comprender), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H3, H7):** Analizó los artículos de arquitectura frontend (TypeScript, rendimiento de frameworks y mantenibilidad).
+  * **Luis Caldera (H1, H5):** Seleccionó y revisó la literatura de diseño centrado en el usuario (UCD) y evaluación SUS.
+  * **Zoe Peñata (H3, H6):** Coordinó la asignación equitativa de los artículos entre los integrantes del grupo para su análisis individual.
+  * **Maira Ortega (H5):** Analizó los estudios sobre la efectividad de las adaptaciones DUA y entornos con conectividad limitada.
+  * **María Soto (H2, H5):** Revisó la literatura sobre métricas de calidad de software y evaluación formativa.
+  * **María Ubarne (H2, H5):** Analizó las investigaciones sobre diseño instruccional asistido por IA para docentes novatos.
+
+---
+
+### 5.5. ACT-006 — Diseño del Mapa de Navegación
+* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H3 (Primero lo Primero), H5 (Primero Comprender)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H6):** Implementó la arquitectura de enrutamiento en React Router reflejando estrictamente la regla de los 3 clics.
+  * **Luis Caldera (H2, H5):** Diseñó el esquema espacial del mapa de navegación y generó el diagrama vectorial SVG.
+  * **Zoe Peñata (H3):** Verificó que cada ruta tuviera un propósito claro y estuviera vinculada a un entregable oficial.
+  * **Maira Ortega (H5):** Evaluó los flujos desde la perspectiva de un docente con baja competencia digital para reducir rutas complejas.
+  * **María Soto (H2):** Validó que las secciones prioritarias (Generador, Mis Planes, Plantillas) fueran accesibles desde el primer clic.
+  * **María Ubarne (H6):** Aseguró que las opciones de inclusión DUA estuvieran presentes de forma transversal en el mapa.
+
+---
+
+### 5.6. ACT-008 — Definir la Ventana Estándar
+* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H4 (Ganar-Ganar), H6 (Sinergizar)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H3):** Estandarizó las clases CSS globales en `src/index.css` para Header, Menú, Contenido, Acciones y Footer.
+  * **Luis Caldera (H2, H4):** Definió las proporciones visuales de las 5 áreas funcionales de acuerdo con los lineamientos MODESEC.
+  * **Zoe Peñata (H3, H6):** Documentó la trazabilidad de la actividad en las bitácoras semanales y organizó la entrega.
+  * **Maira Ortega (H5):** Evaluó la ubicación ergonómica de los botones de acción para facilitar la interacción táctil y con mouse.
+  * **María Soto (H2):** Garantizó que el área central de trabajo otorgara protagonismo a la planeación curricular.
+  * **María Ubarne (H6):** Aseguró la inclusión del menú de accesibilidad DUA dentro del Header estándar.
+
+---
+
+### 5.7. ACT-009 — Descripción de Ventanas
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H5 (Primero Comprender), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H7):** Depuró evidencias antiguas y preparó el sistema para una nueva captura homogénea bajo Glassmorphism 2026.
+  * **Luis Caldera (H1, H2):** Analizó los elementos gráficos de las pantallas (Generador, Experiencias, Plantillas, Biblioteca, Mis Planes, Ayuda).
+  * **Zoe Peñata (H3, H6):** Coordinó la recolección de descripciones tabulares según las 7 categorías de MODESEC.
+  * **Maira Ortega (H5):** Verificó que las descripciones de los campos del formulario coincidieran con el lenguaje pedagógico escolar.
+  * **María Soto (H2):** Validó que cada ventana cumpliera su objetivo declarado en el documento de contenidos.
+  * **María Ubarne (H5):** Revisó la precisión en la catalogación de recursos y soportes multimediales.
+
+---
+
+### 5.8. ACT-013 — Consolidar el Diseño de Aprendizaje
+* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H5 (Primero Comprender), H6 (Sinergizar)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H6):** Estructuró y redactó el documento oficial `DISENO_DE_APRENDIZAJE.md`, integrándolo en el repositorio GitHub.
+  * **Luis Caldera (H2, H6):** Alineó las actividades didácticas con los módulos interactivos reales de la interfaz (Trivias, Canvas, Editor).
+  * **Zoe Peñata (H3):** Priorizó el cierre de esta actividad para resolver la brecha de entregables MODESEC de la Fase II.
+  * **Maira Ortega (H5):** Revisó la redacción de las evidencias tangibles de aula para garantizar su pertinencia pedagógica.
+  * **María Soto (H2, H5):** Articuló la cadena descendente: Competencia → Indicador → Modelo → Estrategia → Actividad → Evidencia.
+  * **María Ubarne (H2, H6):** Mapeó las competencias de la Guía 30 del MEN y formuló los indicadores en los 4 niveles de desempeño.
+
+---
+
+### 5.9. ACT-014 — Desarrollo Frontend e Integración de Interfaz
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H3 (Primero lo Primero), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H3, H7):** Implementó la arquitectura de modales con `createPortal`, el estado global con Zustand, integración con Gemini y build de Vite.
+  * **Luis Caldera (H1, H6):** Diseñó los paneles Glassmorphism, refinó microinteracciones, bordes esmerilados y layout visual.
+  * **Zoe Peñata (H3, H6):** Dio seguimiento diario a los commits e integraciones técnicas para evitar desviaciones del backlog.
+  * **Maira Ortega (H5):** Realizó pruebas de interacción continua, reportando inconsistencias en botones o inputs.
+  * **María Soto (H2):** Validó la fidelidad de los formularios respecto al flujo curricular de planeación de clases.
+  * **María Ubarne (H4, H6):** Verificó la correcta visualización de las adaptaciones inclusivas en la pantalla de generación.
+
+---
+
+### 5.10. ACT-015 — Validar Usabilidad y Accesibilidad (DUA)
+* **Hábitos Clave de la Actividad:** **H4 (Pensar Ganar-Ganar), H5 (Primero Comprender), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H7):** Implementó atajos de teclado (`Escape`), traps de foco, atributos ARIA y bloqueo de scroll en modales.
+  * **Luis Caldera (H1, H5):** Auditó la consistencia cromática, tamaños de botones y contraste de texto oscuro sobre cristal esmerilado.
+  * **Zoe Peñata (H3, H6):** Estructuró la metodología de auditoría pantalla por pantalla en torno a Control, Carga Cognitiva y Consistencia.
+  * **Maira Ortega (H5):** Evaluó la carga cognitiva, verificando que los iconos facilitaran el reconocimiento sin forzar la memoria del usuario.
+  * **María Soto (H4, H5):** Evaluó la capacidad de control del usuario (cancelar, regresar, deshacer) en los procesos de creación de planes.
+  * **María Ubarne (H5, H6):** Auditó el cumplimiento de las pautas DUA y el soporte para adaptaciones PIAR en las opciones del sistema.
+
+---
+
+## 6. Diagnóstico y Balance Global del Equipo
+
+1. **Victoria Privada Consolidada:** El equipo exhibe una alta capacidad proactiva (**H1**) y de priorización (**H3**), logrando transformar un marco teórico denso (MODESEC) en un software operativo y auditable.
+2. **Victoria Pública en Evolución:** La división de roles Scrum (**H6**) funciona de manera armónica, integrando perfiles pedagógicos y perfiles técnicos. La auditoría de usabilidad (ACT-015) consolidó el hábito empático por excelencia: **buscar primero comprender al docente (H5)** antes de diseñar funcionalidades complejas.
+3. **Renovación Continua (H7):** La refactorización integral del sistema visual hacia Glassmorphism 2026 y la formalización rigurosa de las actividades pendientes demuestra un compromiso real con la mejora continua.

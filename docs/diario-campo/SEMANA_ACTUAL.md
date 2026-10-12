@@ -1,39 +1,50 @@
-# Diario de Campo — Semana Actual
+# Diario de Campo — Semana Actual (Semana 6)
 
 ## Información General
-- **Participantes:** Zoe Peñata (Scrum Master), María Soto (PO), María Ubarne (PO), Maira Ortega (Facilitación), Luis Caldera (Frontend), Daniel Tapias (Frontend).
-- **Fechas:** Septiembre 2026.
+- **Participantes:** Zoe Peñata (Scrum Master), María Soto (PO), María Ubarne (PO Support), Maira Ortega (Facilitadora), Luis Caldera (Frontend / UX), Daniel Tapias (Frontend / Git Lead).
+- **Fecha:** Octubre 2026.
+- **Ciclo:** Cierre de Sprint y Consolidación de Entregables Fase II MODESEC.
 
-## Registro del Trabajo Colaborativo
+---
 
-### Revisión Colectiva del Frontend
-El equipo realizó una validación visual del frontend y determinó la necesidad de realizar un diagnóstico técnico para las actividades ACT-014 y ACT-015.
+## Registro del Trabajo Colaborativo Realizado
 
-### Decisiones Tomadas (Pendientes de Validación por el Equipo)
-- **Asistente Virtual:** Se identificó que la imagen descargada tiene una cuadrícula gris y blanca simulando transparencia. Se decidió, por ahora, aplicar un recorte circular (`border-radius: 50%` o `clip-path: circle()`) temporal, pero la recomendación técnica oficial es remover el fondo externamente y reemplazar el archivo `robot-mascot.png`.
-- **Accesibilidad:** Se detectó la falta de la etiqueta semántica `<nav>` en la cabecera. Se priorizó esta mejora para la próxima fase técnica.
-- **Interacción del Hub Docente:** Se verificó y ajustó el comportamiento del "Hub Docente STEAM" para que se ejecute solo la primera vez que un usuario accede (validando con `localStorage`), evitando su reapertura constante.
+### 1. Consolidación del Diseño de Aprendizaje (ACT-013)
+- Se formalizó el documento `docs/pedagogia/DISENO_DE_APRENDIZAJE.md` articulando la matriz relacional de MODESEC (Competencia, Indicador, Modelo Pedagógico, Estrategia, Actividad, Evidencia).
+- Se mapearon los 4 componentes de la Guía 30 del MEN y las dimensiones transversales de Gamificación e Inclusión DUA/PIAR.
+- Quedó resuelta la actividad ACT-013, pasando de estado "No encontrada" a **Completada**.
 
-### Uso de Inteligencia Artificial (Antigravity)
-- **R (Rol):** Asistente Técnico y Auditor de Accesibilidad.
-- **O (Objetivo):** Diagnosticar el estado del frontend (ACT-014 y ACT-015) y documentar los hallazgos.
-- **C (Contexto):** El equipo requiere un mapeo exacto de las funcionalidades antes de proceder con el commit final o aplicar cambios severos a la UI.
-- **A (Acción):** Análisis de código fuente (HTML, CSS, JS), revisión del cumplimiento DUA y reporte de mejoras.
-- **S (Salida):** Reporte de 14 puntos, actualización documental y sugerencia de priorización de correcciones.
+### 2. Auditoría Heurística de Usabilidad y Accesibilidad Pantalla por Pantalla (ACT-015)
+- Se auditó cada una de las 12 pantallas del sistema bajo los 3 criterios oficiales:
+  - **Control del usuario:** Verificación de botones de regreso, cancelación segura de procesos y claridad de navegación.
+  - **Carga cognitiva:** Evaluación de densidad de información, prevención de memorización innecesaria y efectividad de metáforas de iconos.
+  - **Consistencia:** Unificación de la paleta institucional Glassmorphism, comportamiento predecible de botones y coherencia tipográfica.
+- Se verificó el cumplimiento de contraste accesible WCAG AA y la integración de modales protegidos mediante `createPortal` y `ConfirmModal.jsx`.
 
-### Avance de Actividad ACT-004 (Matriz Científica)
-- **Contexto:** Se requiere consolidar 15 artículos indexados como evidencia para INSPIRATEC, distribuidos en 3 categorías (Pedagogía, Arquitectura, GUI).
-- **Desarrollo:** Se estructuró la matriz `MATRIZ_15_ARTICULOS.md` integrando los 15 artículos priorizados y los artículos reemplazados, con trazabilidad hacia MODESEC.
-- **Observaciones:** Se detectó que el PDF base reportaba a un único responsable (Luis Caldera) para los 15 artículos.
-- **Decisiones tomadas:** 
-  1. Se acordó distinguir entre "Responsable reportado" (histórico) y "Responsable de análisis" (asignación del equipo). 
-  2. Queda pendiente la validación humana de la asignación final de los responsables de análisis para ajustar la evaluación de "Responsabilidad" de ACT-004.
-  3. Se realizó una revisión académica final que determinó el reemplazo de ARQ-05 (Microservicios) por el artículo "A Tool-Based Perspective on Software Code Maintainability Metrics" (Ardito et al., 2020), dado que se adecúa más a la arquitectura real de INSPIRATEC y permite fundamentar la calidad del código, pasando el original a la lista de complementarios.
-- **Próximos compromisos:** Aprobar asignación de análisis por parte del equipo y concluir evaluación final de ACT-004.
+### 3. Matriz de los 7 Hábitos de Covey Actividad por Actividad (ACT-016)
+- Se completó la matriz en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md`, registrando para cada actividad (ACT-001 a ACT-015) cómo cada uno de los 6 participantes aplicó los hábitos de efectividad personal e interpersonal.
 
-### Análisis de los 7 Hábitos (ACT-016)
-- **Contexto:** Evaluación de las dinámicas del equipo bajo la perspectiva de Stephen R. Covey.
-- **Desarrollo:** Se realizó una auditoría de todo el repositorio (commits, bitácoras, actas) documentando si el desempeño en cada hábito correspondía a "Evidencia verificada", "Participación reportada" o si no había suficiente evidencia.
-- **Hallazgos:** Fuerte tendencia a centralizar la evidencia verificable (commits) en el perfil de Daniel Tapias, mientras que el resto del equipo cuenta con abundante "Participación reportada" en actas y bitácoras. Evidencia transversal y absoluta de Hábito 7 (Mejora continua) en la adopción de la nueva versión.
-- **Decisiones:** Se redactó el documento ACT-016 estableciendo una matriz clara.
-- **Próximos compromisos:** El equipo humano debe validar las inferencias realizadas antes de dar la actividad por 100% cerrada.
+### 4. Actualización del Sistema Visual y Sistema de Modales 2026
+- Documentación técnica consolidada en `docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md`.
+- Despliegue homogéneo de paneles de cristal esmerilado con desenfoque de 20-30px en todas las vistas.
+- Eliminación de alertas nativas del navegador (`window.confirm`) y superposición absoluta de modales con z-index 9999 sobre menús fijos.
+
+### 5. Depuración Documental y Modelo Pedagógico en README
+- Se eliminó la carpeta obsoleta `docs/ux/` y las evidencias fotográficas previas de `docs/evidencias/ACT-009/`.
+- Se integró la sección oficial del Modelo Pedagógico Constructivista en la raíz de `README.md`.
+- Se corrigió la Matriz de 15 Artículos en Markdown y Excel, eliminando la columna histórica de responsable reportado.
+
+---
+
+## Registro de Uso de Inteligencia Artificial (ROCAS)
+- Se formalizaron las fichas de interacción ética en `docs/ia/`:
+  - `REGISTRO_IA_ACT-013.md`: Asesoría curricular para la derivación pedagógica MODESEC.
+  - `REGISTRO_IA_ACT-015.md`: Auditoría heurística y pautas de accesibilidad DUA/WCAG.
+  - Actualización de `REGISTRO_USO_IA.md`.
+
+---
+
+## Acuerdos y Próximos Compromisos
+1. **Zoe Peñata (Scrum Master):** Verificar el cierre de entregables en el tablero Scrum y preparar la retrospectiva del sprint.
+2. **María Soto y María Ubarne (Product Owners):** Validar la coherencia de las actividades generadas con docentes de prueba.
+3. **Daniel Tapias y Luis Caldera (Developers):** Implementar las acciones de mejora de usabilidad (barra fija en editor y stepper móvil).

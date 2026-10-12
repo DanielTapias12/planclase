@@ -52,3 +52,23 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 * **C — Contexto:** Repositorio INSPIRATEC, registros históricos y presentación proporcionada.
 * **A — Acción:** Prompt solicitando inspección del repositorio, clasificación de integrantes según hábitos observados, y generación de una matriz de trazabilidad documentada con distinción estricta de nivel probatorio.
 * **S — Salida / Validación:** Se generó la matriz de trazabilidad y el informe académico ACT-016. La validación humana de las inferencias y recomendaciones de mejora se encuentra PENDIENTE.
+
+---
+
+### 4. Consolidación del Diseño de Aprendizaje bajo MODESEC (ACT-013)
+
+* **R — Rol:** Asesor Curricular y Diseñador de Software Educativo MODESEC.
+* **O — Objetivo:** Elaborar la matriz de derivación pedagógica: Competencia -> Indicador -> Modelo Constructivista -> Estrategia -> Actividad -> Evidencia.
+* **C — Contexto:** Cierre de la brecha curricular de la Fase II de MODESEC y articulación de la Guía 30 MEN con las secuencias didácticas generadas en INSPIRATEC.
+* **A — Acción:** Estructuración de la matriz formal en 5 columnas cubriendo los 4 componentes ministeriales y las dimensiones transversales de Gamificación y DUA/PIAR.
+* **S — Salida / Validación:** Creación de `docs/pedagogia/DISENO_DE_APRENDIZAJE.md` y ficha `ACT-013`. Validado por el Product Owner y equipo pedagógico.
+
+---
+
+### 5. Auditoría Integral de Usabilidad y Accesibilidad por Pantallas (ACT-015)
+
+* **R — Rol:** Auditor de Usabilidad Heurística y Accesibilidad DUA/WCAG 2.1 AA.
+* **O — Objetivo:** Evaluar cada pantalla desarrollada en torno a Control del Usuario (regresar/cancelar/navegar), Carga Cognitiva (información/memoria/iconos) y Consistencia (colores/botones/tipografía).
+* **C — Contexto:** Validación de interfaces tras el rediseño con estética Glassmorphism 2026 y modales con `createPortal` montados en `document.body`.
+* **A — Acción:** Evaluación heurística y calificación detallada de las 12 pantallas y componentes transversales del aplicativo.
+* **S — Salida / Validación:** Ficha técnica actualizada en `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md`. Verificado en código y vistas activas por los desarrolladores frontend y facilitadores.
