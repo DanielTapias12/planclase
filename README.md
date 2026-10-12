@@ -10,7 +10,7 @@ Inspiracte es una plataforma web orientada a docentes, diseñada para asistir en
 
 * **Frontend:** React 19, React Router v7, Zustand, Framer Motion, Lucide React, React Markdown, Vite.
 * **Backend/BaaS:** Firebase (Auth, Firestore).
-* **Inteligencia Artificial:** API REST de Google Gemini (gemini-3.8-flash) para la sugerencia de propósitos, estándares (MEN Guía 30), generación de planes de clase y material complementario (rúbricas, cuestionarios, flashcards, juegos de roles, sopas de letras, etc.).
+* **Inteligencia Artificial:** API REST de Google Gemini (gemini-2.0-flash / gemini-1.5-flash) para la sugerencia de propósitos, estándares (MEN Guía 30), generación de planes de clase y material complementario (rúbricas, cuestionarios, flashcards, juegos de roles, sopas de letras, etc.).
 
 ---
 
@@ -36,14 +36,36 @@ El proyecto articula dos marcos complementarios:
 * **SCRUM (Marco de Gestión y Desarrollo):** Gobierna la dinámica de trabajo en equipo, roles oficiales, planificación de Sprints, bitácoras de campo y monitoreo semanal de entregables.
 * **MODESEC (Marco Orientador de Diseño Educativo):** Modela la fundamentación didáctica del software educativo (necesidad educativa, competencias MEN Guía 30, indicadores en rúbricas, diseño pedagógico y accesibilidad DUA).
 
-Consulte la fundamentación completa en [docs/proyecto/METODOLOGIA.md](docs/proyecto/METODOLOGIA.md).
+Consulte la fundamentación completa en [docs/metodologia/SCRUM_Y_MODESEC.md](docs/metodologia/SCRUM_Y_MODESEC.md).
 
 ---
 
-## 4. Instalación y Ejecución
+## 4. Modelo Pedagógico (Constructivismo y Metodologías Activas)
+
+INSPIRATEC fundamenta su diseño instruccional y arquitectura de software en el **Constructivismo** como modelo pedagógico central, estructurado bajo el marco orientador **MODESEC** y articulado con los lineamientos de la **Guía 30 del Ministerio de Educación Nacional (MEN)**:
+
+* **Modelo Pedagógico Principal — Constructivismo:** Sitúa al estudiante en el centro del aprendizaje como sujeto activo y creador, promoviendo la construcción autónoma de significados a partir de sus saberes previos, la exploración guiada y el análisis crítico de artefactos tecnológicos.
+* **Metodologías Activas Articuladas:**
+  * **Aprendizaje Basado en Problemas (ABP):** Planteamiento de situaciones problémicas reales que desafían al estudiante a investigar y formular soluciones tecnológicas viables.
+  * **Pensamiento Computacional y Design Thinking:** Fomento de la abstracción, descomposición, diseño iterativo y empatía con las necesidades del entorno escolar.
+  * **Gamificación e Indagación:** Incorporación de dinámicas interactivas (trivias, retos en Canvas, sopas de letras) para dinamizar saberes previos y afianzar conceptos clave.
+* **Enfoque de Inclusión y Diversidad (DUA y PIAR):**
+  * Integración estructural de los principios del **Diseño Universal para el Aprendizaje (DUA)**: múltiples formas de motivación, representación y expresión, con soporte de accesibilidad visual y auditiva directamente en la plataforma.
+  * Soporte guiado para el **Plan Individual de Ajustes Razonables (PIAR)** dentro del asistente de planeación (Paso 4), garantizando equidad para estudiantes con discapacidades y talentos excepcionales.
+* **Roles dentro del Proceso Educativo:**
+  * **Estudiante:** Participante activo, reflexivo y transformador que elabora evidencias de aprendizaje y artefactos concretos.
+  * **Docente:** Diseñador y mediador pedagógico que estructura andamiajes formativos y evalúa continuamente mediante rúbricas analíticas (Superior, Alto, Básico, Bajo).
+  * **Software Educativo (INSPIRATEC):** Entorno facilitador que optimiza la labor de planeación, combate la sobrecarga documental y garantiza la coherencia curricular nacional.
+
+Consulte la fundamentación teórica completa en [docs/pedagogia/MODELO_PEDAGOGICO.md](docs/pedagogia/MODELO_PEDAGOGICO.md).
+
+---
+
+## 5. Instalación y Ejecución
 
 ### Prerrequisitos
 * Node.js (v18+)
+* pnpm (recomendado)
 
 ### Pasos
 1. Instalar dependencias:
@@ -57,11 +79,11 @@ Consulte la fundamentación completa en [docs/proyecto/METODOLOGIA.md](docs/proy
 
 ---
 
-## 5. Sistema de Diseño Visual y Modales (Actualización 2026)
+## 6. Sistema de Diseño Visual y Modales (Actualización 2026)
 
-La interfaz de usuario implementa un diseño editorial contemporáneo con:
-* **Glassmorphism institucional:** Paneles de cristal translúcido con desenfoque de 14px a 30px, bordes de luz blanca y sombras suaves integradas sobre fondos ambientales fotográficos.
-* **Sistema Unificado de Modales (`.modal-glass-*`):** Ventanas emergentes accesibles, con bloqueo de scroll, atajo `Escape`, tipografía contrastada y transiciones fluidas.
-* **Confirmaciones Seguras (`ConfirmModal.jsx`):** Diálogos de cristal para la eliminación y gestión de recursos sin alertas nativas del navegador.
+La interfaz de usuario implementa un diseño contemporáneo basado en:
+* **Glassmorphism institucional:** Paneles de cristal translúcido con desenfoque de 20px a 30px (`backdrop-filter`), bordes luminosos sutiles y sombras suaves integradas sobre fondos ambientales fotográficos en todas las páginas del sistema.
+* **Sistema Unificado de Modales con Portal (`.modal-glass-*`):** Ventanas emergentes montadas en `document.body` mediante `createPortal`, garantizando z-index absoluto sobre menús y barras fijas, bloqueo de scroll y atajo accesible `Escape`.
+* **Confirmaciones Seguras (`ConfirmModal.jsx`):** Diálogos interactivos de cristal para operaciones destructivas sin alertas grises nativas del navegador.
 
 Consulte la documentación técnica detallada en [docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md](docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md).

@@ -1,8 +1,5 @@
 # Matriz de 15 Artículos Científicos (INSPIRATEC)
 
-> [!WARNING]
-> **Discrepancia de Asignación:** El archivo PDF original (`articulos cientificos software.pdf`) reporta a Luis Caldera como responsable de todos los artículos. Por necesidades organizativas del equipo, se ha propuesto una distribución de "Responsables de Análisis". Esto no altera la evidencia histórica del reporte original.
-
 > [!NOTE]
 > **Propósito de la Matriz:** Los artículos seleccionados permiten fundamentar decisiones relacionadas con DUA, constructivismo, diseño instruccional, metodologías activas, adaptatividad, TypeScript, rendimiento web, mantenibilidad, accesibilidad, UX y evaluación de usabilidad.
 
@@ -17,7 +14,7 @@
 - **Identificación:** DOI verificado (10.1080/2331186X.2023.2218191) | **URL oficial:** https://doi.org/10.1080/2331186X.2023.2218191
 - **Base de datos reportada:** Taylor & Francis (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** María Ubarne
+- **Responsable de análisis:** María Ubarne
 - **Problema abordado:** Falta de consenso cuantitativo sobre el impacto real del Diseño Universal para el Aprendizaje (DUA) en diferentes niveles educativos.
 - **Objetivo:** Evaluar cuantitativamente la efectividad del DUA en los resultados de aprendizaje mediante un metaanálisis.
 - **Metodología:** Revisión sistemática y metaanálisis.
@@ -36,7 +33,7 @@
 - **Identificación:** DOI verificado (10.1007/s12564-024-09996-9) | **URL oficial:** https://doi.org/10.1007/s12564-024-09996-9
 - **Base de datos reportada:** Springer (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Maira Ortega
+- **Responsable de análisis:** Maira Ortega
 - **Problema abordado:** Las metodologías TIC estándar suelen fracasar en escuelas con infraestructura o conectividad precaria.
 - **Objetivo:** Desarrollar principios de diseño instruccional adaptados a entornos educativos con recursos limitados.
 - **Metodología:** Estudio de diseño basado en casos (Design-based research).
@@ -55,7 +52,7 @@
 - **Identificación:** DOI verificado (10.1080/0144929X.2025.2513569) | **URL oficial:** https://doi.org/10.1080/0144929X.2025.2513569
 - **Base de datos reportada:** Taylor & Francis (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Luis Caldera
+- **Responsable de análisis:** Luis Caldera
 - **Problema abordado:** Fragmentación teórica en cómo se aplican el constructivismo y construccionismo a actividades de pensamiento computacional.
 - **Objetivo:** Sintetizar intervenciones ricas en tecnología bajo enfoques constructivistas en educación básica.
 - **Metodología:** Revisión sistemática de la literatura.
@@ -74,7 +71,7 @@
 - **Identificación:** DOI verificado (10.1007/s10648-019-09498-w) | **URL oficial:** https://doi.org/10.1007/s10648-019-09498-w
 - **Base de datos reportada:** Springer (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Daniel Tapias
+- **Responsable de análisis:** Daniel Tapias
 - **Problema abordado:** Incertidumbre sobre el impacto cognitivo y motivacional a largo plazo de los elementos de juego en el aprendizaje.
 - **Objetivo:** Analizar los efectos de la gamificación sobre resultados de aprendizaje cognitivos, motivacionales y conductuales.
 - **Metodología:** Metaanálisis.
@@ -93,7 +90,7 @@
 - **Identificación:** DOI verificado (10.1016/j.lindif.2025.102781) | **URL oficial:** https://doi.org/10.1016/j.lindif.2025.102781
 - **Base de datos reportada:** Elsevier (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Zoe Peñata
+- **Responsable de análisis:** Zoe Peñata
 - **Problema abordado:** Confusión conceptual y de implementación práctica sobre la instrucción adaptativa automatizada en el aula escolar.
 - **Objetivo:** Sintetizar el contexto, fuentes, metas y estrategias de implementación del aprendizaje adaptativo en escuelas.
 - **Metodología:** Revisión sistemática de la literatura.
@@ -116,7 +113,7 @@
 - **Identificación:** DOI verificado (10.13052/jwe1540-9589.21311) | **URL oficial:** https://doi.org/10.13052/jwe1540-9589.21311
 - **Base de datos reportada:** Journal of Web Engineering (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Maira Ortega
+- **Responsable de análisis:** Maira Ortega
 - **Problema abordado:** Dificultad para elegir un framework SPA moderno basado en evidencia empírica de rendimiento de renderizado.
 - **Objetivo:** Comparar el rendimiento de renderizado de frameworks JavaScript modernos (ej. React, Vue).
 - **Metodología:** Evaluación experimental cuantitativa.
@@ -135,7 +132,7 @@
 - **Identificación:** DOI verificado (10.1145/3524842.3528454) | **URL oficial:** https://doi.org/10.1145/3524842.3528454
 - **Base de datos reportada:** ACM (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Daniel Tapias
+- **Responsable de análisis:** Daniel Tapias
 - **Problema abordado:** El debate continuo sobre si el overhead de desarrollo de TypeScript compensa los beneficios de calidad respecto a JavaScript.
 - **Objetivo:** Comparar empíricamente la calidad del software (mantenibilidad, bugs) de proyectos TS frente a JS.
 - **Metodología:** Minería de repositorios de software (análisis estático de cientos de proyectos en GitHub).
@@ -154,7 +151,7 @@
 - **Identificación:** DOI verificado (10.1007/s10664-024-10478-0) | **URL oficial:** https://doi.org/10.1007/s10664-024-10478-0
 - **Base de datos reportada:** Springer (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Luis Caldera
+- **Responsable de análisis:** Luis Caldera
 - **Problema abordado:** Los olores de código (code smells) deterioran la mantenibilidad y su causa raíz durante la evolución de apps web no siempre es clara.
 - **Objetivo:** Inferir causalidad entre olores de código en lado cliente y servidor durante el ciclo de vida de aplicaciones web.
 - **Metodología:** Inferencia causal (modelos estadísticos sobre historial de commits).
@@ -173,7 +170,7 @@
 - **Identificación:** DOI verificado (10.1109/ICBDML60909.2024.10697529) | **URL oficial:** https://doi.org/10.1109/ICBDML60909.2024.10697529
 - **Base de datos reportada:** IEEE Xplore (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Zoe Peñata
+- **Responsable de análisis:** Zoe Peñata
 - **Problema abordado:** La carga pesada de frameworks JavaScript puede degradar la métricas de Core Web Vitals y afectar al usuario.
 - **Objetivo:** Analizar el impacto de los principales frameworks JS en el rendimiento web y experiencia.
 - **Metodología:** Análisis cuantitativo de métricas de rendimiento web.
@@ -192,7 +189,7 @@
 - **Identificación:** DOI verificado (10.1155/2020/8840389) | **URL oficial:** https://doi.org/10.1155/2020/8840389
 - **Base de datos reportada:** Wiley / Hindawi (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** María Soto
+- **Responsable de análisis:** María Soto
 - **Problema abordado:** Falta de consenso sobre cuáles métricas y herramientas son las más confiables para evaluar la propiedad no funcional de la mantenibilidad del software.
 - **Objetivo:** Identificar las métricas de mantenibilidad más populares y las herramientas disponibles para su evaluación estática.
 - **Metodología:** Revisión sistemática de la literatura (SLR).
@@ -215,7 +212,7 @@
 - **Identificación:** DOI verificado (10.1145/3654777.3676390) | **URL oficial:** https://doi.org/10.1145/3654777.3676390
 - **Base de datos reportada:** ACM (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** María Ubarne
+- **Responsable de análisis:** María Ubarne
 - **Problema abordado:** Los profesores novatos enfrentan desafíos al diseñar planes de lecciones pedagógicamente sólidos usando prompts directos en LLMs.
 - **Objetivo:** Desarrollar y evaluar una interfaz asistida por LLM que guíe estructuralmente el diseño de lecciones impulsadas por pedagogía.
 - **Metodología:** Investigación de diseño (HCI) y estudio de usuarios (experimentación).
@@ -234,7 +231,7 @@
 - **Identificación:** DOI verificado (10.1016/j.ijhcs.2022.102956) | **URL oficial:** https://doi.org/10.1016/j.ijhcs.2022.102956
 - **Base de datos reportada:** Elsevier (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Maira Ortega
+- **Responsable de análisis:** Maira Ortega
 - **Problema abordado:** Falta de evidencia empírica clara sobre cómo el cumplimiento estricto de WCAG beneficia tanto a usuarios con como sin discapacidades en tareas complejas.
 - **Objetivo:** Investigar empíricamente la influencia del cumplimiento de estándares de accesibilidad en la UX global.
 - **Metodología:** Estudio experimental comparativo.
@@ -253,7 +250,7 @@
 - **Identificación:** DOI verificado (10.1109/IC2IE50715.2020.9274623) | **URL oficial:** https://doi.org/10.1109/IC2IE50715.2020.9274623
 - **Base de datos reportada:** IEEE Xplore (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** María Soto
+- **Responsable de análisis:** María Soto
 - **Problema abordado:** Falta de adopción de prácticas UCD en e-Learning
 - **Objetivo:** Identificar prácticas UCD efectivas e-learning
 - **Metodología:** Survey/Revisión
@@ -272,7 +269,7 @@
 - **Identificación:** DOI verificado (10.1080/15391523.2020.1867938) | **URL oficial:** https://doi.org/10.1080/15391523.2020.1867938
 - **Base de datos reportada:** Taylor & Francis (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** No comprobable públicamente en las fuentes consultadas.
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Luis Caldera
+- **Responsable de análisis:** Luis Caldera
 - **Problema abordado:** Dispersión de los valores de referencia del test SUS educativo
 - **Objetivo:** Sintetizar uso de SUS
 - **Metodología:** Revisión Sistemática
@@ -291,7 +288,7 @@
 - **Identificación:** DOI verificado (10.1007/s10209-023-00967-2) | **URL oficial:** https://doi.org/10.1007/s10209-023-00967-2
 - **Base de datos reportada:** Springer (Verificación externa de indexación pendiente)
 - **Indexación efectivamente comprobada:** [Pendiente]
-- **Responsable reportado:** Luis Caldera | **Responsable propuesto (análisis):** Daniel Tapias
+- **Responsable de análisis:** Daniel Tapias
 - **Problema abordado:** La evaluación de accesibilidad suele quedar relegada como parche final en lugar de integrarse como ingeniería continua.
 - **Objetivo:** Sistematizar métodos, procesos y técnicas de ingeniería de accesibilidad integrados en el proceso de evaluación web.
 - **Metodología:** Revisión sistemática de la literatura (92 estudios primarios).

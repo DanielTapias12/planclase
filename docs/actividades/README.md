@@ -11,12 +11,12 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-001** | Diseño del Diagrama de Contenidos | Semana 3 | **COMPLETADA** | [ACT-001_DIAGRAMA_CONTENIDOS.md](ACT-001_DIAGRAMA_CONTENIDOS.md) |
 | **ACT-002** | Reestructuración y consolidación del nuevo proyecto | Semana 2 | **COMPLETADA** | [ACT-002-AVANCE-FRONTEND-Y-DIAGRAMA-CONTENIDOS.md](ACT-002-AVANCE-FRONTEND-Y-DIAGRAMA-CONTENIDOS.md) |
 | **ACT-003** | Análisis y Definición del Modelo Pedagógico | Semana 4 | **PARCIALMENTE COMPLETADA** | [ACT-003_MODELO_PEDAGOGICO.md](ACT-003_MODELO_PEDAGOGICO.md) |
-| **ACT-004** | Matriz de 15 Artículos Científicos | Semana 5 | **EN PROCESO** | [ACT-004_MATRIZ_15_ARTICULOS.md](ACT-004_MATRIZ_15_ARTICULOS.md) |
+| **ACT-004** | Matriz de 15 Artículos: consolidar resultados y pertinencia | Semana 5 | **EN PROCESO** | [ACT-004_MATRIZ_15_ARTICULOS.md](ACT-004_MATRIZ_15_ARTICULOS.md) |
 | **ACT-005** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-006** | Diseño del Mapa de Navegación | Semana 5 | **COMPLETADA** | [ACT-006_MAPA_NAVEGACION.md](ACT-006_MAPA_NAVEGACION.md) |
 | **ACT-007** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
-| **ACT-008** | Definir la Ventana Estándar | Semana 6 | **COMPLETADA** | [ACT-008_VENTANA_ESTANDAR.md](ACT-008_VENTANA_ESTANDAR.md) |
-| **ACT-009** | Descripción de Ventanas | Semana 6 | **COMPLETADA** | [ACT-009_DESCRIPCION_VENTANAS.md](ACT-009_DESCRIPCION_VENTANAS.md) |
+| **ACT-008** | Definir la Ventana Estándar | Semana 6 | **EN PROCESO** | [ACT-008_VENTANA_ESTANDAR.md](ACT-008_VENTANA_ESTANDAR.md) |
+| **ACT-009** | Descripción de Ventanas | Semana 6 | **EN PROCESO** | [ACT-009_DESCRIPCION_VENTANAS.md](ACT-009_DESCRIPCION_VENTANAS.md) |
 | **ACT-010** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-011** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-012** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
@@ -24,8 +24,6 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-014** | Desarrollo del Frontend e Integración de Interfaz | Semana 5/6 | **EN PROCESO** | [ACT-014_DESARROLLO_FRONTEND.md](ACT-014_DESARROLLO_FRONTEND.md) |
 | **ACT-015** | Validar Usabilidad y Accesibilidad (DUA) | Semana 5/6 | **EN PROCESO** | [ACT-015_USABILIDAD_ACCESIBILIDAD.md](ACT-015_USABILIDAD_ACCESIBILIDAD.md) |
 | **ACT-016** | Análisis de la aplicación de los 7 hábitos | Semana 6 | **COMPLETADA** | [ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) |
-
-*(Nota: Los avances técnicos previamente considerados "huérfanos" como el Generador, el Asistente IA y los modales DUA, han sido consolidados dentro de las fichas ACT-014 y ACT-015 según la evidencia verificable).*
 
 ---
 

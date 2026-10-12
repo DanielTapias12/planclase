@@ -1,53 +1,26 @@
 # ACT-008 — Definir la Ventana Estándar
 
 ## 1. Información General
-- **Estado:** COMPLETADA
-- **Participación:** Equipo completo (Daniel Tapias, Luis Caldera, Zoe Peñata, Maira Ortega, María Soto, María Ubarne) - Participación reportada/verificada.
+- **ID de la Actividad:** ACT-008
+- **Nombre:** Definir la Ventana Estándar
+- **Semana de Ejecución:** Semana 6
+- **Estado:** EN PROCESO
+- **Participación:** Equipo completo (Daniel Tapias, Luis Caldera, Zoe Peñata, Maira Ortega, María Soto, María Ubarne) — Participación reportada/verificada.
 
-## Diagnóstico
-Se identificó que el software INSPIRATEC posee una arquitectura en su vista principal ("Inicio / Wizard") que empata correctamente con los principios de la Ventana Estándar de MODESEC, dividiéndose funcionalmente en Header, Menú, Contenido, Acciones y Footer, lo que permite usarla como modelo.
+## Diagnóstico y Estado Actual (En Proceso)
+La actividad se encuentra **en proceso**. Si bien el software INSPIRATEC cuenta con una distribución funcional en su vista principal estructurada según los principios de la Ventana Estándar de MODESEC (Header, Menú de Navegación, Contenido Central, Acciones y Footer), se está ajustando y formalizando la especificación estándar con base en la reciente unificación de estilos visuales Glassmorphism 2026 y la arquitectura de modales con portal.
 
-## Evaluación
+## Criterios de la Ventana Estándar en Proceso de Estandarización
+1. **Header Institucional:** Barra superior translúcida con logo INSPIRATEC, accesos directos de accesibilidad DUA y menú de usuario asimétrico sin recuadros toscos.
+2. **Menú Lateral / Navegación Principal:** Sidebar flotante con navegación semántica a las secciones clave de la plataforma.
+3. **Área de Trabajo Central (Workspace):** Superficie dinámica sobre panel de cristal esmerilado que aloja formularios, tarjetas y visualizadores.
+4. **Sistema de Acciones y Modales:** Botonera ergonómica y soporte de ventanas emergentes montadas en `document.body` (`createPortal`) con oscurecimiento y desenfoque inmersivo del contenido estándar.
+5. **Footer / Información de Contexto:** Pie sutil con estado de guardado, versión y créditos institucionales.
 
-| Criterio | Estado | Observación |
-|----------|--------|-------------|
-| Cumplimiento | 3 — Adecuado | La estructura cumple con la teoría requerida, a falta de revisión grupal. |
-| Calidad | 4 — Consolidado | Se documentó sobre el software real ejecutado y funcional. |
-| Evidencia | 4 — Consolidado | Se incluyen capturas reales fotográficas y esquemas conceptuales SVG. |
-| Documentación | 4 — Consolidado | Toda la trazabilidad académica, roles y diarios de campo fue registrada. |
-| Responsabilidad | 4 — Consolidado | Se separaron labores verificadas de labores reportadas sin invenciones. |
-| Coherencia | 4 — Consolidado | La vista analizada corresponde a la arquitectura actual de la aplicación. |
+## Evidencias
+- Documento técnico en desarrollo: `docs/diseno-multimedial/VENTANA_ESTANDAR.md`.
+- Esquema vectorial: `docs/diseno-multimedial/VENTANA_ESTANDAR.svg`.
+- Implementación en código en `src/index.css` y componentes de página.
 
-## Fortalezas
-- **Objetividad:** Se analizó el frontend existente sin inventar mockups para satisfacer un requerimiento teórico.
-- **Trazabilidad:** Cada paso del proceso fue registrado exhaustivamente (ROCAS, Diario de campo).
-
-## Aspectos por mejorar
-- **Validación final:** Confirmar formalmente con el Product Owner si el comportamiento adaptativo del Menú (colapso en móviles) requiere ser documentado como una segunda Ventana Estándar de formato móvil.
-
-## Evidencias verificadas
-
-### Evidencia documental
-- `docs/diseno-multimedial/VENTANA_ESTANDAR.md`
-- `docs/diario-campo/SEMANA_06.md`
-
-### Evidencia técnica
-- Archivo CSS y JSX (`index.tsx`, `index.css`) correspondientes a las áreas funcionales.
-
-### Evidencia visual
-- `docs/evidencias/ACT-008_VENTANA_ESTANDAR_INSPIRATEC.png`
-- `docs/evidencias/VENTANA_ESTANDAR_EXPLICADA.png` (anotada).
-- `docs/diseno-multimedial/VENTANA_ESTANDAR.svg`
-
-### Evidencia de IA
-- `docs/ia/REGISTRO_IA_ACT-008.md`
-- `docs/ia/PROMPT_ACT-008_VENTANA_ESTANDAR.md`
-
-## Información faltante
-No se identifica información faltante para la formalización documental de la actividad.
-
-## Acciones recomendadas
-- Trasladar las pautas de espaciado y márgenes derivadas de esta ventana a la hoja de estilos global para forzar la consistencia en futuras vistas.
-
-## Próximos compromisos
-- Zoe Peñata (Scrum Master): Validar que la documentación corresponda a los entregables semanales y realizar el respectivo "merge/commit" a la rama principal.
+## Próximos Compromisos
+- Concluir la revisión y formalización de las métricas de espaciado y márgenes globales para la aprobación definitiva de la Ventana Estándar por parte del equipo y la docente guía.

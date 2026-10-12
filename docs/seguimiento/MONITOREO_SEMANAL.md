@@ -45,7 +45,7 @@
 |---|---|---|---|---|---|
 | ACT-014 | Desarrollo Frontend e Integración | Daniel / Luis | En proceso | 4 | Código + commits (Wizard, HUD, Auth) |
 | ACT-015 | Validar Usabilidad y Accesibilidad | Equipo completo | En proceso | 4 | Modal DUA, semántica, ARIA |
-| ACT-004 | Consolidar Matriz 15 Artículos | Equipo completo | En proceso | 2 | Matriz MD/XLSX |
+| ACT-004 | Matriz de 15 Artículos (Consolidar resultados de cada artículo y verificar pertinencia) | Equipo completo | En proceso | 2 | Matriz MD/XLSX |
 | ACT-006 | Diseño del Mapa de Navegación | Equipo completo | Completada | 4 | MAPA_NAVEGACION.md, SVG |
 
 ### Semana 6
@@ -53,8 +53,8 @@
 
 | ID | Actividad | Responsable | Estado | Nivel | Evidencia |
 |---|---|---|---|---|---|
-| ACT-008 | Definir la Ventana Estándar | Daniel / Luis | Completada | 4 | VENTANA_ESTANDAR.md, capturas, SVG |
-| ACT-009 | Descripción de Ventanas | Zoe / Luis | COMPLETADA | N/A | N/A |
+| ACT-008 | Definir la Ventana Estándar | Daniel / Luis | En proceso | 4 | VENTANA_ESTANDAR.md, capturas, SVG |
+| ACT-009 | Descripción de Ventanas | Zoe / Luis | En proceso | N/A | En proceso de actualización fotográfica |
 | ACT-016 | Análisis de 7 Hábitos | Equipo Completo / IA | Completada | N/A | ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md |
 
 ---
