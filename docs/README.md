@@ -24,3 +24,7 @@ La documentación está organizada para mantener la trazabilidad entre la planif
   - [Evidencias — ACT-001](evidencias/ACT-001/README.md)
 - [**ia/**](ia/): Registro ético y estructurado del uso de Inteligencia Artificial bajo el marco ROCAS.
   - [Registro de Uso de IA](ia/REGISTRO_USO_IA.md)
+
+- [**pedagogia/**](pedagogia/):
+  - [Diseño de Aprendizaje (MODESEC)](pedagogia/DISENO_DE_APRENDIZAJE.md)
+  - [Modelo Pedagógico](pedagogia/MODELO_PEDAGOGICO.md)

@@ -63,7 +63,7 @@
 Tras la auditoría integral, se declara que las siguientes actividades **no cuentan con evidencia disponible** en el repositorio:
 - ACT-005
 - ACT-007
-- ACT-010, ACT-011, ACT-012, ACT-013
+- ACT-010, ACT-011, ACT-012
 
 ## Productos MODESEC Pendientes de Verificación
 - Guía de Metáforas (NO ENCONTRADA)

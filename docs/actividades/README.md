@@ -20,7 +20,7 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-010** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-011** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-012** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
-| **ACT-013** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
+| **ACT-013** | Consolidar el Diseño de Aprendizaje | Semana 6 | **COMPLETADA** | [ACT-013_DISENO_DE_APRENDIZAJE.md](ACT-013_DISENO_DE_APRENDIZAJE.md) |
 | **ACT-014** | Desarrollo del Frontend e Integración de Interfaz | Semana 5/6 | **EN PROCESO** | [ACT-014_DESARROLLO_FRONTEND.md](ACT-014_DESARROLLO_FRONTEND.md) |
 | **ACT-015** | Validar Usabilidad y Accesibilidad (DUA) | Semana 5/6 | **EN PROCESO** | [ACT-015_USABILIDAD_ACCESIBILIDAD.md](ACT-015_USABILIDAD_ACCESIBILIDAD.md) |
 | **ACT-016** | Análisis de la aplicación de los 7 hábitos | Semana 6 | **COMPLETADA** | [ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) |
