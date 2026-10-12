@@ -2894,14 +2894,24 @@ h1, h2, h3, h4, h5, h6 {
   flex-shrink: 0;
 }
 
-/* Popover del menú de usuario */
+/* Telón de fondo con desenfoque ambiental para el menú de usuario */
+.user-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 38, 33, 0.20);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+}
+
+/* Popover del menú de usuario con efecto cristal desenfocado de alta fidelidad */
 .user-menu-popover-glass {
-  background: rgba(255, 253, 249, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.95);
+  background: rgba(255, 254, 250, 0.95);
+  backdrop-filter: blur(28px) saturate(140%);
+  -webkit-backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.96);
   border-radius: 18px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  box-shadow: 0 20px 48px rgba(10, 26, 23, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
   width: 260px;
   overflow: hidden;
   z-index: 1000;

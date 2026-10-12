@@ -28,12 +28,61 @@ export default function UserMenu({ placement = 'bottom', isSidebar = false }) {
   const [showProfile, setShowProfile] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [popoverPos, setPopoverPos] = useState({ top: 0, right: 0, left: 'auto', bottom: 'auto' });
   const menuRef = useRef();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const updatePosition = () => {
+      if (!menuRef.current) return;
+      const rect = menuRef.current.getBoundingClientRect();
+      const popoverWidth = 260;
+
+      if (placement === 'top') {
+        setPopoverPos({
+          bottom: window.innerHeight - rect.top + 8,
+          top: 'auto',
+          left: Math.max(12, Math.min(rect.left, window.innerWidth - popoverWidth - 12)),
+          right: 'auto'
+        });
+      } else {
+        const rightSpace = window.innerWidth - rect.right;
+        if (rightSpace + popoverWidth <= window.innerWidth - 12) {
+          setPopoverPos({
+            top: rect.bottom + 8,
+            right: Math.max(12, rightSpace),
+            left: 'auto',
+            bottom: 'auto'
+          });
+        } else {
+          setPopoverPos({
+            top: rect.bottom + 8,
+            left: Math.max(12, rect.left),
+            right: 'auto',
+            bottom: 'auto'
+          });
+        }
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen, placement]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false);
+        // Si el clic no fue dentro del botón ni del popover
+        const popoverEl = document.querySelector('.user-menu-popover-glass');
+        if (!popoverEl || !popoverEl.contains(event.target)) {
+          setIsOpen(false);
+        }
       }
     };
     const handleKeyDown = (e) => {
@@ -88,62 +137,82 @@ export default function UserMenu({ placement = 'bottom', isSidebar = false }) {
         </div>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: placement === 'top' ? -8 : 8 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: placement === 'top' ? -8 : 8 }}
-            transition={{ duration: 0.16 }}
-            className="user-menu-popover-glass"
-            style={{
-              position: 'absolute',
-              ...(placement === 'top' ? { bottom: 'calc(100% + 10px)', left: 0 } : { top: 'calc(100% + 10px)', right: 0 }),
-              zIndex: 1000
-            }}
-          >
-            <div style={{ padding: '16px 18px', borderBottom: '1px solid rgba(49, 91, 84, 0.12)', background: 'rgba(71, 122, 114, 0.08)' }}>
-              <p style={{ margin: 0, fontWeight: 700, color: '#142B25', fontSize: '14px' }}>
-                {userProfile?.nombre || 'Usuario INSPIRATEC'}
-              </p>
-              <p style={{ margin: '3px 0 0 0', fontSize: '12px', color: '#4A5551', wordBreak: 'break-all' }}>
-                {auth.currentUser?.email}
-              </p>
-              <div style={{ marginTop: '8px' }}>
-                <span style={{
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  padding: '2px 8px',
-                  borderRadius: '999px',
-                  backgroundColor: isAdmin ? 'rgba(124, 58, 237, 0.12)' : 'rgba(71, 122, 114, 0.15)',
-                  color: isAdmin ? '#6D28D9' : '#1C3A34',
-                  display: 'inline-block'
-                }}>
-                  {roleName}
-                </span>
-              </div>
-            </div>
+      {createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <>
+              {/* Telón ambiental desenfocado que desenfoca la pantalla de fondo */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.16 }}
+                className="user-menu-backdrop"
+                onClick={() => setIsOpen(false)}
+                aria-hidden="true"
+              />
 
-            <div style={{ padding: '8px' }}>
-              <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); setShowProfile(true); }}>
-                <User size={15} style={{ color: '#315B54' }} /> Mi Perfil
-              </button>
-              <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); setShowPassword(true); }}>
-                <Key size={15} style={{ color: '#315B54' }} /> Cambiar Contraseña
-              </button>
-              <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); window.dispatchEvent(new Event('open-bienvenida')); }}>
-                <Sparkles size={15} style={{ color: '#D4AF37' }} /> Bienvenida INSPIRATEC
-              </button>
-            </div>
+              {/* Popover desacoplado con desenfoque de cristal y nitidez total */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.96, y: placement === 'top' ? -8 : 8 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.96, y: placement === 'top' ? -8 : 8 }}
+                transition={{ duration: 0.16 }}
+                className="user-menu-popover-glass"
+                style={{
+                  position: 'fixed',
+                  top: popoverPos.top,
+                  bottom: popoverPos.bottom,
+                  right: popoverPos.right,
+                  left: popoverPos.left,
+                  zIndex: 1000
+                }}
+              >
+                <div style={{ padding: '16px 18px', borderBottom: '1px solid rgba(49, 91, 84, 0.12)', background: 'rgba(71, 122, 114, 0.08)' }}>
+                  <p style={{ margin: 0, fontWeight: 700, color: '#142B25', fontSize: '14px' }}>
+                    {userProfile?.nombre || 'Usuario INSPIRATEC'}
+                  </p>
+                  <p style={{ margin: '3px 0 0 0', fontSize: '12px', color: '#4A5551', wordBreak: 'break-all' }}>
+                    {auth.currentUser?.email}
+                  </p>
+                  <div style={{ marginTop: '8px' }}>
+                    <span style={{
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      padding: '2px 8px',
+                      borderRadius: '999px',
+                      backgroundColor: isAdmin ? 'rgba(124, 58, 237, 0.12)' : 'rgba(71, 122, 114, 0.15)',
+                      color: isAdmin ? '#6D28D9' : '#1C3A34',
+                      display: 'inline-block'
+                    }}>
+                      {roleName}
+                    </span>
+                  </div>
+                </div>
 
-            <div style={{ padding: '8px', borderTop: '1px solid rgba(49, 91, 84, 0.1)' }}>
-              <button className="user-menu-item-glass danger" onClick={() => { setIsOpen(false); logoutUser(); }}>
-                <LogOut size={15} /> Cerrar Sesión
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <div style={{ padding: '8px' }}>
+                  <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); setShowProfile(true); }}>
+                    <User size={15} style={{ color: '#315B54' }} /> Mi Perfil
+                  </button>
+                  <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); setShowPassword(true); }}>
+                    <Key size={15} style={{ color: '#315B54' }} /> Cambiar Contraseña
+                  </button>
+                  <button className="user-menu-item-glass" onClick={() => { setIsOpen(false); window.dispatchEvent(new Event('open-bienvenida')); }}>
+                    <Sparkles size={15} style={{ color: '#D4AF37' }} /> Bienvenida INSPIRATEC
+                  </button>
+                </div>
+
+                <div style={{ padding: '8px', borderTop: '1px solid rgba(49, 91, 84, 0.1)' }}>
+                  <button className="user-menu-item-glass danger" onClick={() => { setIsOpen(false); logoutUser(); }}>
+                    <LogOut size={15} /> Cerrar Sesión
+                  </button>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       <ProfileModal isOpen={showProfile} onClose={() => setShowProfile(false)} profile={userProfile} email={auth.currentUser?.email} role={roleName} />
       <PasswordModal isOpen={showPassword} onClose={() => setShowPassword(false)} />
