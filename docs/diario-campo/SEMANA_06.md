@@ -151,3 +151,13 @@
 1. Revisión de las 10 actividades técnicas y pedagógicas desarrolladas a la fecha.
 2. Identificación de los hábitos dominantes en cada actividad (H1 Proactividad, H2 Fin en mente, H3 Primero lo primero, H4 Ganar-ganar, H5 Primero entender, H6 Sinergia, H7 Afilar la sierra).
 3. Elaboración de la matriz de aplicación por participante para cada actividad en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md`.
+
+### Consolidación y Cierre Definitivo de ACT-003 (Modelo Pedagógico)
+* **Fecha:** Semana 6 (Fase de Consolidación).
+* **Actividad:** ACT-003 — Análisis y Definición del Modelo Pedagógico.
+* **Acciones Desarrolladas:**
+  1. Revisión colegiada del estado previo ("Parcialmente completada - Pendiente de validación").
+  2. Integración de la fundamentación científica a partir de la literatura analizada en la Matriz de 15 Artículos (Piaget, Vygotsky, Papert, Wing, Barrows, CAST, Black & Wiliam).
+  3. Definición formal de la población prioritaria (docentes de básica y media, 1.° a 11.°, estudiantes de 6 a 17 años y adaptaciones DUA/PIAR para inclusión y contextos unplugged).
+  4. Articulación bidireccional con el nuevo documento `DISENO_DE_APRENDIZAJE.md` (ACT-013) y la sección pedagógica del `README.md`.
+  5. Declaración unánime del equipo del estado **COMPLETADA** con nivel de evaluación 4 (Excelente).

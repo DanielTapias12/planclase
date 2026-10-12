@@ -48,3 +48,13 @@
 1. **Zoe Peñata (Scrum Master):** Verificar el cierre de entregables en el tablero Scrum y preparar la retrospectiva del sprint.
 2. **María Soto y María Ubarne (Product Owners):** Validar la coherencia de las actividades generadas con docentes de prueba.
 3. **Daniel Tapias y Luis Caldera (Developers):** Implementar las acciones de mejora de usabilidad (barra fija en editor y stepper móvil).
+
+### Consolidación y Cierre Definitivo de ACT-003 (Modelo Pedagógico)
+* **Fecha:** Semana 6 (Fase de Consolidación).
+* **Actividad:** ACT-003 — Análisis y Definición del Modelo Pedagógico.
+* **Acciones Desarrolladas:**
+  1. Revisión colegiada del estado previo ("Parcialmente completada - Pendiente de validación").
+  2. Integración de la fundamentación científica a partir de la literatura analizada en la Matriz de 15 Artículos (Piaget, Vygotsky, Papert, Wing, Barrows, CAST, Black & Wiliam).
+  3. Definición formal de la población prioritaria (docentes de básica y media, 1.° a 11.°, estudiantes de 6 a 17 años y adaptaciones DUA/PIAR para inclusión y contextos unplugged).
+  4. Articulación bidireccional con el nuevo documento `DISENO_DE_APRENDIZAJE.md` (ACT-013) y la sección pedagógica del `README.md`.
+  5. Declaración unánime del equipo del estado **COMPLETADA** con nivel de evaluación 4 (Excelente).

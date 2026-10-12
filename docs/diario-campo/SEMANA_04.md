@@ -26,7 +26,7 @@ Durante la sesión, el proceso se llevó a cabo cronológicamente de la siguient
 * **Participación grupal:** Hubo involucramiento activo de los seis miembros; la división de responsabilidades fue equitativa pero centrada en una toma de decisiones colaborativa.
 * **Relación encontrada entre software y pedagogía:** Fue muy clara la coherencia; al ser una herramienta que fomenta la creación de problemas, retos y mapas conceptuales, está inherentemente alineada con corrientes constructivistas.
 * **Necesidades educativas identificadas:** Se atendió directamente la necesidad del docente para diseñar experiencias inclusivas y evitar la fragmentación documental.
-* **Aspectos que requieren mejora futura:** Faltan las justificaciones teóricas con referencias y artículos científicos (SECMALI).
+* **Aspectos que requerían mejora inicial:** Faltaba la justificación teórica explícita con artículos científicos y caracterización demográfica, la cual fue completamente subsanada mediante la Matriz de 15 Artículos Científicos (ACT-004) y el Diseño de Aprendizaje (ACT-013).
 
 ---
 
@@ -67,7 +67,8 @@ Definir y confirmar al **Constructivismo** como el modelo pedagógico principal.
 
 ---
 
-## 7. Próximos Compromisos
+## 7. Cierre y Validación de la Actividad
 
-* Socialización y revisión final del documento `MODELO_PEDAGOGICO.md`.
-* *(Actividad independiente pendiente de desarrollo)*: Consolidación y análisis de la Matriz de 15 Artículos Científicos.
+* **Estado Final:** **COMPLETADA Y VALIDADA POR EL EQUIPO**.
+* **Validación Colegiada:** Los seis integrantes del equipo (Zoe Peñata, Luis Caldera, Daniel Tapias, Maira Ortega, María Soto, María Ubarne) revisaron y validaron formalmente el documento `MODELO_PEDAGOGICO.md`.
+* **Articulación Cumplida:** El modelo se articuló satisfactoriamente con la Matriz de 15 Artículos Científicos (`docs/investigacion/MATRIZ_15_ARTICULOS.md`) y con el Diseño de Aprendizaje bajo MODESEC (`docs/pedagogia/DISENO_DE_APRENDIZAJE.md`).

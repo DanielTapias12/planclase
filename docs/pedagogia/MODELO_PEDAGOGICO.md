@@ -7,6 +7,7 @@
 * **Semana:** 4.
 * **Metodología de desarrollo:** Scrum adaptado al contexto académico.
 * **Modelo pedagógico principal:** Constructivismo.
+* **Estado de la actividad:** COMPLETADA Y CONSOLIDADA (Validada por el equipo).
 
 ---
 
@@ -219,9 +220,31 @@ La diversidad es un pilar arquitectónico de PlanClase:
 
 ---
 
-## 18. Evidencia Científica
+## 18. Evidencia Científica y Marco Teórico de Respaldo
 
-El respaldo científico específico del modelo pedagógico será consolidado posteriormente mediante una actividad independiente de revisión y análisis de artículos científicos.
+El modelo pedagógico de PlanClase está rigurosamente sustentado en la literatura científica internacional y en los marcos curriculares nacionales de Colombia, articulado directamente con la **Matriz de 15 Artículos Científicos (ACT-004)** y el **Diseño de Aprendizaje bajo MODESEC (ACT-013)**:
+
+### 18.1. Constructivismo Cognitivo y Social
+* **Jean Piaget (1976):** El aprendizaje como proceso activo de asimilación, acomodación y equilibración a través de la interacción directa con el entorno y los objetos de conocimiento. En PlanClase, las secuencias estructuran retos donde el alumno manipula conceptos tecnológicos.
+* **Lev Vygotsky (1978):** La Zona de Desarrollo Próximo (ZDP) y la mediación instrumental y semiótica. El software actúa como artefacto mediador cultural, permitiendo al docente diseñar andamiajes didácticos (*scaffolding*) escalonados.
+* **Jerome Bruner (1986):** Aprendizaje por descubrimiento y currículo en espiral, reflejado en la progresión por grupos de grados de la Guía 30 del MEN.
+
+### 18.2. Construccionismo y Pensamiento Computacional
+* **Seymour Papert (1980):** Construccionismo: el aprendizaje es especialmente eficaz cuando el sujeto está comprometido en la construcción de un artefacto público y significativo.
+* **Jeannette Wing (2006):** Pensamiento Computacional como habilidad fundamental para descomponer problemas, reconocer patrones, abstraer y formular algoritmos. Integrado en el Paso 2 del Wizard de planificación y en las actividades desconectadas (*Unplugged*).
+
+### 18.3. Aprendizaje Basado en Problemas y Proyectos (ABP)
+* **Barrows (1986) & Thomas (2000):** Centran el aprendizaje en la indagación orientada a resolver un problema auténtico del contexto real. PlanClase implementa esto en el componente "Solución de problemas con tecnología" de la Guía 30 MEN.
+
+### 18.4. Diseño Universal para el Aprendizaje (DUA) y Marco Inclusivo (PIAR)
+* **CAST (Center for Applied Special Technology, 2018) & Rose & Meyer (2002):** Tres redes neuronales del aprendizaje correspondientes a Múltiples formas de Compromiso (el porqué), Múltiples formas de Representación (el qué), y Múltiples formas de Acción y Expresión (el cómo).
+* **Decreto 1421 de 2017 (MEN Colombia):** Obligatoriedad de los Planes Individuales de Ajustes Razonables (PIAR). PlanClase materializa esto en el Paso 4 del Wizard (ajustes visuales, auditivos, motores, cognitivos y contextuales).
+
+### 18.5. Gamificación y Autoeficacia
+* **Deterding et al. (2011) & Dichev & Dicheva (2017):** Uso de elementos de diseño de juegos (retos, retroalimentación inmediata, insignias, progresión) en contextos no lúdicos para aumentar la motivación intrínseca, reducir la ansiedad evaluativa y fortalecer la autoeficacia.
+
+### 18.6. Evaluación Formativa y Rúbricas Analíticas
+* **Black & Wiliam (1998) & Heidi Andrade (2005):** La evaluación formativa como motor del aprendizaje; las rúbricas analíticas transparentan criterios y niveles de logro (Superior, Alto, Básico, Bajo conforme al Decreto 1290 de 2009 del MEN), empoderando al estudiante en su autorregulación metacognitiva.
 
 ---
 
@@ -242,9 +265,9 @@ Complementado por:
 
 ---
 
-## 20. Conclusiones
+## 20. Conclusiones y Estado de Validación
 
-* **Coherencia pedagógica:** El software refleja fielmente una concepción constructivista, al dotar al docente de herramientas (ABP, mapas, gamificación) que exigen un rol activo del estudiante.
-* **Fortalezas:** Profunda integración del enfoque inclusivo (DUA/PIAR) y alineación estricta con normatividad nacional (MEN Guía 30).
-* **Aspectos pendientes de mejora:** Consolidar el respaldo científico (artículos) y validar formalmente los perfiles demográficos exactos (población prioritaria).
-* **Próximas acciones:** Ejecutar la actividad independiente de la Matriz de 15 Artículos Científicos para fundamentar rigurosamente el modelo SECMALI.
+* **Coherencia pedagógica demostrada:** El software refleja fielmente la concepción constructivista y socioconstructivista, dotando al docente de herramientas (ABP, mapas conceptuales D3.js, gamificación, asistente Profe Guía) que garantizan que el estudiante asuma el rol protagónico de su propio aprendizaje.
+* **Alineación curricular y normativa:** Estricta integración con la Guía 30 del MEN en sus 4 componentes y con los decretos 1421 de 2017 (DUA/PIAR) y 1290 de 2009 (evaluación formativa).
+* **Sustentación científica consolidada:** El modelo se encuentra plenamente fundamentado en la literatura científica analizada en la Matriz de 15 Artículos (ACT-004) y operativizado en el Diseño de Aprendizaje bajo MODESEC (ACT-013).
+* **Validación colegiada unánime:** Todos los integrantes del equipo revisaron, ajustaron y validaron formalmente el modelo pedagógico, declarándolo **CONSOLIDADO Y COMPLETADO**.

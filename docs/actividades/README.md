@@ -10,7 +10,7 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 |---|---|---|---|---|
 | **ACT-001** | Diseño del Diagrama de Contenidos | Semana 3 | **COMPLETADA** | [ACT-001_DIAGRAMA_CONTENIDOS.md](ACT-001_DIAGRAMA_CONTENIDOS.md) |
 | **ACT-002** | Reestructuración y consolidación del nuevo proyecto | Semana 2 | **COMPLETADA** | [ACT-002-AVANCE-FRONTEND-Y-DIAGRAMA-CONTENIDOS.md](ACT-002-AVANCE-FRONTEND-Y-DIAGRAMA-CONTENIDOS.md) |
-| **ACT-003** | Análisis y Definición del Modelo Pedagógico | Semana 4 | **PARCIALMENTE COMPLETADA** | [ACT-003_MODELO_PEDAGOGICO.md](ACT-003_MODELO_PEDAGOGICO.md) |
+| **ACT-003** | Análisis y Definición del Modelo Pedagógico | Semana 4 | **COMPLETADA** | [ACT-003_MODELO_PEDAGOGICO.md](ACT-003_MODELO_PEDAGOGICO.md) |
 | **ACT-004** | Matriz de 15 Artículos: consolidar resultados y pertinencia | Semana 5 | **EN PROCESO** | [ACT-004_MATRIZ_15_ARTICULOS.md](ACT-004_MATRIZ_15_ARTICULOS.md) |
 | **ACT-005** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-006** | Diseño del Mapa de Navegación | Semana 5 | **COMPLETADA** | [ACT-006_MAPA_NAVEGACION.md](ACT-006_MAPA_NAVEGACION.md) |

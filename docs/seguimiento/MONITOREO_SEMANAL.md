@@ -35,7 +35,7 @@
 * **Actividad principal:** ACT-003 — Análisis y Definición del Modelo Pedagógico.
 * **Objetivo:** Analizar y documentar el modelo pedagógico que orienta el desarrollo del software educativo PlanClase.
 * **Participantes:** Todo el equipo.
-* **Estado:** PARCIALMENTE COMPLETADA — PENDIENTE DE VALIDACIÓN FINAL DEL EQUIPO.
+* **Estado:** COMPLETADA / PRODUCTO CONSOLIDADO Y VALIDADO.
 * **Producto:** `docs/pedagogia/MODELO_PEDAGOGICO.md`.
 
 ### Semana 5

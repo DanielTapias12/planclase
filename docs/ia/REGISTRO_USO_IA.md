@@ -45,6 +45,15 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 
 ---
 
+### 3. Análisis y Definición del Modelo Pedagógico (ACT-003)
+
+* **R - Rol:** Asistente de análisis pedagógico, epistemológico y estructuración documental académica.
+* **O - Objetivo:** Apoyar la articulación del modelo pedagógico constructivista con el código fuente de PlanClase, sustentar científicamente las metodologías activas (ABP, Pensamiento Computacional, Gamificación, DUA/PIAR), caracterizar la población prioritaria y formalizar la validación colegiada del equipo.
+* **C - Contexto:** Proyecto PlanClase (INSPIRATEC), alineación con MODESEC, SECMALI y MEN Guía 30.
+* **A - Acción (Prompt Principal):**
+  > *"Analiza el proyecto PlanClase, identifica sus componentes educativos verificables en el código (Wizard, D3.js, Trivias, DUA) y estructura el documento del Modelo Pedagógico bajo el enfoque Constructivista y de Aprendizaje Activo. Incorpora la evidencia científica de respaldo (Piaget, Vygotsky, Papert, Wing, CAST, MEN) y prepara la validación unánime del equipo para cerrar la actividad ACT-003 como Completada."*
+* **S - Salida / Validación:** Se consolidó `docs/pedagogia/MODELO_PEDAGOGICO.md` (20 secciones), `docs/actividades/ACT-003_MODELO_PEDAGOGICO.md` (estado COMPLETADA, Nivel 4) y la trazabilidad en diario de campo. El equipo (Product Owner, PO Support, Scrum Master y Desarrolladores) revisó y aprobó unánimemente el contenido sin contradicciones con la visión del producto.
+
 ### 3. Análisis de los 7 Hábitos en INSPIRATEC (ACT-016)
 
 * **R — Rol:** Analista documental y asistente de clasificación de evidencias.
