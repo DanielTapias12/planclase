@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAppStore } from '../store/useAppStore';
 import { generatePlan, suggestObjectives, suggestStandards } from '../services/aiService';
 import { useNavigate } from 'react-router-dom';
@@ -668,7 +669,7 @@ export default function WizardPage() {
       </div>
 
       {/* ==================== APARTADO INTERMEDIO CINEMATOGRÁFICO DE CREACIÓN CON IA ==================== */}
-      {(isGenerating || generationError) && (
+      {(isGenerating || generationError) && typeof document !== 'undefined' && createPortal(
         <div 
           className="wizard-generating-cinematic-overlay"
           role="dialog"
@@ -870,7 +871,8 @@ export default function WizardPage() {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

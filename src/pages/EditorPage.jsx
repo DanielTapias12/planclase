@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAppStore } from '../store/useAppStore';
 import { modifyPlan } from '../services/aiService';
 import ReactMarkdown from 'react-markdown';
@@ -620,13 +621,15 @@ export default function EditorPage() {
                               <button 
                                 className="btn-outline" 
                                 onClick={() => {
-                                  const blob = new Blob([recurso.html], { type: 'text/html' });
-                                  const url = URL.createObjectURL(blob);
-                                  window.open(url, '_blank');
+                                  setModalTitle(recurso.title);
+                                  setModalContentHtml(recurso.html);
+                                  setIsGeneratingMaterial(false);
+                                  setIsModalOpen(true);
                                 }}
                                 style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                title="Ver en ventana emergente con fondo desenfocado"
                               >
-                                <Maximize2 size={13} /> Ampliar
+                                <Maximize2 size={13} /> Ver en Ventana
                               </button>
                               <button 
                                 className="btn" 
@@ -756,10 +759,16 @@ export default function EditorPage() {
 
       </div>
       
-      {/* Modal para Material Complementario HTML */}
-      {isModalOpen && (
-        <div className="editor-modal-backdrop" onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false); }}>
-          <div className="editor-modal-card" role="dialog" aria-modal="true" aria-labelledby="material-modal-title">
+      {/* Modal para Material Complementario HTML montado en body con Portal para que los menús queden atrás con desenfoque */}
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
+        <div 
+          className="editor-modal-backdrop" 
+          onClick={(e) => { if (e.target === e.currentTarget) setIsModalOpen(false); }}
+          role="dialog" 
+          aria-modal="true" 
+          aria-labelledby="material-modal-title"
+        >
+          <div className="editor-modal-card">
             
             {/* Header del Modal */}
             <div className="modal-glass-header" style={{ padding: '18px 26px' }}>
@@ -769,9 +778,11 @@ export default function EditorPage() {
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                 {!isGeneratingMaterial && (
                   <>
-                    <button onClick={handleAnexarAlPlan} className="editor-btn-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 14px', fontSize: '13px' }}>
-                      <PlusCircle size={15} /> Anexar al Plan
-                    </button>
+                    {!recursosAnexos.some(r => r.title === modalTitle) && (
+                      <button onClick={handleAnexarAlPlan} className="editor-btn-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 14px', fontSize: '13px' }}>
+                        <PlusCircle size={15} /> Anexar al Plan
+                      </button>
+                    )}
                     <button onClick={downloadMaterialHtml} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 16px', fontSize: '13px' }}>
                       <Download size={15} /> Descargar HTML
                     </button>
@@ -808,7 +819,8 @@ export default function EditorPage() {
             </div>
             
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
