@@ -69,7 +69,7 @@ export default function ExperienciasPage() {
       } else if (action === 'edit' || action === 'view') {
         const targetPlan = experiencias.find(p => p.id === planId);
         loadPlan(targetPlan, targetPlan.markdown, targetPlan.id);
-        navigate('/editor');
+        navigate(`/editor?id=${targetPlan.id}`);
       }
     } catch (err) {
       console.error("Error al ejecutar acción:", err);

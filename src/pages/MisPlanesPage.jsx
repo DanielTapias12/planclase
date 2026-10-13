@@ -50,7 +50,7 @@ export default function MisPlanesPage() {
 
   const handleEdit = (plan) => {
     loadPlan(plan, plan.markdown, plan.id);
-    navigate('/editor');
+    navigate(`/editor?id=${plan.id}`);
   };
 
   const handleAction = async (plan, action) => {

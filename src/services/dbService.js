@@ -1,5 +1,19 @@
 import { db } from '../firebase';
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, where, serverTimestamp, orderBy } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, serverTimestamp, orderBy } from 'firebase/firestore';
+
+export const getPlanById = async (planId) => {
+  try {
+    const planRef = doc(db, "planes", planId);
+    const planSnap = await getDoc(planRef);
+    if (planSnap.exists()) {
+      return { id: planSnap.id, ...planSnap.data() };
+    }
+    return null;
+  } catch (e) {
+    console.error("Error al obtener plan por ID: ", e);
+    throw e;
+  }
+};
 
 export const savePlanToDB = async (userId, planData, markdown, recursosAnexos = []) => {
   try {

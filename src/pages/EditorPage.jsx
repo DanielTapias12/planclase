@@ -5,7 +5,7 @@ import { modifyPlan } from '../services/aiService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   Save, 
   Edit, 
@@ -27,10 +27,11 @@ import {
   CheckCircle2,
   Clock,
   BookOpen,
-  MessageSquare
+  MessageSquare,
+  Trash2
 } from 'lucide-react';
 
-import { savePlanToDB, updatePlanInDB } from '../services/dbService';
+import { savePlanToDB, updatePlanInDB, getPlanById } from '../services/dbService';
 import { generateComplementaryMaterial } from '../services/aiService';
 
 export default function EditorPage() {
@@ -49,9 +50,15 @@ export default function EditorPage() {
     setPlanId, 
     recursosAnexos, 
     addRecursoAnexo, 
+    removeRecursoAnexo,
+    setRecursosAnexos,
+    loadPlan,
     planesCount, 
     setPlanesCount 
   } = useAppStore();
+
+  const [searchParams] = useSearchParams();
+  const urlPlanId = searchParams.get('id');
 
   const [prompt, setPrompt] = useState('');
   const [isModifying, setIsModifying] = useState(false);
@@ -109,6 +116,31 @@ export default function EditorPage() {
     }
   }, [planGenerado]);
 
+  // Sincronización automática si se recarga la página con un ID de plan específico en la URL
+  useEffect(() => {
+    const syncPlanFromStorageOrDB = async () => {
+      const targetId = urlPlanId || planId;
+      if (!targetId || !userId) return;
+
+      // Si no hay plan en memoria o el ID de la URL no coincide con el store:
+      if (!planGenerado || (urlPlanId && planId !== urlPlanId)) {
+        try {
+          setIsSaving(true);
+          const remotePlan = await getPlanById(targetId);
+          if (remotePlan) {
+            loadPlan(remotePlan, remotePlan.markdown, remotePlan.id);
+          }
+        } catch (err) {
+          console.warn("No se pudo recargar el plan desde Firestore:", err);
+        } finally {
+          setIsSaving(false);
+        }
+      }
+    };
+
+    syncPlanFromStorageOrDB();
+  }, [urlPlanId, userId]);
+
   const handleModify = async (e) => {
     e.preventDefault();
     if (!prompt.trim() || !apiKey || !planGenerado) return;
@@ -149,7 +181,8 @@ export default function EditorPage() {
         const newPlanId = await savePlanToDB(userId, wizardData, planGenerado, recursosAnexos);
         setPlanId(newPlanId);
         setPlanStatus('guardado');
-        setPlanesCount(planesCount + 1);
+        setPlanesCount((planesCount || 0) + 1);
+        navigate(`/editor?id=${newPlanId}`, { replace: true });
       }
     } catch (e) {
       alert("Error al guardar: " + e.message);
@@ -222,12 +255,45 @@ export default function EditorPage() {
     a.click();
   };
 
-  const handleAnexarAlPlan = () => {
-    addRecursoAnexo({
+  const handleAnexarAlPlan = async () => {
+    if (!modalTitle || !modalContentHtml) {
+      setIsModalOpen(false);
+      return;
+    }
+
+    const nuevoRecurso = {
       title: modalTitle,
-      html: modalContentHtml
-    });
+      html: modalContentHtml,
+      tipo: modalTitle,
+      anexadoAt: new Date().toISOString()
+    };
+
+    // 1. Guardar de inmediato en el store (se persiste en localStorage con persist middleware)
+    addRecursoAnexo(nuevoRecurso);
     setIsModalOpen(false);
+
+    // 2. Persistencia y sincronización automática inmediata con Firestore
+    const currentList = Array.isArray(recursosAnexos) ? recursosAnexos : [];
+    const updatedList = [...currentList.filter(r => r.title !== modalTitle), nuevoRecurso];
+
+    if (planId) {
+      try {
+        await updatePlanInDB(planId, planGenerado, updatedList);
+        setPlanStatus('guardado');
+      } catch (err) {
+        console.error("Error al actualizar anexo en Firestore:", err);
+      }
+    } else if (userId && planGenerado) {
+      try {
+        const newId = await savePlanToDB(userId, wizardData, planGenerado, updatedList);
+        setPlanId(newId);
+        setPlanStatus('guardado');
+        setPlanesCount((planesCount || 0) + 1);
+        navigate(`/editor?id=${newId}`, { replace: true });
+      } catch (err) {
+        console.error("Error al autoguardar nuevo plan con anexo en Firestore:", err);
+      }
+    }
   };
 
   if (!planGenerado) {
@@ -644,6 +710,24 @@ export default function EditorPage() {
                                 style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--primary-sage)' }}
                               >
                                 <Download size={13} /> Descargar HTML
+                              </button>
+                              <button 
+                                className="btn-outline" 
+                                onClick={async () => {
+                                  removeRecursoAnexo(idx);
+                                  const updated = (recursosAnexos || []).filter((_, i) => i !== idx);
+                                  if (planId) {
+                                    try {
+                                      await updatePlanInDB(planId, planGenerado, updated);
+                                    } catch (e) {
+                                      console.error("Error al remover anexo en Firestore:", e);
+                                    }
+                                  }
+                                }}
+                                style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px', color: '#DC2626', borderColor: 'rgba(220, 38, 38, 0.35)' }}
+                                title="Desanexar material de este plan"
+                              >
+                                <Trash2 size={13} /> Quitar
                               </button>
                             </div>
                           </div>
