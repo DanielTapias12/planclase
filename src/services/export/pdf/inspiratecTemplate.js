@@ -29,203 +29,15 @@ const PALETTE = {
 export const buildInspiratecDocumentDefinition = (documentModel, contentBlocks) => {
   const {
     tema,
-    materia,
-    grado,
-    duracion,
-    sesiones,
-    numEstudiantes,
-    recursos,
-    metodologiaSTEAM,
-    objetivos,
-    estandaresMEN,
-    inclusion,
-    otrasNecesidades,
-    docente,
-    institucion,
-    fecha,
     rubricasTextuales,
-    materialesGenerados,
-    hasCoverPageJustified
+    materialesGenerados
   } = documentModel;
 
   const content = [];
 
   // =========================================================================
-  // 1. PORTADA EDITORIAL (Sólo si la extensión del documento lo justifica)
-  // =========================================================================
-  if (hasCoverPageJustified) {
-    content.push(
-      // Encabezado decorativo de portada
-      {
-        table: {
-          widths: ['*'],
-          body: [
-            [
-              {
-                stack: [
-                  { text: 'INSPIRATEC', style: 'coverKicker' },
-                  { text: 'SISTEMA DE PLANIFICACIÓN CURRICULAR INTELIGENTE', style: 'coverSubKicker' }
-                ],
-                fillColor: PALETTE.petroleumDark,
-                margin: [-48, -54, -48, 0],
-                padding: [48, 36, 48, 24]
-              }
-            ]
-          ]
-        },
-        layout: 'noBorders'
-      },
-      { text: '', margin: [0, 60, 0, 0] },
-      { text: 'SECUENCIA DIDÁCTICA OFICIAL', style: 'coverTag' },
-      { text: tema, style: 'coverTitle' },
-      {
-        canvas: [
-          {
-            type: 'line',
-            x1: 0,
-            y1: 10,
-            x2: 120,
-            y2: 10,
-            lineWidth: 3,
-            lineColor: PALETTE.sageBrand
-          }
-        ],
-        margin: [0, 4, 0, 24]
-      }
-    );
-
-    // Ficha sumaria de portada con metadatos reales disponibles
-    const coverMetaRows = [];
-    if (materia) coverMetaRows.push(['ÁREA CURRICULAR', materia]);
-    if (grado) coverMetaRows.push(['GRADO ACADÉMICO', grado]);
-    if (duracion || sesiones) {
-      const durText = [duracion, sesiones ? `(${sesiones} sesiones)` : ''].filter(Boolean).join(' ');
-      coverMetaRows.push(['DURACIÓN Y SESIONES', durText]);
-    }
-    if (docente) coverMetaRows.push(['DOCENTE A CARGO', docente]);
-    if (institucion) coverMetaRows.push(['INSTITUCIÓN EDUCATIVA', institucion]);
-    if (fecha) coverMetaRows.push(['FECHA DE EMISIÓN', fecha]);
-
-    if (coverMetaRows.length > 0) {
-      content.push({
-        table: {
-          widths: [150, '*'],
-          body: coverMetaRows.map(([label, val]) => [
-            { text: label, style: 'coverMetaLabel' },
-            { text: val, style: 'coverMetaValue' }
-          ])
-        },
-        layout: {
-          hLineWidth: (i, node) => (i === 0 || i === node.table.body.length ? 0 : 0.5),
-          vLineWidth: () => 0,
-          hLineColor: () => PALETTE.divider,
-          paddingTop: () => 6,
-          paddingBottom: () => 6
-        },
-        margin: [0, 20, 0, 40]
-      });
-    }
-
-    // Cierre de portada y salto de página
-    content.push(
-      {
-        text: 'Documento generado y estructurado con criterios curriculares, alineación MEN y principios DUA.',
-        style: 'coverFooterNote',
-        margin: [0, 80, 0, 0]
-      },
-      { text: '', pageBreak: 'after' }
-    );
-  }
-
-  // =========================================================================
-  // 2. ENCABEZADO INTEGRADO (Para documentos cortos sin portada)
-  // =========================================================================
-  if (!hasCoverPageJustified) {
-    content.push({
-      table: {
-        widths: ['*'],
-        body: [
-          [
-            {
-              stack: [
-                {
-                  columns: [
-                    { text: 'INSPIRATEC · PLANIFICACIÓN CURRICULAR', style: 'compactBannerBrand' },
-                    { text: fecha || 'Documento Oficial', style: 'compactBannerDate', alignment: 'right' }
-                  ]
-                },
-                { text: tema, style: 'compactBannerTitle' },
-                // Línea de metadatos clave
-                {
-                  text: [
-                    materia ? { text: `Área: ${materia}   `, bold: true } : '',
-                    grado ? { text: `Grado: ${grado}   `, bold: true } : '',
-                    duracion ? { text: `Duración: ${duracion}   ` } : '',
-                    docente ? { text: `Docente: ${docente}` } : ''
-                  ].filter(Boolean),
-                  style: 'compactBannerMeta'
-                }
-              ],
-              fillColor: PALETTE.sageLight,
-              padding: [16, 14, 16, 14]
-            }
-          ]
-        ]
-      },
-      layout: {
-        hLineWidth: () => 0.8,
-        vLineWidth: () => 0.8,
-        hLineColor: () => PALETTE.sageBrand,
-        vLineColor: () => PALETTE.sageBrand
-      },
-      margin: [0, 0, 0, 20]
-    });
-  }
-
-  // =========================================================================
-  // 3. FICHA TÉCNICA CURRICULAR (Si existen metadatos estructurados relevantes)
-  // =========================================================================
-  const technicalData = [];
-  if (objetivos) technicalData.push(['Propósito / Objetivos', objetivos]);
-  if (estandaresMEN && estandaresMEN.length > 0) {
-    technicalData.push(['Estándares MEN / DBA', estandaresMEN.join(' • ')]);
-  }
-  if (metodologiaSTEAM) technicalData.push(['Metodología y Enfoque', metodologiaSTEAM]);
-  if (recursos) technicalData.push(['Recursos y Herramientas', recursos]);
-  if (inclusion && inclusion.length > 0) {
-    const dText = [inclusion.join(', '), otrasNecesidades].filter(Boolean).join(' — ');
-    technicalData.push(['Inclusión y Principios DUA', dText]);
-  }
-  if (numEstudiantes) technicalData.push(['Población Estudiantil', `${numEstudiantes} estudiantes`]);
-
-  if (technicalData.length > 0 && hasCoverPageJustified) {
-    content.push(
-      { text: 'Ficha de Caracterización Curricular', style: 'headingSection', keepWithNext: true },
-      {
-        table: {
-          widths: [150, '*'],
-          body: technicalData.map(([k, v]) => [
-            { text: k, style: 'techTableKey', fillColor: PALETTE.sageLight },
-            { text: v, style: 'techTableVal' }
-          ])
-        },
-        layout: {
-          hLineWidth: () => 0.5,
-          vLineWidth: () => 0.5,
-          hLineColor: () => PALETTE.sageBorder,
-          vLineColor: () => PALETTE.sageBorder,
-          paddingLeft: () => 8,
-          paddingRight: () => 8,
-          paddingTop: () => 6,
-          paddingBottom: () => 6
-        },
-        margin: [0, 6, 0, 22]
-      }
-    );
-  }
-
-  // =========================================================================
-  // 4. CUERPO PRINCIPAL DEL PLAN DE CLASE (Bloques Markdown normalizados)
+  // CUERPO PRINCIPAL DEL PLAN DE CLASE (Bloques Markdown normalizados)
+  // Se renderiza directamente el contenido del plan sin portadas ni fichas duplicadas
   // =========================================================================
   content.push(...contentBlocks);
 
@@ -378,11 +190,8 @@ export const buildInspiratecDocumentDefinition = (documentModel, contentBlocks) 
     pageOrientation: 'portrait',
     pageMargins: [48, 54, 48, 52],
 
-    // Encabezado institucional dinámico
-    header: (currentPage, pageCount) => {
-      // Omitir en la portada si existe
-      if (hasCoverPageJustified && currentPage === 1) return null;
-
+    // Encabezado institucional dinámico en todas las páginas
+    header: () => {
       return {
         margin: [48, 20, 48, 0],
         columns: [
@@ -404,9 +213,6 @@ export const buildInspiratecDocumentDefinition = (documentModel, contentBlocks) 
 
     // Pie de página con numeración y leyendas oficiales
     footer: (currentPage, pageCount) => {
-      // Omitir en portada si existe
-      if (hasCoverPageJustified && currentPage === 1) return null;
-
       return {
         margin: [48, 16, 48, 0],
         stack: [
