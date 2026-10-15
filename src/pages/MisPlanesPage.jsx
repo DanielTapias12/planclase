@@ -14,14 +14,16 @@ import {
   Calendar,
   GraduationCap,
   Layers,
-  FileCheck
+  FileCheck,
+  FileText
 } from 'lucide-react';
 
 import ConfirmModal from '../components/ConfirmModal';
+import { exportPlanToPdf } from '../services/export/pdf/pdfEngine';
 
 export default function MisPlanesPage() {
   const navigate = useNavigate();
-  const { loadPlan, userId, setPlanesCount } = useAppStore();
+  const { loadPlan, userId, userProfile, setPlanesCount } = useAppStore();
   
   const [planes, setPlanes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +31,7 @@ export default function MisPlanesPage() {
   const [statusFilter, setStatusFilter] = useState('todos');
   const [planToDelete, setPlanToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [downloadingPlanId, setDownloadingPlanId] = useState(null);
 
   useEffect(() => {
     if (!userId) return;
@@ -51,6 +54,25 @@ export default function MisPlanesPage() {
   const handleEdit = (plan) => {
     loadPlan(plan, plan.markdown, plan.id);
     navigate(`/editor?id=${plan.id}`);
+  };
+
+  const handleDownloadPdf = async (plan) => {
+    if (downloadingPlanId) return;
+    setDownloadingPlanId(plan.id);
+
+    try {
+      await exportPlanToPdf({
+        plan,
+        markdown: plan.markdown,
+        userProfile,
+        planId: plan.id
+      });
+    } catch (err) {
+      console.error('[INSPIRATEC Mis Planes] Error al descargar PDF:', err);
+      alert(err.message || 'Error al descargar el PDF de este plan.');
+    } finally {
+      setDownloadingPlanId(null);
+    }
   };
 
   const handleAction = async (plan, action) => {
@@ -363,6 +385,15 @@ export default function MisPlanesPage() {
                     title="Publicar en la biblioteca comunitaria"
                   >
                     <Share2 size={14} />
+                  </button>
+                  <button 
+                    className="btn-outline" 
+                    style={{ padding: '7px 10px', fontSize: '13px', minHeight: '36px', color: 'var(--primary-active)' }}
+                    onClick={(e) => { e.stopPropagation(); handleDownloadPdf(plan); }}
+                    disabled={downloadingPlanId === plan.id}
+                    title="Descargar documento PDF institucional"
+                  >
+                    {downloadingPlanId === plan.id ? <Loader2 size={14} className="spin" /> : <FileText size={14} />}
                   </button>
                   <button 
                     className="btn-outline" 

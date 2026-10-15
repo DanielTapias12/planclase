@@ -33,6 +33,7 @@ import {
 
 import { savePlanToDB, updatePlanInDB, getPlanById } from '../services/dbService';
 import { generateComplementaryMaterial } from '../services/aiService';
+import { exportPlanToPdf } from '../services/export/pdf/pdfEngine';
 
 export default function EditorPage() {
   const { 
@@ -46,12 +47,12 @@ export default function EditorPage() {
     setPlanStatus, 
     resetWizard, 
     userId, 
+    userProfile,
     planId, 
     setPlanId, 
     recursosAnexos, 
     addRecursoAnexo, 
     removeRecursoAnexo,
-    setRecursosAnexos,
     loadPlan,
     planesCount, 
     setPlanesCount 
@@ -73,6 +74,7 @@ export default function EditorPage() {
   const [modalTitle, setModalTitle] = useState('');
   const [modalContentHtml, setModalContentHtml] = useState('');
   const [isGeneratingMaterial, setIsGeneratingMaterial] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
   
   const chatEndRef = useRef(null);
   const materialMenuRef = useRef(null);
@@ -191,8 +193,26 @@ export default function EditorPage() {
     }
   };
 
-  const handlePrintPdf = () => {
-    window.print();
+  const handleExportPdf = async () => {
+    if (isExportingPdf) return;
+    setIsExportingPdf(true);
+
+    try {
+      await exportPlanToPdf({
+        plan: {
+          ...wizardData,
+          recursosAnexos
+        },
+        markdown: planGenerado,
+        userProfile,
+        planId
+      });
+    } catch (err) {
+      console.error('[INSPIRATEC PDF] Error al exportar:', err.message);
+      alert(err.message || 'Error al generar el documento PDF.');
+    } finally {
+      setIsExportingPdf(false);
+    }
   };
 
   const handleDownloadWord = () => {
@@ -464,11 +484,21 @@ export default function EditorPage() {
           <div className="editor-btn-group">
             <button 
               className="editor-btn-pill" 
-              style={{ padding: '6px 12px', fontSize: '13px', background: 'transparent', border: 'none', boxShadow: 'none' }} 
-              onClick={handlePrintPdf}
-              title="Exportar a PDF o Imprimir"
+              style={{ 
+                padding: '6px 12px', 
+                fontSize: '13px', 
+                background: 'transparent', 
+                border: 'none', 
+                boxShadow: 'none',
+                opacity: isExportingPdf ? 0.7 : 1,
+                cursor: isExportingPdf ? 'wait' : 'pointer'
+              }} 
+              onClick={handleExportPdf}
+              disabled={isExportingPdf}
+              title={isExportingPdf ? "Generando documento PDF profesional..." : "Descargar documento PDF oficial"}
             >
-              <FileText size={15} /> <span>PDF</span>
+              {isExportingPdf ? <Loader2 size={15} className="spin" /> : <FileText size={15} />}
+              <span>{isExportingPdf ? 'Generando...' : 'PDF'}</span>
             </button>
             <button 
               className="editor-btn-pill" 
