@@ -5,11 +5,11 @@
  * la plantilla editorial y la descarga directa del archivo.
  */
 
-import { validatePlanForExport } from '../validateDocument';
-import { adaptPlanDocument } from '../planDocumentAdapter';
-import { normalizeMarkdownToPdfBlocks } from '../markdownNormalizer';
-import { buildInspiratecDocumentDefinition } from './inspiratecTemplate';
-import { buildPdfFilename, downloadBlob } from '../downloadFile';
+import { validatePlanForExport } from '../validateDocument.js';
+import { adaptPlanDocument } from '../planDocumentAdapter.js';
+import { normalizeMarkdownToPdfBlocks } from '../markdownNormalizer.js';
+import { buildInspiratecDocumentDefinition } from './inspiratecTemplate.js';
+import { buildPdfFilename, downloadBlob } from '../downloadFile.js';
 
 let cachedPdfMake = null;
 
@@ -21,8 +21,8 @@ const loadPdfMake = async () => {
 
   try {
     const [pdfMakeModule, pdfFontsModule] = await Promise.all([
-      import('pdfmake/build/pdfmake'),
-      import('pdfmake/build/vfs_fonts')
+      import('pdfmake/build/pdfmake.js'),
+      import('pdfmake/build/vfs_fonts.js')
     ]);
 
     const pdfMake = pdfMakeModule.default || pdfMakeModule;
@@ -110,20 +110,23 @@ export const exportPlanToPdf = async ({
   try {
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
 
-    // Obtención del Blob de forma asíncrona compatible
-    blob = await new Promise((resolve, reject) => {
-      try {
+    // En pdfmake 0.3.x, getBlob() es una función async que retorna una Promise<Blob>
+    const blobCandidate = pdfDocGenerator.getBlob();
+    if (blobCandidate && typeof blobCandidate.then === 'function') {
+      blob = await blobCandidate;
+    } else if (typeof pdfDocGenerator.getBlob === 'function') {
+      // Fallback para versiones heredadas con callback
+      blob = await new Promise((resolve, reject) => {
         pdfDocGenerator.getBlob((resultBlob) => {
-          if (resultBlob) {
-            resolve(resultBlob);
-          } else {
-            reject(new Error('El motor no produjo un Blob de salida válido.'));
-          }
+          if (resultBlob) resolve(resultBlob);
+          else reject(new Error('El motor no produjo un Blob de salida válido.'));
         });
-      } catch (genErr) {
-        reject(genErr);
-      }
-    });
+      });
+    }
+
+    if (!blob) {
+      throw new Error('El motor no generó el archivo Blob.');
+    }
   } catch (renderError) {
     console.error('[INSPIRATEC PDF Engine] Error durante el renderizado del PDF:', renderError);
     throw new Error(`Fallo al compilar el documento PDF: ${renderError.message}`);
