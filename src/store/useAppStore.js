@@ -1,6 +1,23 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export const INITIAL_WIZARD_DATA = {
+  tema: '',
+  formato: 'Estructura estándar INSPIRATEC',
+  formatoInstrucciones: '',
+  grado: '',
+  materia: 'Tecnología e Informática',
+  duracion: '',
+  sesiones: '',
+  numEstudiantes: '',
+  recursos: '',
+  metodologiaSTEAM: '',
+  objetivos: '',
+  estandaresMEN: [],
+  inclusion: [],
+  otrasNecesidades: ''
+};
+
 export const useAppStore = create(
   persist(
     (set) => ({
@@ -8,7 +25,7 @@ export const useAppStore = create(
       planGenerado: '',
       estadoCambios: false,
       sesionChatIA: [],
-      apiKey: localStorage.getItem('inspiratec_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '',
+      apiKey: (typeof localStorage !== 'undefined' ? localStorage.getItem('inspiratec_api_key') : '') || (typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_GEMINI_API_KEY : '') || '',
       planStatus: 'borrador', // borrador, guardado
 
       setPlanGenerado: (plan) => set({ planGenerado: plan, estadoCambios: true, planStatus: 'borrador' }),
@@ -43,26 +60,52 @@ export const useAppStore = create(
         set({ apiKey: key });
       },
 
-      // Estado del Formulario (Wizard)
-      wizardData: {
-        tema: '',
-        formato: 'Estructura estándar INSPIRATEC',
-        grado: '',
-        materia: 'Tecnología e Informática',
-        duracion: '',
-        sesiones: '',
-        numEstudiantes: '',
-        recursos: '',
-        metodologiaSTEAM: '',
-        objetivos: '',
-        estandaresMEN: [],
-        inclusion: [],
-        otrasNecesidades: ''
-      },
+      // Estado del Formulario del Asistente (Borrador independiente del plan activo)
+      wizardData: { ...INITIAL_WIZARD_DATA },
+      wizardStep: 1,
+      wizardDraftSavedAt: null,
+      wizardSaveStatus: 'idle', // 'idle' | 'saving' | 'saved'
 
       updateWizardData: (data) => set((state) => ({
-        wizardData: { ...state.wizardData, ...data }
+        wizardData: { ...state.wizardData, ...data },
+        wizardSaveStatus: 'idle'
       })),
+
+      setWizardStep: (step) => set({ wizardStep: step }),
+
+      saveWizardProgress: (data = {}, step = null) => set((state) => ({
+        wizardData: { ...state.wizardData, ...data },
+        wizardStep: step !== null ? step : state.wizardStep,
+        wizardDraftSavedAt: new Date().toISOString(),
+        wizardSaveStatus: 'saved'
+      })),
+
+      clearWizardFormOnly: () => set({
+        wizardData: { ...INITIAL_WIZARD_DATA },
+        wizardStep: 1,
+        wizardDraftSavedAt: null,
+        wizardSaveStatus: 'idle'
+      }),
+
+      // Metadatos de la clase activa en el Editor (independientes del formulario)
+      activePlanMetadata: null,
+      setActivePlanMetadata: (meta) => set({ activePlanMetadata: meta }),
+
+      // Al completar generación con IA: actualiza el Editor con la propuesta y prepara el formulario para la siguiente planeación
+      // Si newPlanId es null, el plan queda en estado 'generado' (sin persistir en Mis Planes hasta confirmación explícita)
+      completePlanGeneration: (planMarkdown, planMetadata, newPlanId = null) => set({
+        planGenerado: planMarkdown,
+        activePlanMetadata: { ...planMetadata },
+        planId: newPlanId,
+        planStatus: newPlanId ? 'guardado' : 'generado',
+        estadoCambios: !newPlanId,
+        wizardData: { ...INITIAL_WIZARD_DATA },
+        wizardStep: 1,
+        wizardDraftSavedAt: null,
+        wizardSaveStatus: 'idle',
+        sesionChatIA: [],
+        recursosAnexos: []
+      }),
 
       userId: null,
       userProfile: null,
@@ -79,20 +122,46 @@ export const useAppStore = create(
       })),
       setMisPlantillas: (plantillas) => set({ misPlantillas: plantillas }),
 
-      loadPlan: (planMetadata, markdownContent, planId = null) => set((state) => ({
-        wizardData: { ...state.wizardData, ...planMetadata },
+      // Cargar un documento existente en el Editor: NO contamina ni sobrescribe el borrador del wizard
+      loadPlan: (planMetadata, markdownContent, planId = null) => set({
+        activePlanMetadata: { ...(planMetadata || {}) },
         planGenerado: markdownContent || '',
         planId: planId,
         planStatus: 'guardado',
         estadoCambios: false,
         sesionChatIA: [],
         recursosAnexos: Array.isArray(planMetadata?.recursosAnexos) ? planMetadata.recursosAnexos : []
-      })),
+      }),
+
+      // Limpia el plan activo si coincide con el ID de un plan eliminado
+      clearActivePlanIfMatches: (targetPlanId) => set((state) => {
+        if (!targetPlanId) return {};
+        const matchesId = state.planId === targetPlanId;
+        const matchesTema = state.activePlanMetadata?.tema && (
+          typeof targetPlanId === 'object' 
+            ? state.activePlanMetadata?.tema === targetPlanId.tema
+            : false
+        );
+        if (matchesId || matchesTema) {
+          return {
+            activePlanMetadata: null,
+            planGenerado: '',
+            planId: null,
+            planStatus: 'borrador',
+            estadoCambios: false,
+            sesionChatIA: [],
+            recursosAnexos: []
+          };
+        }
+        return {};
+      }),
 
       resetWizard: () => set({
-        wizardData: {
-          tema: '', formato: 'Estructura estándar INSPIRATEC', formatoInstrucciones: '', grado: '', materia: 'Tecnología e Informática', duracion: '', sesiones: '', numEstudiantes: '', recursos: '', metodologiaSTEAM: '', objetivos: '', estandaresMEN: [], inclusion: [], otrasNecesidades: ''
-        },
+        wizardData: { ...INITIAL_WIZARD_DATA },
+        wizardStep: 1,
+        wizardDraftSavedAt: null,
+        wizardSaveStatus: 'idle',
+        activePlanMetadata: null,
         planGenerado: '',
         planId: null,
         planStatus: 'borrador',
@@ -106,10 +175,16 @@ export const useAppStore = create(
         planGenerado: state.planGenerado,
         planId: state.planId,
         planStatus: state.planStatus,
-        wizardData: state.wizardData,
+        userId: state.userId,
+        activePlanMetadata: state.activePlanMetadata,
         recursosAnexos: state.recursosAnexos,
         sesionChatIA: state.sesionChatIA,
+        wizardData: state.wizardData,
+        wizardStep: state.wizardStep,
+        wizardDraftSavedAt: state.wizardDraftSavedAt,
+        wizardSaveStatus: state.wizardSaveStatus,
       })
     }
   )
 );
+

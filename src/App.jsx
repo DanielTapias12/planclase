@@ -23,6 +23,7 @@ import HomePage from './pages/HomePage';
 import BienvenidaNarrativa from './components/BienvenidaNarrativa';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
+import NetworkStatusBanner from './components/NetworkStatusBanner';
 import { 
   Settings, 
   Lightbulb, 
@@ -38,28 +39,65 @@ import {
   MessageSquare, 
   HelpCircle, 
   LifeBuoy, 
-  Info 
+  Info,
+  ChevronLeft,
+  ChevronRight,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 
 function AppContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem('inspiratec_sidebar_collapsed') === 'true';
+    }
+    return false;
+  });
+
+  const [topUtilitiesCollapsed, setTopUtilitiesCollapsed] = useState(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return localStorage.getItem('inspiratec_top_utilities_collapsed') === 'true';
+    }
+    return false;
+  });
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed(prev => {
+      const next = !prev;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('inspiratec_sidebar_collapsed', String(next));
+      }
+      return next;
+    });
+  };
+
+  const toggleTopUtilities = () => {
+    setTopUtilitiesCollapsed(prev => {
+      const next = !prev;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem('inspiratec_top_utilities_collapsed', String(next));
+      }
+      return next;
+    });
+  };
+
   const location = useLocation();
 
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const { userId, userProfile, apiKey, planesCount, setPlanesCount } = useAppStore();
+
+  const { userId, userProfile, apiKey, planesCount, setPlanesCount, clearWizardFormOnly } = useAppStore();
 
   useEffect(() => {
-    if (userId) {
-      getMisPlanes(userId).then(planes => {
-        setPlanesCount(planes.length);
-      }).catch(e => console.error(e));
-    } else {
-      setPlanesCount(0);
-    }
+    const targetUid = userId || auth.currentUser?.uid || 'anon';
+    getMisPlanes(targetUid).then(planes => {
+      setPlanesCount(planes.length);
+    }).catch(e => console.error(e));
   }, [userId, setPlanesCount]);
+
 
   // Fondo ambiental unificado idéntico a Inicio para todo el recorrido
   const ambientBg = '/images/inicio-fondo.png';
@@ -77,6 +115,9 @@ function AppContent() {
 
         {/* Experiencia Narrativa Inmersiva de Bienvenida (11 escenas) */}
         <BienvenidaNarrativa />
+
+        {/* Indicador no invasivo de estado de conexión a internet */}
+        <NetworkStatusBanner />
 
         {/* Barra superior compacta solo para vista móvil */}
         <header className="mobile-header-bar">
@@ -105,10 +146,18 @@ function AppContent() {
             />
 
             {/* Menú Lateral Verde Petróleo Translúcido */}
-            <aside className={`app-sidebar-lateral ${mobileMenuOpen ? 'open' : ''}`} aria-label="Menú principal INSPIRATEC">
+            <aside 
+              className={`app-sidebar-lateral ${mobileMenuOpen ? 'open' : ''} ${sidebarCollapsed ? 'collapsed' : ''}`} 
+              aria-label="Menú principal INSPIRATEC"
+            >
               {/* Encabezado con Marca */}
               <div className="sidebar-brand-header">
-                <NavLink to="/home" className="sidebar-brand-link" onClick={() => setMobileMenuOpen(false)}>
+                <NavLink 
+                  to="/home" 
+                  className="sidebar-brand-link" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  title="Ir al Inicio de INSPIRATEC"
+                >
                   <div className="sidebar-brand-icon">
                     <Lightbulb size={22} color="#FFFDF9" />
                   </div>
@@ -117,6 +166,18 @@ function AppContent() {
                     <span className="sidebar-brand-subtitle">Plataforma Curricular</span>
                   </div>
                 </NavLink>
+
+                {/* Control compacto e intuitivo para contraer/expandir navegación lateral */}
+                <button
+                  type="button"
+                  className="sidebar-collapse-toggle-btn"
+                  onClick={toggleSidebar}
+                  aria-label={sidebarCollapsed ? "Expandir menú" : "Contraer menú"}
+                  title={sidebarCollapsed ? "Expandir menú" : "Contraer menú"}
+                >
+                  {sidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+                </button>
+
                 <button
                   type="button"
                   className="sidebar-close-btn-mobile"
@@ -138,6 +199,7 @@ function AppContent() {
                     to="/home"
                     id="nav-inicio"
                     end
+                    title="Inicio"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -149,6 +211,7 @@ function AppContent() {
                     to="/"
                     id="nav-planificador"
                     end
+                    title="Planificador de Clases"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -159,6 +222,7 @@ function AppContent() {
                   <NavLink
                     to="/mis-planes"
                     id="nav-mis-planes"
+                    title="Mis Planes de Clase"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -170,6 +234,7 @@ function AppContent() {
                   <NavLink
                     to="/plantillas"
                     id="nav-plantillas"
+                    title="Plantillas Curriculares"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -181,6 +246,7 @@ function AppContent() {
                     <NavLink
                       to="/administracion"
                       id="nav-administracion"
+                      title="Panel de Administración"
                       onClick={() => setMobileMenuOpen(false)}
                       className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                     >
@@ -196,6 +262,7 @@ function AppContent() {
 
                   <NavLink
                     to="/biblioteca"
+                    title="Biblioteca Comunitaria"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -205,6 +272,7 @@ function AppContent() {
 
                   <NavLink
                     to="/experiencias"
+                    title="Experiencias Sistematizadas"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -214,6 +282,7 @@ function AppContent() {
 
                   <NavLink
                     to="/foro"
+                    title="Foro Docente"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -228,6 +297,7 @@ function AppContent() {
 
                   <NavLink
                     to="/ayuda"
+                    title="Ayuda y Guías"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -237,6 +307,7 @@ function AppContent() {
 
                   <NavLink
                     to="/soporte"
+                    title="Soporte Técnico"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -246,6 +317,7 @@ function AppContent() {
 
                   <NavLink
                     to="/acerca"
+                    title="Acerca de INSPIRATEC"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -259,6 +331,7 @@ function AppContent() {
                   <div className="sidebar-group-label">Herramientas</div>
                   <NavLink
                     to="/config"
+                    title="Configuración IA"
                     onClick={() => setMobileMenuOpen(false)}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
@@ -281,31 +354,61 @@ function AppContent() {
         <div className="app-shell-main">
           {/* Barra Superior Compacta de Utilidades (Esquina Superior Derecha en Escritorio) */}
           <header className="app-top-utilities-bar" aria-label="Utilidades y cuenta de usuario">
-            <div className="top-utilities-group">
-              {/* 1. Configuración IA con indicador de estado */}
-                <NavLink 
-                  to="/config" 
-                  id="nav-config"
-                  className={({ isActive }) => isActive ? 'top-utility-link top-utility-ai active' : 'top-utility-link top-utility-ai'}
-                  title={apiKey && apiKey.length > 10 ? "IA Gemini configurada y activa" : "Configurar API Key de Gemini"}
+            <div className={`top-utilities-group ${topUtilitiesCollapsed ? 'is-collapsed' : ''}`}>
+              {/* Botón para contraer / expandir el menú superior */}
+              <button
+                type="button"
+                className="top-utility-collapse-trigger"
+                onClick={toggleTopUtilities}
+                aria-label={topUtilitiesCollapsed ? "Expandir menú de utilidades" : "Contraer menú de utilidades"}
+                title={topUtilitiesCollapsed ? "Expandir menú de utilidades" : "Contraer menú de utilidades"}
+              >
+                {topUtilitiesCollapsed ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+              </button>
+
+              {!topUtilitiesCollapsed ? (
+                <>
+                  {/* 1. Configuración IA con indicador de estado */}
+                  <NavLink 
+                    to="/config" 
+                    id="nav-config"
+                    className={({ isActive }) => isActive ? 'top-utility-link top-utility-ai active' : 'top-utility-link top-utility-ai'}
+                    title={apiKey && apiKey.length > 10 ? "IA Gemini configurada y activa" : "Configurar API Key de Gemini"}
+                  >
+                    <Settings size={15} />
+                    <span>Configuración IA</span>
+                    <span className={`ai-status-indicator ${apiKey && apiKey.length > 10 ? 'active' : 'pending'}`}>
+                      <span className="ai-status-dot" />
+                      <span className="ai-status-label">{apiKey && apiKey.length > 10 ? 'Lista' : 'Configurar'}</span>
+                    </span>
+                  </NavLink>
+
+                  {/* Separador vertical */}
+                  <div className="top-utilities-divider" />
+
+                  {/* 3. Usuario y menú de cuenta */}
+                  <div className="top-utility-user">
+                    <UserMenu />
+                  </div>
+                </>
+              ) : (
+                /* Estado contraído: Iconos minimalistas rápidos */
+                <button
+                  type="button"
+                  className="top-utilities-mini-pill"
+                  onClick={toggleTopUtilities}
+                  title="Expandir menú de cuenta e IA"
+                  aria-label="Expandir menú de cuenta e IA"
                 >
-                  <Settings size={15} />
-                  <span>Configuración IA</span>
-                  <span className={`ai-status-indicator ${apiKey && apiKey.length > 10 ? 'active' : 'pending'}`}>
-                    <span className="ai-status-dot" />
-                    <span className="ai-status-label">{apiKey && apiKey.length > 10 ? 'Lista' : 'Configurar'}</span>
-                  </span>
-                </NavLink>
-
-                {/* Separador vertical */}
-                <div className="top-utilities-divider" />
-
-                {/* 3. Usuario y menú de cuenta */}
-                <div className="top-utility-user">
-                  <UserMenu />
-                </div>
-              </div>
-            </header>
+                  <span className={`ai-status-dot-mini ${apiKey && apiKey.length > 10 ? 'active' : 'pending'}`} />
+                  <Settings size={14} style={{ color: '#142B25' }} />
+                  <div className="top-user-avatar-mini">
+                    {((userProfile?.rol || auth.currentUser?.displayName || 'D').charAt(0)).toUpperCase()}
+                  </div>
+                </button>
+              )}
+            </div>
+          </header>
 
           <main className="app-main-content-scroll">
             <Routes>

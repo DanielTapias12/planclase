@@ -215,10 +215,73 @@
 .ui-tooltip-left { right: 100%; top: 50%; transform: translateY(-50%); margin-right: 8px; }
 .ui-tooltip-right { left: 100%; top: 50%; transform: translateY(-50%); margin-left: 8px; }
 
-/* Breadcrumbs */
-.ui-breadcrumbs-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; align-items: center; font-size: 14px; }
-.ui-breadcrumbs-item { display: inline-flex; align-items: center; }
-.ui-breadcrumbs-link { color: var(--text-2); text-decoration: none; transition: color 0.2s; }
-.ui-breadcrumbs-link:hover { color: var(--primary); text-decoration: underline; }
-.ui-breadcrumbs-current { color: var(--text); font-weight: 500; }
-.ui-breadcrumbs-separator { margin: 0 var(--space-2); color: var(--text-2); font-size: 12px; }
+/* Breadcrumbs - Píldora de cristal esmerilado de alto contraste */
+.ui-breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 254, 250, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 18px rgba(16, 36, 32, 0.09);
+  border-radius: 999px;
+  padding: 6px 16px;
+  transition: all 0.2s ease;
+}
+
+.ui-breadcrumbs:hover {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 24px rgba(16, 36, 32, 0.12);
+}
+
+.ui-breadcrumbs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.ui-breadcrumbs-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ui-breadcrumbs-link {
+  color: #315B54;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.ui-breadcrumbs-link:hover {
+  color: #142B25;
+  background-color: rgba(49, 91, 84, 0.08);
+  text-decoration: none;
+}
+
+.ui-breadcrumbs-link:focus-visible {
+  outline: 2px solid var(--color-brand-active, #315B54);
+  outline-offset: 2px;
+}
+
+.ui-breadcrumbs-current {
+  color: #142B25;
+  font-weight: 600;
+  padding: 2px 6px;
+  letter-spacing: -0.01em;
+}
+
+.ui-breadcrumbs-separator {
+  margin: 0 2px;
+  color: #6C857F;
+  flex-shrink: 0;
+  user-select: none;
+}
+

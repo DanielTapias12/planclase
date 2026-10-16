@@ -57,6 +57,15 @@
 | ACT-009 | Descripción de Ventanas | Zoe / Luis | En proceso | N/A | En proceso de actualización fotográfica |
 | ACT-016 | Análisis de 7 Hábitos | Equipo Completo / IA | Completada | N/A | ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md |
 
+### Semana 10
+* **Actividades principales:**
+  * **ACT-017:** Lista de Chequeo para la Verificación del Frontend: UX, Movilidad y Patrones de Diseño (Pressman Cap. 12, 13 y 14) — Calificación Final: 30/32 pts (93.75% - Sobresaliente).
+  * **ACT-018:** Lista de Chequeo para la Verificación del Frontend: Sistemas Tutores Inteligentes y Metacognición (Caro Piñeres, 2015) — Calificación: 24/24 pts (100% - Sobresaliente).
+* **Objetivo:** Verificar mediante evidencia tangible en código y ejecución el cumplimiento de modelos ergonómicos, principios de movilidad, patrones de diseño y la arquitectura canónica de 4 módulos y doble lazo de razonamiento de un Sistema Tutor Inteligente.
+* **Participantes:** Todo el equipo (Zoe Peñata, Luis Caldera, Daniel Tapias, Maira Ortega, María Soto, María Ubarne).
+* **Estado:** COMPLETADA / PRODUCTOS CONSOLIDADOS.
+* **Evidencias:** `docs/actividades/ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md`, `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md`, `docs/diario-campo/SEMANA_10.md`, `docs/ia/REGISTRO_IA_ACT-017.md`, `docs/ia/REGISTRO_IA_ACT-018.md`.
+
 ---
 
 ## Actividades No Encontradas en Evidencia Documental

@@ -170,6 +170,16 @@ A continuación se detalla exhaustivamente cómo cada una de las actividades del
   * **María Soto (H4, H5):** Evaluó la capacidad de control del usuario (cancelar, regresar, deshacer) en los procesos de creación de planes.
   * **María Ubarne (H5, H6):** Auditó el cumplimiento de las pautas DUA y el soporte para adaptaciones PIAR en las opciones del sistema.
 
+### 5.11. ACT-017 — Lista de Chequeo para la Verificación del Frontend: UX, Movilidad y Patrones (Pressman Cap. 12, 13 y 14)
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Fin en Mente), H3 (Primero lo Primero), H5 (Primero Comprender), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H7):** Lideró la auditoría de patrones arquitectónicos y anti-patrones en el código fuente (`src/`), identificando la presencia de *The Blob* en componentes extensos, la falta de focus rings y el uso de alertas nativas, estructurando el plan técnico de refactorización.
+  * **Luis Caldera (H2, H5):** Contrastó las interfaces móviles y de escritorio contra los principios ergonómicos de Pressman & Maxim (Thumb Zone, pirámide de movilidad), empatizando con la usabilidad docente en pantallas táctiles y definiendo el fin en mente visual.
+  * **Zoe Peñata (H3, H6):** Coordinó la ejecución colegiada de la lista de chequeo en la Semana 10, facilitando el consenso evaluativo y priorizando los ítems del backlog de remediación según su impacto.
+  * **Maira Ortega (H4, H5):** Analizó el impacto de las barreras ergonómicas en usuarios docentes con menor dominio tecnológico, asegurando que los hallazgos deriven en acuerdos ganar-ganar para la accesibilidad universal.
+  * **María Soto (H2, H4):** Verificó que los ajustes de interfaz preserven la promesa didáctica y curricular de la herramienta, garantizando una relación armónica entre usabilidad técnica y valor pedagógico.
+  * **María Ubarne (H5, H6):** Evaluó la claridad y comprensibilidad de las ayudas contextuales y mensajes de error, sinergizando con el equipo técnico para fortalecer el diseño inclusivo DUA.
+
 ---
 
 ## 6. Diagnóstico y Balance Global del Equipo

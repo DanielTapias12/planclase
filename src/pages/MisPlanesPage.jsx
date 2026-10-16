@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { getMisPlanes, deletePlanFromDB, updatePlanStatus } from '../services/dbService';
+import { auth } from '../firebase';
 import { 
   Loader2, 
   BookOpen, 
@@ -15,15 +16,20 @@ import {
   GraduationCap,
   Layers,
   FileCheck,
-  FileText
+  FileText,
+  FileCode,
+  RefreshCw
 } from 'lucide-react';
 
 import ConfirmModal from '../components/ConfirmModal';
 import { exportPlanToPdf } from '../services/export/pdf/pdfEngine';
+import { exportPlanToWord } from '../services/export/word/wordEngine';
+import { Breadcrumbs } from '../components/ui/Breadcrumbs';
+
 
 export default function MisPlanesPage() {
   const navigate = useNavigate();
-  const { loadPlan, userId, userProfile, setPlanesCount } = useAppStore();
+  const { loadPlan, userId, userProfile, setPlanesCount, clearWizardFormOnly } = useAppStore();
   
   const [planes, setPlanes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,24 +38,42 @@ export default function MisPlanesPage() {
   const [planToDelete, setPlanToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [downloadingPlanId, setDownloadingPlanId] = useState(null);
+  const [downloadingWordPlanId, setDownloadingWordPlanId] = useState(null);
+
+  const fetchPlanes = useCallback(async (targetId) => {
+    setIsLoading(true);
+    try {
+      const fetchedPlanes = await getMisPlanes(targetId);
+      setPlanes(fetchedPlanes);
+      setPlanesCount(fetchedPlanes.length);
+    } catch (error) {
+      console.error("Error al cargar planes", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [setPlanesCount]);
 
   useEffect(() => {
-    if (!userId) return;
-    
-    const fetchPlanes = async () => {
-      try {
-        const fetchedPlanes = await getMisPlanes(userId);
-        setPlanes(fetchedPlanes);
-        setPlanesCount(fetchedPlanes.length);
-      } catch (error) {
-        console.error("Error al cargar planes", error);
-      } finally {
-        setIsLoading(false);
+    let isMounted = true;
+    const effectiveId = userId || auth.currentUser?.uid || 'anon';
+
+    fetchPlanes(effectiveId);
+
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user && isMounted) {
+        if (!userId) {
+          useAppStore.getState().setUserId(user.uid);
+        }
+        fetchPlanes(user.uid);
       }
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
     };
-    
-    fetchPlanes();
-  }, [userId, setPlanesCount]);
+  }, [userId, fetchPlanes]);
+
 
   const handleEdit = (plan) => {
     loadPlan(plan, plan.markdown, plan.id);
@@ -75,6 +99,25 @@ export default function MisPlanesPage() {
     }
   };
 
+  const handleDownloadWord = async (plan) => {
+    if (downloadingWordPlanId) return;
+    setDownloadingWordPlanId(plan.id);
+
+    try {
+      await exportPlanToWord({
+        plan,
+        markdown: plan.markdown,
+        userProfile,
+        planId: plan.id
+      });
+    } catch (err) {
+      console.error('[INSPIRATEC Mis Planes] Error al descargar Word:', err);
+      alert(err.message || 'Error al descargar el archivo Word de este plan.');
+    } finally {
+      setDownloadingWordPlanId(null);
+    }
+  };
+
   const handleAction = async (plan, action) => {
     const planId = typeof plan === 'object' ? plan.id : plan;
     try {
@@ -94,16 +137,24 @@ export default function MisPlanesPage() {
   };
 
   const handleConfirmDelete = async () => {
-    if (!planToDelete) return;
+    if (!planToDelete || isDeleting) return;
     setIsDeleting(true);
     try {
-      await deletePlanFromDB(planToDelete.id);
-      const newPlanes = planes.filter(p => p.id !== planToDelete.id);
+      const targetId = planToDelete.id;
+      await deletePlanFromDB(targetId);
+
+      // Sincronizar el store Zustand para evitar que el editor mantenga una copia activa del plan eliminado
+      if (useAppStore.getState().clearActivePlanIfMatches) {
+        useAppStore.getState().clearActivePlanIfMatches(targetId);
+      }
+
+      const newPlanes = planes.filter(p => p.id !== targetId);
       setPlanes(newPlanes);
       setPlanesCount(newPlanes.length);
       setPlanToDelete(null);
     } catch (err) {
       console.error("Error al eliminar plan:", err);
+      alert("Hubo un inconveniente al eliminar el plan. Por favor intente nuevamente.");
     } finally {
       setIsDeleting(false);
     }
@@ -125,6 +176,14 @@ export default function MisPlanesPage() {
   return (
     <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
       
+      {/* Migas de Pan para orientación jerárquica */}
+      <div style={{ marginBottom: '14px' }}>
+        <Breadcrumbs items={[
+          { label: 'Inicio', href: '/home', onClick: (e) => { e.preventDefault(); navigate('/home'); } },
+          { label: 'Mis Planes de Clase' }
+        ]} />
+      </div>
+
       {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal) */}
       <header 
         className="mgmt-header"
@@ -160,8 +219,34 @@ export default function MisPlanesPage() {
             <span>{planes.length} {planes.length === 1 ? 'Plan guardado' : 'Planes guardados'}</span>
           </div>
           <button 
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => fetchPlanes(userId || auth.currentUser?.uid || 'anon')}
+            disabled={isLoading}
+            title="Sincronizar y recargar planes"
+            style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '6px', 
+              minHeight: '42px', 
+              padding: '10px 16px',
+              backgroundColor: 'rgba(255, 255, 255, 0.85)',
+              color: '#183630',
+              border: '1px solid rgba(24, 54, 48, 0.20)',
+              borderRadius: '10px',
+              fontWeight: 600,
+              cursor: isLoading ? 'not-allowed' : 'pointer'
+            }}
+          >
+            <RefreshCw size={15} className={isLoading ? "animate-spin" : ""} />
+            <span>Sincronizar</span>
+          </button>
+          <button 
             className="btn btn-primary" 
-            onClick={() => navigate('/')}
+            onClick={() => {
+              clearWizardFormOnly();
+              navigate('/');
+            }}
             style={{ 
               display: 'inline-flex', 
               alignItems: 'center', 
@@ -283,7 +368,10 @@ export default function MisPlanesPage() {
           <p style={{ color: 'var(--text-secondary)', fontSize: '14.5px', lineHeight: '1.6', marginBottom: '24px' }}>
             Comienza planificando una clase mediante el asistente pedagógico asistido por IA.
           </p>
-          <button className="btn btn-primary" onClick={() => navigate('/')}>
+          <button className="btn btn-primary" onClick={() => {
+            clearWizardFormOnly();
+            navigate('/');
+          }}>
             <PlusCircle size={16} /> Crear mi primer plan
           </button>
         </div>
@@ -394,6 +482,15 @@ export default function MisPlanesPage() {
                     title="Descargar documento PDF institucional"
                   >
                     {downloadingPlanId === plan.id ? <Loader2 size={14} className="spin" /> : <FileText size={14} />}
+                  </button>
+                  <button 
+                    className="btn-outline" 
+                    style={{ padding: '7px 10px', fontSize: '13px', minHeight: '36px', color: 'var(--primary-active)' }}
+                    onClick={(e) => { e.stopPropagation(); handleDownloadWord(plan); }}
+                    disabled={downloadingWordPlanId === plan.id}
+                    title="Descargar documento de Word (.doc)"
+                  >
+                    {downloadingWordPlanId === plan.id ? <Loader2 size={14} className="spin" /> : <FileCode size={14} />}
                   </button>
                   <button 
                     className="btn-outline" 

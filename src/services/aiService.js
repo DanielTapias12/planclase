@@ -1,3 +1,5 @@
+import { resolveEffectiveTemplate } from './templates/genericTemplates';
+
 /**
  * AI Service para INSPIRATEC
  * Gestión de llamadas a Google Gemini con cascada de modelos inteligente,
@@ -103,10 +105,11 @@ export const callGeminiApi = async (apiKey, requestBody, maxRetriesPerModel = 2)
 };
 
 const REGLAS_MEN = {
-  "Tecnología e Informática": "Debes basarte en las Orientaciones Generales para la Educación en Tecnología de Colombia. Enfatiza en pensamiento computacional, uso responsable de TIC y solución de problemas tecnológicos.",
-  "Matemáticas": "Debes basarte en los Estándares Básicos y DBA de Matemáticas de Colombia. El plan debe enfocarse en la resolución de problemas (Pensamiento Numérico, Espacial, Aleatorio).",
-  "Lenguaje (Español)": "Debes basarte en los Estándares Básicos y DBA de Lenguaje de Colombia. Enfócate en producción textual, comprensión lectora y el enfoque semántico-comunicativo.",
-  "Inglés": "Debes basarte en los DBA de Inglés de Colombia y el Marco Común Europeo (MCER). Incluye explícitamente secciones para Listening, Speaking, Reading y Writing."
+  "Tecnología e Informática": "Debes basarte en las Orientaciones Generales para la Educación en Tecnología de Colombia (Guía 30 MEN). Enfatiza en pensamiento computacional, uso responsable de TIC y solución de problemas tecnológicos.",
+  "Matemáticas": "Debes basarte en los Estándares Básicos de Competencias y DBA de Matemáticas de Colombia. El plan debe enfatizar el razonamiento, la modelación y la resolución de problemas (pensamientos numérico, espacial, métrico, aleatorio y variacional).",
+  "Ciencias Naturales": "Debes basarte en los Estándares Básicos de Competencias en Ciencias Naturales y DBA de Colombia. Enfatiza en la indagación científica, la comprensión de fenómenos y el análisis riguroso de evidencias empíricas.",
+  "Lengua Castellana": "Debes basarte en los Estándares Básicos de Competencias y DBA de Lenguaje de Colombia. Enfócate en comprensión y producción textual, oralidad, procesos discursivos y enfoque semántico-comunicativo.",
+  "Inglés": "Debes basarte en los Estándares Básicos de Competencias en Lenguas Extranjeras: Inglés (Guía 22 MEN), los DBA de Inglés de Colombia y el Marco Común Europeo de Referencia para las Lenguas (MCER). Enfócate en el desarrollo de la competencia comunicativa (dimensiones lingüística, pragmática y sociolingüística). Selecciona las habilidades pertinentes para el objetivo de la sesión (Listening, Speaking, Reading, Writing) e incorpora vocabulario, expresiones funcionales y estructuras contextualizadas según el grado y nivel de los estudiantes, articulando las fases Warm-up, Presentation, Practice, Production y Wrap-up cuando sean pedagógicamente pertinentes."
 };
 
 /**
@@ -130,11 +133,11 @@ export const testApiConnection = async (apiKey) => {
  */
 export const suggestObjectives = async (apiKey, wizardData) => {
   const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
-  const prompt = `Como experto pedagogo alineado con los lineamientos oficiales, sugiere propósitos y objetivos de aprendizaje (1 o 2 párrafos cortos) para una clase con el siguiente contexto:
+  const prompt = `Como experto pedagogo alineado con los lineamientos oficiales del MEN de Colombia, sugiere propósitos y objetivos de aprendizaje (1 o 2 párrafos cortos y precisos) para una clase con el siguiente contexto:
 Tema: ${wizardData.tema}
 Grado: ${wizardData.grado}
 Área Curricular: ${wizardData.materia}
-Lineamientos Legales: ${reglas}
+Lineamientos Legales y Pedagógicos: ${reglas}
 Metodología: ${wizardData.metodologiaSTEAM}
 Recursos: ${wizardData.recursos}
 Responde SOLO con el texto de los objetivos formativos coherentes con las orientaciones, sin saludos ni formato markdown adicional.`;
@@ -155,13 +158,15 @@ Responde SOLO con el texto de los objetivos formativos coherentes con las orient
  */
 export const suggestStandards = async (apiKey, wizardData) => {
   const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
-  const prompt = `Como experto curricular en Colombia, sugiere qué competencias y desempeños aplican para esta clase:
+  const prompt = `Como experto curricular en Colombia, sugiere qué competencias, estándares MEN y DBA aplican para esta clase:
 Tema: ${wizardData.tema}
 Grado: ${wizardData.grado}
 Área Curricular: ${wizardData.materia}
 Lineamientos Legales: ${reglas}
 Objetivos: ${wizardData.objetivos}
-Responde SOLO con una lista de los componentes y estándares aplicables, sin saludos.`;
+
+INSTRUCCIÓN CRÍTICA DE RIGOR: No inventes códigos ni números ficticios de estándares o DBA. Cita únicamente referentes curriculares reales y pertinentes del Ministerio de Educación Nacional de Colombia (MEN) y Colombia Aprende. Si un DBA no aplica de forma exacta al grado o tema, no lo fuerces ni inventes numeraciones.
+Responde SOLO con la lista de componentes y estándares aplicables, sin saludos.`;
 
   try {
     const text = await callGeminiApi(apiKey, {
@@ -177,71 +182,20 @@ Responde SOLO con una lista de los componentes y estándares aplicables, sin sal
 /**
  * Generación completa del plan de clase
  */
-export const generatePlan = async (apiKey, wizardData) => {
-  let formatInstructions = '';
+export const generatePlan = async (apiKey, wizardData, customTemplates = []) => {
+  // Resuelve la plantilla efectiva respetando que los formatos propios de docentes prevalecen estructuralmente
+  const effectiveTemplate = resolveEffectiveTemplate(wizardData, customTemplates);
+  const formatInstructions = effectiveTemplate.instrucciones;
 
-  if (wizardData.formato === 'Estructura estándar INSPIRATEC') {
-    formatInstructions = `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos títulos e íconos (usa sintaxis Markdown para negritas y listas):
-
-### 1. 🧾 Caracterización de la clase
-**Nombre de la Institución**: [A completar]  
-**Sede**: [A completar]  
-**Título**: ${wizardData.tema}  
-**Área / Asignatura**: ${wizardData.materia}  
-**Grado**: ${wizardData.grado}  
-**Duración**: ${wizardData.duracion}  
-
-### 2. 🎯 Desempeños de aprendizaje
-**Evidencia de aprendizaje**: (Redacta la evidencia basada en los objetivos)  
-**Propósito**: (Redacta el propósito general)  
-**Competencia ciudadana**: (Relacionado a los estándares)  
-
-### 3. 🧠 Desarrollo de la clase (momentos pedagógicos)
-**¿QUÉ VOY A APRENDER? (Exploración)**  
-(Describe la motivación y activación de saberes previos)  
-
-**PRACTICO LO QUE APRENDÍ (Estructuración y práctica colaborativa)**  
-(Desarrolla el grueso de la clase y las actividades principales según la metodología elegida)  
-
-**PRACTICO EN CASA (Transferencia y refuerzo)**  
-(Actividad sugerida para realizar en casa)  
-
-### 4. 📊 Evaluación
-**DOY CUENTA DE LO QUE APRENDÍ**  
-(Proporciona un mecanismo de evaluación formativa, ej. Semáforo del aprendizaje o preguntas de reflexión visual)  
-
-### 5. 🤝 Adaptaciones Inclusivas
-(Describe adaptaciones basadas en las necesidades marcadas: ${wizardData.inclusion.join(', ')}. Usa estrategias visuales o DUA si aplica.)
-
-### 6. 🛠️ Material Interconectado Recomendado (Formato ROCA)
-(Analiza el plan generado y escoge UNO de los siguientes materiales: Rúbrica, Diapositivas, Preguntas o Juego.
-Estructura tu recomendación usando el formato ROCA:
-**R**azón: Por qué este material es el más adecuado para el tema.
-**O**bjetivo: Qué logrará el estudiante con él.
-**C**ontexto: En qué momento exacto de la clase debe usarse.
-**A**ctividad: Cómo se ejecutará.
-
-Al final de la recomendación, debes incluir la siguiente etiqueta exacta dependiendo del material que elegiste:
-Si elegiste Rúbrica: [GENERAR_RUBRICA]
-Si elegiste Diapositivas: [GENERAR_DIAPOSITIVAS]
-Si elegiste Preguntas: [GENERAR_PREGUNTAS]
-Si elegiste Juego/Sopa de Letras: [GENERAR_JUEGO]
-)`;
-  } else if (wizardData.formatoInstrucciones && wizardData.formatoInstrucciones.trim() !== '') {
-    formatInstructions = `Formatea la respuesta adaptándose estrictamente al siguiente formato solicitado por el docente (${wizardData.formato}):
-    
-${wizardData.formatoInstrucciones}
-
-Asegúrate de adaptar el contenido de la clase a esta estructura solicitada.`;
-  } else {
-    formatInstructions = `Formatea la respuesta adaptándose al formato solicitado: "${wizardData.formato}".
-Asegúrate de incluir de manera estructurada en Markdown:
-- Información general de la clase.
-- Elementos curriculares (Objetivos, Estándares).
-- Secuencia didáctica (Inicio, Desarrollo, Cierre).
-- Criterios de evaluación.
-- Adaptaciones Inclusivas (DUA).`;
-  }
+  const orientacionDisciplinar = `
+ORIENTACIÓN DIDÁCTICA Y DISCIPLINAR CRÍTICA:
+1. SELECCIÓN PERTINENTE: Los apartados disciplinares (por ejemplo: DBA, representaciones matemáticas específicas, errores frecuentes, precauciones de seguridad de laboratorio, género textual, tipos de evidencias o herramientas digitales/manipulativas) NO deben ser campos obligatorios universales mecánicos. Selecciona y desarrolla ÚNICAMENTE los apartados que sean directamente pertinentes al objetivo formativo de la clase, el grado escolar (${wizardData.grado || 'del nivel'}), el contexto real y los recursos disponibles (${wizardData.recursos || 'especificados'}). Si un apartado no aplica al tema concreto, no lo fuerces.
+2. RIGOR CURRICULAR SIN INVENTAR: NO inventes estándares ni códigos ficticios de DBA. Fundaméntate estrictamente en los referentes reales y vigentes del Ministerio de Educación Nacional de Colombia (MEN) y Colombia Aprende. Si no dispones del código exacto de un DBA, describe el aprendizaje formativo real sin crear números inventados.
+3. ORGANIZACIÓN PEDAGÓGICA Y TIEMPOS: Presenta una estructura coherente y jerárquica con instrucciones concretas, diferenciando las orientaciones del docente y las acciones esperadas de los estudiantes. Si se indican tiempos por fase, asegúrate de que sean realistas y que la suma de los momentos corresponda exactamente a la duración disponible (${wizardData.duracion || 'de la sesión'}).
+4. NOTACIÓN MATEMÁTICA Y FÓRMULAS: En caso de incluir fórmulas, ecuaciones o expresiones de cálculo, utiliza delimitadores estándar ($...$ o $$...$$) o símbolos matemáticos directos (×, ÷, ±, ², ³). No utilices barras invertidas duplicadas ni escapes de código innecesarios.
+5. FORMATO DE RESPUESTA: Entrega directamente el documento pedagógico estructurado en Markdown legible. NO envuelvas todo el plan en bloques de código con triple comilla invertida (\`\`\`markdown).
+6. RECURSOS GENERABLES POR LA IA: Solo cuando sea estrictamente necesario para visualizar un concepto pedagógico complejo (como un diagrama de flujo, una infografía del hardware, un esquema de una red, una simulación o un modelo interactivo), puedes sugerir un recurso visual interactivo en la mediación o recursos de la clase. Formatea la sugerencia así: [GENERATE_IMAGE: "una descripción detallada del recurso pedagógico interactivo a generar"].
+`;
 
   const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
   const prompt = `Actúa como un planificador experto en el área de ${wizardData.materia}. Tus lineamientos legales son: ${reglas}. Genera un plan de clase estructurado en formato Markdown con la siguiente información:
@@ -253,8 +207,10 @@ Estudiantes: ${wizardData.numEstudiantes}
 Recursos: ${wizardData.recursos}
 Metodología: ${wizardData.metodologiaSTEAM}
 Objetivos: ${wizardData.objetivos}
-Estándares MEN: ${wizardData.estandaresMEN.join(', ')}
-Inclusión (DUA): ${wizardData.inclusion.join(', ')} ${wizardData.otrasNecesidades}
+Estándares MEN: ${Array.isArray(wizardData.estandaresMEN) ? wizardData.estandaresMEN.join(', ') : (wizardData.estandaresMEN || '')}
+Inclusión (DUA): ${Array.isArray(wizardData.inclusion) ? wizardData.inclusion.join(', ') : ''} ${wizardData.otrasNecesidades || ''}
+
+${orientacionDisciplinar}
 
 ${formatInstructions}`;
 
@@ -263,16 +219,84 @@ ${formatInstructions}`;
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
     });
-    return planText;
+    
+    let cleaned = (planText || '').trim();
+    if (cleaned.startsWith('```markdown')) {
+      cleaned = cleaned.replace(/^```markdown\s*/i, '').replace(/```\s*$/i, '');
+    } else if (cleaned.startsWith('```')) {
+      cleaned = cleaned.replace(/^```\s*/i, '').replace(/```\s*$/i, '');
+    }
+    return cleaned.trim();
   } catch (error) {
     throw new Error('Error al generar el plan: ' + error.message);
   }
 };
 
 /**
- * Modificación del plan existente mediante chat
+ * Modificación del plan existente mediante chat (Soporta Modo Directo y Modo Socrático Guiado)
+ * @param {string} apiKey - Clave API de Gemini
+ * @param {string} planActual - Texto markdown del plan actual
+ * @param {string} instruccion - Mensaje o comando del docente
+ * @param {'direct' | 'socratic'} [modo='direct'] - Modo de mediación pedagógica
+ * @param {Array} [historial=[]] - Historial reciente de la conversación
+ * @returns {Promise<{ tipo: string, planModificado: string|null, textoDialogo: string }>}
  */
-export const modifyPlan = async (apiKey, planActual, instruccion) => {
+export const modifyPlan = async (apiKey, planActual, instruccion, modo = 'direct', historial = []) => {
+  if (modo === 'socratic') {
+    const formattedHistory = (historial || [])
+      .slice(-4)
+      .map(h => `${h.role === 'user' ? 'Docente' : 'Tutor Socrático'}: ${h.text}`)
+      .join('\n');
+
+    const prompt = `Actúa como un Tutor Pedagógico y Co-docente Experto aplicando la Táctica Socrática y el Modelo de Agencia Compartida (Caro 2015, Zimmerman & Nkambou).
+Tu rol en este modo NO es reescribir ciegamente el plan ante una orden escueta, sino dialogar reflexivamente con el docente para potenciar su criterio didáctico antes o durante la modificación.
+
+PLAN DE CLASE ACTUAL:
+${planActual}
+
+${formattedHistory ? `HISTORIAL DE DIÁLOGO PREVIO:\n${formattedHistory}\n` : ''}
+
+NUEVA INTERVENCIÓN DEL DOCENTE:
+"${instruccion}"
+
+INSTRUCCIONES DE RESPUESTA:
+1. Realiza una intervención dialogal reflexiva (máximo 2 párrafos concisos) donde:
+   - Valides el propósito pedagógico de la solicitud.
+   - Formules 1 o 2 preguntas reflexivas socráticas (por ejemplo: articulación con conocimientos previos, mitigación de barreras DUA/PIAR, dosificación del tiempo o evaluación formativa).
+   - Sugieras cómo se puede concretar el ajuste en la secuencia didáctica.
+2. Si la solicitud amerita un ajuste concreto al plan de clase, incluye al final una propuesta de plan actualizado delimitada EXACTAMENTE entre las etiquetas:
+<<<PLAN_PROPUESTO>>>
+[Aquí el plan completo en Markdown actualizado con tu sugerencia integrada]
+<<<FIN_PLAN_PROPUESTO>>>
+Si la intervención del docente es una consulta conceptual o no amerita cambiar el texto aún, omite las etiquetas delimitadas.`;
+
+    try {
+      let text = await callGeminiApi(apiKey, {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.65, maxOutputTokens: 8192 }
+      });
+
+      const planRegex = /<<<PLAN_PROPUESTO>>>([\s\S]*?)<<<FIN_PLAN_PROPUESTO>>>/;
+      const match = text.match(planRegex);
+      let planPropuesto = null;
+      let textoDialogo = text;
+
+      if (match) {
+        planPropuesto = match[1].replace(/```markdown\s*/i, '').replace(/```\s*$/i, '').trim();
+        textoDialogo = text.replace(planRegex, '').trim();
+      }
+
+      return {
+        tipo: 'socratic',
+        textoDialogo,
+        planModificado: planPropuesto
+      };
+    } catch (error) {
+      throw new Error('Error en el diálogo socrático: ' + error.message);
+    }
+  }
+
+  // Modo Directo (Comportamiento rápido tradicional)
   const prompt = `Eres un asistente experto en la edición de planes de clase. El usuario te proporcionará un plan en formato Markdown y te dará instrucciones para modificarlo. Tu respuesta DEBE SER ÚNICAMENTE el plan de clase completo y actualizado en formato Markdown. No incluyas saludos ni explicaciones. Solo el código Markdown.
 
 Este es el plan actual:
@@ -287,17 +311,25 @@ Aplica esta instrucción: ${instruccion}`;
     });
     if (text.startsWith('```markdown')) {
       text = text.replace(/```markdown\n?/g, '').replace(/```\n?/g, '');
+    } else if (text.startsWith('```')) {
+      text = text.replace(/```\n?/g, '');
     }
-    return text.trim();
+    const cleanMarkdown = text.trim();
+    return {
+      tipo: 'direct',
+      planModificado: cleanMarkdown,
+      textoDialogo: 'He actualizado el plan de clase según tu indicación directa. Revisa los cambios reflejados en el documento.'
+    };
   } catch (error) {
     throw new Error('Error al modificar el plan: ' + error.message);
   }
 };
 
+
 /**
  * Generación de material complementario (rúbricas, diapositivas, quizzes, juegos)
  */
-export const generateComplementaryMaterial = async (apiKey, planActual, type) => {
+export const generateComplementaryMaterial = async (apiKey, planActual, type, contextoEspecifico = '') => {
   let materialPrompt = '';
 
   if (type === 'rubrica') {
@@ -342,6 +374,14 @@ Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea
   } else if (type === 'reto_lab') {
     materialPrompt = `Basado en el siguiente plan de clase, genera una guía de Reto de Laboratorio paso a paso para ejecutar una práctica en software o hardware.
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
+  } else if (type === 'infografia') {
+    materialPrompt = `Basado en el siguiente plan de clase, genera una Infografía Interactiva explicativa con diagramas SVG interactivos, bloques modulares desplegables y animaciones CSS puras.
+Tu respuesta debe ser un HTML completo e interactivo. El estudiante debe poder hacer clic en cada concepto o fase para ver detalles explicativos, ejemplos visuales y conclusiones clave.
+Aplica una paleta de diseño editorial limpia, accesible, con tipografía nítida y contraste óptimo.`;
+  } else if (type === 'simulacion') {
+    materialPrompt = `Basado en el siguiente plan de clase, genera una Simulación Funcional e interactiva utilizando HTML5 Canvas o SVG dinámico y JavaScript nativo.
+Tu respuesta debe ser un HTML completo con controles de simulación (deslizadores de parámetros, botones de reproducir/pausar/reiniciar, y gráficos o animación en tiempo real).
+El estudiante debe poder experimentar directamente variando variables del tema y observando los resultados inmediatos de forma tangible y pedagógica.`;
   } else if (type === 'estudio_caso') {
     materialPrompt = `Basado en el siguiente plan de clase, genera un Estudio de Caso Tecnológico (análisis de un problema tecnológico real y cómo resolverlo usando Pensamiento Computacional).
 Tu respuesta debe ser EXCLUSIVAMENTE código HTML válido. Usa estilos en línea CSS profesionales y modernos.`;
@@ -360,6 +400,7 @@ Devuelve ÚNICAMENTE el código HTML completo, comenzando con <!DOCTYPE html> y 
   const prompt = `${systemInstruction}
   
   Crea un recurso educativo interactivo en HTML basado en este material: ${materialPrompt}
+  ${contextoEspecifico ? `\nINSTRUCCIONES Y CONTEXTO PEDAGÓGICO ESPECÍFICO DEL MATERIAL SELECCIONADO:\n${contextoEspecifico}\n` : ''}
   Utiliza los parámetros de la estructura ROCA (Razón, Objetivo, Contexto, Actividad) definidos al final del plan para darle un enfoque real y pedagógico a este material.
   
   PLAN DE CLASE:
@@ -376,3 +417,45 @@ Devuelve ÚNICAMENTE el código HTML completo, comenzando con <!DOCTYPE html> y 
     throw new Error('Error al generar material: ' + error.message);
   }
 };
+
+/**
+ * Genera un recurso educativo interactivo, visualmente atractivo y autónomo en un único archivo HTML
+ * a partir de una descripción detallada (simulaciones, infografías, diagramas de flujo, esquemas).
+ * 
+ * @param {string} apiKey - Clave API de Google AI Studio / Gemini
+ * @param {string} prompt - Descripción del recurso pedagógico interactivo a generar
+ * @returns {Promise<string>} Código HTML completo listo para embeber en un iframe o descargar
+ */
+export const generateHtmlResource = async (apiKey, prompt) => {
+  if (!apiKey || apiKey.trim() === '') {
+    throw new Error('API Key no configurada. Por favor, ingresa tu clave en Configuración.');
+  }
+
+  const systemInstruction = `Eres un desarrollador web experto. Tu objetivo es crear un recurso educativo interactivo, visualmente atractivo y completamente funcional en un único archivo HTML.
+El usuario te dará una descripción del recurso que necesita (por ejemplo, "una infografía minimalista de un teclado", "una simulación del ciclo del agua", "un diagrama interactivo de la célula").
+Debes utilizar todo el potencial de HTML, CSS (puedes usar CSS puro o librerías confiables) y JavaScript.
+El resultado debe ser un archivo HTML portable que funcione sin conexión (a menos que requiera cargar librerías externas por CDN, lo cual está permitido).
+Asegúrate de que el diseño sea responsivo, limpio y educativo.
+IMPORTANTE: NO inventes URLs de imágenes externas (ej. <img src="url_placeholder">). Si necesitas iconos, usa librerías confiables como FontAwesome o dibuja los elementos necesarios usando CSS o SVG integrado.
+Devuelve ÚNICAMENTE el código HTML completo, comenzando con <!DOCTYPE html> y terminando con </html>. No incluyas explicaciones ni bloques de código markdown (como \`\`\`html).`;
+
+  try {
+    const responseText = await callGeminiApi(apiKey, {
+      contents: [{ 
+        parts: [{ 
+          text: `${systemInstruction}\n\nCrea un recurso educativo interactivo en HTML basado en esta descripción: "${prompt}".` 
+        }] 
+      }],
+      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
+    });
+
+    let htmlContent = (responseText || '').trim();
+    if (htmlContent.startsWith('```html')) htmlContent = htmlContent.substring(7);
+    else if (htmlContent.startsWith('```')) htmlContent = htmlContent.substring(3);
+    if (htmlContent.endsWith('```')) htmlContent = htmlContent.substring(0, htmlContent.length - 3);
+    return htmlContent.trim();
+  } catch (error) {
+    throw new Error('Error al generar recurso interactivo: ' + error.message);
+  }
+};
+

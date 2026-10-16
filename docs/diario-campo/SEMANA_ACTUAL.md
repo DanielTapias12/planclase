@@ -1,60 +1,59 @@
-# Diario de Campo — Semana Actual (Semana 6)
+# Diario de Campo — Semana Actual (Semana 10)
 
 ## Información General
-- **Participantes:** Zoe Peñata (Scrum Master), María Soto (PO), María Ubarne (PO Support), Maira Ortega (Facilitadora), Luis Caldera (Frontend / UX), Daniel Tapias (Frontend / Git Lead).
-- **Fecha:** Octubre 2026.
-- **Ciclo:** Cierre de Sprint y Consolidación de Entregables Fase II MODESEC.
+- **Participantes:** Zoe Peñata (Scrum Master), María Soto (PO), María Ubarne (PO Support), Maira Ortega (Facilitadora), Luis Caldera (Frontend / UI-UX Lead), Daniel Tapias (Frontend / Git Lead).
+- **Fecha:** 16 de Octubre de 2026.
+- **Ciclo:** Semana 10 — Verificación Heurística, Ergonómica y de Patrones del Frontend (Fase III MODESEC / Pressman & Maxim).
+- **Actividad Central:** ACT-017 — Lista de Chequeo para la Verificación del Frontend: UX, Movilidad y Patrones de Diseño.
 
 ---
 
 ## Registro del Trabajo Colaborativo Realizado
 
-### 1. Consolidación del Diseño de Aprendizaje (ACT-013)
-- Se formalizó el documento `docs/pedagogia/DISENO_DE_APRENDIZAJE.md` articulando la matriz relacional de MODESEC (Competencia, Indicador, Modelo Pedagógico, Estrategia, Actividad, Evidencia).
-- Se mapearon los 4 componentes de la Guía 30 del MEN y las dimensiones transversales de Gamificación e Inclusión DUA/PIAR.
-- Quedó resuelta la actividad ACT-013, pasando de estado "No encontrada" a **Completada**.
+### 1. Ejecución de la Lista de Chequeo Oficial (ACT-017)
+- Se aplicó rigurosamente la lista de chequeo basada en los Capítulos 12, 13 y 14 de Pressman & Maxim (9na Edición).
+- Se auditaron 16 criterios formales en código y ejecución:
+  - **Capítulo 12 (UX Design):** Planos de Garrett, Reglas de Mandel, Modelado de Personas, Tognazzini, Accesibilidad WCAG (POUR) y Métricas SUS.
+  - **Capítulo 13 (Design for Mobility):** Pirámide Móvil/Web, Ergonomía de la Thumb Zone, Sensibilidad al Contexto y Resiliencia de Red.
+  - **Capítulo 14 (Pattern-Based UI):** Desacoplamiento MVC/Componentes, Patrones de Navegación de van Welie/Tidwell, Patrones de Entrada y Prevención de Antipatrones (The Blob, Mystery Meat, Modal Hell).
+- **Resultado Consolidado:** **22 / 32 puntos (68.75%)**, clasificado como *Básico con Observaciones*.
+- Se documentó el informe completo en `docs/actividades/ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md`.
 
-### 2. Auditoría Heurística de Usabilidad y Accesibilidad Pantalla por Pantalla (ACT-015)
-- Se auditó cada una de las 12 pantallas del sistema bajo los 3 criterios oficiales:
-  - **Control del usuario:** Verificación de botones de regreso, cancelación segura de procesos y claridad de navegación.
-  - **Carga cognitiva:** Evaluación de densidad de información, prevención de memorización innecesaria y efectividad de metáforas de iconos.
-  - **Consistencia:** Unificación de la paleta institucional Glassmorphism, comportamiento predecible de botones y coherencia tipográfica.
-- Se verificó el cumplimiento de contraste accesible WCAG AA y la integración de modales protegidos mediante `createPortal` y `ConfirmModal.jsx`.
+### 2. Hallazgos Críticos y Backlog de Remediación
+- **Sustitución de Alertas Nativas:** Se identificó el uso de `alert()` en `WizardPage.jsx` y otras vistas; se priorizó su reemplazo por *Inline Validation* reactiva.
+- **Persistencia del Borrador del Wizard:** Se acordó corregir el hook de montaje en `WizardPage.jsx` para evitar el reseteo involuntario de formularios.
+- **Antipatrón The Blob:** Se programó la modularización de componentes extensos (> 1.000 líneas) en subcomponentes atómicos.
+- **Navegación por Teclado y Foco:** Se detectó la falta de `:focus-visible` debido a reglas con `outline: none;`. Se definió una regla global accesible.
+- **Integración de Breadcrumbs y Zona del Pulgar:** Se programó el montaje del componente `Breadcrumbs.jsx` y la creación de una barra fija inferior para móvil.
 
-### 3. Matriz de los 7 Hábitos de Covey Actividad por Actividad (ACT-016)
-- Se completó la matriz en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md`, registrando para cada actividad (ACT-001 a ACT-015) cómo cada uno de los 6 participantes aplicó los hábitos de efectividad personal e interpersonal.
-
-### 4. Actualización del Sistema Visual y Sistema de Modales 2026
-- Documentación técnica consolidada en `docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md`.
-- Despliegue homogéneo de paneles de cristal esmerilado con desenfoque de 20-30px en todas las vistas.
-- Eliminación de alertas nativas del navegador (`window.confirm`) y superposición absoluta de modales con z-index 9999 sobre menús fijos.
-
-### 5. Depuración Documental y Modelo Pedagógico en README
-- Se eliminó la carpeta obsoleta `docs/ux/` y las evidencias fotográficas previas de `docs/evidencias/ACT-009/`.
-- Se integró la sección oficial del Modelo Pedagógico Constructivista en la raíz de `README.md`.
-- Se corrigió la Matriz de 15 Artículos en Markdown y Excel, eliminando la columna histórica de responsable reportado.
+### 3. Matriz de los 7 Hábitos de Covey en ACT-017
+- Se actualizó `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md` incorporando la sección 5.11 con el registro de aplicación de hábitos de los 6 participantes:
+  - Daniel Tapias: H1 (Proactividad) y H7 (Afilar la Sierra).
+  - Luis Caldera: H2 (Fin en Mente) y H5 (Primero Comprender).
+  - Zoe Peñata: H3 (Primero lo Primero) y H6 (Sinergizar).
+  - Maira Ortega: H4 (Ganar-Ganar) y H5 (Primero Comprender).
+  - María Soto: H2 (Fin en Mente) y H4 (Ganar-Ganar).
+  - María Ubarne: H5 (Primero Comprender) y H6 (Sinergizar).
 
 ---
 
 ## Registro de Uso de Inteligencia Artificial (ROCAS)
-- Se formalizaron las fichas de interacción ética en `docs/ia/`:
-  - `REGISTRO_IA_ACT-013.md`: Asesoría curricular para la derivación pedagógica MODESEC.
-  - `REGISTRO_IA_ACT-015.md`: Auditoría heurística y pautas de accesibilidad DUA/WCAG.
-  - Actualización de `REGISTRO_USO_IA.md`.
+- Se formalizó la ficha técnica en `docs/ia/REGISTRO_IA_ACT-017.md` y `docs/ia/REGISTRO_IA_ACT-018.md`, actualizando `docs/ia/REGISTRO_USO_IA.md` bajo el marco ROCAS (Rol, Objetivo, Contexto, Acción, Salida y Validación Humana).
+
+---
+
+### 4. Ejecución de la Lista de Chequeo de Sistemas Tutores Inteligentes (ACT-018)
+- Se contrastó el frontend de INSPIRATEC con la investigación doctoral del Dr. Manuel Fernando Caro Piñeres (Universidad Nacional de Colombia, 2015).
+- Se auditaron 12 criterios organizados en:
+  - **Bloque 1 (4 Módulos Canónicos de Wenger/Caro):** Dominio (MEN/DBA), Estudiante/Overlay (DUA/PIAR y estados de planes), Tutor (tácticas didácticas y temporalización) e Interfaz Ergonómica (*Warm Glassmorphism*).
+  - **Bloque 2 (5 Características de Tutoría Inteligente):** Multimodalidad (prosa vs recursos interactivos 3D), Navegación adaptativa (secuencial vs global con breadcrumbs), Andamiaje graduado en 3 niveles, Curaduría resiliente de modelos IA y Replanificación en caliente.
+  - **Bloque 3 (Metacognición y Prototipo FUNPRO):** Doble Lazo de Razonamiento (*Double-Loop Architecture*), Juicios Metacognitivos (certeza y metamemoria) y Agencia Compartida (*Shared Agency*).
+- **Resultado Consolidado:** **24 / 24 puntos (100%)**, catalogado como *Sobresaliente / Certificación de Sistema Tutor Inteligente Aprobada*.
+- Se documentó el informe completo en `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md`.
 
 ---
 
 ## Acuerdos y Próximos Compromisos
-1. **Zoe Peñata (Scrum Master):** Verificar el cierre de entregables en el tablero Scrum y preparar la retrospectiva del sprint.
-2. **María Soto y María Ubarne (Product Owners):** Validar la coherencia de las actividades generadas con docentes de prueba.
-3. **Daniel Tapias y Luis Caldera (Developers):** Implementar las acciones de mejora de usabilidad (barra fija en editor y stepper móvil).
-
-### Consolidación y Cierre Definitivo de ACT-003 (Modelo Pedagógico)
-* **Fecha:** Semana 6 (Fase de Consolidación).
-* **Actividad:** ACT-003 — Análisis y Definición del Modelo Pedagógico.
-* **Acciones Desarrolladas:**
-  1. Revisión colegiada del estado previo ("Parcialmente completada - Pendiente de validación").
-  2. Integración de la fundamentación científica a partir de la literatura analizada en la Matriz de 15 Artículos (Piaget, Vygotsky, Papert, Wing, Barrows, CAST, Black & Wiliam).
-  3. Definición formal de la población prioritaria (docentes de básica y media, 1.° a 11.°, estudiantes de 6 a 17 años y adaptaciones DUA/PIAR para inclusión y contextos unplugged).
-  4. Articulación bidireccional con el nuevo documento `DISENO_DE_APRENDIZAJE.md` (ACT-013) y la sección pedagógica del `README.md`.
-  5. Declaración unánime del equipo del estado **COMPLETADA** con nivel de evaluación 4 (Excelente).
+1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación y preparar la entrega de la Semana 10.
+2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend y de la arquitectura de Doble Lazo.
+3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.

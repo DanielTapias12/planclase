@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { getPlantillas, savePlantillaToDB, deletePlantillaFromDB, updatePlantillaPublic } from '../services/dbService';
+import { GENERIC_TEMPLATES, getTemplateStructureSummary } from '../services/templates/genericTemplates';
 import { 
   Plus, 
   Loader2, 
@@ -59,7 +60,17 @@ export default function PlantillasPage() {
     const loadData = async () => {
       try {
         const fetched = await getPlantillas(userId);
-        const defaults = [{ id: 1, titulo: 'Estructura estándar INSPIRATEC', formato: 'Estructura predeterminada', publico: true, instrucciones: '' }];
+        const defaults = GENERIC_TEMPLATES.map((gt) => ({
+          id: gt.id,
+          titulo: gt.titulo,
+          formato: gt.formato || 'Estructura predeterminada',
+          publico: true,
+          area: gt.area,
+          subtitulo: gt.subtitulo,
+          fundamento: gt.fundamento,
+          referenciaUrl: gt.referenciaUrl,
+          instrucciones: getTemplateStructureSummary(gt)
+        }));
         setMisPlantillas([...defaults, ...fetched]);
       } catch (e) {
         console.error(e);
@@ -72,10 +83,16 @@ export default function PlantillasPage() {
   }, [userId, setMisPlantillas]);
 
   const handleUsar = (plan) => {
-    updateWizardData({ 
+    const isGeneric = GENERIC_TEMPLATES.some(gt => gt.titulo === plan.titulo || gt.id === plan.id);
+    const updates = { 
       formato: plan.titulo,
-      formatoInstrucciones: plan.instrucciones
-    });
+      formatoInstrucciones: isGeneric ? '' : (plan.instrucciones || '')
+    };
+    if (plan.area) {
+      updates.materia = plan.area;
+      updates.recursos = '';
+    }
+    updateWizardData(updates);
     navigate('/');
   };
 
@@ -531,6 +548,36 @@ export default function PlantillasPage() {
                     Estándar MEN & DUA
                   </span>
                 </div>
+
+                {viewingPlan.fundamento && (
+                  <div style={{
+                    backgroundColor: 'rgba(71, 122, 114, 0.10)',
+                    border: '1px solid rgba(71, 122, 114, 0.22)',
+                    borderRadius: '14px',
+                    padding: '14px 16px',
+                    marginBottom: '14px',
+                    fontSize: '13px',
+                    color: '#142B25',
+                    lineHeight: '1.55'
+                  }}>
+                    <strong style={{ display: 'block', marginBottom: '4px', color: '#1C3D36' }}>
+                      Fundamento curricular (MEN y DBA):
+                    </strong>
+                    {viewingPlan.fundamento}
+                    {viewingPlan.referenciaUrl && (
+                      <div style={{ marginTop: '8px' }}>
+                        <a 
+                          href={viewingPlan.referenciaUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          style={{ color: 'var(--primary-active)', fontWeight: 600, textDecoration: 'underline', fontSize: '12.5px' }}
+                        >
+                          Consultar referentes oficiales en Colombia Aprende ↗
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {viewingPlan.instrucciones ? (
                   <div style={{ 

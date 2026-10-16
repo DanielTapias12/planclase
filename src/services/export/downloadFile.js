@@ -44,6 +44,29 @@ export const buildPdfFilename = ({ tema, grado, fecha }) => {
 };
 
 /**
+ * Construye el nombre canónico del archivo Word:
+ * INSPIRATEC_Secuencia_<tema>_<grado>_<fecha>.doc
+ */
+export const buildWordFilename = ({ tema, grado, fecha }) => {
+  const cleanTema = sanitizeFilenamePart(tema) || 'Clase';
+  const cleanGrado = sanitizeFilenamePart(grado) || 'General';
+  
+  let datePart = '';
+  if (fecha) {
+    const sanitizedDate = sanitizeFilenamePart(fecha);
+    datePart = sanitizedDate ? `_${sanitizedDate}` : '';
+  } else {
+    const today = new Date().toISOString().split('T')[0];
+    datePart = `_${today}`;
+  }
+
+  const truncatedTema = cleanTema.substring(0, 35);
+  const truncatedGrado = cleanGrado.substring(0, 15);
+
+  return `INSPIRATEC_Secuencia_${truncatedTema}_${truncatedGrado}${datePart}.doc`;
+};
+
+/**
  * Ejecuta la descarga directa en el navegador de un Blob o archivo generado
  * y garantiza la liberación de memoria en URL.revokeObjectURL.
  *

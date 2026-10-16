@@ -23,7 +23,8 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-013** | Consolidar el Diseño de Aprendizaje | Semana 6 | **COMPLETADA** | [ACT-013_DISENO_DE_APRENDIZAJE.md](ACT-013_DISENO_DE_APRENDIZAJE.md) |
 | **ACT-014** | Desarrollo del Frontend e Integración de Interfaz | Semana 5/6 | **EN PROCESO** | [ACT-014_DESARROLLO_FRONTEND.md](ACT-014_DESARROLLO_FRONTEND.md) |
 | **ACT-015** | Validar Usabilidad y Accesibilidad (DUA) | Semana 5/6 | **EN PROCESO** | [ACT-015_USABILIDAD_ACCESIBILIDAD.md](ACT-015_USABILIDAD_ACCESIBILIDAD.md) |
-| **ACT-016** | Análisis de la aplicación de los 7 hábitos | Semana 6 | **COMPLETADA** | [ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) |
+| **ACT-017** | Lista de Chequeo Frontend (Pressman Cap. 12, 13 y 14) | Semana 10 | **COMPLETADA** | [ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md](ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md) |
+| **ACT-018** | Lista de Chequeo STI y Metacognición (Caro 2015) | Semana 10 | **COMPLETADA** | [ACT-018_LISTA_CHEQUEO_STI_CARO.md](ACT-018_LISTA_CHEQUEO_STI_CARO.md) |
 
 ---
 

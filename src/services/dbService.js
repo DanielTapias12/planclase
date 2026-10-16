@@ -1,38 +1,164 @@
-import { db } from '../firebase';
+import { db } from '../firebase.js';
 import { collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, where, serverTimestamp, orderBy } from 'firebase/firestore';
 
+const LOCAL_PLANS_KEY = 'inspiratec_local_saved_plans';
+
+const getAppStorage = () => {
+  if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
+  if (typeof globalThis !== 'undefined' && globalThis.localStorage) return globalThis.localStorage;
+  return null;
+};
+
+export const getLocalSavedPlans = () => {
+  const storage = getAppStorage();
+  if (!storage) return [];
+  try {
+    const raw = storage.getItem(LOCAL_PLANS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn("Error leyendo planes guardados locales:", e);
+    return [];
+  }
+};
+
+export const saveLocalSavedPlan = (plan) => {
+  const storage = getAppStorage();
+  if (!storage || !plan) return;
+  try {
+    const list = getLocalSavedPlans();
+    const targetId = plan.id;
+    const filtered = list.filter(p => p.id !== targetId);
+    filtered.unshift(plan);
+    storage.setItem(LOCAL_PLANS_KEY, JSON.stringify(filtered));
+  } catch (e) {
+    console.warn("Error guardando plan localmente:", e);
+  }
+};
+
+export const removeLocalSavedPlan = (planId) => {
+  const storage = getAppStorage();
+  if (!storage || !planId) return;
+  try {
+    const list = getLocalSavedPlans();
+    const filtered = list.filter(p => p.id !== planId);
+    storage.setItem(LOCAL_PLANS_KEY, JSON.stringify(filtered));
+  } catch (e) {
+    console.warn("Error eliminando plan local:", e);
+  }
+};
+
 export const getPlanById = async (planId) => {
+  if (!planId) return null;
+
+  // 1. Intentar consultar en Firestore
   try {
     const planRef = doc(db, "planes", planId);
     const planSnap = await getDoc(planRef);
     if (planSnap.exists()) {
       return { id: planSnap.id, ...planSnap.data() };
     }
-    return null;
   } catch (e) {
-    console.error("Error al obtener plan por ID: ", e);
-    throw e;
+    console.warn("Firestore inaccesible o documento no encontrado en nube, buscando localmente:", e);
   }
+
+  // 2. Buscar en almacenamiento local guardado
+  const localList = getLocalSavedPlans();
+  const localMatch = localList.find(p => p.id === planId);
+  if (localMatch) {
+    return localMatch;
+  }
+
+  // 3. Buscar en la sesión activa en localStorage
+  if (typeof window !== 'undefined' && window.localStorage) {
+    try {
+      const activeRaw = localStorage.getItem('inspiratec_active_session');
+      if (activeRaw) {
+        const active = JSON.parse(activeRaw);
+        const state = active?.state || active;
+        if (state?.planGenerado && (state.planId === planId || !planId || planId === 'plan_sesion_activa')) {
+          return {
+            id: planId || state.planId || 'plan_sesion_activa',
+            markdown: state.planGenerado,
+            ...(state.activePlanMetadata || {}),
+            recursosAnexos: state.recursosAnexos || [],
+            estado: 'Guardado'
+          };
+        }
+      }
+    } catch (_) {}
+  }
+
+  return null;
 };
 
 export const savePlanToDB = async (userId, planData, markdown, recursosAnexos = []) => {
+  const effectiveUserId = userId || 'anon';
+  const localId = `plan_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+  
+  const localRecord = {
+    id: localId,
+    userId: effectiveUserId,
+    ...planData,
+    markdown,
+    recursosAnexos: Array.isArray(recursosAnexos) ? recursosAnexos : [],
+    estado: 'Guardado',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  // Guardar inmediatamente en almacenamiento local seguro
+  saveLocalSavedPlan(localRecord);
+
+  // Intentar persistir en Firestore con timeout seguro
   try {
-    const docRef = await addDoc(collection(db, "planes"), {
-      userId,
+    const safeCall = (promise, ms = 2000) => {
+      let t;
+      const timeout = new Promise((_, reject) => {
+        t = setTimeout(() => reject(new Error('Firestore timeout')), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+    };
+
+    const docRef = await safeCall(addDoc(collection(db, "planes"), {
+      userId: effectiveUserId,
       ...planData,
       markdown,
-      recursosAnexos,
+      recursosAnexos: Array.isArray(recursosAnexos) ? recursosAnexos : [],
       estado: 'Guardado',
-      createdAt: serverTimestamp()
-    });
-    return docRef.id;
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }));
+
+    if (docRef && docRef.id) {
+      // Re-asociar el registro local con el ID definitivo de Firestore
+      removeLocalSavedPlan(localId);
+      localRecord.id = docRef.id;
+      saveLocalSavedPlan(localRecord);
+      return docRef.id;
+    }
   } catch (e) {
-    console.error("Error adding document: ", e);
-    throw e;
+    console.warn("No se pudo escribir en Firestore (se preserva la copia local segura):", e?.message || e);
   }
+
+  return localId;
 };
 
 export const updatePlanInDB = async (planId, updatedMarkdown, recursosAnexos = []) => {
+  if (!planId) return;
+
+  // Actualizar copia local
+  const localList = getLocalSavedPlans();
+  const index = localList.findIndex(p => p.id === planId);
+  if (index >= 0) {
+    localList[index].markdown = updatedMarkdown;
+    localList[index].recursosAnexos = recursosAnexos;
+    localList[index].updatedAt = new Date().toISOString();
+    try {
+      localStorage.setItem(LOCAL_PLANS_KEY, JSON.stringify(localList));
+    } catch (_) {}
+  }
+
+  // Actualizar en Firestore
   try {
     const planRef = doc(db, "planes", planId);
     await updateDoc(planRef, {
@@ -41,30 +167,64 @@ export const updatePlanInDB = async (planId, updatedMarkdown, recursosAnexos = [
       updatedAt: serverTimestamp()
     });
   } catch (e) {
-    console.error("Error updating document: ", e);
-    throw e;
+    console.warn("Firestore update diferido:", e);
   }
 };
 
 export const getMisPlanes = async (userId) => {
-  try {
-    const q = query(collection(db, "planes"), where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
-    const planes = [];
-    querySnapshot.forEach((doc) => {
-      planes.push({ id: doc.id, ...doc.data() });
-    });
-    // Ordenar localmente por createdAt descendente
-    planes.sort((a, b) => {
-      const dateA = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
-      const dateB = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
-      return dateB - dateA;
-    });
-    return planes;
-  } catch (e) {
-    console.error("Error getting documents: ", e);
-    throw e;
+  const mergedMap = new Map();
+  const effectiveUserId = userId || 'anon';
+
+  // 1. Consultar Firestore para el usuario activo
+  if (effectiveUserId && effectiveUserId !== 'anon') {
+    try {
+      const q = query(collection(db, "planes"), where("userId", "==", effectiveUserId));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        mergedMap.set(docSnap.id, { id: docSnap.id, ...data });
+      });
+    } catch (e) {
+      console.warn("Error al consultar planes en Firestore por userId:", e);
+    }
   }
+
+  // 2. Consultar si hay planes registrados como 'anon' en Firestore
+  try {
+    const qAnon = query(collection(db, "planes"), where("userId", "==", "anon"));
+    const snapAnon = await getDocs(qAnon);
+    snapAnon.forEach((docSnap) => {
+      if (!mergedMap.has(docSnap.id)) {
+        mergedMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+      }
+    });
+  } catch (_) {}
+
+  // 3. Fusionar con planes del almacenamiento local seguro
+  const localPlans = getLocalSavedPlans();
+  localPlans.forEach((lp) => {
+    if (lp && lp.id && !mergedMap.has(lp.id)) {
+      mergedMap.set(lp.id, lp);
+    }
+  });
+
+  const allPlanes = Array.from(mergedMap.values());
+
+  // Ordenar por fecha descendente
+  allPlanes.sort((a, b) => {
+    const getMs = (p) => {
+      if (!p) return 0;
+      if (p.createdAt?.toDate) return p.createdAt.toDate().getTime();
+      if (p.createdAt?.toMillis) return p.createdAt.toMillis();
+      if (typeof p.createdAt === 'string') return new Date(p.createdAt).getTime() || 0;
+      if (p.updatedAt?.toDate) return p.updatedAt.toDate().getTime();
+      if (typeof p.updatedAt === 'string') return new Date(p.updatedAt).getTime() || 0;
+      return 0;
+    };
+    return getMs(b) - getMs(a);
+  });
+
+  return allPlanes;
 };
 
 export const savePlantillaToDB = async (userId, plantillaData) => {
@@ -98,20 +258,64 @@ export const getPlantillas = async (userId) => {
 };
 
 export const deletePlanFromDB = async (planId) => {
+  if (!planId) return;
+  const cleanId = typeof planId === 'object' ? planId.id : planId;
+  if (!cleanId) return;
+
+  // 1. Eliminar del almacenamiento local seguro
+  removeLocalSavedPlan(cleanId);
+
+  // 2. Si la sesión activa en storage/Zustand tiene este plan, limpiarla para evitar que siga abierto o se re-guarde
+  const storage = getAppStorage();
+  if (storage) {
+    try {
+      const activeRaw = storage.getItem('inspiratec_active_session');
+      if (activeRaw) {
+        const parsed = JSON.parse(activeRaw);
+        const state = parsed?.state || parsed;
+        if (state && (state.planId === cleanId || !state.planId)) {
+          state.planGenerado = '';
+          state.planId = null;
+          state.activePlanMetadata = null;
+          state.planStatus = 'borrador';
+          state.recursosAnexos = [];
+          state.sesionChatIA = [];
+          storage.setItem('inspiratec_active_session', JSON.stringify(parsed));
+        }
+      }
+    } catch (e) {
+      console.warn("Error limpiando sesión activa tras eliminar plan:", e);
+    }
+  }
+
+  // 3. Eliminar de Firestore con timeout seguro para no bloquear la UI si hay problemas de red
   try {
-    await deleteDoc(doc(db, "planes", planId));
+    const safeCall = (promise, ms = 2500) => {
+      let t;
+      const timeout = new Promise((_, reject) => {
+        t = setTimeout(() => reject(new Error('Firestore timeout')), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+    };
+    await safeCall(deleteDoc(doc(db, "planes", cleanId)));
   } catch(e) {
-    console.error("Error deleting plan", e);
-    throw e;
+    console.warn("Plan eliminado localmente. Error o diferido en Firestore:", e?.message || e);
   }
 };
 
 export const updatePlanStatus = async (planId, updateData) => {
+  const localList = getLocalSavedPlans();
+  const index = localList.findIndex(p => p.id === planId);
+  if (index >= 0) {
+    Object.assign(localList[index], updateData);
+    try {
+      localStorage.setItem(LOCAL_PLANS_KEY, JSON.stringify(localList));
+    } catch (_) {}
+  }
   try {
     await updateDoc(doc(db, "planes", planId), updateData);
   } catch(e) {
-    console.error("Error updating plan", e);
-    throw e;
+    console.warn("Estado actualizado localmente. Error en Firestore:", e);
   }
 };
 
@@ -178,52 +382,316 @@ export const getGlobalStats = async () => {
 };
 
 // =======================
-// FORO
+// FORO DOCENTE
 // =======================
-export const getForoMessages = async () => {
+const LOCAL_FORO_KEY = 'inspiratec_foro_cache';
+
+const DEFAULT_FORO_SEEDS = [
+  {
+    id: 'seed-foro-1',
+    titulo: 'Estrategias para implementar el marco DUA en ciencias y matemáticas',
+    texto: 'Estimados colegas, en la institución hemos comenzado a articular el Diseño Universal para el Aprendizaje (DUA) con las secuencias didácticas de aula. Sin embargo, en grados como 7mo y 8vo a veces nos cuesta diseñar múltiples formas de representación sin sobrecargar los tiempos de clase de 90 minutos.\n\n¿Qué metodologías o recursos interactivos les han funcionado mejor para flexibilizar la presentación de conceptos abstractos?',
+    categoria: 'Inclusión y DUA',
+    etiquetas: ['DUA', 'Ciencias', 'Flexibilización', 'Secundaria'],
+    nombre: 'Prof. Carlos Ramírez',
+    rol: 'Docente de Ciencias',
+    userId: 'docente_carlos_1',
+    destacado: true,
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    respuestas: [
+      {
+        id: 'r-seed-1',
+        nombre: 'Dra. Elena Gómez',
+        rol: 'Admin',
+        userId: 'admin_elena',
+        texto: 'Hola Carlos. Una estrategia potente es usar estaciones de aprendizaje de 15 minutos: una estación táctil/concreta, una digital o visual (como simulaciones PhET) y una de discusión guiada. Permite que los estudiantes elijan su canal de acceso principal sin cambiar el objetivo curricular.',
+        date: new Date(Date.now() - 3600000 * 3).toISOString()
+      },
+      {
+        id: 'r-seed-2',
+        nombre: 'Lic. Andrés Restrepo',
+        rol: 'Docente',
+        userId: 'docente_andres_2',
+        texto: 'Totalmente de acuerdo con Elena. En matemáticas nos sirvió además incorporar el co-docente de INSPIRATEC para que sugiera rúbricas formativas diferenciadas por niveles de complejidad.',
+        date: new Date(Date.now() - 3600000 * 1).toISOString()
+      }
+    ]
+  },
+  {
+    id: 'seed-foro-2',
+    titulo: 'Integración ética y pedagógica de IA Generativa en las aulas de bachillerato',
+    texto: 'Abro este debate para conocer cómo están orientando a los estudiantes de 10mo y 11mo grado en el uso de herramientas de inteligencia artificial. No queremos caer en la prohibición punitiva, sino orientar la IA hacia el desarrollo del pensamiento crítico, la verificación de fuentes y la producción textual propia.\n\n¿Tienen lineamientos o acuerdos de aula que les hayan dado buenos resultados?',
+    categoria: 'Inteligencia artificial en educación',
+    etiquetas: ['IA Educativa', 'Ética Digital', 'Pensamiento Crítico', 'Bachillerato'],
+    nombre: 'Lic. Mariana Vargas',
+    rol: 'Docente de Lenguaje',
+    userId: 'docente_mariana_3',
+    destacado: true,
+    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 7).toISOString(),
+    respuestas: [
+      {
+        id: 'r-seed-3',
+        nombre: 'Daniel Tapias',
+        rol: 'Admin',
+        userId: 'admin_danieltapias',
+        texto: 'Excelente iniciativa, Mariana. En INSPIRATEC promovemos el enfoque de la IA como un "co-docente" o espejo cognitivo: se le pide al estudiante que analice los sesgos de la respuesta generada y justifique qué partes reformularía con sus propias palabras.',
+        date: new Date(Date.now() - 3600000 * 8).toISOString()
+      }
+    ]
+  },
+  {
+    id: 'seed-foro-3',
+    titulo: 'Diseño de proyectos STEAM con materiales de bajo costo y reciclables',
+    texto: 'Comparto una experiencia de aula en 5to de primaria: creamos prototipos de filtración de agua caseros articulando Ciencias Naturales, Matemáticas (cálculo de caudales) y Tecnología. El costo fue mínimo y el compromiso de los niños fue altísimo.\n\n¿Quién se suma a crear un repositorio abierto de rúbricas para evaluar este tipo de proyectos?',
+    categoria: 'Innovación pedagógica',
+    etiquetas: ['STEAM', 'Aprendizaje Basado en Proyectos', 'Primaria', 'Sostenibilidad'],
+    nombre: 'Prof. Javier Morales',
+    rol: 'Docente',
+    userId: 'docente_javier_4',
+    destacado: false,
+    createdAt: new Date(Date.now() - 3600000 * 36).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 20).toISOString(),
+    respuestas: []
+  },
+  {
+    id: 'seed-foro-4',
+    titulo: '¿Cómo dosificar los tiempos de clase cuando las actividades prácticas se alargan?',
+    texto: 'Colegas, me pasa con frecuencia en Tecnología e Informática que la fase de desarrollo se extiende más de lo planeado y la actividad de cierre o metacognición termina reducida a 2 minutos. ¿Qué pautas utilizan para mantener la disciplina temporal sin cortar abruptamente la indagación de los estudiantes?',
+    categoria: 'Preguntas y ayuda entre docentes',
+    etiquetas: ['Gestión del Tiempo', 'Momentos de Clase', 'Evaluación Formativa'],
+    nombre: 'Lic. Patricia Ospina',
+    rol: 'Docente de Tecnología',
+    userId: 'docente_patricia_5',
+    destacado: false,
+    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 48).toISOString(),
+    respuestas: []
+  }
+];
+
+const getForoStorage = () => {
+  if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
+  if (typeof globalThis !== 'undefined' && globalThis.localStorage) return globalThis.localStorage;
+  return null;
+};
+
+export const getLocalForoMessages = () => {
+  const storage = getForoStorage();
+  if (!storage) return [];
   try {
-    const q = query(collection(db, "foro"), orderBy("createdAt", "desc"));
-    const snapshot = await getDocs(q);
-    const msgs = [];
-    snapshot.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
-    return msgs;
-  } catch(e) {
-    console.error("Error getting foro", e);
+    const raw = storage.getItem(LOCAL_FORO_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (_) {
     return [];
   }
 };
 
-export const addForoMessage = async (userId, nombre, rol, texto) => {
+export const saveLocalForoMessage = (item) => {
+  const storage = getForoStorage();
+  if (!storage) return;
   try {
-    await addDoc(collection(db, "foro"), {
-      userId,
-      nombre,
-      rol,
-      texto,
-      respuestas: [],
-      createdAt: serverTimestamp()
+    const list = getLocalForoMessages();
+    const idx = list.findIndex(m => m.id === item.id);
+    if (idx >= 0) list[idx] = item;
+    else list.unshift(item);
+    storage.setItem(LOCAL_FORO_KEY, JSON.stringify(list));
+  } catch (_) {}
+};
+
+export const removeLocalForoMessage = (id) => {
+  const storage = getForoStorage();
+  if (!storage) return;
+  try {
+    const list = getLocalForoMessages().filter(m => m.id !== id);
+    storage.setItem(LOCAL_FORO_KEY, JSON.stringify(list));
+  } catch (_) {}
+};
+
+export const getForoMessages = async () => {
+  const mergedMap = new Map();
+
+  // 1. Consultar Firestore
+  try {
+    const q = query(collection(db, "foro"), orderBy("createdAt", "desc"));
+    const snapshot = await getDocs(q);
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      mergedMap.set(docSnap.id, { id: docSnap.id, ...data });
     });
   } catch(e) {
-    console.error("Error adding foro msg", e);
-    throw e;
+    console.warn("Error leyendo foro desde Firestore, operando con almacenamiento local:", e);
+  }
+
+  // 2. Fusionar con caché local
+  const localList = getLocalForoMessages();
+  localList.forEach(m => {
+    if (m && m.id && !mergedMap.has(m.id)) {
+      mergedMap.set(m.id, m);
+    }
+  });
+
+  // 3. Semilla inicial si aún no existen discusiones registradas
+  if (mergedMap.size === 0) {
+    DEFAULT_FORO_SEEDS.forEach(seed => {
+      mergedMap.set(seed.id, seed);
+      saveLocalForoMessage(seed);
+    });
+  }
+
+  const allMsgs = Array.from(mergedMap.values());
+  
+  // Normalizar campos en cada mensaje
+  allMsgs.forEach(msg => {
+    if (!msg.titulo) {
+      msg.titulo = msg.texto ? msg.texto.split('\n')[0].slice(0, 75) : 'Discusión docente';
+    }
+    if (!msg.categoria) {
+      msg.categoria = 'Estrategias didácticas';
+    }
+    if (!Array.isArray(msg.etiquetas)) {
+      msg.etiquetas = [];
+    }
+    if (!Array.isArray(msg.respuestas)) {
+      msg.respuestas = [];
+    }
+  });
+
+  // Ordenar por fecha descendente
+  allMsgs.sort((a, b) => {
+    const getMs = (p) => {
+      if (!p) return 0;
+      if (p.createdAt?.toDate) return p.createdAt.toDate().getTime();
+      if (p.createdAt?.toMillis) return p.createdAt.toMillis();
+      if (typeof p.createdAt === 'string') return new Date(p.createdAt).getTime() || 0;
+      if (p.updatedAt?.toDate) return p.updatedAt.toDate().getTime();
+      if (typeof p.updatedAt === 'string') return new Date(p.updatedAt).getTime() || 0;
+      return 0;
+    };
+    return getMs(b) - getMs(a);
+  });
+
+  return allMsgs;
+};
+
+export const addForoMessage = async (userId, nombre, rol, textoOrData, maybeExtra = {}) => {
+  const isObj = typeof textoOrData === 'object' && textoOrData !== null;
+  const rawTexto = isObj ? textoOrData.texto : (typeof textoOrData === 'string' ? textoOrData : '');
+  const rawTitulo = isObj ? textoOrData.titulo : (maybeExtra.titulo || rawTexto.split('\n')[0].slice(0, 75) || 'Nueva discusión');
+  const categoria = isObj ? (textoOrData.categoria || 'Estrategias didácticas') : (maybeExtra.categoria || 'Estrategias didácticas');
+  const etiquetas = isObj ? (textoOrData.etiquetas || []) : (maybeExtra.etiquetas || []);
+  const destacado = isObj ? !!textoOrData.destacado : !!maybeExtra.destacado;
+
+  const newDocData = {
+    userId: userId || 'anon',
+    nombre: nombre || 'Docente',
+    rol: rol || 'Docente',
+    titulo: rawTitulo.trim(),
+    texto: rawTexto.trim(),
+    categoria,
+    etiquetas,
+    destacado,
+    respuestas: []
+  };
+
+  const safeFirestoreCall = (promise, ms = 2000) => {
+    let t;
+    const timeout = new Promise((_, reject) => {
+      t = setTimeout(() => reject(new Error('Firestore timeout')), ms);
+    });
+    return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+  };
+
+  try {
+    const docRef = await safeFirestoreCall(addDoc(collection(db, "foro"), {
+      ...newDocData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }));
+    const savedItem = { 
+      id: docRef.id, 
+      ...newDocData, 
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    saveLocalForoMessage(savedItem);
+    return docRef.id;
+  } catch(e) {
+    console.warn("Firestore diferido o sin permisos, persistiendo en almacenamiento local:", e?.message || e);
+    const localId = 'foro_' + Date.now();
+    const savedItem = { 
+      id: localId, 
+      ...newDocData, 
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    saveLocalForoMessage(savedItem);
+    return localId;
   }
 };
 
 export const addForoReply = async (msgId, userId, nombre, rol, texto) => {
+  const replyObj = {
+    id: 'reply_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+    userId: userId || 'anon',
+    nombre: nombre || 'Docente',
+    rol: rol || 'Docente',
+    texto: texto.trim(),
+    date: new Date().toISOString()
+  };
+
+  // 1. Actualizar caché local de inmediato
+  const localList = getLocalForoMessages();
+  const foundIndex = localList.findIndex(m => m.id === msgId);
+  if (foundIndex >= 0) {
+    const current = localList[foundIndex];
+    current.respuestas = [...(current.respuestas || []), replyObj];
+    current.updatedAt = new Date().toISOString();
+    saveLocalForoMessage(current);
+  }
+
+  // 2. Intentar actualizar Firestore con timeout seguro
   try {
+    const safeCall = (promise, ms = 2000) => {
+      let t;
+      const timeout = new Promise((_, reject) => {
+        t = setTimeout(() => reject(new Error('Firestore timeout')), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+    };
+
     const docRef = doc(db, "foro", msgId);
-    // Para simplificar, leemos y reescribimos el array de respuestas.
-    // En producción se usaría arrayUnion, pero esto basta para el MVP
-    const msgData = await getDocs(query(collection(db, "foro"), where("__name__", "==", msgId)));
+    const msgData = await safeCall(getDocs(query(collection(db, "foro"), where("__name__", "==", msgId))));
     let currentRespuestas = [];
-    msgData.forEach(d => { currentRespuestas = d.data().respuestas || [] });
+    if (msgData) {
+      msgData.forEach(d => { currentRespuestas = d.data().respuestas || [] });
+    }
     
-    await updateDoc(docRef, {
-      respuestas: [...currentRespuestas, { userId, nombre, rol, texto, date: new Date().toISOString() }]
-    });
+    await safeCall(updateDoc(docRef, {
+      respuestas: [...currentRespuestas, replyObj],
+      updatedAt: serverTimestamp()
+    }));
   } catch(e) {
-    console.error("Error replying foro msg", e);
-    throw e;
+    console.warn("Respuesta guardada localmente. Firestore update diferido:", e?.message || e);
+  }
+
+  return replyObj;
+};
+
+export const deleteForoMessage = async (msgId) => {
+  removeLocalForoMessage(msgId);
+  try {
+    const safeCall = (promise, ms = 2000) => {
+      let t;
+      const timeout = new Promise((_, reject) => {
+        t = setTimeout(() => reject(new Error('Firestore timeout')), ms);
+      });
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(t));
+    };
+    await safeCall(deleteDoc(doc(db, "foro", msgId)));
+  } catch(e) {
+    console.warn("Mensaje eliminado localmente. Firestore delete diferido:", e?.message || e);
   }
 };
 

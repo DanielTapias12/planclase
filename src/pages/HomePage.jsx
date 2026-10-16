@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { getPlantillas } from '../services/dbService';
+import { GENERIC_TEMPLATES, getTemplateStructureSummary } from '../services/templates/genericTemplates';
 import { 
   Sparkles, 
   PlusCircle, 
@@ -22,42 +23,55 @@ export default function HomePage() {
     userId, 
     misPlantillas, 
     setMisPlantillas, 
-    updateWizardData 
+    updateWizardData,
+    clearWizardFormOnly
   } = useAppStore();
 
   useEffect(() => {
     if (!userId) return;
+    const getOfficialDefaults = () => GENERIC_TEMPLATES.map((gt) => ({
+      id: gt.id,
+      titulo: gt.titulo,
+      formato: gt.formato || 'Estructura predeterminada',
+      publico: true,
+      area: gt.area,
+      subtitulo: gt.subtitulo,
+      instrucciones: getTemplateStructureSummary(gt)
+    }));
+
     if (misPlantillas && misPlantillas.length > 0) return;
 
     getPlantillas(userId)
       .then((fetched) => {
-        const defaults = [{ 
-          id: 'default-1', 
-          titulo: 'Estructura estándar INSPIRATEC', 
-          formato: 'Estructura predeterminada', 
-          publico: true, 
-          instrucciones: '' 
-        }];
-        setMisPlantillas([...defaults, ...fetched]);
+        setMisPlantillas([...getOfficialDefaults(), ...fetched]);
       })
       .catch((e) => console.error('Error cargando plantillas en HomePage:', e));
   }, [userId, misPlantillas, setMisPlantillas]);
 
   const plantillasDisponibles = (misPlantillas && misPlantillas.length > 0)
     ? misPlantillas
-    : [{ 
-        id: 'default-1', 
-        titulo: 'Estructura estándar INSPIRATEC', 
-        formato: 'Estructura predeterminada', 
-        publico: true, 
-        instrucciones: '' 
-      }];
+    : GENERIC_TEMPLATES.map((gt) => ({
+        id: gt.id,
+        titulo: gt.titulo,
+        formato: gt.formato || 'Estructura predeterminada',
+        publico: true,
+        area: gt.area,
+        subtitulo: gt.subtitulo,
+        instrucciones: getTemplateStructureSummary(gt)
+      }));
 
   const handleUsarPlantilla = (tpl) => {
-    updateWizardData({ 
+    clearWizardFormOnly();
+    const isGeneric = GENERIC_TEMPLATES.some(gt => gt.titulo === tpl.titulo || gt.id === tpl.id);
+    const updates = { 
       formato: tpl.titulo,
-      formatoInstrucciones: tpl.instrucciones || ''
-    });
+      formatoInstrucciones: isGeneric ? '' : (tpl.instrucciones || '')
+    };
+    if (tpl.area) {
+      updates.materia = tpl.area;
+      updates.recursos = '';
+    }
+    updateWizardData(updates);
     navigate('/');
   };
 
@@ -142,7 +156,10 @@ export default function HomePage() {
                 boxShadow: '0 4px 14px rgba(20, 42, 38, 0.22)',
                 cursor: 'pointer'
               }}
-              onClick={() => navigate('/')}
+              onClick={() => {
+                clearWizardFormOnly();
+                navigate('/');
+              }}
             >
               <PlusCircle size={18} /> Iniciar Planificador de Clases
             </button>

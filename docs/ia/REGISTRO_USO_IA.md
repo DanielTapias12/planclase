@@ -81,3 +81,24 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 * **C — Contexto:** Validación de interfaces tras el rediseño con estética Glassmorphism 2026 y modales con `createPortal` montados en `document.body`.
 * **A — Acción:** Evaluación heurística y calificación detallada de las 12 pantallas y componentes transversales del aplicativo.
 * **S — Salida / Validación:** Ficha técnica actualizada en `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md`. Verificado en código y vistas activas por los desarrolladores frontend y facilitadores.
+
+---
+
+### 6. Verificación de Frontend: UX, Movilidad y Patrones Pressman (ACT-017)
+
+* **R — Rol:** Experto Senior en Ingeniería de Software Frontend y Auditor Ergonómico de Interfaces Educativas.
+* **O — Objetivo:** Auditar exhaustivamente la aplicación bajo los 16 criterios formales de los Capítulos 12, 13 y 14 de Roger S. Pressman & Bruce R. Maxim (9na Edición), cuantificando el nivel de cumplimiento y sustentándolo con evidencias tangibles de código y comportamiento de la interfaz interactiva.
+* **C — Contexto:** Semana 10 del curso Informática Educativa / Diseño de Interfaces de Usuario. Evaluación formativa previa al cierre de entregables de frontend.
+* **A — Acción:** Ejecutar la lista de chequeo oficial de 16 ítems asignando 2 pts (Cumple), 1 pt (Cumple Parcialmente) o 0 pts (No Cumple). Identificar causas raíz de debilidades en código (antipatrones, validaciones nativas, fallas de persistencia de borrador, ausencia de focus ring y desconexión de breadcrumbs) y relacionar el desempeño de los 6 miembros con los 7 hábitos de Covey.
+* **S — Salida / Validación:** Ficha oficial generada en `docs/actividades/ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md` con 22/32 pts (68.75%) y post-implementación de 30/32 pts (93.75%). El equipo humano evaluó las debilidades y validó las mejoras implementadas.
+
+---
+
+### 7. Verificación de Frontend: Sistemas Tutores Inteligentes y Metacognición (ACT-018)
+
+* **R — Rol:** Experto Senior en Frontend, Especialista en Sistemas Tutores Inteligentes (STI / ITS) y Metacognición Computacional (Marco Teórico Dr. Manuel Fernando Caro Piñeres, UNAL 2015).
+* **O — Objetivo:** Auditar exhaustivamente el frontend de INSPIRATEC verificando el reflejo en la interfaz de los 4 módulos canónicos de Wenger/Caro, las 5 características de interfaz adaptativa donde se experimenta la tutoría inteligente y el soporte a la metacognición mediante la arquitectura de Doble Lazo de Razonamiento (*Double-Loop Architecture*).
+* **C — Contexto:** Semana 10 del curso Informática Educativa / Diseño de Interfaces de Usuario. Evaluación formativa que contrasta el sistema con la tesis doctoral de referencia de la Universidad Nacional de Colombia.
+* **A — Acción:** Aplicación del instrumento de 12 ítems ponderado a 24 puntos (escala C: 2 pts, CP: 1 pt, NC: 0 pts, NA: N/A), documentando evidencias observables en componentes JSX, servicios de IA y estilos CSS, consolidando el dictamen cuantitativo y cualitativo.
+* **S — Salida / Validación:** Creación de `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md` y `docs/ia/REGISTRO_IA_ACT-018.md` con puntaje de 24/24 pts (100% - Sobresaliente). Validado técnicamente por el equipo de desarrollo frontend y pedagógico.
+

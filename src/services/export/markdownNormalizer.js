@@ -6,6 +6,7 @@
  */
 
 import { marked } from 'marked';
+import { formatCurricularMarkdown } from './curricularMarkdownFormatter.js';
 
 /**
  * Limpia emojis incompatibles con fuentes estándar de PDF (Roboto/Type1)
@@ -173,8 +174,14 @@ const processTable = (tableToken) => {
   const colCount = Math.max(headerCols.length, ...(rows.map(r => r.length)));
   if (colCount === 0) return null;
 
-  // Anchos proporcionales
-  const widths = Array(colCount).fill('*');
+  // Anchos proporcionales optimizados según el tipo de tabla pedagógica
+  let widths = Array(colCount).fill('*');
+  if (colCount === 3) {
+    // Tabla canónica de Momentos de la clase | Actividades | Mediación (Recursos)
+    widths = ['20%', '48%', '32%'];
+  } else if (colCount === 2) {
+    widths = ['28%', '72%'];
+  }
 
   // Fila de encabezado
   const headerRow = headerCols.map((col, idx) => {
@@ -184,19 +191,26 @@ const processTable = (tableToken) => {
       text: inlineCells,
       style: 'tableHeaderCell',
       alignment: align,
-      fillColor: '#E7EDE7' // Verde salvia corporativo suave
+      bold: true,
+      fillColor: '#EDF3F1' // Verde salvia suave corporativo
     };
   });
 
-  // Filas del cuerpo
+  // Filas del cuerpo con negrita garantizada en momentos (Inicio, Desarrollo, Cierre) y criterios
   const bodyRows = rows.map((row) => {
     return row.map((cell, idx) => {
       const inlineCells = cell.tokens ? processInlineTokens(cell.tokens) : [{ text: cell.text || '' }];
       const align = aligns[idx] || 'left';
+      const cellText = (cell.text || '').trim();
+      const isMoment = /^(inicio|desarrollo|cierre|fase|momento|apertura|criterio)/i.test(cellText);
+      const isFirstColLabel = idx === 0 && (isMoment || cellText.length < 32);
+
       return {
         text: inlineCells,
         style: 'tableBodyCell',
-        alignment: align
+        alignment: align,
+        bold: (isMoment || isFirstColLabel) ? true : undefined,
+        fillColor: isMoment ? '#F8FAF9' : undefined
       };
     });
   });
@@ -217,12 +231,12 @@ const processTable = (tableToken) => {
     layout: {
       hLineWidth: (i, node) => (i === 0 || i === node.table.body.length ? 0.8 : 0.5),
       vLineWidth: () => 0.5,
-      hLineColor: (i, node) => (i === 1 ? '#315B54' : '#D1DBD7'),
+      hLineColor: (i) => (i === 1 ? '#315B54' : '#D1DBD7'),
       vLineColor: () => '#E2E8F0',
       paddingLeft: () => 8,
       paddingRight: () => 8,
-      paddingTop: () => 6,
-      paddingBottom: () => 6
+      paddingTop: () => 7,
+      paddingBottom: () => 7
     },
     style: 'tableContainer'
   };
@@ -237,10 +251,8 @@ const processTable = (tableToken) => {
 export const normalizeMarkdownToPdfBlocks = (markdownText) => {
   if (!markdownText || typeof markdownText !== 'string') return [];
 
-  // 1. Limpieza de marcadores internos que no deben figurar
-  const cleanSource = markdownText
-    .replace(/\[GENERAR_(RUBRICA|DIAPOSITIVAS|PREGUNTAS|JUEGO)\]/g, '')
-    .trim();
+  // 1. Normalizar negrillas de apartados curriculares y limpiar marcadores de IA
+  const cleanSource = formatCurricularMarkdown(markdownText, { forExport: true });
 
   // 2. Lexing con marked
   const tokens = marked.lexer(cleanSource, { gfm: true });
