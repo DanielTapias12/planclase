@@ -6,6 +6,8 @@
  * campos ordenados, orientaciones didácticas disciplinares y fundamentos del MEN/DBA.
  */
 
+import { resolveRealIdentification, formatIdentificationMarkdown } from './identificationResolver.js';
+
 export const FORMATO_INFORMATICA = {
   id: 'generico_tecnologia_informatica',
   titulo: 'Estructura estándar INSPIRATEC',
@@ -21,11 +23,11 @@ export const FORMATO_INFORMATICA = {
       id: '1',
       titulo: 'Identificación',
       campos: [
-        'Institución: Sede:',
-        'Área: Asignatura:',
-        'Grado: Grupo(s):',
-        'Tutor (IE): Docente en formación:',
-        'Fecha de aplicación: Duración (sesiones y horas):'
+        'Institución:',
+        'Área:',
+        'Grado:',
+        'Docente:',
+        'Duración:'
       ]
     },
     {
@@ -80,16 +82,13 @@ export const FORMATO_INFORMATICA = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura exacta en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura exacta en Markdown:
 
 # PLAN DE CLASE — TECNOLOGÍA E INFORMÁTICA
 
-### Identificación
-- **Institución:** [Nombre de la Institución o a completar] | **Sede:** [Sede Educativa o a completar]  
-- **Área:** Tecnología e Informática | **Asignatura:** Informática  
-- **Grado:** ${wizardData.grado || '[Grado]'} | **Grupo(s):** [Grupo(s) asignados]  
-- **Tutor (IE):** [Nombre del Tutor de la Institución Educativa] | **Docente en formación:** [Nombre del Docente en Formación]  
-- **Fecha de aplicación:** [Fecha de la clase] | **Duración (sesiones y horas):** ${wizardData.duracion || '[Duración]'} (${wizardData.sesiones || '1'} sesiones)  
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
+- **Eje o componente tecnológico:** (Naturaleza y evolución de la tecnología, Apropiación y uso de la tecnología, Solución de problemas con tecnología, o Tecnología y sociedad)
+- **Tema y situación de aprendizaje tecnológico / computacional:** ${wizardData.tema}
 
 ---
 
@@ -164,8 +163,8 @@ export const FORMATO_MATEMATICAS = {
       titulo: 'A. Identificación',
       campos: [
         'Institución educativa.',
-        'Docente, grado, grupo y fecha.',
-        'Periodo académico y duración.',
+        'Docente y grado escolar.',
+        'Área curricular y duración.',
         'Pensamiento matemático predominante: numérico, espacial, métrico, aleatorio o variacional.',
         'Tema y situación contextual de aprendizaje.'
       ]
@@ -256,17 +255,14 @@ export const FORMATO_MATEMATICAS = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
 
 # PLAN DE CLASE — MATEMÁTICAS
 ## Razonamiento, resolución de problemas y pensamiento matemático
 
-### A. Identificación
-- **Institución educativa**: [Nombre de la Institución o a completar]
-- **Docente, grado, grupo y fecha**: [Docente], Grado: ${wizardData.grado || '[Grado]'}, Grupo: [Grupo], Fecha: [Fecha]
-- **Periodo académico y duración**: Periodo: [Periodo escolar], Duración: ${wizardData.duracion || '90 minutos'} (${wizardData.sesiones || '1'} sesiones)
-- **Pensamiento matemático predominante**: (Selecciona y justifica el predominante según el tema: numérico, espacial, métrico, aleatorio o variacional)
-- **Tema y situación contextual de aprendizaje**: ${wizardData.tema} (Describe la situación contextual o problema de la vida cotidiana que enmarca el aprendizaje)
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
+- **Pensamiento matemático predominante:** (Selecciona y justifica el predominante según el tema: numérico, espacial, métrico, aleatorio o variacional)
+- **Tema y situación contextual de aprendizaje:** ${wizardData.tema} (Describe la situación contextual o problema de la vida cotidiana que enmarca el aprendizaje)
 
 ### B. Fundamentación curricular
 - **Objetivo de aprendizaje**: (Redacta el objetivo formativo matemático con claridad y precisión)
@@ -351,8 +347,8 @@ export const FORMATO_CIENCIAS_NATURALES = {
       titulo: 'A. Identificación y contexto',
       campos: [
         'Institución educativa.',
-        'Docente, grado, grupo y fecha.',
-        'Periodo académico y duración.',
+        'Docente y grado escolar.',
+        'Área curricular y duración.',
         'Eje temático o fenómeno por estudiar.',
         'Contexto ambiental, biológico, físico o químico relacionado con la clase.'
       ]
@@ -455,17 +451,14 @@ export const FORMATO_CIENCIAS_NATURALES = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
 
 # PLAN DE CLASE — CIENCIAS NATURALES
 ## Indagación científica, comprensión de fenómenos y análisis de evidencias
 
-### A. Identificación y contexto
-- **Institución educativa**: [Nombre de la Institución o a completar]
-- **Docente, grado, grupo y fecha**: [Docente], Grado: ${wizardData.grado || '[Grado]'}, Grupo: [Grupo], Fecha: [Fecha]
-- **Periodo académico y duración**: Periodo: [Periodo escolar], Duración: ${wizardData.duracion || '90 minutos'} (${wizardData.sesiones || '1'} sesiones)
-- **Eje temático o fenómeno por estudiar**: ${wizardData.tema}
-- **Contexto ambiental, biológico, físico o químico relacionado con la clase**: (Contextualización del fenómeno en el entorno natural, salud, comunidad o planeta)
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
+- **Eje temático o fenómeno por estudiar:** ${wizardData.tema}
+- **Contexto ambiental, biológico, físico o químico relacionado con la clase:** (Contextualización del fenómeno en el entorno natural, salud, comunidad o planeta)
 
 ### B. Fundamentación curricular
 - **Propósito de aprendizaje**: (Propósito científico y formativo claro de la clase)
@@ -559,8 +552,8 @@ export const FORMATO_LENGUA_CASTELLANA = {
       titulo: 'A. Identificación y contexto comunicativo',
       campos: [
         'Institución educativa.',
-        'Docente, grado, grupo y fecha.',
-        'Periodo académico y duración.',
+        'Docente y grado escolar.',
+        'Área curricular y duración.',
         'Eje o componente de trabajo.',
         'Tema, género textual o situación comunicativa.',
         'Contexto y necesidades comunicativas del grupo.'
@@ -657,15 +650,12 @@ export const FORMATO_LENGUA_CASTELLANA = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
 
 # PLAN DE CLASE — LENGUA CASTELLANA
 ## Comprensión, producción textual, oralidad y reflexión sobre el lenguaje
 
-### A. Identificación y contexto comunicativo
-- **Institución educativa**: [Nombre de la Institución o a completar]
-- **Docente, grado, grupo y fecha**: [Docente], Grado: ${wizardData.grado || '[Grado]'}, Grupo: [Grupo], Fecha: [Fecha]
-- **Periodo académico y duración**: Periodo: [Periodo escolar], Duración: ${wizardData.duracion || '90 minutos'} (${wizardData.sesiones || '1'} sesiones)
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
 - **Eje o componente de trabajo**: (Producción textual, comprensión e interpretación textual, literatura, medios de comunicación o ética de la comunicación)
 - **Tema, género textual o situación comunicativa**: ${wizardData.tema} (Especificar con precisión el género textual o la situación comunicativa abordada)
 - **Contexto y necesidades comunicativas del grupo**: (Diagnóstico situacional de las necesidades de expresión y comprensión de los estudiantes)
@@ -759,8 +749,8 @@ export const FORMATO_INGLES = {
       titulo: 'A. Identificación y contexto',
       campos: [
         'Institución educativa.',
-        'Docente, grado, grupo y fecha.',
-        'Periodo académico y duración.',
+        'Docente y grado escolar.',
+        'Área curricular y duración.',
         'Unidad temática o situación comunicativa.',
         'Tema y contexto de uso del inglés.',
         'Nivel de competencia esperado, cuando esté definido.'
@@ -888,18 +878,15 @@ export const FORMATO_INGLES = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura con los mismos encabezados y secciones en Markdown:
 
 # PLAN DE CLASE — INGLÉS
 ## Competencia comunicativa, comprensión y producción en lengua extranjera
 
-### A. Identificación y contexto
-- **Institución educativa**: [Nombre de la Institución educativa o a completar]
-- **Docente, grado, grupo y fecha**: [Docente], Grado: ${wizardData.grado || '[Grado]'}, Grupo: [Grupo], Fecha: [Fecha]
-- **Periodo académico y duración**: Periodo: [Periodo académico], Duración: ${wizardData.duracion || '90 minutos'} (${wizardData.sesiones || '1'} sesiones)
-- **Unidad temática o situación comunicativa**: (Especificar la situación comunicativa en contexto, ej: Describing daily routines, Ordering food at a restaurant, Talking about past vacations, etc.)
-- **Tema y contexto de uso del inglés**: ${wizardData.tema} (Definir el propósito y contexto de uso comunicativo real)
-- **Nivel de competencia esperado**: (Nivel estimado según el ciclo y currículo escolar: A1 Acceso, A2 Plataforma, B1 Pre-intermedio, alineado con MCER / MEN)
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
+- **Unidad temática o situación comunicativa:** (Especificar la situación comunicativa en contexto, ej: Describing daily routines, Ordering food at a restaurant, Talking about past vacations, etc.)
+- **Tema y contexto de uso del inglés:** ${wizardData.tema} (Definir el propósito y contexto de uso comunicativo real)
+- **Nivel de competencia esperado, cuando esté definido:** (Nivel estimado según el ciclo y currículo escolar: A1 Acceso, A2 Plataforma, B1 Pre-intermedio, alineado con MCER / MEN)
 
 ### B. Fundamentación curricular
 - **Objetivo comunicativo de la clase**: (Qué podrán comunicar o expresar los estudiantes en inglés al finalizar la sesión en situaciones contextualizadas)
@@ -1014,8 +1001,8 @@ export const FORMATO_CIENCIAS_SOCIALES = {
       titulo: 'A. Identificación y contexto',
       campos: [
         'Institución educativa.',
-        'Docente, grado, grupo y fecha.',
-        'Periodo académico y duración.',
+        'Docente y grado escolar.',
+        'Área curricular y duración.',
         'Eje temático y problema de indagación social.',
         'Contexto sociocultural, histórico o geográfico relevante.'
       ]
@@ -1102,17 +1089,13 @@ export const FORMATO_CIENCIAS_SOCIALES = {
       ]
     }
   ],
-  generarPromptInstrucciones: (wizardData) => `Formatea la respuesta siguiendo estrictamente esta estructura exacta en Markdown:
+  generarPromptInstrucciones: (wizardData, userProfile) => `Formatea la respuesta siguiendo estrictamente esta estructura exacta en Markdown:
 
 # PLAN DE CLASE — CIENCIAS SOCIALES
 
-### A. Identificación y contexto
-- **Institución:** [Nombre de la Institución educativa]
-- **Docente:** [Nombre del Docente]
-- **Grado:** ${wizardData.grado || '[Grado escolar]'} | **Grupo(s):** [Grupos asignados]
-- **Periodo académico y duración:** ${wizardData.duracion || '[Duración]'} (${wizardData.sesiones || '1'} sesiones)
-- **Eje temático:** ${wizardData.tema || '[Tema central de la clase]'}
-- **Contexto sociocultural:** (Describe brevemente el entorno y la relevancia comunitaria o histórica del tema para el grupo)
+${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
+- **Eje temático y problema de indagación social:** ${wizardData.tema || '[Tema central y problema de indagación social]'}
+- **Contexto sociocultural, histórico o geográfico relevante:** (Describe el entorno sociocultural, los actores sociales y la relevancia histórica, territorial o comunitaria para el grupo)
 
 ---
 
@@ -1271,7 +1254,7 @@ export const getTemplateStructureSummary = (template) => {
  * Si el docente configuró o seleccionó una plantilla propia personalizada (con formatoInstrucciones),
  * dicho formato propio PREVALECE estructuralmente sobre cualquier formato genérico.
  */
-export const resolveEffectiveTemplate = (wizardData = {}, customTemplates = []) => {
+export const resolveEffectiveTemplate = (wizardData = {}, customTemplates = [], userProfile = null) => {
   // 1. Prevalencia de Formato Propio del Docente
   const hasCustomInstructions = typeof wizardData.formatoInstrucciones === 'string' && wizardData.formatoInstrucciones.trim() !== '';
   
@@ -1299,7 +1282,7 @@ export const resolveEffectiveTemplate = (wizardData = {}, customTemplates = []) 
       return {
         isCustom: false,
         titulo: directGeneric.titulo,
-        instrucciones: directGeneric.generarPromptInstrucciones(wizardData),
+        instrucciones: directGeneric.generarPromptInstrucciones(wizardData, userProfile),
         templateObj: directGeneric
       };
     }
@@ -1310,7 +1293,7 @@ export const resolveEffectiveTemplate = (wizardData = {}, customTemplates = []) 
   return {
     isCustom: false,
     titulo: genericForArea.titulo,
-    instrucciones: genericForArea.generarPromptInstrucciones(wizardData),
+    instrucciones: genericForArea.generarPromptInstrucciones(wizardData, userProfile),
     templateObj: genericForArea
   };
 };

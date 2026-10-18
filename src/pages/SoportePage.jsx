@@ -79,7 +79,7 @@ export default function SoportePage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '920px', width: '100%', margin: '0 auto', padding: '36px 32px 64px', boxSizing: 'border-box' }}>
+    <div className="mgmt-container" style={{ maxWidth: '960px', width: '100%', margin: '0 auto', padding: '24px clamp(16px, 3.5vw, 28px) 52px', boxSizing: 'border-box' }}>
       
       {/* Cabecera Editorial Institucional (Mismo desenfoque y panel de cristal de Inicio) */}
       <header 
@@ -89,10 +89,10 @@ export default function SoportePage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '22px',
-          padding: '38px 42px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          borderRadius: '18px',
+          padding: '22px 28px',
+          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">

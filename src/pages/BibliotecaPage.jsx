@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
+import PageLoadingState from '../components/PageLoadingState';
 
 export default function BibliotecaPage() {
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export default function BibliotecaPage() {
   });
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+    <div className="mgmt-container">
       
       {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
       <header 
@@ -98,10 +99,10 @@ export default function BibliotecaPage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '22px',
-          padding: '38px 42px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          borderRadius: '18px',
+          padding: '22px 28px',
+          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
@@ -180,10 +181,13 @@ export default function BibliotecaPage() {
 
       {/* Estado de Carga */}
       {loading ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
-          <p style={{ fontSize: '14.5px' }}>Explorando la biblioteca comunitaria...</p>
-        </div>
+        <PageLoadingState 
+          icon={Library}
+          badge="Repositorio Abierto"
+          title="Explorando la biblioteca comunitaria..."
+          subtitle="Sincronizando secuencias didácticas compartidas, recursos y guías de clase."
+          minHeight="340px"
+        />
       ) : filteredRecursos.length === 0 ? (
         /* Estado Vacío (Mismo desenfoque y panel de cristal) */
         <div 

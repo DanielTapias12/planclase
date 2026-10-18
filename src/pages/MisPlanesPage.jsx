@@ -25,6 +25,8 @@ import ConfirmModal from '../components/ConfirmModal';
 import { exportPlanToPdf } from '../services/export/pdf/pdfEngine';
 import { exportPlanToWord } from '../services/export/word/wordEngine';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
+import PageLoadingState from '../components/PageLoadingState';
+import { updateSavedPlansWithRealProfile } from '../services/templates/identificationResolver';
 
 
 export default function MisPlanesPage() {
@@ -43,6 +45,9 @@ export default function MisPlanesPage() {
   const fetchPlanes = useCallback(async (targetId) => {
     setIsLoading(true);
     try {
+      if (userProfile) {
+        await updateSavedPlansWithRealProfile(userProfile, targetId);
+      }
       const fetchedPlanes = await getMisPlanes(targetId);
       setPlanes(fetchedPlanes);
       setPlanesCount(fetchedPlanes.length);
@@ -51,7 +56,7 @@ export default function MisPlanesPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [setPlanesCount]);
+  }, [userProfile, setPlanesCount]);
 
   useEffect(() => {
     let isMounted = true;
@@ -174,7 +179,7 @@ export default function MisPlanesPage() {
   });
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+    <div className="mgmt-container">
       
       {/* Migas de Pan para orientación jerárquica */}
       <div style={{ marginBottom: '14px' }}>
@@ -192,10 +197,10 @@ export default function MisPlanesPage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '22px',
-          padding: '38px 42px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          borderRadius: '18px',
+          padding: '22px 28px',
+          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
@@ -352,10 +357,13 @@ export default function MisPlanesPage() {
       
       {/* Estado de Carga */}
       {isLoading ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
-          <p style={{ fontSize: '14.5px' }}>Sincronizando tus secuencias pedagógicas...</p>
-        </div>
+        <PageLoadingState 
+          icon={BookOpen}
+          badge="Secuencias Didácticas"
+          title="Sincronizando tus secuencias didácticas..."
+          subtitle="Recuperando tus planes curriculares, actividades y materiales desde la nube."
+          minHeight="340px"
+        />
       ) : planes.length === 0 ? (
         /* Estado Vacío Sin Planes */
         <div className="mgmt-empty-card">

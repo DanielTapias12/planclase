@@ -87,3 +87,19 @@ La interfaz de usuario implementa un diseño contemporáneo basado en:
 * **Confirmaciones Seguras (`ConfirmModal.jsx`):** Diálogos interactivos de cristal para operaciones destructivas sin alertas grises nativas del navegador.
 
 Consulte la documentación técnica detallada en [docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md](docs/proyecto/ACTUALIZACION_SISTEMA_DISENO_MODALES_2026.md).
+
+---
+
+## 7. Arquitectura y Mapa de Navegación MODESEC (ACT-006)
+
+Siguiendo las directrices de la **Guía de la Semana 03** y el marco orientador **MODESEC**, INSPIRATEC modela su experiencia de usuario en una jerarquía estructurada de cinco niveles:
+$$\text{Pantalla Inicial} \longrightarrow \text{Módulos Principales} \longrightarrow \text{Pantallas Secundarias} \longrightarrow \text{Actividades} \longrightarrow \text{Resultados}$$
+
+* **Regla de Oro de Interacciones:** Garantiza el acceso a cualquier contenido formativo o didáctico en un máximo de **3 interacciones** (promedio empírico de 1.8 clics).
+* **Controles Canónicos Ubicuos:** Incorpora controles permanentes de **Regresar** (con `Breadcrumbs` interactivo y sincronización de historial), **Inicio** (Sidebar / Header), **Ayuda** (FAQ, guías y tour) y **Cerrar / Cancelar** (tecla `Escape`, botón `✕`).
+* **Documentación y Diagramas:**
+  * Documento Técnico-Metodológico: [docs/diseno-multimedial/MAPA_NAVEGACION.md](docs/diseno-multimedial/MAPA_NAVEGACION.md)
+  * Diagrama Vectorial de Alta Fidelidad: [docs/diseno-multimedial/MAPA_NAVEGACION.svg](docs/diseno-multimedial/MAPA_NAVEGACION.svg)
+  * Ficha de Actividad: [docs/actividades/ACT-006_MAPA_NAVEGACION.md](docs/actividades/ACT-006_MAPA_NAVEGACION.md)
+  * Evidencias: [docs/evidencias/ACT-006/README.md](docs/evidencias/ACT-006/README.md)
+  * Registro de IA (ROCAS): [docs/ia/REGISTRO_IA_ACT-006.md](docs/ia/REGISTRO_IA_ACT-006.md)

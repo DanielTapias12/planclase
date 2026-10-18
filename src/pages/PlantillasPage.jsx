@@ -20,6 +20,7 @@ import {
   Lock 
 } from 'lucide-react';
 import ConfirmModal from '../components/ConfirmModal';
+import PageLoadingState from '../components/PageLoadingState';
 
 export default function PlantillasPage() {
   const navigate = useNavigate();
@@ -175,7 +176,7 @@ export default function PlantillasPage() {
   );
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+    <div className="mgmt-container">
       
       {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal) */}
       <header 
@@ -185,10 +186,10 @@ export default function PlantillasPage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '22px',
-          padding: '38px 42px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          borderRadius: '18px',
+          padding: '22px 28px',
+          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
@@ -372,10 +373,13 @@ export default function PlantillasPage() {
 
       {/* Estado de Carga */}
       {isLoading ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
-          <p style={{ fontSize: '14.5px' }}>Cargando tus estructuras de clase...</p>
-        </div>
+        <PageLoadingState 
+          icon={Layers}
+          badge="Formatos Pedagógicos"
+          title="Cargando estructuras de clase..."
+          subtitle="Preparando modelos curriculares, momentos didácticos y plantillas institucionales."
+          minHeight="340px"
+        />
       ) : filteredPlantillas.length === 0 ? (
         <div className="mgmt-empty-card">
           <div className="mgmt-empty-icon">

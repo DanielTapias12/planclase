@@ -279,13 +279,13 @@ export default function StructuredPlanDocument({
               <h1 
                 style={{ 
                   color: '#142B25', 
-                  fontSize: 'clamp(22px, 2.5vw, 26px)', 
+                  fontSize: 'clamp(21px, 2.3vw, 25px)', 
                   fontWeight: 800, 
                   fontFamily: 'var(--font-heading)', 
-                  borderBottom: '2.5px solid #315B54', 
-                  paddingBottom: '12px', 
-                  marginTop: '20px', 
-                  marginBottom: '20px', 
+                  borderBottom: '2px solid #315B54', 
+                  paddingBottom: '10px', 
+                  marginTop: '0px', 
+                  marginBottom: '16px', 
                   letterSpacing: '-0.015em' 
                 }} 
                 {...props} 
@@ -295,13 +295,13 @@ export default function StructuredPlanDocument({
               <h2 
                 style={{ 
                   color: '#142B25', 
-                  fontSize: '20px', 
+                  fontSize: '18.5px', 
                   fontWeight: 700, 
                   fontFamily: 'var(--font-heading)', 
-                  borderBottom: '1px solid rgba(49, 91, 84, 0.22)', 
-                  paddingBottom: '8px', 
-                  marginTop: '32px', 
-                  marginBottom: '16px' 
+                  borderBottom: '1px solid rgba(49, 91, 84, 0.20)', 
+                  paddingBottom: '6px', 
+                  marginTop: '22px', 
+                  marginBottom: '12px' 
                 }} 
                 {...props} 
               />
@@ -310,13 +310,13 @@ export default function StructuredPlanDocument({
               <h3 
                 style={{ 
                   color: '#315B54', 
-                  fontSize: '17.5px', 
+                  fontSize: '16px', 
                   fontWeight: 700, 
                   fontFamily: 'var(--font-heading)', 
-                  borderBottom: '1px solid rgba(49, 91, 84, 0.14)', 
-                  paddingBottom: '6px', 
-                  marginTop: '26px', 
-                  marginBottom: '14px' 
+                  borderBottom: '1px solid rgba(49, 91, 84, 0.12)', 
+                  paddingBottom: '4px', 
+                  marginTop: '16px', 
+                  marginBottom: '10px' 
                 }} 
                 {...props} 
               />
@@ -325,11 +325,11 @@ export default function StructuredPlanDocument({
               <h4 
                 style={{ 
                   color: '#1E3B34', 
-                  fontSize: '15px', 
+                  fontSize: '14.5px', 
                   fontWeight: 700, 
                   fontFamily: 'var(--font-heading)', 
-                  marginTop: '18px', 
-                  marginBottom: '10px' 
+                  marginTop: '12px', 
+                  marginBottom: '6px' 
                 }} 
                 {...props} 
               />
@@ -337,10 +337,10 @@ export default function StructuredPlanDocument({
             p: ({ children, ...props }) => (
               <p 
                 style={{ 
-                  fontSize: '15px', 
-                  lineHeight: '1.7', 
+                  fontSize: '14.5px', 
+                  lineHeight: '1.65', 
                   color: '#1C1917', 
-                  marginBottom: '14px' 
+                  marginBottom: '10px' 
                 }} 
                 {...props} 
               >
@@ -350,9 +350,9 @@ export default function StructuredPlanDocument({
             ul: ({ ...props }) => (
               <ul 
                 style={{ 
-                  paddingLeft: '24px', 
-                  marginBottom: '16px', 
-                  lineHeight: '1.65' 
+                  paddingLeft: '20px', 
+                  marginBottom: '12px', 
+                  lineHeight: '1.6' 
                 }} 
                 {...props} 
               />
@@ -360,9 +360,9 @@ export default function StructuredPlanDocument({
             ol: ({ ...props }) => (
               <ol 
                 style={{ 
-                  paddingLeft: '24px', 
-                  marginBottom: '16px', 
-                  lineHeight: '1.65' 
+                  paddingLeft: '20px', 
+                  marginBottom: '12px', 
+                  lineHeight: '1.6' 
                 }} 
                 {...props} 
               />
@@ -370,9 +370,9 @@ export default function StructuredPlanDocument({
             li: ({ children, ...props }) => (
               <li 
                 style={{ 
-                  fontSize: '15px', 
+                  fontSize: '14px', 
                   color: '#1C1917', 
-                  marginBottom: '6px' 
+                  marginBottom: '4px' 
                 }} 
                 {...props} 
               >
@@ -384,9 +384,9 @@ export default function StructuredPlanDocument({
                 style={{ 
                   borderLeft: '4px solid #477A72', 
                   backgroundColor: 'rgba(71, 122, 114, 0.08)', 
-                  padding: '12px 18px', 
-                  borderRadius: '0 12px 12px 0', 
-                  margin: '18px 0', 
+                  padding: '10px 16px', 
+                  borderRadius: '0 10px 10px 0', 
+                  margin: '14px 0', 
                   fontStyle: 'italic', 
                   color: '#234B43' 
                 }} 
@@ -394,18 +394,18 @@ export default function StructuredPlanDocument({
               />
             ),
             hr: () => (
-              <hr style={{ border: 'none', borderTop: '1px solid rgba(49, 91, 84, 0.16)', margin: '28px 0' }} />
+              <hr style={{ border: 'none', borderTop: '1px solid rgba(49, 91, 84, 0.16)', margin: '18px 0' }} />
             ),
             table: ({ ...props }) => (
-              <div className="editor-doc-table-wrapper" style={{ overflowX: 'auto', margin: '22px 0', borderRadius: '14px', border: '1px solid rgba(49, 91, 84, 0.22)', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-                <table className="plan-sequence-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }} {...props} />
+              <div className="editor-doc-table-wrapper" style={{ overflowX: 'auto', margin: '16px 0', borderRadius: '12px', border: '1px solid rgba(49, 91, 84, 0.20)', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
+                <table className="plan-sequence-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13.5px' }} {...props} />
               </div>
             ),
             th: ({ ...props }) => (
-              <th style={{ backgroundColor: '#EDF3F1', color: '#142B25', fontWeight: 700, padding: '12px 16px', borderBottom: '1.5px solid #CBD5E1', textAlign: 'left' }} {...props} />
+              <th style={{ backgroundColor: '#EDF3F1', color: '#142B25', fontWeight: 700, padding: '10px 14px', borderBottom: '1.5px solid #CBD5E1', textAlign: 'left' }} {...props} />
             ),
             td: ({ ...props }) => (
-              <td style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0', verticalAlign: 'top', color: '#1C1917', lineHeight: '1.6' }} {...props} />
+              <td style={{ padding: '10px 14px', borderBottom: '1px solid #E2E8F0', verticalAlign: 'top', color: '#1C1917', lineHeight: '1.55' }} {...props} />
             )
           }}
         >

@@ -1,15 +1,89 @@
 import React from 'react';
-import { BookOpen, Users, Layers, AlertCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { BookOpen, Users, Layers, AlertCircle, Dna, Sparkles, Compass, CheckCircle2, ExternalLink } from 'lucide-react';
 import { GENERIC_TEMPLATES } from '../../services/templates/genericTemplates';
 
 export default function WizardStep1Basicos({
   wizardData,
   fieldErrors = {},
   handleChange,
-  misPlantillas = []
+  misPlantillas = [],
+  userProfile = null
 }) {
   return (
     <div>
+      {/* Banner Interactivo: ADN Pedagógico & Memoria Contextual */}
+      <div style={{
+        background: wizardData.aplicarAdnPedagógico !== false 
+          ? 'linear-gradient(135deg, rgba(26, 77, 67, 0.08) 0%, rgba(74, 222, 128, 0.12) 100%)' 
+          : 'rgba(241, 245, 249, 0.6)',
+        border: wizardData.aplicarAdnPedagógico !== false ? '1px solid rgba(74, 222, 128, 0.4)' : '1px solid #E2E8F0',
+        borderRadius: '16px',
+        padding: '16px 20px',
+        marginBottom: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '14px',
+        transition: 'all 0.2s'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            background: wizardData.aplicarAdnPedagógico !== false ? '#1A4D43' : '#94A3B8',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FFFDF9',
+            boxShadow: wizardData.aplicarAdnPedagógico !== false ? '0 4px 10px rgba(26, 77, 67, 0.25)' : 'none'
+          }}>
+            <Dna size={20} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 700, color: '#142A26' }}>
+                ✨ Aplicar mi ADN Pedagógico
+              </span>
+              {wizardData.aplicarAdnPedagógico !== false && (
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  color: '#059669',
+                  background: '#ECFDF5',
+                  padding: '2px 8px',
+                  borderRadius: '12px',
+                  border: '1px solid #A7F3D0'
+                }}>
+                  Memoria Activa
+                </span>
+              )}
+            </div>
+            <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>
+              La IA adaptará las dinámicas de inicio, evaluación formativa y recursos a tu estilo probado en aula.{' '}
+              <Link to="/adn-pedagogico" target="_blank" style={{ color: '#1A4D43', fontWeight: 600, textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                Ver o ajustar mi ADN <ExternalLink size={11} />
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        <label style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer', gap: '8px' }}>
+          <input
+            type="checkbox"
+            name="aplicarAdnPedagógico"
+            checked={wizardData.aplicarAdnPedagógico !== false}
+            onChange={(e) => handleChange({ target: { name: 'aplicarAdnPedagógico', value: e.target.checked, type: 'text' } })}
+            style={{ width: '18px', height: '18px', accentColor: '#1A4D43', cursor: 'pointer' }}
+          />
+          <span style={{ fontSize: '13px', fontWeight: 600, color: wizardData.aplicarAdnPedagógico !== false ? '#1A4D43' : '#64748B' }}>
+            {wizardData.aplicarAdnPedagógico !== false ? 'Activado' : 'Desactivado'}
+          </span>
+        </label>
+      </div>
+
       {/* Grupo 1: Tema y Formato */}
       <div className="wizard-group">
         <div className="wizard-group-title">
@@ -102,6 +176,7 @@ export default function WizardStep1Basicos({
         </div>
       </div>
 
+
       {/* Grupo 2: Audiencia y Tiempo */}
       <div className="wizard-group">
         <div className="wizard-group-title">
@@ -172,6 +247,125 @@ export default function WizardStep1Basicos({
             <option value="Lengua Castellana">Lengua Castellana</option>
             <option value="Inglés">Inglés</option>
           </select>
+        </div>
+
+        {/* Sección de Estudio Transversal & Articulación Interdisciplinar */}
+        <div style={{
+          background: wizardData.esTransversal ? '#F0FDF4' : '#F8FAFC',
+          border: wizardData.esTransversal ? '1px solid #86EFAC' : '1px solid #E2E8F0',
+          borderRadius: '14px',
+          padding: '16px',
+          marginBottom: '20px',
+          transition: 'all 0.2s'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: wizardData.esTransversal ? '16px' : 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Compass size={18} color={wizardData.esTransversal ? '#16A34A' : '#64748B'} />
+              <div>
+                <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#1E293B' }}>
+                  Plan Transversal / Interdisciplinar Articulado
+                </span>
+                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>
+                  Conecta competencias de dos disciplinas alrededor de un proyecto o reto institucional.
+                </p>
+              </div>
+            </div>
+
+            <label style={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer', gap: '8px' }}>
+              <input
+                type="checkbox"
+                name="esTransversal"
+                checked={Boolean(wizardData.esTransversal)}
+                onChange={(e) => handleChange({ target: { name: 'esTransversal', value: e.target.checked, type: 'text' } })}
+                style={{ width: '17px', height: '17px', accentColor: '#16A34A', cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: '13px', fontWeight: 600, color: wizardData.esTransversal ? '#16A34A' : '#64748B' }}>
+                {wizardData.esTransversal ? 'Articulación Activa' : 'Activar transversalidad'}
+              </span>
+            </label>
+          </div>
+
+          {wizardData.esTransversal && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', paddingTop: '12px', borderTop: '1px solid #DCFCE7' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
+                <div>
+                  <label htmlFor="wizard-eje-transversal" style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                    Eje Transversal Institucional
+                  </label>
+                  <select
+                    id="wizard-eje-transversal"
+                    name="ejeTransversal"
+                    value={wizardData.ejeTransversal || 'Enfoque STEAM (Ciencia, Tecnología, Arte y Matemáticas)'}
+                    onChange={handleChange}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px' }}
+                  >
+                    {[
+                      'Enfoque STEAM (Ciencia, Tecnología, Arte y Matemáticas)',
+                      'Educación Ambiental y Sostenibilidad (PRAE)',
+                      'Convivencia, Paz y Habilidades Ciudadanas',
+                      'Alfabetización Digital & Ciudadanía Crítica',
+                      'Emprendimiento, Innovación y Pensamiento Creativo',
+                      'Salud, Bienestar y Educación Socioemocional',
+                      ...(wizardData.ejeTransversal && ![
+                        'Enfoque STEAM (Ciencia, Tecnología, Arte y Matemáticas)',
+                        'Educación Ambiental y Sostenibilidad (PRAE)',
+                        'Convivencia, Paz y Habilidades Ciudadanas',
+                        'Alfabetización Digital & Ciudadanía Crítica',
+                        'Emprendimiento, Innovación y Pensamiento Creativo',
+                        'Salud, Bienestar y Educación Socioemocional'
+                      ].includes(wizardData.ejeTransversal) ? [wizardData.ejeTransversal] : [])
+                    ].map(opt => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="wizard-area-secundaria" style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                    Área Secundaria Articulada
+                  </label>
+                  <select
+                    id="wizard-area-secundaria"
+                    name="areaSecundaria"
+                    value={wizardData.areaSecundaria || (wizardData.materia === 'Tecnología e Informática' ? 'Matemáticas' : 'Tecnología e Informática')}
+                    onChange={handleChange}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px' }}
+                  >
+                    {[
+                      'Tecnología e Informática',
+                      'Matemáticas',
+                      'Ciencias Naturales',
+                      'Ciencias Sociales',
+                      'Lengua Castellana',
+                      'Inglés',
+                      'Educación Artística',
+                      'Ética y Valores Humanos'
+                    ].filter(area => area !== wizardData.materia).map((area, idx) => (
+                      <option key={idx} value={area}>{area}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="wizard-reto-contextual" style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
+                  Reto o Pregunta Problémica del Entorno Guía (Opcional)
+                </label>
+                <input
+                  id="wizard-reto-contextual"
+                  type="text"
+                  name="retoContextual"
+                  value={wizardData.retoContextual || ''}
+                  onChange={handleChange}
+                  placeholder="Ej.: ¿Cómo reducir el desperdicio de agua en el colegio diseñando un sensor y tablas de análisis?"
+                  style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', boxSizing: 'border-box' }}
+                />
+                <div style={{ fontSize: '11.5px', color: '#166534', marginTop: '4px' }}>
+                  💡 La IA entrelazará los DBA y estándares de {wizardData.materia} y el área secundaria alrededor de este reto.
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="input-group" style={{ margin: 0 }}>

@@ -75,7 +75,7 @@ export const initAuth = () => {
   });
 };
 
-export const registerUser = async (nombre, institucion, nivel, email, password, celular = '', termsAccepted = true) => {
+export const registerUser = async (nombre, institucion, nivel, email, password, celular = '', termsAccepted = true, metodologiaInstitucional = '', ejeTransversal = '') => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const user = userCredential.user;
   
@@ -88,6 +88,8 @@ export const registerUser = async (nombre, institucion, nivel, email, password, 
     nivel,
     email,
     celular: encryptedCelular,
+    metodologiaInstitucional: metodologiaInstitucional || 'Aprendizaje Basado en Proyectos (ABP)',
+    ejeTransversal: ejeTransversal || 'Enfoque STEAM (Ciencia, Tecnología, Arte y Matemáticas)',
     termsAccepted: Boolean(termsAccepted),
     termsAcceptedAt: new Date().toISOString(),
     rol: 'Docente',
@@ -106,6 +108,24 @@ export const registerUser = async (nombre, institucion, nivel, email, password, 
   saveSecureSessionToken(jwtToken);
 
   return user;
+};
+
+/**
+ * Actualiza la metodología institucional y configuración pedagógica del docente
+ */
+export const updateUserPedagogicalProfile = async (userId, data = {}) => {
+  if (!userId) return false;
+  try {
+    const userRef = doc(db, 'users', userId);
+    await setDoc(userRef, {
+      ...data,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    return true;
+  } catch (error) {
+    console.error("Error actualizando perfil pedagógico en Firestore:", error);
+    return false;
+  }
 };
 
 export const loginUser = async (email, password) => {

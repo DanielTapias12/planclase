@@ -1,3 +1,5 @@
+import { injectShareBarIntoHtml } from './universalShareBar.js';
+
 /**
  * Generador de Trivia / Cuestionario Gamificado interactivo en un único archivo HTML.
  * Incluye temporizador, efectos de sonido sintetizados mediante Web Audio API (sin archivos externos),
@@ -50,7 +52,7 @@ export function generateGamifiedQuizHTML({
 
   const questionsJson = JSON.stringify(defaultQuestions).replace(/</g, '\\u003c');
 
-  return `<!DOCTYPE html>
+  const rawHtml = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -467,4 +469,6 @@ export function generateGamifiedQuizHTML({
   </script>
 </body>
 </html>`;
+
+  return injectShareBarIntoHtml(rawHtml, { title: safeTitle, subject: safeSubject });
 }

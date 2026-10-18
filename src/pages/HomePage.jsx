@@ -11,7 +11,8 @@ import {
   Settings, 
   FileText, 
   AlertTriangle,
-  Layers
+  Layers,
+  Dna
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -77,7 +78,7 @@ export default function HomePage() {
 
   return (
     <div className="home-full-immersive-view">
-      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '24px clamp(16px, 3.5vw, 28px) 52px' }}>
         
         {/* 1 y 2. Panel Editorial de Bienvenida y Acciones Principales */}
         <section 
@@ -87,10 +88,10 @@ export default function HomePage() {
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.94)',
-            borderRadius: '22px',
-            padding: '38px 42px',
-            marginBottom: '26px',
-            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+            borderRadius: '18px',
+            padding: '24px 30px',
+            marginBottom: '20px',
+            boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
           }}
         >
           {/* Badge institucional */}
@@ -185,6 +186,33 @@ export default function HomePage() {
               onClick={() => navigate('/plantillas')}
             >
               <BookOpen size={16} /> Ver Plantillas Curriculares
+            </button>
+          </div>
+
+          <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '999px', backgroundColor: 'rgba(22, 163, 74, 0.12)', border: '1px solid rgba(22, 163, 74, 0.25)', fontSize: '12px', color: '#166534', fontWeight: 600 }}>
+              <Dna size={14} style={{ color: '#16A34A' }} />
+              <span>
+                Metodología Institucional:{' '}
+                <strong style={{ color: '#142B25' }}>{userProfile?.metodologiaInstitucional || 'Aprendizaje Basado en Proyectos (ABP)'}</strong>
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event('open-calibracion-docente'))}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#166534',
+                fontSize: '12px',
+                fontWeight: 700,
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                padding: '4px 6px'
+              }}
+              title="Actualizar la metodología institucional o proyecto transversal de tu colegio"
+            >
+              Calibrar / Cambiar
             </button>
           </div>
 

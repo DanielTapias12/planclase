@@ -15,7 +15,7 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-005** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-006** | Diseño del Mapa de Navegación | Semana 5 | **COMPLETADA** | [ACT-006_MAPA_NAVEGACION.md](ACT-006_MAPA_NAVEGACION.md) |
 | **ACT-007** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
-| **ACT-008** | Definir la Ventana Estándar | Semana 6 | **EN PROCESO** | [ACT-008_VENTANA_ESTANDAR.md](ACT-008_VENTANA_ESTANDAR.md) |
+| **ACT-008** | Definir la Ventana Estándar | Semana 6 | **COMPLETADA** | [ACT-008_VENTANA_ESTANDAR.md](ACT-008_VENTANA_ESTANDAR.md) |
 | **ACT-009** | Descripción de Ventanas | Semana 6 | **EN PROCESO** | [ACT-009_DESCRIPCION_VENTANAS.md](ACT-009_DESCRIPCION_VENTANAS.md) |
 | **ACT-010** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-011** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |

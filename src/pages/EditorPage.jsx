@@ -30,12 +30,15 @@ import {
   PanelRightClose,
   PanelRightOpen,
   Zap,
+  Info,
+  ChevronUp,
   Lightbulb,
   Check
 } from 'lucide-react';
 
 import { savePlanToDB, updatePlanInDB, getPlanById } from '../services/dbService';
 import { auth } from '../firebase';
+import PageLoadingState from '../components/PageLoadingState';
 import { generateComplementaryMaterial } from '../services/aiService';
 import { exportPlanToPdf } from '../services/export/pdf/pdfEngine';
 import { exportPlanToWord } from '../services/export/word/wordEngine';
@@ -51,7 +54,8 @@ export default function EditorPage() {
     planGenerado, 
     setPlanGenerado, 
     apiKey, 
-    sesionChatIA, 
+    sesionChatIA,
+    clearChatIAModo, 
     addMensajeChatIA, 
     wizardData,
     activePlanMetadata,
@@ -78,6 +82,34 @@ export default function EditorPage() {
 
   const [prompt, setPrompt] = useState('');
   const [chatMode, setChatMode] = useState('direct'); // 'direct' | 'socratic'
+  const [showModeHelp, setShowModeHelp] = useState(true);
+
+  // Separación estricta de canales para que cada modo muestre únicamente sus propios mensajes
+  const directMessages = useMemo(() => {
+    return (sesionChatIA || []).filter(m => {
+      const modo = m.modo || (m.tipo === 'socratico' ? 'socratic' : 'direct');
+      return modo === 'direct';
+    });
+  }, [sesionChatIA]);
+
+  const socraticMessages = useMemo(() => {
+    return (sesionChatIA || []).filter(m => {
+      const modo = m.modo || (m.tipo === 'socratico' ? 'socratic' : 'direct');
+      return modo === 'socratic';
+    });
+  }, [sesionChatIA]);
+
+  const activeChatMessages = chatMode === 'direct' ? directMessages : socraticMessages;
+
+  const handleClearCurrentModeChat = () => {
+    if (clearChatIAModo) {
+      clearChatIAModo(chatMode);
+    }
+  };
+
+  const handleApplyPromptSuggestion = (text) => {
+    setPrompt(text);
+  };
   const [isModifying, setIsModifying] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -87,6 +119,7 @@ export default function EditorPage() {
   const [activeMobileTab, setActiveMobileTab] = useState('doc'); // 'doc' | 'chat'
   const [saveFeedback, setSaveFeedback] = useState(null); // { type: 'success' | 'error', text: string }
   const [generatingRecId, setGeneratingRecId] = useState(null);
+  const [currentGeneratingTypeKey, setCurrentGeneratingTypeKey] = useState(null);
 
   // Recomendaciones contextuales de materiales didácticos bajo demanda (2 a 4 opciones)
   const recomendaciones = useMemo(() => {
@@ -221,12 +254,15 @@ export default function EditorPage() {
     if (!prompt.trim() || !apiKey || !planGenerado) return;
 
     const userMsg = prompt.trim();
-    addMensajeChatIA({ role: 'user', text: userMsg });
+    // Guardamos el mensaje asociándolo explícitamente al canal activo
+    addMensajeChatIA({ role: 'user', text: userMsg, modo: chatMode });
     setPrompt('');
     setIsModifying(true);
 
     try {
-      const result = await modifyPlan(apiKey, planGenerado, userMsg, chatMode, sesionChatIA);
+      // Alimentamos a Gemini únicamente con el historial conversacional del canal activo
+      const activeHistory = chatMode === 'direct' ? directMessages : socraticMessages;
+      const result = await modifyPlan(apiKey, planGenerado, userMsg, chatMode, activeHistory);
 
       if (chatMode === 'direct') {
         if (result.planModificado) {
@@ -237,7 +273,8 @@ export default function EditorPage() {
         addMensajeChatIA({ 
           role: 'ia', 
           text: result.textoDialogo,
-          tipo: 'directo'
+          tipo: 'directo',
+          modo: 'direct'
         });
       } else {
         // Modo Diálogo Socrático Guiado (Caro 2015)
@@ -245,11 +282,17 @@ export default function EditorPage() {
           role: 'ia', 
           text: result.textoDialogo,
           tipo: 'socratico',
+          modo: 'socratic',
           planSugerido: result.planModificado
         });
       }
     } catch (error) {
-      addMensajeChatIA({ role: 'ia', text: "Hubo un error al procesar la indicación: " + error.message });
+      addMensajeChatIA({ 
+        role: 'ia', 
+        text: "Hubo un error al procesar la indicación: " + error.message,
+        tipo: chatMode === 'socratic' ? 'socratico' : 'directo',
+        modo: chatMode
+      });
     } finally {
       setIsModifying(false);
     }
@@ -437,48 +480,128 @@ export default function EditorPage() {
 
 
   const getMaterialOptions = () => {
-    switch (currentMetadata?.materia) {
-      case 'Matemáticas': return [
-        { id: 'taller_contexto', label: 'Taller de Contexto Real', icon: <ListChecks size={16}/> },
-        { id: 'guia_modelacion', label: 'Guía de Modelación', icon: <MonitorPlay size={16}/> },
-        { id: 'preguntas', label: 'Quiz Interactivo', icon: <HelpCircle size={16}/> },
-        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
-      ];
-      case 'Ciencias Naturales': return [
-        { id: 'reto_lab', label: 'Guía de Indagación / Lab', icon: <MonitorPlay size={16}/> },
-        { id: 'estudio_caso', label: 'Estudio de Fenómeno', icon: <FileText size={16}/> },
-        { id: 'preguntas', label: 'Quiz de Indagación', icon: <HelpCircle size={16}/> },
-        { id: 'rubrica', label: 'Rúbrica Científica', icon: <ListChecks size={16}/> }
-      ];
-      case 'Inglés': return [
-        { id: 'reading', label: 'Reading Comprehension', icon: <FileText size={16}/> },
-        { id: 'roleplay_en', label: 'Role-Play Scripts', icon: <FileCode size={16}/> },
-        { id: 'flashcards', label: 'Flashcards Interactivas', icon: <MonitorPlay size={16}/> },
-        { id: 'juegos', label: 'Sopa de Letras (EN)', icon: <Puzzle size={16}/> },
-        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
-      ];
-      case 'Lengua Castellana':
-      case 'Lenguaje (Español)': return [
-        { id: 'taller_lectura', label: 'Taller de Comprensión', icon: <FileText size={16}/> },
-        { id: 'produccion_textual', label: 'Producción Textual', icon: <Edit size={16}/> },
-        { id: 'roleplay_lit', label: 'Juego de Roles Literario', icon: <FileCode size={16}/> },
-        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
-      ];
-      case 'Tecnología e Informática':
-      case 'Informática': return [
-        { id: 'reto_lab', label: 'Guía de Práctica / Taller Digital', icon: <MonitorPlay size={16}/> },
-        { id: 'estudio_caso', label: 'Estudio de Caso Tecnológico', icon: <FileText size={16}/> },
-        { id: 'preguntas', label: 'Cuestionario de Evaluación', icon: <HelpCircle size={16}/> },
-        { id: 'rubrica', label: 'Rúbrica de Evaluación', icon: <ListChecks size={16}/> }
-      ];
-      default: return [
-        { id: 'reto_lab', label: 'Reto de Laboratorio', icon: <MonitorPlay size={16}/> },
-        { id: 'estudio_caso', label: 'Estudio de Caso', icon: <FileText size={16}/> },
-        { id: 'diapositivas', label: 'Presentación Interactiva', icon: <MonitorPlay size={16}/> },
-        { id: 'preguntas', label: 'Banco de Preguntas', icon: <HelpCircle size={16}/> },
-        { id: 'juegos', label: 'Juegos y Recursos Lúdicos', icon: <Puzzle size={16}/> }
-      ];
+    const materia = currentMetadata?.materia || wizardData?.materia || 'General';
+    const isTech = materia.toLowerCase().includes('tecnolog') || materia.toLowerCase().includes('informát');
+    const isMath = materia.toLowerCase().includes('matemát') || materia.toLowerCase().includes('algebra');
+    const isScience = materia.toLowerCase().includes('natural') || materia.toLowerCase().includes('ciencias');
+    const isSocial = materia.toLowerCase().includes('social') || materia.toLowerCase().includes('historia');
+    const isEnglish = materia.toLowerCase().includes('inglés') || materia.toLowerCase().includes('ingles');
+    const isLanguage = materia.toLowerCase().includes('lengua') || materia.toLowerCase().includes('español');
+
+    // Nombres y propósitos adaptados según la disciplina del plan
+    let tallerLabel = 'Taller de Contexto Real';
+    let tallerDesc = 'Problemas prácticos aplicados a la vida cotidiana';
+    let casoLabel = 'Estudio de Caso';
+    let casoDesc = 'Situación problémica contextualizada';
+
+    if (isTech) {
+      tallerLabel = 'Guía de Práctica / Taller Digital';
+      tallerDesc = 'Práctica interactiva de lógica, algoritmos y herramientas digitales';
+      casoLabel = 'Estudio de Caso Tecnológico';
+      casoDesc = 'Dilema ético, ciberseguridad o desafío de innovación';
+    } else if (isMath) {
+      tallerLabel = 'Taller de Modelación y Contexto Real';
+      tallerDesc = 'Resolución de problemas contextualizados paso a paso';
+      casoLabel = 'Estudio de Caso Matemático';
+      casoDesc = 'Análisis de datos del entorno y razonamiento cuantitativo';
+    } else if (isScience) {
+      tallerLabel = 'Guía de Indagación y Laboratorio';
+      tallerDesc = 'Experimentación guiada y observación del fenómeno';
+      casoLabel = 'Estudio de Fenómeno Ambiental';
+      casoDesc = 'Investigación del entorno natural y sustentabilidad';
+    } else if (isSocial) {
+      tallerLabel = 'Taller de Análisis de Fuentes Históricas';
+      tallerDesc = 'Indagación crítica y contrastación testimonial';
+      casoLabel = 'Estudio de Caso Sociocultural';
+      casoDesc = 'Dilema ciudadano, memoria y convivencia';
+    } else if (isEnglish) {
+      tallerLabel = 'Reading & Practical Workshop';
+      tallerDesc = 'Comprensión textual y tareas comunicativas auténticas';
+      casoLabel = 'Communicative Case & Role-Play';
+      casoDesc = 'Situación real de interacción discursiva en inglés';
+    } else if (isLanguage) {
+      tallerLabel = 'Taller de Comprensión y Producción Textual';
+      tallerDesc = 'Lectura crítica y creación guiada de tipologías textuales';
+      casoLabel = 'Análisis Crítico y Caso Literario';
+      casoDesc = 'Reflexión del discurso y análisis de personajes';
     }
+
+    // Catálogo integral de TODOS los 8 materiales didácticos de Inspiratec
+    const catalog = [
+      {
+        id: 'sopa',
+        label: 'Sopa de Letras Temática',
+        desc: 'Búsqueda interactiva de términos clave con cronómetro y feedback',
+        icon: <Puzzle size={16} />
+      },
+      {
+        id: 'diapositivas',
+        label: 'Presentación Interactiva (Diapositivas)',
+        desc: 'Secuencia visual en diapositivas con notas docentes y pantalla completa',
+        icon: <MonitorPlay size={16} />
+      },
+      {
+        id: 'juegos',
+        label: 'Trivia y Juego Gamificado',
+        desc: 'Reto interactivo con audio sintetizado, marcadores y preguntas por rondas',
+        icon: <Sparkles size={16} />
+      },
+      {
+        id: 'preguntas',
+        label: isMath ? 'Quiz Interactivo con Pistas' : 'Cuestionario de Evaluación Formativa',
+        desc: 'Evaluación formativa con comprobación inmediata y pistas DUA',
+        icon: <HelpCircle size={16} />
+      },
+      {
+        id: 'rubrica',
+        label: 'Rúbrica Socioformativa Analítica',
+        desc: 'Matriz con niveles MEN (Superior a Bajo) y ponderación en tiempo real',
+        icon: <ListChecks size={16} />
+      },
+      {
+        id: 'flashcards',
+        label: 'Flashcards Conceptuales 3D',
+        desc: 'Tarjetas de memorización activa con giro tridimensional animado',
+        icon: <BookOpen size={16} />
+      },
+      {
+        id: 'taller_contexto',
+        label: tallerLabel,
+        desc: tallerDesc,
+        icon: <FileText size={16} />
+      },
+      {
+        id: 'estudio_caso',
+        label: casoLabel,
+        desc: casoDesc,
+        icon: <FileCode size={16} />
+      }
+    ];
+
+    // Verificar si ya fue generado y anexado a este plan específico
+    return catalog.map(item => {
+      const anexado = (recursosAnexos || []).some(anexo => {
+        if (!anexo) return false;
+        const aTitle = (anexo.title || anexo.nombre || '').toLowerCase();
+        const aKey = (anexo.typeKey || '').toLowerCase();
+        const aTipo = (anexo.tipo || '').toLowerCase();
+
+        if (item.id === 'sopa' && (aTitle.includes('sopa') || aKey.includes('sopa') || aTipo.includes('sopa') || aKey.includes('wordsearch'))) return true;
+        if (item.id === 'diapositivas' && (aTitle.includes('diapositiva') || aTitle.includes('presentación') || aTitle.includes('presentacion') || aKey.includes('slides') || aTipo.includes('diapositiva'))) return true;
+        if (item.id === 'juegos' && (aTitle.includes('trivia') || aTitle.includes('juego') || aKey.includes('juegos') || aKey.includes('game'))) return true;
+        if (item.id === 'preguntas' && (aTitle.includes('pregunta') || aTitle.includes('cuestionario') || aTitle.includes('quiz') || aKey.includes('preguntas') || aKey.includes('cuestionario'))) return true;
+        if (item.id === 'rubrica' && (aTitle.includes('rúbrica') || aTitle.includes('rubrica') || aKey.includes('rubrica'))) return true;
+        if (item.id === 'flashcards' && (aTitle.includes('flashcard') || aTitle.includes('tarjeta') || aKey.includes('flashcards'))) return true;
+        if (item.id === 'taller_contexto' && (aTitle.includes('taller') || aTitle.includes('guía de práctica') || aKey.includes('taller'))) return true;
+        if (item.id === 'estudio_caso' && (aTitle.includes('estudio de caso') || aTitle.includes('caso') || aKey.includes('caso'))) return true;
+        return aTitle === item.label.toLowerCase();
+      });
+
+      return {
+        ...item,
+        anexado
+      };
+    });
   };
 
   const breadcrumbsItems = [
@@ -488,7 +611,7 @@ export default function EditorPage() {
   ];
 
   return (
-    <div className="editor-view" style={{ maxWidth: '1280px', margin: '0 auto', padding: '36px 32px 64px' }}>
+    <div className="editor-view">
       
       {/* Migas de Pan para orientación jerárquica */}
       <div style={{ marginBottom: '14px' }}>
@@ -524,14 +647,16 @@ export default function EditorPage() {
       <header 
         className="editor-toolbar-card"
         style={{
-          backgroundColor: 'rgba(255, 254, 250, 0.86)',
+          backgroundColor: 'rgba(255, 254, 250, 0.90)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '22px',
-          padding: '24px 34px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          padding: '24px 32px',
+          marginBottom: '24px',
+          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)',
+          width: '100%',
+          boxSizing: 'border-box'
         }}
       >
         <div className="editor-toolbar-meta">
@@ -711,43 +836,102 @@ export default function EditorPage() {
                   backgroundColor: 'rgba(255, 255, 255, 0.98)', 
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  borderRadius: '16px', 
-                  boxShadow: '0 20px 45px rgba(0, 0, 0, 0.22), 0 4px 12px rgba(0, 0, 0, 0.08)', 
-                  border: '1px solid rgba(255, 255, 255, 0.95)', 
+                  borderRadius: '18px', 
+                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.22), 0 4px 14px rgba(0, 0, 0, 0.08)', 
+                  border: '1.5px solid rgba(49, 91, 84, 0.20)', 
                   zIndex: 1000, 
-                  minWidth: '270px', 
-                  overflow: 'hidden' 
+                  minWidth: '350px', 
+                  maxWidth: '380px',
+                  maxHeight: '480px',
+                  overflowY: 'auto',
+                  overflowX: 'hidden'
                 }}
               >
-                <div style={{ padding: '12px 18px', backgroundColor: 'rgba(71, 122, 114, 0.08)', borderBottom: '1px solid rgba(49, 91, 84, 0.1)', fontSize: '12px', fontWeight: 700, color: '#1E3B34', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Recomendados para {wizardData?.materia || 'tu clase'}
+                <div style={{ padding: '14px 18px', backgroundColor: 'rgba(71, 122, 114, 0.10)', borderBottom: '1px solid rgba(49, 91, 84, 0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E3B34', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Catálogo Completo de Materiales Didácticos
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#477A72', fontWeight: 600, marginTop: '2px' }}>
+                      Adaptados a: {currentMetadata?.materia || wizardData?.materia || 'tu clase'}
+                    </div>
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#1A4D43', background: '#FFFFFF', padding: '3px 8px', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.15)' }}>
+                    8 de 8
+                  </span>
                 </div>
-                {getMaterialOptions().map(opt => (
-                  <button 
-                    key={opt.id}
-                    onClick={() => { handleGenerateMaterial(opt.id, opt.label); setShowMaterialMenu(false); }}
-                    style={{ 
-                      width: '100%', 
-                      textAlign: 'left', 
-                      padding: '12px 18px', 
-                      background: 'none', 
-                      border: 'none', 
-                      borderBottom: '1px solid rgba(49, 91, 84, 0.06)', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      gap: '12px', 
-                      cursor: 'pointer', 
-                      color: '#142B25', 
-                      fontSize: '13.5px',
-                      transition: 'background-color 0.15s ease'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(71, 122, 114, 0.1)'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                  >
-                    <span style={{ color: '#315B54' }}>{opt.icon}</span>
-                    <span style={{ fontWeight: 500 }}>{opt.label}</span>
-                  </button>
-                ))}
+                
+                <div style={{ padding: '6px 0' }}>
+                  {getMaterialOptions().map(opt => (
+                    <button 
+                      key={opt.id}
+                      disabled={opt.anexado}
+                      onClick={() => { 
+                        if (!opt.anexado) {
+                          handleGenerateMaterial(opt.id, opt.label); 
+                          setShowMaterialMenu(false); 
+                        }
+                      }}
+                      style={{ 
+                        width: '100%', 
+                        textAlign: 'left', 
+                        padding: '11px 18px', 
+                        background: opt.anexado ? 'rgba(241, 245, 249, 0.65)' : 'none', 
+                        border: 'none', 
+                        borderBottom: '1px solid rgba(49, 91, 84, 0.06)', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        gap: '12px', 
+                        cursor: opt.anexado ? 'not-allowed' : 'pointer', 
+                        color: opt.anexado ? '#94A3B8' : '#142B25', 
+                        fontSize: '13px',
+                        transition: 'background-color 0.15s ease',
+                        opacity: opt.anexado ? 0.75 : 1
+                      }}
+                      onMouseOver={(e) => {
+                        if (!opt.anexado) e.currentTarget.style.backgroundColor = 'rgba(71, 122, 114, 0.1)';
+                      }}
+                      onMouseOut={(e) => {
+                        if (!opt.anexado) e.currentTarget.style.backgroundColor = 'transparent';
+                      }}
+                      title={opt.anexado ? "Este material ya fue generado y anexado a este plan" : `Generar ${opt.label}`}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+                        <span style={{ color: opt.anexado ? '#94A3B8' : '#315B54', display: 'flex', alignItems: 'center' }}>
+                          {opt.icon}
+                        </span>
+                        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                          <span style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {opt.label}
+                          </span>
+                          <span style={{ fontSize: '11px', color: opt.anexado ? '#94A3B8' : '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {opt.desc}
+                          </span>
+                        </div>
+                      </div>
+
+                      {opt.anexado ? (
+                        <span style={{ 
+                          fontSize: '11px', 
+                          fontWeight: 700, 
+                          color: '#059669', 
+                          backgroundColor: '#ECFDF5', 
+                          padding: '3px 8px', 
+                          borderRadius: '999px',
+                          border: '1px solid #A7F3D0',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          ✓ Anexado
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '11px', color: '#315B54', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                          + Crear
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -773,34 +957,37 @@ export default function EditorPage() {
       </div>
 
       {/* Espacio de Trabajo: Documento Principal + Co-docente IA */}
-      <div className="editor-workspace">
+      <div 
+        className={`editor-workspace mobile-view-${activeMobileTab} ${!isChatOpen ? 'chat-collapsed' : 'chat-open'}`}
+        style={{ position: 'relative', zIndex: isChatOpen ? 1500 : 20 }}
+      >
         
         {/* Panel del Documento Principal */}
         <div 
-          className="editor-doc-pane" 
-          style={{ display: activeMobileTab === 'doc' || window.innerWidth >= 992 ? 'flex' : 'none' }}
+          className="editor-doc-pane"
         >
           <div 
             className="editor-doc-card"
             style={{
-              backgroundColor: 'rgba(255, 254, 250, 0.88)',
+              backgroundColor: 'rgba(255, 254, 250, 0.90)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               border: '1px solid rgba(255, 255, 255, 0.94)',
-              borderRadius: '24px',
-              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+              borderRadius: '22px',
+              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)',
+              width: '100%',
+              boxSizing: 'border-box'
             }}
           >
             {isLoadingPlan ? (
-              <div style={{ padding: '72px 24px', textAlign: 'center', color: '#315B54' }}>
-                <Loader2 size={36} className="spin" style={{ margin: '0 auto 16px auto', display: 'block' }} />
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#142B25', marginBottom: '8px' }}>
-                  Recuperando documento...
-                </h3>
-                <p style={{ fontSize: '14px', color: '#576864' }}>
-                  Sincronizando la planeación desde la base de datos oficial.
-                </p>
-              </div>
+              <PageLoadingState 
+                icon={FileText}
+                badge="Documento Curricular"
+                title="Recuperando secuencia pedagógica..."
+                subtitle="Sincronizando la planeación y materiales desde la base de datos oficial."
+                compact
+                minHeight="280px"
+              />
             ) : loadError ? (
               <div style={{ padding: '72px 24px', textAlign: 'center' }}>
                 <div style={{ width: '56px', height: '56px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
@@ -867,6 +1054,16 @@ export default function EditorPage() {
                       onGenerarMaterial={handleGenerarRecomendacion}
                       isGenerating={isGeneratingMaterial}
                       generatingId={generatingRecId}
+                      recursosAnexos={recursosAnexos}
+                      onVerMaterial={(rec) => {
+                        const match = (recursosAnexos || []).find(a => (a.title || '').toLowerCase().includes((rec.typeKey || '').toLowerCase()));
+                        if (match) {
+                          setModalTitle(match.title);
+                          setModalContentHtml(match.html);
+                          setIsGeneratingMaterial(false);
+                          setIsModalOpen(true);
+                        }
+                      }}
                     />
 
                     {/* Render de Materiales Anexos (Iframes aislados) */}
@@ -952,26 +1149,22 @@ export default function EditorPage() {
 
         {/* Panel Lateral: Asistente Co-docente IA */}
         <aside 
-          className={`editor-chat-pane ${!isChatOpen ? 'is-collapsed' : ''}`} 
-          style={{ 
-            display: !isChatOpen ? 'none' : (activeMobileTab === 'chat' || (typeof window !== 'undefined' && window.innerWidth >= 992) ? 'block' : 'none') 
-          }}
+          className={`editor-chat-pane ${!isChatOpen ? 'is-collapsed' : ''}`}
+          style={{ zIndex: 2000 }}
           aria-hidden={!isChatOpen}
         >
           <div 
             className="editor-chat-card"
             style={{
-              backgroundColor: 'rgba(255, 254, 250, 0.88)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              border: '1px solid rgba(255, 255, 255, 0.94)',
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid rgba(49, 91, 84, 0.22)',
               borderRadius: '24px',
-              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+              boxShadow: '0 16px 48px rgba(16, 36, 32, 0.20), 0 4px 16px rgba(0, 0, 0, 0.08)'
             }}
           >
             
             <div className="editor-chat-header">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <h2 style={{ fontSize: '16.5px', fontWeight: 700, color: '#142B25', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-heading)' }}>
                   <Sparkles size={17} style={{ color: '#D4AF37' }} /> Co-docente IA
                 </h2>
@@ -984,16 +1177,16 @@ export default function EditorPage() {
                     type="button" 
                     className="editor-chat-close-btn" 
                     onClick={toggleChat}
-                    aria-label="Ocultar panel del co-docente didáctico"
-                    title="Ocultar co-docente IA para ampliar el área del documento"
+                    aria-label="Cerrar panel del co-docente IA"
+                    title="Cerrar panel del co-docente IA"
                   >
-                    <PanelRightClose size={16} />
+                    <X size={16} />
                   </button>
                 </div>
               </div>
 
-              {/* Selector de Modalidad Pedagógica: Directo vs Socrático Guiado (Caro 2015) */}
-              <div style={{ display: 'flex', gap: '6px', marginTop: '8px', backgroundColor: 'rgba(49, 91, 84, 0.08)', padding: '3px', borderRadius: '10px' }} role="tablist" aria-label="Modalidad del co-docente">
+              {/* Selector de Modalidad Pedagógica: Pestañas separadas con contadores de mensajes */}
+              <div style={{ display: 'flex', gap: '6px', backgroundColor: 'rgba(49, 91, 84, 0.08)', padding: '3px', borderRadius: '10px' }} role="tablist" aria-label="Modalidad del co-docente">
                 <button
                   type="button"
                   role="tab"
@@ -1001,7 +1194,7 @@ export default function EditorPage() {
                   onClick={() => setChatMode('direct')}
                   style={{
                     flex: 1,
-                    padding: '5px 8px',
+                    padding: '6px 8px',
                     fontSize: '11.5px',
                     fontWeight: chatMode === 'direct' ? 700 : 500,
                     backgroundColor: chatMode === 'direct' ? '#FFFFFF' : 'transparent',
@@ -1012,14 +1205,17 @@ export default function EditorPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '4px',
+                    gap: '5px',
                     boxShadow: chatMode === 'direct' ? '0 1px 3px rgba(16, 36, 32, 0.10)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
-                  title="Modo directo: reescribe el documento inmediatamente"
+                  title="Modo directo: reescribe y ajusta el documento inmediatamente"
                 >
                   <Zap size={12} color={chatMode === 'direct' ? '#315B54' : '#477A72'} />
                   <span>Directo</span>
+                  {directMessages.length > 0 && (
+                    <span className="editor-chat-tab-badge">{directMessages.length}</span>
+                  )}
                 </button>
 
                 <button
@@ -1029,7 +1225,7 @@ export default function EditorPage() {
                   onClick={() => setChatMode('socratic')}
                   style={{
                     flex: 1,
-                    padding: '5px 8px',
+                    padding: '6px 8px',
                     fontSize: '11.5px',
                     fontWeight: chatMode === 'socratic' ? 700 : 500,
                     backgroundColor: chatMode === 'socratic' ? '#FFFFFF' : 'transparent',
@@ -1040,46 +1236,212 @@ export default function EditorPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '4px',
+                    gap: '5px',
                     boxShadow: chatMode === 'socratic' ? '0 1px 3px rgba(16, 36, 32, 0.10)' : 'none',
                     transition: 'all 0.15s ease'
                   }}
-                  title="Modo socrático guiado: preguntas reflexivas y propuesta para validar (Caro 2015)"
+                  title="Modo socrático: diálogo reflexivo con preguntas orientadoras y propuesta guiada (Caro 2015)"
                 >
                   <Lightbulb size={12} color={chatMode === 'socratic' ? '#D97706' : '#477A72'} />
                   <span>Socrático</span>
+                  {socraticMessages.length > 0 && (
+                    <span className="editor-chat-tab-badge" style={{ backgroundColor: 'rgba(217, 119, 6, 0.18)', color: '#92400E' }}>
+                      {socraticMessages.length}
+                    </span>
+                  )}
                 </button>
               </div>
 
-              <p style={{ fontSize: '11.5px', color: '#477A72', margin: '6px 0 0 0', lineHeight: '1.4' }}>
-                {chatMode === 'direct' 
-                  ? '⚡ Aplica modificaciones inmediatas directamente al documento.' 
-                  : '💡 Diálogo reflexivo con preguntas orientadoras y propuesta guiada.'}
-              </p>
-            </div>
-            
-            {/* Mensajes del Chat */}
-            <div className="editor-chat-messages">
-              {sesionChatIA.length === 0 && (
-                <div className="editor-chat-welcome-bubble">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#142B25', marginBottom: '4px' }}>
-                    <span>👋 Hola, soy tu co-docente didáctico.</span>
-                  </div>
-                  ¿Deseas reflexionar o ajustar algún momento de la clase?
-                  <div style={{ marginTop: '6px', paddingLeft: '8px', borderLeft: '2px solid rgba(71, 122, 114, 0.4)', fontStyle: 'italic', fontSize: '12.5px' }}>
-                    "¿Cómo podemos activar conocimientos previos con una rutina de pensamiento?" o "Propón una adaptación DUA para estudiantes visuales".
-                  </div>
+              {/* Botón interactivo para ver la explicación detallada de funcionalidad y limpiar canal */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowModeHelp(prev => !prev)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    padding: '2px 0',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: chatMode === 'socratic' ? '#B45309' : '#315B54',
+                    cursor: 'pointer'
+                  }}
+                  title="Ver explicación y funcionamiento de esta modalidad"
+                >
+                  <Info size={12} />
+                  <span>¿Cómo funciona el modo {chatMode === 'direct' ? 'Directo' : 'Socrático'}?</span>
+                  {showModeHelp ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+                </button>
+
+                {activeChatMessages.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClearCurrentModeChat}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '10.5px',
+                      color: '#718096',
+                      cursor: 'pointer',
+                      padding: '2px 6px',
+                      borderRadius: '4px'
+                    }}
+                    title={`Limpiar mensajes del canal ${chatMode === 'direct' ? 'Directo' : 'Socrático'}`}
+                  >
+                    <Trash2 size={11} />
+                    <span>Limpiar canal</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Tarjeta Explicativa Detallada de la Funcionalidad por Modo */}
+              {showModeHelp && (
+                <div className={`editor-chat-explanation-card ${chatMode}`}>
+                  {chatMode === 'direct' ? (
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 700, marginBottom: '3px', color: '#183630' }}>
+                        <Zap size={12} color="#315B54" />
+                        <span>Edición Ejecutiva Inmediata</span>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '11px', color: '#2D3748', lineHeight: '1.4' }}>
+                        <strong>¿Para qué sirve?</strong> Aplica tus órdenes pedagógicas directamente en el texto del plan de clase sin confirmaciones previas. Ideal para redactar rúbricas, reajustar tiempos o enriquecer actividades de inmediato.
+                      </p>
+                      <div style={{ marginTop: '5px', fontSize: '10.5px', color: '#4A5568', fontWeight: 600 }}>
+                        Sugerencias rápidas (haz clic para usar):
+                      </div>
+                      <div className="editor-chat-chips-container">
+                        <button 
+                          type="button"
+                          className="editor-chat-chip"
+                          onClick={() => handleApplyPromptSuggestion('Añade una rúbrica analítica con escala valorativa de 1 a 5')}
+                        >
+                          + Rúbrica analítica
+                        </button>
+                        <button 
+                          type="button"
+                          className="editor-chat-chip"
+                          onClick={() => handleApplyPromptSuggestion('Ajusta el tiempo de la fase de inicio a 15 min y agrega una lluvia de ideas')}
+                        >
+                          + Ajustar tiempos y lluvia de ideas
+                        </button>
+                        <button 
+                          type="button"
+                          className="editor-chat-chip"
+                          onClick={() => handleApplyPromptSuggestion('Incluye una pausa activa socioemocional de 5 minutos en el desarrollo')}
+                        >
+                          + Pausa socioemocional
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 700, marginBottom: '3px', color: '#92400E' }}>
+                        <Lightbulb size={12} color="#D97706" />
+                        <span>Diálogo Socrático & Agencia Compartida</span>
+                      </div>
+                      <p style={{ margin: 0, fontSize: '11px', color: '#78350F', lineHeight: '1.4' }}>
+                        <strong>¿Para qué sirve?</strong> Actúa como un co-docente crítico. No sobreescribe tu diseño de forma pasiva; analiza la coherencia didáctica, transposición y DUA/PIAR contigo y te plantea preguntas orientadoras. Si formula una propuesta de cambio, tú decides libremente si deseas aplicarla al plan con el botón "Aplicar propuesta".
+                      </p>
+                      <div style={{ marginTop: '5px', fontSize: '10.5px', color: '#92400E', fontWeight: 600 }}>
+                        Preguntas pedagógicas sugeridas:
+                      </div>
+                      <div className="editor-chat-chips-container">
+                        <button 
+                          type="button"
+                          className="editor-chat-chip socratic"
+                          onClick={() => handleApplyPromptSuggestion('¿Cómo puedo activar saberes previos con una rutina de pensamiento?')}
+                        >
+                          🤔 Activar saberes previos
+                        </button>
+                        <button 
+                          type="button"
+                          className="editor-chat-chip socratic"
+                          onClick={() => handleApplyPromptSuggestion('¿Qué posibles barreras de aprendizaje DUA podrían presentarse en el desarrollo?')}
+                        >
+                          🔍 Analizar barreras DUA
+                        </button>
+                        <button 
+                          type="button"
+                          className="editor-chat-chip socratic"
+                          onClick={() => handleApplyPromptSuggestion('¿Es coherente la evaluación formativa con los estándares MEN del grado?')}
+                        >
+                          ⚖️ Coherencia evaluativa
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
-              {sesionChatIA.map((msg, i) => (
+            </div>
+            
+            {/* Mensajes del Chat: Canal Separado Activo */}
+            <div className="editor-chat-messages">
+              {activeChatMessages.length === 0 && (
+                <div className="editor-chat-welcome-bubble" style={chatMode === 'socratic' ? { background: 'rgba(255, 251, 235, 0.90)', borderColor: 'rgba(217, 119, 6, 0.3)' } : undefined}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: chatMode === 'socratic' ? '#92400E' : '#142B25', marginBottom: '4px' }}>
+                    {chatMode === 'direct' ? (
+                      <>
+                        <Zap size={14} color="#315B54" />
+                        <span>Canal de Edición Directa</span>
+                      </>
+                    ) : (
+                      <>
+                        <Lightbulb size={14} color="#D97706" />
+                        <span>Canal de Diálogo Socrático</span>
+                      </>
+                    )}
+                  </div>
+                  {chatMode === 'direct' ? (
+                    <div>
+                      Escribe la instrucción puntual que deseas aplicar y actualizaré el documento en tiempo real.
+                      <div style={{ marginTop: '6px', paddingLeft: '8px', borderLeft: '2px solid rgba(49, 91, 84, 0.4)', fontStyle: 'italic', fontSize: '12px' }}>
+                        "Agrega una escala valorativa de 3 niveles a la evaluación" o "Cambia el inicio por un estudio de caso".
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      Conversemos reflexivamente sobre el diseño didáctico, barreras de inclusión DUA o adecuación curricular.
+                      <div style={{ marginTop: '6px', paddingLeft: '8px', borderLeft: '2px solid rgba(217, 119, 6, 0.5)', fontStyle: 'italic', fontSize: '12px', color: '#78350F' }}>
+                        "¿Cómo dialoga esta actividad con estudiantes con ritmos diversos?" o "¿Qué preguntas de metacognición recomiendas?".
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeChatMessages.map((msg, i) => (
                 <div 
                   key={i} 
                   className={msg.role === 'user' ? 'editor-chat-msg-user' : 'editor-chat-msg-ia'}
-                  style={msg.tipo === 'socratico' ? { borderLeft: '3px solid #D97706', backgroundColor: 'rgba(255, 251, 235, 0.90)' } : undefined}
+                  style={msg.tipo === 'socratico' || msg.modo === 'socratic' ? { borderLeft: '3px solid #D97706', backgroundColor: 'rgba(255, 251, 235, 0.90)' } : undefined}
                 >
-                  {msg.tipo === 'socratico' && (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', marginBottom: '6px', letterSpacing: '0.04em' }}>
-                      <Lightbulb size={11} color="#D97706" /> Diálogo Socrático
+                  {msg.role === 'ia' && (
+                    <div style={{ 
+                      display: 'inline-flex', 
+                      alignItems: 'center', 
+                      gap: '4px', 
+                      fontSize: '10.5px', 
+                      fontWeight: 800, 
+                      color: (msg.tipo === 'socratico' || msg.modo === 'socratic') ? '#92400E' : '#315B54', 
+                      textTransform: 'uppercase', 
+                      marginBottom: '6px', 
+                      letterSpacing: '0.04em' 
+                    }}>
+                      {(msg.tipo === 'socratico' || msg.modo === 'socratic') ? (
+                        <>
+                          <Lightbulb size={11} color="#D97706" /> Diálogo Socrático
+                        </>
+                      ) : (
+                        <>
+                          <Zap size={11} color="#315B54" /> Edición Directa
+                        </>
+                      )}
                     </div>
                   )}
                   <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.5' }}>{msg.text}</div>
@@ -1090,7 +1452,7 @@ export default function EditorPage() {
                         type="button"
                         onClick={() => handleAplicarPropuestaSocratica(msg.planSugerido)}
                         className="btn btn-primary"
-                        style={{ fontSize: '12px', padding: '6px 12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                        style={{ fontSize: '12px', padding: '6px 12px', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#D97706', borderColor: '#B45309' }}
                       >
                         <Check size={13} />
                         <span>Aplicar propuesta al plan</span>
@@ -1099,23 +1461,23 @@ export default function EditorPage() {
                   )}
                 </div>
               ))}
+
               {isModifying && (
                 <div className="editor-chat-msg-ia" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#142B25', fontWeight: 500 }}>
-                  <Loader2 size={16} className="spin" style={{ color: '#315B54' }} />
+                  <Loader2 size={16} className="spin" style={{ color: chatMode === 'socratic' ? '#D97706' : '#315B54' }} />
                   <span>{chatMode === 'socratic' ? 'Elaborando diálogo socrático reflexivo...' : 'Reescribiendo la secuencia pedagógica...'}</span>
                 </div>
               )}
               <div ref={chatEndRef} />
             </div>
 
-            
-            {/* Formulario de Entrada */}
+            {/* Formulario de Entrada con Botón y Placeholder según Modalidad */}
             <form onSubmit={handleModify} className="editor-chat-input-bar">
               <input 
                 type="text" 
                 value={prompt} 
                 onChange={(e) => setPrompt(e.target.value)} 
-                placeholder="Escribe tu instrucción pedagógica..." 
+                placeholder={chatMode === 'direct' ? "Instrucción de cambio directo (ej: Añade una rúbrica analítica)..." : "Pregunta pedagógica o reflexión socrática..."} 
                 className="editor-chat-input"
                 disabled={isModifying || isEditMode}
                 aria-label="Instrucción para el co-docente de IA"
@@ -1123,11 +1485,20 @@ export default function EditorPage() {
               <button 
                 type="submit" 
                 className="btn btn-primary" 
-                style={{ padding: '0 14px', minHeight: '40px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} 
+                style={{ 
+                  padding: '0 14px', 
+                  minHeight: '40px', 
+                  borderRadius: '12px', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  backgroundColor: chatMode === 'socratic' ? '#D97706' : undefined,
+                  borderColor: chatMode === 'socratic' ? '#B45309' : undefined
+                }} 
                 disabled={isModifying || isEditMode || !prompt.trim()}
-                title="Enviar instrucción a la IA"
+                title={chatMode === 'direct' ? "Aplicar cambio directo" : "Enviar consulta socrática"}
               >
-                <Send size={15} />
+                {chatMode === 'direct' ? <Zap size={15} /> : <Send size={15} />}
               </button>
             </form>
             {isEditMode && (
@@ -1144,6 +1515,7 @@ export default function EditorPage() {
         <button 
           type="button" 
           className="editor-floating-chat-trigger"
+          style={{ position: 'fixed', bottom: '28px', right: '32px', zIndex: 3000 }}
           onClick={toggleChat}
           aria-label="Abrir panel del co-docente didáctico"
           title="Abrir panel del co-docente IA para conversar o ajustar"

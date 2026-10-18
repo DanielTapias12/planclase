@@ -3,19 +3,32 @@ import { persist } from 'zustand/middleware';
 
 export const INITIAL_WIZARD_DATA = {
   tema: '',
-  formato: 'Estructura estándar INSPIRATEC',
+  formato: 'Formato genérico de Matemáticas',
   formatoInstrucciones: '',
-  grado: '',
-  materia: 'Tecnología e Informática',
-  duracion: '',
-  sesiones: '',
-  numEstudiantes: '',
+  institucion: 'Institución Educativa Técnica Distrital',
+  sede: '',
+  docente: 'Equipo de Matemáticas',
+  tutor: '',
+  asignatura: 'Matemáticas',
+  grupo: '',
+  fecha: '',
+  grado: '10mo',
+  materia: 'Matemáticas',
+  duracion: '90 minutos (1 sesión continua)',
+  sesiones: '1',
+  numEstudiantes: '36',
   recursos: '',
   metodologiaSTEAM: '',
   objetivos: '',
   estandaresMEN: [],
   inclusion: [],
-  otrasNecesidades: ''
+  otrasNecesidades: '',
+  // ADN Pedagógico & Estudio Transversal
+  aplicarAdnPedagógico: true,
+  esTransversal: false,
+  ejeTransversal: 'Enfoque STEAM (Ciencia, Tecnología, Arte y Matemáticas)',
+  areaSecundaria: '',
+  retoContextual: ''
 };
 
 export const useAppStore = create(
@@ -33,6 +46,12 @@ export const useAppStore = create(
       setPlanStatus: (status) => set({ planStatus: status }),
       addMensajeChatIA: (mensaje) => set((state) => ({ sesionChatIA: [...state.sesionChatIA, mensaje] })),
       clearChatIA: () => set({ sesionChatIA: [] }),
+      clearChatIAModo: (modo) => set((state) => ({
+        sesionChatIA: (state.sesionChatIA || []).filter(m => {
+          const msgModo = m.modo || (m.tipo === 'socratico' ? 'socratic' : 'direct');
+          return msgModo !== modo;
+        })
+      })),
       
       recursosAnexos: [],
       addRecursoAnexo: (recurso) => set((state) => {

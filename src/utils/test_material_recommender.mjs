@@ -1,107 +1,103 @@
 import assert from 'node:assert/strict';
-import { recomendarMaterialesDidacticos } from './materialRecommender.js';
+import { recomendarMaterialesDidacticos, isMaterialAnexado, getAnexadoMatch } from './materialRecommender.js';
 
-console.log('--- INICIO DE PRUEBAS DE ACEPTACIÓN: RECOMENDACIÓN DE MATERIALES DIDÁCTICOS ---');
+console.log('--- INICIO DE PRUEBAS DE ACEPTACIÓN: CATÁLOGO COMPLETO Y ADAPTACIÓN DE MATERIALES DIDÁCTICOS ---');
 
-// 1. Verificando recomendaciones contextuales para Tecnología e Informática (Tema: Algoritmos)
-console.log('1. Verificando recomendaciones para Tecnología e Informática (Algoritmos)...');
-
-const metaInformatica = {
-  materia: 'Tecnología e Informática',
-  grado: '7°',
-  tema: 'Estructuras de Control y Algoritmos con Scratch',
-  duracion: '2 horas'
-};
-const planMdInformatica = `# PLAN DE CLASE — TECNOLOGÍA E INFORMÁTICA
-### Fundamentación
-El estudiante aprende lógica de programación y algoritmos condicionales con Scratch.`;
-
-const recsInformatica = recomendarMaterialesDidacticos(metaInformatica, planMdInformatica);
-
-assert.ok(Array.isArray(recsInformatica), 'Debe retornar un array');
-assert.ok(recsInformatica.length >= 2 && recsInformatica.length <= 4, 'Debe sugerir entre 2 y 4 materiales');
-assert.ok(recsInformatica.some(r => r.tipo === 'Simulación funcional'), 'Debe incluir una simulación funcional para algoritmos');
-assert.ok(recsInformatica.some(r => r.tipo === 'Infografía interactiva'), 'Debe incluir una infografía interactiva');
-assert.ok(recsInformatica.every(r => r.nombre && r.proposito && r.relacionPlan && r.typeKey), 'Cada tarjeta debe incluir nombre, propósito, relación con el plan y tipo');
-
-console.log('✓ Prueba 1 superada: Recomendaciones contextuales de Informática (Algoritmos) verificadas.');
-
-// 2. Verificando recomendaciones para Tecnología e Informática (Tema: Excel / Referencias)
-console.log('2. Verificando recomendaciones para Tecnología e Informática (Excel)...');
-
-const metaExcel = {
-  materia: 'Tecnología e Informática',
-  grado: '8°',
-  tema: 'Referencias Relativas y Absolutas en Excel',
-  duracion: '2 horas'
-};
-const planMdExcel = `# PLAN DE CLASE
-### Secuencia Didáctica
-Fórmulas avanzadas y hojas de cálculo con datos de inventarios y presupuesto.`;
-
-const recsExcel = recomendarMaterialesDidacticos(metaExcel, planMdExcel);
-
-assert.ok(recsExcel.length >= 2 && recsExcel.length <= 4, 'Debe sugerir entre 2 y 4 materiales');
-const recInfografiaExcel = recsExcel.find(r => r.id === 'rec_infografia_excel');
-assert.ok(recInfografiaExcel, 'Debe incluir la infografía específica de referencias relativas y absolutas');
-assert.ok(recInfografiaExcel.proposito.includes('referencias de celda'), 'El propósito debe explicar referencias de celda');
-
-console.log('✓ Prueba 2 superada: Recomendaciones para Excel verificadas con exactitud.');
-
-// 3. Verificando recomendaciones para Matemáticas (Área Diferente)
-console.log('3. Verificando recomendaciones para Matemáticas (Teorema de Pitágoras)...');
+// 1. Verificando que se muestran todos los materiales didácticos en general adaptados a Matemáticas
+console.log('1. Verificando presencia de Sopa de letras, Presentación, Preguntas, Juegos, Rúbrica y Flashcards...');
 
 const metaMatematicas = {
   materia: 'Matemáticas',
-  grado: '8°',
-  tema: 'Teorema de Pitágoras y Triángulos Rectángulos',
-  duracion: '2 horas'
+  grado: '10°',
+  tema: 'Trigonometría y Teorema del Seno',
+  duracion: '90 minutos'
 };
 const planMdMate = `# PLAN DE CLASE — MATEMÁTICAS
 ### Fundamentación
-Resolución de problemas de distancias mediante el teorema de Pitágoras.`;
+Resolución de triángulos no rectángulos aplicando la ley de senos en situaciones del entorno.`;
 
-const recsMate = recomendarMaterialesDidacticos(metaMatematicas, planMdMate);
+const recs = recomendarMaterialesDidacticos(metaMatematicas, planMdMate);
 
-assert.ok(recsMate.length >= 2 && recsMate.length <= 4, 'Debe sugerir entre 2 y 4 materiales');
-assert.ok(recsMate.some(r => r.tipo === 'Simulación funcional'), 'Matemáticas debe incluir simulador dinámico');
-assert.ok(recsMate.some(r => r.tipo === 'Cuestionario interactivo'), 'Matemáticas debe incluir cuestionario de situaciones problema');
-// Verificar que las recomendaciones de matemáticas difieren de las de informática
-assert.notDeepStrictEqual(recsMate.map(r => r.id), recsInformatica.map(r => r.id), 'Las sugerencias deben adaptarse según la disciplina');
+assert.ok(Array.isArray(recs), 'Debe retornar un array');
+assert.ok(recs.length >= 6, 'Debe incluir la suite completa de materiales didácticos');
 
-console.log('✓ Prueba 3 superada: Diferenciación pedagógica entre materias validada.');
+const hasSopa = recs.some(r => r.typeKey === 'sopa');
+const hasPresentacion = recs.some(r => r.typeKey === 'diapositivas');
+const hasPreguntas = recs.some(r => r.typeKey === 'preguntas');
+const hasJuegos = recs.some(r => r.typeKey === 'juegos');
+const hasRubrica = recs.some(r => r.typeKey === 'rubrica');
+const hasFlashcards = recs.some(r => r.typeKey === 'flashcards');
 
-// 4. Verificando recomendaciones para Ciencias Sociales
-console.log('4. Verificando recomendaciones para Ciencias Sociales (Civilización Muisca)...');
+assert.ok(hasSopa, 'Debe incluir Sopa de letras');
+assert.ok(hasPresentacion, 'Debe incluir Presentación / Diapositivas');
+assert.ok(hasPreguntas, 'Debe incluir Preguntas / Cuestionario');
+assert.ok(hasJuegos, 'Debe incluir Juegos / Trivia gamificada');
+assert.ok(hasRubrica, 'Debe incluir Rúbrica');
+assert.ok(hasFlashcards, 'Debe incluir Flashcards');
 
-const metaSociales = {
-  materia: 'Ciencias Sociales',
-  grado: '6°',
-  tema: 'Civilizaciones Prehispánicas: El Territorio y la Sociedad Muisca',
-  duracion: '2 horas'
+assert.ok(recs.every(r => r.nombre.includes('Trigonometría y Teorema del Seno')), 'Cada material debe adaptar su título al tema del plan');
+assert.ok(recs.every(r => r.proposito && r.relacionPlan && r.contextoEspecifico), 'Cada material debe contar con propósito pedagógico y momento de aplicación');
+
+console.log('✓ Prueba 1 superada: La suite completa de materiales didácticos está presente y adaptada al plan.');
+
+// 2. Verificando adaptación a otra disciplina (Tecnología e Informática)
+console.log('2. Verificando adaptación dinámica a Tecnología e Informática...');
+
+const metaTech = {
+  materia: 'Tecnología e Informática',
+  grado: '9no',
+  tema: 'Algoritmos y Estructuras Condicionales'
 };
-const planMdSociales = `# PLAN DE CLASE — CIENCIAS SOCIALES
-### Fundamentación
-Análisis crítico del poblamiento y manejo ambiental del territorio por comunidades indígenas.`;
+const recsTech = recomendarMaterialesDidacticos(metaTech, '# PLAN DE CLASE');
 
-const recsSociales = recomendarMaterialesDidacticos(metaSociales, planMdSociales);
+assert.ok(recsTech.length >= 6, 'Debe incluir la suite de materiales en Tecnología');
+assert.ok(recsTech.every(r => r.nombre.includes('Algoritmos y Estructuras Condicionales')), 'Los títulos deben adaptarse a Tecnología');
 
-assert.ok(recsSociales.length >= 2 && recsSociales.length <= 4, 'Debe sugerir entre 2 y 4 materiales');
-assert.ok(recsSociales.some(r => r.id === 'rec_infografia_sociales'), 'Debe incluir línea de tiempo o cartografía interactiva');
-assert.ok(recsSociales.some(r => r.id === 'rec_cuestionario_sociales'), 'Debe incluir estudio de caso / dilema ético-social');
-assert.ok(recsSociales.some(r => r.id === 'rec_rubrica_sociales'), 'Debe incluir rúbrica de fuentes y argumentación');
+console.log('✓ Prueba 2 superada: Adaptación temática transversal validada con éxito.');
 
-console.log('✓ Prueba 4 superada: Recomendaciones de Ciencias Sociales validadas con éxito.');
+// 3. Verificando regla de no re-generación: detección de material ya anexado
+console.log('3. Verificando bloqueo de re-generación cuando un material ya fue anexado...');
 
-// 5. Verificando que ninguna función muta el plan de clase ni genera archivos automáticamente
-console.log('5. Verificando principio de no-generación automática y pureza funcional...');
+const recursosAnexosExistentes = [
+  {
+    title: 'Sopa de letras interactiva: Trigonometría',
+    typeKey: 'sopa',
+    tipo: 'Sopa de letras',
+    html: '<div>Sopa HTML</div>'
+  },
+  {
+    title: 'Presentación en diapositivas: Trigonometría',
+    typeKey: 'diapositivas',
+    tipo: 'Presentación',
+    html: '<div>Slides HTML</div>'
+  }
+];
 
-const copiaPlan = `${planMdInformatica}`;
-recomendarMaterialesDidacticos(metaInformatica, planMdInformatica);
-assert.strictEqual(copiaPlan, planMdInformatica, 'El plan original no debe mutar en memoria');
+const recSopa = recs.find(r => r.typeKey === 'sopa');
+const recPresentacion = recs.find(r => r.typeKey === 'diapositivas');
+const recJuegos = recs.find(r => r.typeKey === 'juegos');
+const recPreguntas = recs.find(r => r.typeKey === 'preguntas');
+
+assert.strictEqual(isMaterialAnexado(recSopa, recursosAnexosExistentes), true, 'La sopa de letras ya anexada debe ser detectada como anexada');
+assert.strictEqual(isMaterialAnexado(recPresentacion, recursosAnexosExistentes), true, 'La presentación ya anexada debe ser detectada como anexada');
+assert.strictEqual(isMaterialAnexado(recJuegos, recursosAnexosExistentes), false, 'Los juegos no anexados no deben marcarse como anexados');
+assert.strictEqual(isMaterialAnexado(recPreguntas, recursosAnexosExistentes), false, 'Las preguntas no anexadas no deben marcarse como anexadas');
+
+const matchSopa = getAnexadoMatch(recSopa, recursosAnexosExistentes);
+assert.ok(matchSopa !== null, 'Debe retornar el objeto del recurso anexado');
+assert.strictEqual(matchSopa.title, 'Sopa de letras interactiva: Trigonometría');
+
+console.log('✓ Prueba 3 superada: Detección y bloqueo de re-generación verificado estrictamente.');
+
+// 4. Verificando inmutabilidad del plan de clase
+console.log('4. Verificando principio de no-generación automática e inmutabilidad...');
+
+const copiaPlan = `${planMdMate}`;
+recomendarMaterialesDidacticos(metaMatematicas, planMdMate);
+assert.strictEqual(copiaPlan, planMdMate, 'El plan original no debe mutar en memoria');
 
 console.log('✓ Prueba 4 superada: Inmutabilidad del plan confirmada.');
 
-console.log('\n======================================================');
-console.log('TODAS LAS PRUEBAS DE MATERIALES DIDÁCTICOS SE EJECUTARON CON ÉXITO');
-console.log('======================================================\n');
+console.log('\n========================================================================');
+console.log('TODAS LAS PRUEBAS DE MATERIALES DIDÁCTICOS COMPLETOS PASARON CON ÉXITO');
+console.log('========================================================================\n');

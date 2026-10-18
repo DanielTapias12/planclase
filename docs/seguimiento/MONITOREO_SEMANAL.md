@@ -25,11 +25,11 @@
 * **Evidencias:** Código en `src/`, `index.html`. 
 
 ### Semana 3
-* **Actividad principal:** Diseño del Diagrama de Contenidos (ACT-001).
-* **Objetivo:** Representar la organización jerárquica y conceptual de los contenidos.
-* **Participantes:** Todo el equipo.
-* **Estado:** COMPLETADA / PRODUCTO FINAL.
-* **Evidencias:** `DIAGRAMA_DE_CONTENIDOS.md`, Vectorial SVG y PNG en `docs/evidencias/diagramas/`.
+* **Actividades principales:** Diseño del Diagrama de Contenidos (ACT-001) y Diseño del Mapa de Navegación MODESEC (ACT-006).
+* **Objetivo:** Representar la organización jerárquica y conceptual de los contenidos y estructurar el mapa de navegación en 5 niveles con base en MODESEC y la regla de ≤ 3 interacciones.
+* **Participantes:** Todo el equipo (Daniel Tapias, Luis Caldera, Zoe Peñata, María Soto, María Ubarne, Maira Ortega).
+* **Estado:** COMPLETADA / PRODUCTOS FINALES CONSOLIDADOS.
+* **Evidencias:** `DIAGRAMA_DE_CONTENIDOS.md`, `MAPA_NAVEGACION.md`, `MAPA_NAVEGACION.svg`, carpeta `docs/evidencias/ACT-006/`.
 
 ### Semana 4
 * **Actividad principal:** ACT-003 — Análisis y Definición del Modelo Pedagógico.
@@ -39,14 +39,14 @@
 * **Producto:** `docs/pedagogia/MODELO_PEDAGOGICO.md`.
 
 ### Semana 5
-* **Actividades principales:** Desarrollo de Frontend (ACT-014), Validar Usabilidad/Accesibilidad (ACT-015) y Mapa de Navegación (ACT-006).
+* **Actividades principales:** Desarrollo de Frontend (ACT-014), Validar Usabilidad/Accesibilidad (ACT-015) y Consolidación del Mapa de Navegación (ACT-006).
 
 | ID | Actividad | Responsable | Estado | Nivel | Evidencia |
 |---|---|---|---|---|---|
 | ACT-014 | Desarrollo Frontend e Integración | Daniel / Luis | En proceso | 4 | Código + commits (Wizard, HUD, Auth) |
 | ACT-015 | Validar Usabilidad y Accesibilidad | Equipo completo | En proceso | 4 | Modal DUA, semántica, ARIA |
 | ACT-004 | Matriz de 15 Artículos (Consolidar resultados de cada artículo y verificar pertinencia) | Equipo completo | En proceso | 2 | Matriz MD/XLSX |
-| ACT-006 | Diseño del Mapa de Navegación | Equipo completo | Completada | 4 | MAPA_NAVEGACION.md, SVG |
+| ACT-006 | Diseño del Mapa de Navegación MODESEC | Equipo completo | Completada | 5 | MAPA_NAVEGACION.md, SVG, Ficha, Evidencias, IA |
 
 ### Semana 6
 * **Actividades principales:** Formalización de Ventanas y documentación MODESEC (ACT-008, ACT-009).

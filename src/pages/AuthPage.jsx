@@ -20,6 +20,8 @@ export default function AuthPage() {
     nombre: '',
     institucion: '',
     nivel: '',
+    metodologiaInstitucional: 'Aprendizaje Basado en Proyectos (ABP)',
+    otraMetodologia: '',
     aceptaTerminos: false
   });
 
@@ -45,6 +47,10 @@ export default function AuthPage() {
         if (formData.password.length < 6) {
           throw new Error('La contraseña debe tener mínimo 6 caracteres.');
         }
+        const metodologiaFinal = formData.metodologiaInstitucional === 'Otra'
+          ? (formData.otraMetodologia || 'Aprendizaje Activo Personalizado').trim()
+          : (formData.metodologiaInstitucional || 'Aprendizaje Basado en Proyectos (ABP)');
+
         await registerUser(
           formData.nombre,
           formData.institucion,
@@ -52,7 +58,8 @@ export default function AuthPage() {
           formData.email,
           formData.password,
           '',
-          formData.aceptaTerminos
+          formData.aceptaTerminos,
+          metodologiaFinal
         );
       }
       navigate('/home');
@@ -119,7 +126,7 @@ export default function AuthPage() {
   }, [isHoveringForm, scenes.length]);
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', width: '100vw', overflow: 'hidden', backgroundColor: '#000' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'hidden', backgroundColor: '#000' }}>
       
       {/* Fondos Cinematográficos */}
       {scenes.map((scene, index) => (
@@ -156,38 +163,49 @@ export default function AuthPage() {
         {`
           @media (max-width: 900px) {
             .mobile-gradient {
-              background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.3) 100%) !important;
+              background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.8) 55%, rgba(0,0,0,0.4) 100%) !important;
             }
             .auth-container {
               flex-direction: column !important;
+              min-height: 100vh !important;
+              overflow-y: auto !important;
             }
             .narrative-panel {
               width: 100% !important;
-              padding: 40px 24px 24px 24px !important;
-              justify-content: flex-end !important;
-              flex: 1 !important;
+              padding: 32px 20px 16px !important;
+              justify-content: flex-start !important;
+              flex: none !important;
             }
             .form-wrapper {
-              padding: 0 !important;
+              padding: 16px 20px 48px !important;
               width: 100% !important;
-              align-items: flex-end !important;
+              justify-content: center !important;
+              align-items: center !important;
+              box-sizing: border-box !important;
             }
             .form-panel {
               width: 100% !important;
-              border-radius: 24px 24px 0 0 !important;
+              max-width: 440px !important;
+              border-radius: 24px !important;
               border: 1px solid rgba(255,255,255,0.4) !important;
-              border-bottom: none !important;
-              padding: 32px 24px !important;
+              padding: 28px 20px !important;
               flex: none !important;
-              max-height: 85vh !important;
+              max-height: none !important;
+              box-sizing: border-box !important;
             }
             .narrative-title {
-              font-size: 32px !important;
+              font-size: clamp(24px, 5vw, 32px) !important;
               text-shadow: 0 2px 10px rgba(0,0,0,0.8) !important;
             }
             .narrative-desc {
-              font-size: 15px !important;
+              font-size: 14.5px !important;
               text-shadow: 0 2px 8px rgba(0,0,0,0.8) !important;
+              max-width: 100% !important;
+            }
+          }
+          @media (max-width: 480px) {
+            .auth-row-2col {
+              grid-template-columns: 1fr !important;
             }
           }
           @media (prefers-reduced-motion: reduce) {
@@ -318,7 +336,7 @@ export default function AuthPage() {
                   <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required placeholder="Ej. Profe María Pérez" style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div className="auth-row-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>Institución</label>
                     <input type="text" name="institucion" value={formData.institucion} onChange={handleChange} required placeholder="Colegio..." style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} />
@@ -333,6 +351,46 @@ export default function AuthPage() {
                     </select>
                   </div>
                 </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>
+                    Metodología o Enfoque Institucional
+                  </label>
+                  <select 
+                    name="metodologiaInstitucional" 
+                    value={formData.metodologiaInstitucional} 
+                    onChange={handleChange} 
+                    required 
+                    style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }}
+                  >
+                    <option value="Aprendizaje Basado en Proyectos (ABP)">Aprendizaje Basado en Proyectos (ABP)</option>
+                    <option value="Enfoque STEAM Interdisciplinario">Enfoque STEAM Interdisciplinario</option>
+                    <option value="Aprendizaje Cooperativo y Socrático">Aprendizaje Cooperativo y Socrático</option>
+                    <option value="Aula Invertida (Flipped Classroom)">Aula Invertida (Flipped Classroom)</option>
+                    <option value="Enseñanza para la Comprensión (EpC)">Enseñanza para la Comprensión (EpC)</option>
+                    <option value="Socioformativo o por Competencias">Socioformativo o por Competencias</option>
+                    <option value="Constructivismo y Aprendizaje Significativo">Constructivismo y Aprendizaje Significativo</option>
+                    <option value="Escuela Nueva / Metodologías Activas">Escuela Nueva / Metodologías Activas</option>
+                    <option value="Otra">Otra metodología (especificar)...</option>
+                  </select>
+                </div>
+
+                {formData.metodologiaInstitucional === 'Otra' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '13px', color: '#F8FAFC', fontWeight: '600' }}>
+                      Escribe la metodología de tu colegio
+                    </label>
+                    <input 
+                      type="text" 
+                      name="otraMetodologia" 
+                      value={formData.otraMetodologia} 
+                      onChange={handleChange} 
+                      required 
+                      placeholder="Ej. Pedagogía Dialogante, Waldorf, Holística..." 
+                      style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} 
+                    />
+                  </div>
+                )}
               </>
             )}
 

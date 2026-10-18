@@ -113,14 +113,14 @@ A continuación se detalla exhaustivamente cómo cada una de las actividades del
 ---
 
 ### 5.6. ACT-008 — Definir la Ventana Estándar
-* **Hábitos Clave de la Actividad:** **H2 (Fin en Mente), H4 (Ganar-Ganar), H6 (Sinergizar)**.
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Fin en Mente), H4 (Ganar-Ganar), H6 (Sinergizar), H7 (Afilar la Sierra)**.
 * **Aplicación por Participante:**
-  * **Daniel Tapias (H1, H3):** Estandarizó las clases CSS globales en `src/index.css` para Header, Menú, Contenido, Acciones y Footer.
-  * **Luis Caldera (H2, H4):** Definió las proporciones visuales de las 5 áreas funcionales de acuerdo con los lineamientos MODESEC.
-  * **Zoe Peñata (H3, H6):** Documentó la trazabilidad de la actividad en las bitácoras semanales y organizó la entrega.
-  * **Maira Ortega (H5):** Evaluó la ubicación ergonómica de los botones de acción para facilitar la interacción táctil y con mouse.
-  * **María Soto (H2):** Garantizó que el área central de trabajo otorgara protagonismo a la planeación curricular.
-  * **María Ubarne (H6):** Aseguró la inclusión del menú de accesibilidad DUA dentro del Header estándar.
+  * **Daniel Tapias (H1, H7):** Estandarizó las clases CSS globales en `src/index.css` bajo *Glassmorphism 2026*, depuró elevaciones y sombras, y programó el diagrama vectorial SVG (`VENTANA_ESTANDAR.svg`) con callouts técnicos rotulados.
+  * **Luis Caldera (H2, H4):** Definió las proporciones visuales de las 5 áreas funcionales MODESEC (Header cápsula, Dock lateral, Workspace esmerilado, Acciones y Footer institucional) creando un beneficio mutuo ergonómico para el docente.
+  * **Zoe Peñata (H3, H6):** Priorizó la estandarización de las 5 zonas indispensables de MODESEC antes de maquetar pantallas derivadas, articulando sinérgicamente los aportes del equipo.
+  * **Maira Ortega (H5):** Evaluó la ubicación ergonómica y accesibilidad DUA de los botones de acción para facilitar la interacción táctil en cualquier pantalla.
+  * **María Soto (H2, H5):** Garantizó que el área central de trabajo otorgara protagonismo a la planeación curricular mediante las métricas en vivo y el acceso rápido al planificador.
+  * **María Ubarne (H6, H4):** Articuló la integración de la franja de calibración del ADN metodológico del colegio en la botonera de acciones, potenciando la personalización educativa.
 
 ---
 

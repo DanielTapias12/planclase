@@ -1,245 +1,229 @@
 /**
- * Motor contextual de recomendaciones de materiales didácticos para INSPIRATEC.
+ * materialRecommender.js
+ * INSPIRATEC - Motor contextual de materiales didácticos generables.
  * 
- * Analiza el área, grado, tema, objetivos y momentos del plan de clase
- * para sugerir entre 2 y 4 recursos digitales y pedagógicos que el docente
- * puede decidir generar bajo demanda.
+ * Presenta el catálogo integral de materiales pedagógicos interactivos
+ * adaptados dinámicamente según el área curricular, grado, tema y momentos
+ * de la secuencia didáctica del plan de clase.
  * 
- * Regla de oro: Ningún material se genera automáticamente.
+ * Incluye:
+ * 1. Presentación / Diapositivas interactivas
+ * 2. Sopa de letras temática interactiva
+ * 3. Banco de preguntas formativas con pistas DUA
+ * 4. Juego / Trivia gamificada con sonido y retos
+ * 5. Rúbrica socioformativa analítica
+ * 6. Tarjetas de estudio 3D (Flashcards)
+ * 
+ * Regla de soberanía docente:
+ * Ningún material se genera automáticamente. El docente decide cuáles y cuándo generarlos.
+ * Si un material ya fue generado y anexado al plan, no se permite volver a generarlo en el mismo plan.
  */
 
+/**
+ * Comprueba si un material sugerido ya fue generado y anexado a este plan.
+ * 
+ * @param {Object} rec - Recomendación de material con typeKey o id.
+ * @param {Array} recursosAnexos - Arreglo de recursos anexados al plan activo.
+ * @returns {boolean} True si ya está anexado al plan.
+ */
+export function isMaterialAnexado(rec, recursosAnexos = []) {
+  if (!rec || !Array.isArray(recursosAnexos) || recursosAnexos.length === 0) return false;
+
+  const recKey = (rec.typeKey || '').toLowerCase();
+  const recNombre = (rec.nombre || '').toLowerCase();
+  const recId = (rec.id || '').toLowerCase();
+
+  return recursosAnexos.some(anexo => {
+    if (!anexo) return false;
+    const aKey = (anexo.typeKey || '').toLowerCase();
+    const aTitle = (anexo.title || anexo.nombre || '').toLowerCase();
+    const aTipo = (anexo.tipo || '').toLowerCase();
+
+    // 1. Coincidencia directa por typeKey
+    if (aKey && recKey && aKey === recKey) return true;
+
+    // 2. Coincidencia por categoría de material
+    if (recKey === 'sopa' && (aTitle.includes('sopa') || aKey.includes('sopa') || aTipo.includes('sopa') || aKey.includes('wordsearch'))) return true;
+    if (recKey === 'diapositivas' && (aTitle.includes('diapositiva') || aTitle.includes('presentación') || aTitle.includes('presentacion') || aKey.includes('slides') || aTipo.includes('diapositiva'))) return true;
+    if (recKey === 'preguntas' && (aTitle.includes('pregunta') || aTitle.includes('cuestionario') || aKey.includes('preguntas') || aKey.includes('cuestionario'))) return true;
+    if (recKey === 'juegos' && (aTitle.includes('trivia') || aTitle.includes('juego') || aKey.includes('juegos') || aKey.includes('game'))) return true;
+    if (recKey === 'rubrica' && (aTitle.includes('rúbrica') || aTitle.includes('rubrica') || aKey.includes('rubrica'))) return true;
+    if (recKey === 'flashcards' && (aTitle.includes('flashcard') || aTitle.includes('tarjeta') || aKey.includes('flashcards'))) return true;
+    if (recKey === 'taller_contexto' && (aTitle.includes('taller') || aTitle.includes('guía de práctica') || aKey.includes('taller'))) return true;
+    if (recKey === 'estudio_caso' && (aTitle.includes('estudio de caso') || aTitle.includes('caso') || aKey.includes('caso'))) return true;
+
+    // 3. Coincidencia por ID o título
+    if (anexo.id && anexo.id === recId) return true;
+    if (aTitle === recNombre) return true;
+
+    return false;
+  });
+}
+
+/**
+ * Obtiene el recurso anexado correspondiente a una recomendación si ya existe.
+ * 
+ * @param {Object} rec - Recomendación de material.
+ * @param {Array} recursosAnexos - Arreglo de recursos anexados al plan activo.
+ * @returns {Object|null} El recurso anexado o null si no existe.
+ */
+export function getAnexadoMatch(rec, recursosAnexos = []) {
+  if (!rec || !Array.isArray(recursosAnexos) || recursosAnexos.length === 0) return null;
+
+  const recKey = (rec.typeKey || '').toLowerCase();
+  const recNombre = (rec.nombre || '').toLowerCase();
+
+  return recursosAnexos.find(anexo => {
+    if (!anexo) return false;
+    const aKey = (anexo.typeKey || '').toLowerCase();
+    const aTitle = (anexo.title || anexo.nombre || '').toLowerCase();
+    const aTipo = (anexo.tipo || '').toLowerCase();
+
+    if (aKey && recKey && aKey === recKey) return true;
+    if (recKey === 'sopa' && (aTitle.includes('sopa') || aKey.includes('wordsearch') || aTipo.includes('sopa'))) return true;
+    if (recKey === 'diapositivas' && (aTitle.includes('diapositiva') || aTitle.includes('presentación') || aTitle.includes('presentacion') || aKey.includes('slides'))) return true;
+    if (recKey === 'preguntas' && (aTitle.includes('pregunta') || aTitle.includes('cuestionario'))) return true;
+    if (recKey === 'juegos' && (aTitle.includes('trivia') || aTitle.includes('juego') || aKey.includes('game'))) return true;
+    if (recKey === 'rubrica' && (aTitle.includes('rúbrica') || aTitle.includes('rubrica'))) return true;
+    if (recKey === 'flashcards' && (aTitle.includes('flashcard') || aTitle.includes('tarjeta'))) return true;
+    if (recKey === 'taller_contexto' && (aTitle.includes('taller') || aTitle.includes('guía de práctica') || aKey.includes('taller'))) return true;
+    if (recKey === 'estudio_caso' && (aTitle.includes('estudio de caso') || aTitle.includes('caso') || aKey.includes('caso'))) return true;
+    if (aTitle === recNombre) return true;
+
+    return false;
+  }) || null;
+}
+
+/**
+ * Genera el catálogo completo de materiales didácticos adaptados específicamente al plan de clase.
+ * 
+ * @param {Object} metadata - Metadatos curriculares del plan (materia, grado, tema, duracion).
+ * @param {string} planMarkdown - Contenido del plan de clase.
+ * @returns {Array<Object>} Catálogo integral de materiales contextualizados.
+ */
 export const recomendarMaterialesDidacticos = (metadata = {}, planMarkdown = '') => {
-  const materia = (metadata?.materia || '').toLowerCase();
-  const tema = metadata?.tema || 'Contenido curricular';
-  const grado = metadata?.grado || 'Grado escolar';
-  const mdLower = (planMarkdown || '').toLowerCase();
+  const materia = (metadata?.materia || metadata?.area || 'Matemáticas').trim();
+  const tema = (metadata?.tema || 'Contenido de la clase').trim();
+  const grado = (metadata?.grado || '10°').trim();
 
-  const recomendaciones = [];
+  const isMath = materia.toLowerCase().includes('matemát') || materia.toLowerCase().includes('algebra') || materia.toLowerCase().includes('geometr');
+  const isTech = materia.toLowerCase().includes('tecnolog') || materia.toLowerCase().includes('informát');
+  const isScience = materia.toLowerCase().includes('natural') || materia.toLowerCase().includes('ciencias');
+  const isSocial = materia.toLowerCase().includes('social') || materia.toLowerCase().includes('historia');
+  const isLanguage = materia.toLowerCase().includes('lengua') || materia.toLowerCase().includes('castell') || materia.toLowerCase().includes('español');
+  const isEnglish = materia.toLowerCase().includes('inglés') || materia.toLowerCase().includes('ingles');
 
-  // 1. REGLAS PARA TECNOLOGÍA E INFORMÁTICA
-  if (materia.includes('tecnología') || materia.includes('informática') || materia.includes('computación')) {
-    if (mdLower.includes('algoritmo') || mdLower.includes('programación') || mdLower.includes('código') || mdLower.includes('scratch') || mdLower.includes('lógica')) {
-      recomendaciones.push({
-        id: 'rec_simulacion_algoritmos',
-        nombre: `Simulador interactivo de ejecución paso a paso: ${tema}`,
-        tipo: 'Simulación funcional',
-        typeKey: 'simulacion',
-        proposito: 'Permite visualizar en tiempo real cómo cambian las variables y el flujo de control en la estructura lógica.',
-        relacionPlan: 'Refuerza la fase de desarrollo y la modelación práctica de algoritmos.',
-        contextoEspecifico: `Crear un simulador interactivo en HTML5/JS para ${tema} en ${grado}, con controles de ejecución (play, pausa, paso a paso) y visualización gráfica del estado de variables.`
-      });
+  // 1. PRESENTACIÓN / DIAPOSITIVAS INTERACTIVAS
+  const presentacion = {
+    id: 'rec_presentacion',
+    typeKey: 'diapositivas',
+    tipo: 'Presentación pedagógica',
+    nombre: `Presentación en diapositivas: ${tema}`,
+    proposito: isMath
+      ? 'Modelar visualmente las fórmulas, teoremas y procedimientos paso a paso con ejemplos de aplicación guiada.'
+      : isTech
+      ? 'Explicar los conceptos tecnológicos, diagramas lógicos y especificaciones del reto de programación.'
+      : 'Estructurar la explicación visual de los conceptos centrales, preguntas orientadoras y síntesis formativa de la clase.',
+    relacionPlan: 'Apoya al docente durante los momentos de inicio (motivación) y desarrollo (modelación conceptual).',
+    contextoEspecifico: `Generar entre 4 y 6 diapositivas interactivas estructuradas para ${tema} en ${materia} (Grado ${grado}).`
+  };
 
-      recomendaciones.push({
-        id: 'rec_infografia_flujo',
-        nombre: `Infografía interactiva: Conceptos clave y estructuras de ${tema}`,
-        tipo: 'Infografía interactiva',
-        typeKey: 'infografia',
-        proposito: 'Facilita la comprensión visual de conceptos abstractos y su aplicación en la resolución de problemas cotidianos.',
-        relacionPlan: 'Apoya el momento de inicio y la fundamentación curricular para diferentes estilos de aprendizaje.',
-        contextoEspecifico: `Diseñar una infografía interactiva en HTML5/CSS con tarjetas desplegables y esquemas visuales sobre ${tema}.`
-      });
+  // 2. SOPA DE LETRAS INTERACTIVA
+  const sopaLetras = {
+    id: 'rec_sopa_letras',
+    typeKey: 'sopa',
+    tipo: 'Sopa de letras temática',
+    nombre: `Sopa de letras interactiva: ${tema}`,
+    proposito: 'Afianzar el vocabulario técnico, terminología clave y conceptos esenciales mediante un reto lúdico de búsqueda activa y discriminación visual.',
+    relacionPlan: 'Ideal como actividad de activación previa en el inicio o como pausa activa y consolidación en el momento de desarrollo.',
+    contextoEspecifico: `Sopa de letras interactiva en HTML5 con entre 8 y 10 términos fundamentales de ${tema} (${materia}, Grado ${grado}).`
+  };
 
-      recomendaciones.push({
-        id: 'rec_cuestionario_formativo',
-        nombre: `Cuestionario interactivo con retroalimentación inmediata: ${tema}`,
-        tipo: 'Cuestionario interactivo',
-        typeKey: 'preguntas',
-        proposito: 'Evaluar formativamente el dominio de conceptos y la predicción de resultados algorítmicos.',
-        relacionPlan: 'Complementa la fase de cierre y la evaluación formativa establecida en el plan.',
-        contextoEspecifico: `Generar una prueba formativa interactiva con preguntas de opción múltiple, retos de código y retroalimentación pedagógica instantánea.`
-      });
-    } else if (mdLower.includes('excel') || mdLower.includes('hoja de cálculo') || mdLower.includes('fórmula') || mdLower.includes('datos')) {
-      recomendaciones.push({
-        id: 'rec_infografia_excel',
-        nombre: `Infografía interactiva: Referencias relativas y absolutas en Excel`,
-        tipo: 'Infografía interactiva',
-        typeKey: 'infografia',
-        proposito: 'Comprender cómo cambian las referencias de celda al copiar una fórmula y cómo una referencia absoluta mantiene fija una celda.',
-        relacionPlan: 'Refuerza la actividad práctica sobre el cálculo y procesamiento de datos numéricos.',
-        contextoEspecifico: `Infografía interactiva interactuable que demuestre el comportamiento de fórmulas y referencias de celda fijas vs relativas.`
-      });
+  // 3. PREGUNTAS / CUESTIONARIO FORMATIVO CON PISTAS DUA
+  const preguntas = {
+    id: 'rec_preguntas',
+    typeKey: 'preguntas',
+    tipo: 'Banco de preguntas formativas',
+    nombre: `Cuestionario de comprobación formativa: ${tema}`,
+    proposito: 'Valorar la comprensión conceptual y el razonamiento crítico sin estrés de tiempo, ofreciendo pistas pedagógicas DUA y retroalimentación paso a paso.',
+    relacionPlan: 'Permite verificar las evidencias de aprendizaje esperadas y recolectar datos de evaluación diagnóstica o de cierre.',
+    contextoEspecifico: `Banco de 4 a 5 preguntas de selección múltiple con pistas pedagógicas y explicación detallada sobre ${tema}.`
+  };
 
-      recomendaciones.push({
-        id: 'rec_taller_contexto',
-        nombre: `Guía de laboratorio guiado: Análisis de datos con ${tema}`,
-        tipo: 'Actividad práctica',
-        typeKey: 'reto_lab',
-        proposito: 'Guiar al estudiante mediante una situación auténtica de gestión de inventarios o presupuesto.',
-        relacionPlan: 'Desarrolla la actividad central de la secuencia didáctica.',
-        contextoEspecifico: `Laboratorio guiado con dataset de ejemplo, pasos estructurados y preguntas de análisis.`
-      });
+  // 4. JUEGOS / TRIVIA GAMIFICADA
+  const juegos = {
+    id: 'rec_juegos',
+    typeKey: 'juegos',
+    tipo: 'Juego / Trivia gamificada',
+    nombre: `Trivia gamificada con sonido y retos: ${tema}`,
+    proposito: 'Dinamizar la participación activa mediante mecánicas lúdicas por rondas con temporizador, efectos sonoros sintetizados (Web Audio API) y marcador de puntuación.',
+    relacionPlan: 'Transforma la evaluación de cierre o la consolidación en una experiencia colaborativa, dinámica y motivadora.',
+    contextoEspecifico: `Trivia gamificada interactiva con temporizador, efectos de audio y sistema de puntuación para ${tema} (${materia}).`
+  };
 
-      recomendaciones.push({
-        id: 'rec_rubrica_evaluacion',
-        nombre: `Rúbrica de evaluación analítica: Desempeño en ${tema}`,
-        tipo: 'Rúbrica formativa',
-        typeKey: 'rubrica',
-        proposito: 'Establecer descriptores claros de calidad para valorar la formulación y precisión en las hojas de cálculo.',
-        relacionPlan: 'Alineada con los criterios de evaluación formativa del plan.',
-        contextoEspecifico: `Rúbrica analítica en tabla interactiva con niveles (Superior, Alto, Básico, Bajo) y criterios de desempeño específicos.`
-      });
-    } else {
-      // General Tecnología
-      recomendaciones.push({
-        id: 'rec_infografia_tech_general',
-        nombre: `Infografía explicativa interactiva: ${tema}`,
-        tipo: 'Infografía interactiva',
-        typeKey: 'infografia',
-        proposito: `Explicar de forma visual e interactiva los principios de ${tema} y su impacto tecnológico en la sociedad.`,
-        relacionPlan: 'Apoya la fundamentación conceptual y el componente curricular MEN.',
-        contextoEspecifico: `Infografía modular interactiva para ${grado} sobre ${tema}.`
-      });
+  // 5. RÚBRICA SOCIOFORMATIVA ANALÍTICA
+  const rubrica = {
+    id: 'rec_rubrica',
+    typeKey: 'rubrica',
+    tipo: 'Rúbrica analítica formativa',
+    nombre: `Rúbrica socioformativa de valoración: ${tema}`,
+    proposito: 'Proveer a los estudiantes y al docente descriptores de desempeño claros (Superior, Alto, Básico, Bajo) con ponderación porcentual y calculadora interactiva en tiempo real.',
+    relacionPlan: 'Estructura la evaluación de los aprendizajes esperados y facilita la autoevaluación y coevaluación en el cierre.',
+    contextoEspecifico: `Rúbrica analítica interactiva con 3 a 4 criterios adaptados a ${grado} para valorar los productos de ${tema}.`
+  };
 
-      recomendaciones.push({
-        id: 'rec_juego_conceptos',
-        nombre: `Juego pedagógico de asociación y retos: ${tema}`,
-        tipo: 'Juego educativo',
-        typeKey: 'juegos',
-        proposito: 'Consolidar el vocabulario técnico y los conceptos clave mediante mecánicas lúdicas de emparejamiento.',
-        relacionPlan: 'Dinamiza la fase de consolidación y cierre de la clase.',
-        contextoEspecifico: `Juego interactivo en HTML5/JS con tarjetas de asociación de conceptos y retos de aplicación para ${tema}.`
-      });
+  // 6. FLASHCARDS / TARJETAS DIDÁCTICAS 3D
+  const flashcards = {
+    id: 'rec_flashcards',
+    typeKey: 'flashcards',
+    tipo: 'Flashcards interactivas 3D',
+    nombre: `Tarjetas didácticas 3D de estudio: ${tema}`,
+    proposito: 'Fomentar la recuperación activa y la consolidación de conceptos mediante tarjetas tridimensionales interactivas que alternan concepto y definición.',
+    relacionPlan: 'Sirve como recurso de refuerzo para trabajo autónomo y apoyo inclusivo DUA para estudiantes que requieren andamiajes visuales.',
+    contextoEspecifico: `Set de 6 a 8 flashcards 3D interactivas con conceptos y definiciones clave de ${tema}.`
+  };
 
-      recomendaciones.push({
-        id: 'rec_rubrica_tech',
-        nombre: `Rúbrica socioformativa de valoración: ${tema}`,
-        tipo: 'Rúbrica formativa',
-        typeKey: 'rubrica',
-        proposito: 'Proveer a los estudiantes una guía de autoevaluación y coevaluación sobre los productos desarrollados.',
-        relacionPlan: 'Estructura la evaluación formativa en el momento de cierre.',
-        contextoEspecifico: `Rúbrica socioformativa con criterios claros adaptados a ${grado}.`
-      });
-    }
-  } 
-  // 2. REGLAS PARA MATEMÁTICAS
-  else if (materia.includes('matemática') || materia.includes('geometría') || materia.includes('álgebra')) {
-    recomendaciones.push({
-      id: 'rec_simulacion_mate',
-      nombre: `Laboratorio virtual y simulador dinámico: ${tema}`,
-      tipo: 'Simulación funcional',
-      typeKey: 'simulacion',
-      proposito: 'Explorar visualmente la variación de parámetros, gráficas y representaciones numéricas o geométricas.',
-      relacionPlan: 'Potencia la comprensión conceptual durante el momento de desarrollo.',
-      contextoEspecifico: `Simulador matemático en HTML5 Canvas/SVG para manipular parámetros y ver transformaciones dinámicas en ${tema}.`
-    });
+  // 7. GUÍA DE PRÁCTICA / TALLER DE CONTEXTO REAL
+  const tallerContexto = {
+    id: 'rec_taller_contexto',
+    typeKey: 'taller_contexto',
+    tipo: 'Taller de aplicación práctica',
+    nombre: isTech 
+      ? `Guía de práctica y taller digital: ${tema}` 
+      : isMath 
+      ? `Taller de modelación y contexto real: ${tema}` 
+      : isScience
+      ? `Guía de indagación y laboratorio: ${tema}`
+      : `Taller de contexto real aplicado: ${tema}`,
+    proposito: 'Ejercitar la aplicación práctica de conceptos en situaciones reales con ejercicios guiados y problemas contextualizados.',
+    relacionPlan: 'Desarrolla el momento central de trabajo individual o colaborativo de los estudiantes.',
+    contextoEspecifico: `Taller práctico con 4 o 5 retos aplicados sobre ${tema} (${materia}, Grado ${grado}).`
+  };
 
-    recomendaciones.push({
-      id: 'rec_preguntas_mate',
-      nombre: `Banco de situaciones problema interactivas: ${tema}`,
-      tipo: 'Cuestionario interactivo',
-      typeKey: 'preguntas',
-      proposito: 'Entrenar el razonamiento lógico-matemático y la formulación de soluciones paso a paso.',
-      relacionPlan: 'Refuerza los estándares y competencias de resolución de problemas del plan.',
-      contextoEspecifico: `Cuestionario con resolución detallada paso a paso y pistas pedagógicas.`
-    });
+  // 8. ESTUDIO DE CASO / ANÁLISIS SITUACIONAL
+  const estudioCaso = {
+    id: 'rec_estudio_caso',
+    typeKey: 'estudio_caso',
+    tipo: 'Estudio de caso y dilema',
+    nombre: isTech 
+      ? `Estudio de caso tecnológico y dilema: ${tema}` 
+      : isSocial 
+      ? `Estudio de caso sociocultural: ${tema}` 
+      : `Estudio de caso y análisis de entorno: ${tema}`,
+    proposito: 'Promover el pensamiento crítico y la toma de decisiones éticas frente a un problema o desafío contextualizado del entorno.',
+    relacionPlan: 'Fomenta la discusión socrática, el debate grupal y la resolución de problemas auténticos.',
+    contextoEspecifico: `Estudio de caso con antecedentes, pregunta problémica central y 3 preguntas de análisis sobre ${tema}.`
+  };
 
-    recomendaciones.push({
-      id: 'rec_infografia_mate',
-      nombre: `Infografía de síntesis visual: Propiedades y teoremas de ${tema}`,
-      tipo: 'Infografía interactiva',
-      typeKey: 'infografia',
-      proposito: 'Sintetizar fórmulas, diagramas explicativos y aplicaciones en el mundo real.',
-      relacionPlan: 'Sirve como material de apoyo y memoria de aprendizaje para los estudiantes.',
-      contextoEspecifico: `Infografía con fórmulas formateadas y ejemplos contextualizados.`
-    });
-  } 
-  // 3. REGLAS PARA CIENCIAS SOCIALES
-  else if (materia.includes('social') || materia.includes('historia') || materia.includes('geografía') || materia.includes('democracia')) {
-    recomendaciones.push({
-      id: 'rec_infografia_sociales',
-      nombre: `Línea de tiempo / Cartografía interactiva: ${tema}`,
-      tipo: 'Infografía interactiva',
-      typeKey: 'infografia',
-      proposito: 'Explorar sincrónica y diacrónicamente los procesos históricos, actores sociales y transformaciones espaciales.',
-      relacionPlan: 'Potencia la interpretación de fuentes y la ubicación espaciotemporal en la secuencia.',
-      contextoEspecifico: `Línea de tiempo o mapa interactivo en HTML5/SVG con hitos clave, testimonios y capas de análisis para ${tema}.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_cuestionario_sociales',
-      nombre: `Estudio de caso y dilema ético-social: ${tema}`,
-      tipo: 'Cuestionario interactivo',
-      typeKey: 'preguntas',
-      proposito: 'Desarrollar el juicio crítico, el análisis de perspectivas y la formulación de argumentos fundamentados.',
-      relacionPlan: 'Alineado con los estándares de relaciones ético-políticas y competencias ciudadanas.',
-      contextoEspecifico: `Actividad interactiva con estudio de caso, análisis de posturas y preguntas de contraste reflexivo.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_rubrica_sociales',
-      nombre: `Rúbrica de argumentación y uso crítico de fuentes: ${tema}`,
-      tipo: 'Rúbrica formativa',
-      typeKey: 'rubrica',
-      proposito: 'Establecer criterios formativos para valorar la rigurosidad en el uso de fuentes y la fundamentación ciudadana.',
-      relacionPlan: 'Estructura la evaluación de los aprendizajes esperados en el momento de cierre.',
-      contextoEspecifico: `Rúbrica socioformativa analítica con niveles de desempeño para debates o ensayos en Ciencias Sociales.`
-    });
-  }
-  // 4. REGLAS PARA CIENCIAS NATURALES
-  else if (materia.includes('natural') || materia.includes('biología') || materia.includes('física') || materia.includes('química') || (materia.includes('ciencias') && !materia.includes('social'))) {
-    recomendaciones.push({
-      id: 'rec_simulacion_ciencias',
-      nombre: `Simulador experimental de laboratorio: ${tema}`,
-      tipo: 'Simulación funcional',
-      typeKey: 'simulacion',
-      proposito: 'Recrear fenómenos naturales o reacciones científicas mediante control de variables independientes.',
-      relacionPlan: 'Sustituye o complementa el laboratorio escolar en la fase de desarrollo.',
-      contextoEspecifico: `Simulador científico interactivo con control de temperatura, reactivos o fuerzas según ${tema}.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_infografia_ciencias',
-      nombre: `Póster infográfico interactivo: Ciclos y procesos de ${tema}`,
-      tipo: 'Infografía interactiva',
-      typeKey: 'infografia',
-      proposito: 'Explicar los componentes de un sistema biológico o físico con etiquetas interactivas.',
-      relacionPlan: 'Facilita la fase de conceptualización y atención a la diversidad visual (DUA).',
-      contextoEspecifico: `Póster científico interactivo con capas de información desplegables.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_rubrica_ciencias',
-      nombre: `Rúbrica de informe de indagación científica: ${tema}`,
-      tipo: 'Rúbrica formativa',
-      typeKey: 'rubrica',
-      proposito: 'Evaluar la formulación de hipótesis, recolección de evidencias y conclusiones de los estudiantes.',
-      relacionPlan: 'Estructura la evaluación de los aprendizajes esperados en el plan.',
-      contextoEspecifico: `Rúbrica de indagación científica con descriptores de observación y análisis.`
-    });
-  } 
-  // 4. FALLBACK GENERAL CONTEXTUALIZADO
-  else {
-    recomendaciones.push({
-      id: 'rec_infografia_general',
-      nombre: `Infografía explicativa interactiva: ${tema}`,
-      tipo: 'Infografía interactiva',
-      typeKey: 'infografia',
-      proposito: `Facilitar la asimilación visual y contextualizada de los conceptos centrales de ${tema}.`,
-      relacionPlan: 'Refuerza los objetivos de aprendizaje y la activación cognitiva inicial.',
-      contextoEspecifico: `Infografía estructurada con puntos clave y ejemplos aplicados de ${tema}.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_cuestionario_general',
-      nombre: `Cuestionario interactivo de comprobación formativa: ${tema}`,
-      tipo: 'Cuestionario interactivo',
-      typeKey: 'preguntas',
-      proposito: 'Comprobar el nivel de apropiación de los contenidos y detectar oportunidades de refuerzo.',
-      relacionPlan: 'Apoya el momento de cierre y la verificación de evidencias del plan.',
-      contextoEspecifico: `Cuestionario interactivo formativo con retroalimentación explicativa.`
-    });
-
-    recomendaciones.push({
-      id: 'rec_rubrica_general',
-      nombre: `Rúbrica formativa de desempeño: ${tema}`,
-      tipo: 'Rúbrica formativa',
-      typeKey: 'rubrica',
-      proposito: 'Establecer criterios explícitos para la autoevaluación y valoración de los trabajos estudiantiles.',
-      relacionPlan: 'Alineada con los criterios de evaluación definidos en la planeación.',
-      contextoEspecifico: `Rúbrica analítica por niveles de desempeño para ${tema}.`
-    });
-  }
-
-  // Garantizar entre 2 y 4 recomendaciones pertinentes
-  return recomendaciones.slice(0, 4);
+  // Retorna todos los 8 materiales didácticos de la suite en su totalidad
+  return [
+    sopaLetras,
+    presentacion,
+    juegos,
+    preguntas,
+    rubrica,
+    flashcards,
+    tallerContexto,
+    estudioCaso
+  ];
 };

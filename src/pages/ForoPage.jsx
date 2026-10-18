@@ -49,6 +49,7 @@ import {
   FolderOpen,
   MessageSquarePlus
 } from 'lucide-react';
+import PageLoadingState from '../components/PageLoadingState';
 
 // Categorías temáticas pedagógicas oficiales de INSPIRATEC
 export const FORO_CATEGORIAS = [
@@ -145,7 +146,11 @@ export default function ForoPage() {
   // Paneles retráctiles
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem('inspiratec_foro_cat_open') !== 'false';
+      const saved = localStorage.getItem('inspiratec_foro_cat_open');
+      if (saved !== null) return saved !== 'false';
+    }
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return false;
     }
     return true;
   });
@@ -729,11 +734,13 @@ export default function ForoPage() {
 
               {/* Contenido: Loader, Vacío o Lista de Tarjetas */}
               {loading ? (
-                <div className="foro-loading-box">
-                  <Loader2 size={36} className="spin" style={{ color: 'var(--primary-sage)', margin: '0 auto 12px auto' }} />
-                  <h3>Cargando conversaciones pedagógicas...</h3>
-                  <p>Sincronizando los aportes de la comunidad docente.</p>
-                </div>
+                <PageLoadingState 
+                  icon={MessageSquare}
+                  badge="Comunidad Docente"
+                  title="Cargando conversaciones pedagógicas..."
+                  subtitle="Sincronizando los aportes, debates y reflexiones de la comunidad docente."
+                  minHeight="320px"
+                />
               ) : filteredDiscussions.length === 0 ? (
                 <div className="foro-empty-state-card">
                   <div className="foro-empty-icon-circle">

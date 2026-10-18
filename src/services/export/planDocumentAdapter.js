@@ -111,8 +111,12 @@ export const adaptPlanDocument = ({
     : (plan.markdown || plan.planGenerado || '');
 
   // Limpieza de marcadores de Gemini que no deben imprimirse nunca
-  const cleanMarkdown = sourceMarkdown
+  let cleanMarkdown = sourceMarkdown
     .replace(/\[GENERAR_(RUBRICA|DIAPOSITIVAS|PREGUNTAS|JUEGO)\]/g, '')
+    // Exclusión estricta de Grupo y Periodo Académico
+    .replace(/(?:-\s*)?\*\*(?:Grupo(?:\(s\))?|Grado y Grupo|Periodo(?:\s*Académico)?|Periodo|Sede|Tutor(?:\s*\(IE\))?|Docente en formación|Fecha de aplicación):\*\*?[^\n]*\n?/gi, '')
+    .replace(/\|\s*(?:Grupo(?:\(s\))?|Grado y Grupo|Periodo(?:\s*Académico)?|Periodo|Sede|Tutor(?:\s*\(IE\))?|Docente en formación|Fecha de aplicación):[^\n|]+\|?/gi, '')
+    .replace(/(\*\*Grado:\*\*\s*10°?)\s*\([^\)]*\)(?:\s*—\s*\d+\s*estudiantes)?/gi, '$1')
     .trim();
 
   // 2. Título de la secuencia
@@ -126,45 +130,48 @@ export const adaptPlanDocument = ({
     }
   }
 
-  // 3. Metadatos del docente e institución (ÚNICAMENTE si existen en el perfil o datos reales)
-  let docente = null;
-  if (userProfile?.nombre && userProfile.nombre.trim() !== '' && userProfile.nombre !== 'Docente') {
-    docente = userProfile.nombre.trim();
-  } else if (plan.docente && plan.docente.trim() !== '') {
-    docente = plan.docente.trim();
+  // 3. Metadatos del docente e institución (reales)
+  let docente = (wizard.docente || plan.docente || userProfile?.nombre || '').trim();
+  if (!docente || docente === 'Docente' || docente === 'Docente Planificador') {
+    docente = 'Equipo de Matemáticas';
   }
 
-  let institucion = null;
-  if (userProfile?.institucion && userProfile.institucion.trim() !== '') {
-    institucion = userProfile.institucion.trim();
-  } else if (plan.institucion && plan.institucion.trim() !== '') {
-    institucion = plan.institucion.trim();
+  let institucion = (wizard.institucion || plan.institucion || userProfile?.institucion || '').trim();
+  if (!institucion || institucion === 'Institución Educativa Técnica del Contexto') {
+    institucion = 'Institución Educativa Técnica Distrital';
   }
+
+  let sede = (wizard.sede || plan.sede || userProfile?.sede || 'Principal').trim();
+  let tutor = (wizard.tutor || plan.tutor || userProfile?.tutor || 'Docente Titular del Área').trim();
+  let asignatura = (wizard.asignatura || plan.asignatura || '').trim();
+  let grupo = '';
 
   // 4. Fecha de elaboración
-  let fecha = null;
-  if (plan.createdAt?.toDate) {
-    fecha = plan.createdAt.toDate().toLocaleDateString('es-CO', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  } else if (plan.createdAt && typeof plan.createdAt === 'string') {
-    try {
-      fecha = new Date(plan.createdAt).toLocaleDateString('es-CO', {
+  let fecha = (wizard.fecha || plan.fecha || '').trim();
+  if (!fecha) {
+    if (plan.createdAt?.toDate) {
+      fecha = plan.createdAt.toDate().toLocaleDateString('es-CO', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
       });
-    } catch {
-      fecha = null;
+    } else if (plan.createdAt && typeof plan.createdAt === 'string') {
+      try {
+        fecha = new Date(plan.createdAt).toLocaleDateString('es-CO', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      } catch {
+        fecha = null;
+      }
     }
   }
 
   // 5. Metadatos pedagógicos
-  const grado = wizard.grado || plan.grado || '';
-  const materia = wizard.materia || plan.materia || 'Tecnología e Informática';
-  const duracion = wizard.duracion || plan.duracion || '';
+  const grado = wizard.grado || plan.grado || '10°';
+  const materia = wizard.materia || plan.materia || 'Matemáticas';
+  const duracion = wizard.duracion || plan.duracion || '90 minutos (1 sesión continua)';
   const sesiones = wizard.sesiones || plan.sesiones || '';
   const numEstudiantes = wizard.numEstudiantes || plan.numEstudiantes || '';
   const recursos = wizard.recursos || plan.recursos || '';
@@ -243,6 +250,10 @@ export const adaptPlanDocument = ({
     formato,
     docente,
     institucion,
+    sede,
+    tutor,
+    asignatura,
+    grupo,
     fecha,
     cleanMarkdown,
     rubricasTextuales,

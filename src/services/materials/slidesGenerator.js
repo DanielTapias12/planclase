@@ -1,3 +1,5 @@
+import { injectShareBarIntoHtml } from './universalShareBar.js';
+
 /**
  * Generador autónomo de Diapositivas / OVA Interactivo en un único archivo HTML.
  * Genera una presentación interactiva moderna, responsiva, con modo pantalla completa,
@@ -49,7 +51,7 @@ export function buildPresentationHtml({
 
   const slidesJson = JSON.stringify(defaultSlides).replace(/</g, '\\u003c');
 
-  return `<!DOCTYPE html>
+  const rawHtml = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -387,4 +389,6 @@ export function buildPresentationHtml({
   </script>
 </body>
 </html>`;
+
+  return injectShareBarIntoHtml(rawHtml, { title: safeTitle, subject: safeSubject, grade: safeGrade });
 }

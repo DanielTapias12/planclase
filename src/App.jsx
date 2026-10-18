@@ -20,7 +20,9 @@ import AdministracionPage from './pages/AdministracionPage';
 import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
+import AdnPedagogicoPage from './pages/AdnPedagogicoPage';
 import BienvenidaNarrativa from './components/BienvenidaNarrativa';
+import ModalCalibracionDocente from './components/ModalCalibracionDocente';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
 import NetworkStatusBanner from './components/NetworkStatusBanner';
@@ -40,6 +42,7 @@ import {
   HelpCircle, 
   LifeBuoy, 
   Info,
+  Dna,
   ChevronLeft,
   ChevronRight,
   PanelLeftClose,
@@ -116,6 +119,9 @@ function AppContent() {
         {/* Experiencia Narrativa Inmersiva de Bienvenida (11 escenas) */}
         <BienvenidaNarrativa />
 
+        {/* Modal de Onboarding y Calibración Curricular (Sin alterar la bienvenida) */}
+        <ModalCalibracionDocente />
+
         {/* Indicador no invasivo de estado de conexión a internet */}
         <NetworkStatusBanner />
 
@@ -138,10 +144,13 @@ function AppContent() {
               <UserMenu />
             </header>
 
-            {/* Overlay para móvil */}
+            {/* Overlay para móvil y escritorio al expandir */}
             <div
-              className={`sidebar-backdrop ${mobileMenuOpen ? 'open' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
+              className={`sidebar-backdrop ${mobileMenuOpen ? 'open' : ''} ${!sidebarCollapsed ? 'desktop-expanded' : ''}`}
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setSidebarCollapsed(true);
+              }}
               aria-hidden="true"
             />
 
@@ -229,6 +238,17 @@ function AppContent() {
                     <FileText size={18} />
                     <span>Mis Planes</span>
                     {planesCount > 0 && <span className="sidebar-counter-badge">{planesCount}</span>}
+                  </NavLink>
+
+                  <NavLink
+                    to="/adn-pedagogico"
+                    id="nav-adn-pedagogico"
+                    title="Mi ADN Pedagógico & Estudio Transversal"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
+                  >
+                    <Dna size={18} />
+                    <span>Mi ADN Pedagógico</span>
                   </NavLink>
 
                   <NavLink
@@ -418,6 +438,7 @@ function AppContent() {
               <Route path="/config" element={<ConfigPage />} />
 
               <Route path="/mis-planes" element={<MisPlanesPage />} />
+              <Route path="/adn-pedagogico" element={<AdnPedagogicoPage />} />
               <Route path="/experiencias" element={<ExperienciasPage />} />
               <Route path="/biblioteca" element={<BibliotecaPage />} />
               <Route path="/plantillas" element={<PlantillasPage />} />

@@ -9,7 +9,8 @@ import {
   PlusCircle, 
   AlertCircle,
   Eye,
-  X
+  X,
+  Share2
 } from 'lucide-react';
 import { generateHtmlResource } from '../services/aiService';
 import { useAppStore } from '../store/useAppStore';
@@ -64,7 +65,44 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
     const filename = (cleanPrompt.slice(0, 30).replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]/g, '_') || 'recurso_interactivo') + '.html';
     a.download = filename;
     a.click();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  };
+
+  const handleShare = async () => {
+    if (!htmlContent) return;
+    const filename = (cleanPrompt.slice(0, 30).replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ]/g, '_') || 'recurso_interactivo') + '.html';
+
+    if (typeof File !== 'undefined' && navigator.canShare) {
+      try {
+        const file = new File([htmlContent], filename, { type: 'text/html' });
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: cleanPrompt,
+            text: `Recurso didáctico interactivo: ${cleanPrompt}`,
+            files: [file]
+          });
+          return;
+        }
+      } catch (e) {
+        if (e.name !== 'AbortError') console.warn(e);
+        else return;
+      }
+    }
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: cleanPrompt,
+          text: `★ Recurso Interactivo INSPIRATEC: ${cleanPrompt}\nÁbrelo en cualquier navegador web.`
+        });
+        return;
+      } catch (e) {
+        if (e.name !== 'AbortError') console.warn(e);
+        else return;
+      }
+    }
+
+    handleDownload();
   };
 
   const handleAnexar = () => {
@@ -223,7 +261,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
               srcDoc={htmlContent}
               title={cleanPrompt}
               className="generated-resource-iframe"
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
               style={{ width: '100%', height: '100%', border: 'none' }}
             />
           </div>
@@ -241,7 +279,29 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
               borderTop: '1px solid rgba(49, 91, 84, 0.12)'
             }}
           >
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={handleShare}
+                style={{
+                  padding: '8px 14px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: 'transparent',
+                  color: '#142B25',
+                  borderRadius: '8px',
+                  border: '1px solid #D4AF37',
+                  cursor: 'pointer'
+                }}
+                title="Compartir recurso con estudiantes o colegas"
+              >
+                <Share2 size={14} style={{ color: '#B45309' }} /> Compartir
+              </button>
+
               <button
                 type="button"
                 className="btn btn-secondary action-button"
@@ -363,7 +423,16 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
               </h3>
               <span style={{ fontSize: '12px', opacity: 0.8 }}>Recurso interactivo HTML independiente</span>
             </div>
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={handleShare}
+                style={{ padding: '8px 14px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'rgba(255,255,255,0.12)', color: '#FFFFFF', border: '1px solid #D4AF37', borderRadius: '8px', cursor: 'pointer' }}
+                title="Compartir recurso con colegas o estudiantes"
+              >
+                <Share2 size={14} style={{ color: '#FACC15' }} /> Compartir
+              </button>
               <button
                 type="button"
                 className="btn btn-primary"
@@ -386,7 +455,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
             <iframe
               srcDoc={htmlContent}
               title={cleanPrompt}
-              sandbox="allow-scripts allow-same-origin"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
               style={{ width: '100%', height: '100%', border: 'none' }}
             />
           </div>

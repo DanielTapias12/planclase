@@ -11,14 +11,19 @@ import {
   Calendar, 
   GraduationCap, 
   BookOpen,
-  FileCheck
+  FileCheck,
+  Star,
+  MessageSquare,
+  Compass
 } from 'lucide-react';
-import { getMisPlanes, updatePlanStatus, deletePlanFromDB } from '../services/dbService';
+import { getMisPlanes, updatePlanStatus, deletePlanFromDB, getCalificacionesPlan } from '../services/dbService';
 import { useAppStore } from '../store/useAppStore';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db, auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import ConfirmModal from '../components/ConfirmModal';
+import CalificacionExperienciaModal from '../components/CalificacionExperienciaModal';
+import PageLoadingState from '../components/PageLoadingState';
 
 export default function ExperienciasPage() {
   const [activeTab, setActiveTab] = useState('Mis Experiencias');
@@ -27,6 +32,19 @@ export default function ExperienciasPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [expToDelete, setExpToDelete] = useState(null);
   const [isDeletingExp, setIsDeletingExp] = useState(false);
+  const [selectedPlanForCalificar, setSelectedPlanForCalificar] = useState(null);
+
+  const handleCalificacionActualizada = (planId, nuevasCalificaciones) => {
+    setExperiencias(prev => prev.map(p => {
+      if (p.id === planId) {
+        return { ...p, calificaciones: nuevasCalificaciones };
+      }
+      return p;
+    }));
+    if (selectedPlanForCalificar && selectedPlanForCalificar.id === planId) {
+      setSelectedPlanForCalificar(prev => prev ? { ...prev, calificaciones: nuevasCalificaciones } : null);
+    }
+  };
   const { userId, loadPlan } = useAppStore();
   const navigate = useNavigate();
 
@@ -99,7 +117,7 @@ export default function ExperienciasPage() {
   });
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '36px 32px 64px' }}>
+    <div className="mgmt-container">
       
       {/* Cabecera Editorial del Módulo (Mismo desenfoque y panel de cristal de Inicio) */}
       <header 
@@ -109,10 +127,10 @@ export default function ExperienciasPage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '22px',
-          padding: '38px 42px',
-          marginBottom: '26px',
-          boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+          borderRadius: '18px',
+          padding: '22px 28px',
+          marginBottom: '20px',
+          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
@@ -225,10 +243,13 @@ export default function ExperienciasPage() {
 
       {/* Estado de Carga */}
       {loading ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', gap: '14px', color: 'var(--text-secondary)' }}>
-          <Loader2 size={32} className="spin" style={{ color: 'var(--primary-sage)' }} />
-          <p style={{ fontSize: '14.5px' }}>Cargando experiencias docentes...</p>
-        </div>
+        <PageLoadingState 
+          icon={Compass}
+          badge="Comunidad Pedagógica"
+          title="Cargando experiencias docentes..."
+          subtitle="Recuperando buenas prácticas, proyectos aplicados y reflexiones pedagógicas del aula."
+          minHeight="340px"
+        />
       ) : filteredExperiencias.length === 0 ? (
         /* Estado Vacío (Mismo desenfoque y panel de cristal) */
         <div 
@@ -267,6 +288,11 @@ export default function ExperienciasPage() {
             const isMine = exp.userId === userId;
             const autor = isMine ? 'Tú (Docente)' : (exp.metadata?.autor || 'Docente');
             const fecha = exp.createdAt?.toDate ? exp.createdAt.toDate().toLocaleDateString('es-CO', { year: 'numeric', month: 'short', day: 'numeric' }) : 'Reciente';
+            
+            const calificacionesExp = getCalificacionesPlan(exp.id, exp);
+            const numCalificaciones = calificacionesExp.length;
+            const sumaEstrellas = calificacionesExp.reduce((acc, c) => acc + (Number(c.estrellas) || 0), 0);
+            const promedioEstrellas = numCalificaciones > 0 ? Number((sumaEstrellas / numCalificaciones).toFixed(1)) : 0;
 
             return (
               <article 
@@ -327,6 +353,61 @@ export default function ExperienciasPage() {
                   </span>
                 </div>
 
+                {/* Bloque de Calificación y Retroalimentación Pedagógica */}
+                <div 
+                  style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'space-between', 
+                    padding: '8px 12px', 
+                    borderRadius: '12px', 
+                    backgroundColor: 'rgba(49, 91, 84, 0.05)', 
+                    border: '1px solid rgba(49, 91, 84, 0.12)',
+                    margin: '10px 0 12px 0' 
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <div style={{ display: 'flex', gap: '2px' }}>
+                      {[1, 2, 3, 4, 5].map(st => (
+                        <Star 
+                          key={st} 
+                          size={13} 
+                          fill={st <= Math.round(promedioEstrellas) ? '#F59E0B' : 'none'} 
+                          color={st <= Math.round(promedioEstrellas) ? '#F59E0B' : '#CBD5E1'} 
+                        />
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#142B25' }}>
+                      {promedioEstrellas > 0 ? `${promedioEstrellas} / 5.0` : 'Sin calificar'}
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#718096' }}>
+                      ({numCalificaciones} {numCalificaciones === 1 ? 'docente' : 'docentes'})
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); setSelectedPlanForCalificar(exp); }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#315B54',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      cursor: 'pointer',
+                      padding: '3px 6px',
+                      borderRadius: '6px'
+                    }}
+                    title="Ver comentarios y calificar experiencia pedagógica"
+                  >
+                    <MessageSquare size={12} />
+                    <span>{numCalificaciones > 0 ? 'Ver / Calificar' : 'Calificar'}</span>
+                  </button>
+                </div>
+
                 {/* Acciones para Mis Experiencias */}
                 {activeTab === 'Mis Experiencias' && (
                   <div className="mgmt-card-actions">
@@ -363,10 +444,20 @@ export default function ExperienciasPage() {
                   <div className="mgmt-card-actions">
                     <button 
                       className="btn btn-primary" 
-                      style={{ width: '100%', padding: '7px 14px', fontSize: '13px', minHeight: '36px' }} 
+                      style={{ flex: 1, padding: '7px 14px', fontSize: '13px', minHeight: '36px' }} 
                       onClick={(e) => { e.stopPropagation(); handleAction(exp.id, 'view'); }}
                     >
-                      <span>Ver Experiencia Completa</span>
+                      <span>Ver Experiencia</span>
+                    </button>
+                    <button 
+                      type="button"
+                      className="btn-outline" 
+                      style={{ padding: '7px 12px', fontSize: '13px', minHeight: '36px', display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#B45309', borderColor: 'rgba(217, 119, 6, 0.3)' }} 
+                      onClick={(e) => { e.stopPropagation(); setSelectedPlanForCalificar(exp); }}
+                      title="Calificar y comentar este plan"
+                    >
+                      <Star size={14} fill="#F59E0B" color="#F59E0B" />
+                      <span>Calificar ({numCalificaciones})</span>
                     </button>
                   </div>
                 )}
@@ -387,6 +478,15 @@ export default function ExperienciasPage() {
         cancelText="Conservar"
         isDestructive={true}
         confirmLoading={isDeletingExp}
+      />
+
+      {/* Modal interactivo de calificación y retroalimentación pedagógica */}
+      <CalificacionExperienciaModal
+        isOpen={Boolean(selectedPlanForCalificar)}
+        onClose={() => setSelectedPlanForCalificar(null)}
+        plan={selectedPlanForCalificar}
+        currentUser={auth.currentUser}
+        onCalificacionActualizada={handleCalificacionActualizada}
       />
     </div>
   );

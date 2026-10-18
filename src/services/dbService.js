@@ -100,7 +100,7 @@ export const savePlanToDB = async (userId, planData, markdown, recursosAnexos = 
     userId: effectiveUserId,
     ...planData,
     markdown,
-    recursosAnexos: Array.isArray(recursosAnexos) ? recursosAnexos : [],
+    recursosAnexos: (Array.isArray(recursosAnexos) && recursosAnexos.length > 0) ? recursosAnexos : (Array.isArray(planData?.recursosAnexos) ? planData.recursosAnexos : []),
     estado: 'Guardado',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
@@ -123,7 +123,7 @@ export const savePlanToDB = async (userId, planData, markdown, recursosAnexos = 
       userId: effectiveUserId,
       ...planData,
       markdown,
-      recursosAnexos: Array.isArray(recursosAnexos) ? recursosAnexos : [],
+      recursosAnexos: (Array.isArray(recursosAnexos) && recursosAnexos.length > 0) ? recursosAnexos : (Array.isArray(planData?.recursosAnexos) ? planData.recursosAnexos : []),
       estado: 'Guardado',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
@@ -373,7 +373,8 @@ export const getGlobalStats = async () => {
       totalPlanes: planesSnap.size,
       totalExperiencias: experienciasCount,
       estudiantesImpactados: planesSnap.size * 25, // Estimado de 25 por plan
-      planesPorUsuario
+      planesPorUsuario,
+      allPlanes: planesSnap.docs.map(d => ({ id: d.id, ...d.data() }))
     };
   } catch(e) {
     console.error("Error fetching stats", e);
@@ -740,4 +741,143 @@ export const respondTicket = async (ticketId, respuesta) => {
     console.error("Error responding ticket", e);
     throw e;
   }
+};
+
+
+// ==========================================
+// CALIFICACIONES Y COMENTARIOS DE EXPERIENCIAS
+// ==========================================
+
+export const getCalificacionesPlan = (planId, planData = null) => {
+  if (planData && Array.isArray(planData.calificaciones) && planData.calificaciones.length > 0) {
+    return planData.calificaciones;
+  }
+  const localList = getLocalSavedPlans();
+  const found = localList.find(p => p.id === planId);
+  if (found && Array.isArray(found.calificaciones) && found.calificaciones.length > 0) {
+    return found.calificaciones;
+  }
+  const storage = getAppStorage();
+  if (storage) {
+    try {
+      const aux = storage.getItem(`inspiratec_calificaciones_${planId}`);
+      if (aux) return JSON.parse(aux);
+    } catch (_) {}
+  }
+  return [];
+};
+
+export const addCalificacionPlan = async (planId, calificacion) => {
+  const nuevaCalificacion = {
+    id: calificacion.id || `cal_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+    usuarioId: calificacion.usuarioId || 'anon',
+    usuarioNombre: calificacion.usuarioNombre || 'Docente Colega',
+    usuarioRol: calificacion.usuarioRol || 'Docente',
+    estrellas: Number(calificacion.estrellas) || 5,
+    comentario: (calificacion.comentario || '').trim(),
+    fecha: calificacion.fecha || new Date().toISOString()
+  };
+
+  const storage = getAppStorage();
+  let updatedCalificaciones = [];
+
+  // 1. Guardar en registro local persistente
+  const localList = getLocalSavedPlans();
+  const index = localList.findIndex(p => p.id === planId);
+  if (index >= 0) {
+    const prev = Array.isArray(localList[index].calificaciones) ? localList[index].calificaciones : [];
+    const prevIdx = prev.findIndex(c => c.usuarioId === nuevaCalificacion.usuarioId && c.usuarioId !== 'anon');
+    if (prevIdx >= 0) {
+      prev[prevIdx] = nuevaCalificacion;
+      updatedCalificaciones = [...prev];
+    } else {
+      updatedCalificaciones = [nuevaCalificacion, ...prev];
+    }
+    localList[index].calificaciones = updatedCalificaciones;
+    if (storage) {
+      try {
+        storage.setItem(LOCAL_PLANS_KEY, JSON.stringify(localList));
+      } catch (_) {}
+    }
+  } else {
+    if (storage) {
+      try {
+        const auxKey = `inspiratec_calificaciones_${planId}`;
+        const auxPrev = JSON.parse(storage.getItem(auxKey) || '[]');
+        const prevIdx = auxPrev.findIndex(c => c.usuarioId === nuevaCalificacion.usuarioId && c.usuarioId !== 'anon');
+        if (prevIdx >= 0) {
+          auxPrev[prevIdx] = nuevaCalificacion;
+          updatedCalificaciones = [...auxPrev];
+        } else {
+          updatedCalificaciones = [nuevaCalificacion, ...auxPrev];
+        }
+        storage.setItem(auxKey, JSON.stringify(updatedCalificaciones));
+      } catch (_) {}
+    }
+  }
+
+  // 2. Persistir en Firestore si el plan existe en la nube
+  try {
+    const planRef = doc(db, 'planes', planId);
+    const snap = await getDoc(planRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      const prevCloud = Array.isArray(data.calificaciones) ? data.calificaciones : [];
+      const prevIdx = prevCloud.findIndex(c => c.usuarioId === nuevaCalificacion.usuarioId && c.usuarioId !== 'anon');
+      let cloudList = [];
+      if (prevIdx >= 0) {
+        prevCloud[prevIdx] = nuevaCalificacion;
+        cloudList = [...prevCloud];
+      } else {
+        cloudList = [nuevaCalificacion, ...prevCloud];
+      }
+      await updateDoc(planRef, { calificaciones: cloudList });
+      updatedCalificaciones = cloudList;
+    }
+  } catch (err) {
+    console.warn('Calificación persistida localmente. Error en Firestore:', err);
+  }
+
+  return updatedCalificaciones;
+};
+
+export const deleteCalificacionPlan = async (planId, calificacionId) => {
+  const storage = getAppStorage();
+  let remaining = [];
+
+  const localList = getLocalSavedPlans();
+  const index = localList.findIndex(p => p.id === planId);
+  if (index >= 0) {
+    const prev = Array.isArray(localList[index].calificaciones) ? localList[index].calificaciones : [];
+    remaining = prev.filter(c => c.id !== calificacionId);
+    localList[index].calificaciones = remaining;
+    if (storage) {
+      try { storage.setItem(LOCAL_PLANS_KEY, JSON.stringify(localList)); } catch (_) {}
+    }
+  }
+
+  if (storage) {
+    try {
+      const auxKey = `inspiratec_calificaciones_${planId}`;
+      const auxPrev = JSON.parse(storage.getItem(auxKey) || '[]');
+      remaining = auxPrev.filter(c => c.id !== calificacionId);
+      storage.setItem(auxKey, JSON.stringify(remaining));
+    } catch (_) {}
+  }
+
+  try {
+    const planRef = doc(db, 'planes', planId);
+    const snap = await getDoc(planRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      const prevCloud = Array.isArray(data.calificaciones) ? data.calificaciones : [];
+      const newCloud = prevCloud.filter(c => c.id !== calificacionId);
+      await updateDoc(planRef, { calificaciones: newCloud });
+      remaining = newCloud;
+    }
+  } catch (err) {
+    console.warn('Eliminación persistida localmente:', err);
+  }
+
+  return remaining;
 };

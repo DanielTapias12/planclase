@@ -43,7 +43,8 @@ export default function WizardPage() {
     clearWizardFormOnly,
     apiKey, 
     misPlantillas,
-    completePlanGeneration
+    completePlanGeneration,
+    userProfile
   } = useAppStore();
   const navigate = useNavigate();
 
@@ -211,7 +212,7 @@ export default function WizardPage() {
 
     try {
       metadataSnapshot = { ...wizardData };
-      plan = await generatePlan(apiKey, wizardData, misPlantillas);
+      plan = await generatePlan(apiKey, wizardData, misPlantillas, userProfile);
 
       if (!plan || typeof plan !== 'string' || plan.trim().length < 60) {
         throw new Error("El servicio de IA no generó una respuesta estructurada válida. Por favor intenta de nuevo.");
@@ -423,6 +424,7 @@ export default function WizardPage() {
               fieldErrors={fieldErrors}
               handleChange={handleChange}
               misPlantillas={misPlantillas}
+              userProfile={userProfile}
             />
           )}
 

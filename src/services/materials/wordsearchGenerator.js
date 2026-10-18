@@ -1,3 +1,5 @@
+import { injectShareBarIntoHtml } from './universalShareBar.js';
+
 /**
  * Generador de Sopa de Letras Interactiva en un único archivo HTML.
  * Genera una cuadrícula dinámica jugable en pantalla con selección táctil/ratón,
@@ -25,7 +27,7 @@ export function generateWordsearchHTML({
 
   const wordsJson = JSON.stringify(defaultWords);
 
-  return `<!DOCTYPE html>
+  const rawHtml = `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -425,4 +427,6 @@ export function generateWordsearchHTML({
   </script>
 </body>
 </html>`;
+
+  return injectShareBarIntoHtml(rawHtml, { title: safeTitle, subject: safeSubject });
 }

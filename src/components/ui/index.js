@@ -13,3 +13,4 @@ export { BottomSheet } from './BottomSheet';
 export { Drawer } from './Drawer';
 export { Tooltip } from './Tooltip';
 export { Breadcrumbs } from './Breadcrumbs';
+export { LoadingState } from './LoadingState';
