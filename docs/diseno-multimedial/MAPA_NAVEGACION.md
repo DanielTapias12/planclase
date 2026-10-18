@@ -21,6 +21,8 @@ Esta disposición garantiza:
 
 ## 2. Estructura Jerárquica del Mapa de Navegación Oficial
 
+![Mapa de Navegación Oficial — INSPIRATEC](./MAPA_NAVEGACION.png)
+
 El ecosistema de **INSPIRATEC** organiza su topología de interacción en tres (3) niveles jerárquicos claros y progresivos con ramificaciones descendentes:
 
 ```

@@ -25,6 +25,8 @@ Diseñar, fundamentar y diagramar el mapa de navegación del software educativo 
 ### 3.1. Fundamentación en la Arquitectura de Navegación
 La topología de interacción de **INSPIRATEC** modela la experiencia del docente mediante un esquema jerárquico estructurado en tres (3) niveles con divisiones funcionales de flujo descendente:
 
+![Mapa de Navegación Oficial — INSPIRATEC](../evidencias/ACT-006/MAPA_NAVEGACION.png)
+
 - **NIVEL 1: AUTENTICACIÓN (Ingreso):** Flujo de acceso secuencial compuesto por `Login / Registro` (`/auth`), `Recuperar Contraseña` y `Validación de Credenciales`.
 - **NIVEL 2: PANEL PRINCIPAL:** Nodo central convergente correspondiente al `Panel Principal (Inicio)` (`/home`), el cual actúa como pivote de navegación global.
 - **NIVEL 3: DIVISIONES PRINCIPALES (Flujo hacia abajo):**
@@ -81,10 +83,14 @@ Conforme al marco de efectividad personal e interpersonal de Stephen R. Covey ar
 ---
 
 ## 6. Productos y Evidencias
-- **Producto Central:** [MAPA_NAVEGACION.md](../diseno-multimedial/MAPA_NAVEGACION.md)
-- **Evidencia Gráfica Vectorial (Oficial):** [MAPA_NAVEGACION.svg](../evidencias/ACT-006/MAPA_NAVEGACION.svg)
-- **Copia Canónica Multimedial:** [MAPA_NAVEGACION.svg](../diseno-multimedial/MAPA_NAVEGACION.svg)
-- **Carpeta de Evidencias:** [`docs/evidencias/ACT-006/`](../evidencias/ACT-006/README.md)
+
+| Entregable | Formato | Ubicación en el Repositorio | Descripción |
+|:---|:---:|:---|:---|
+| **Captura Gráfica Oficial** | Imagen (`.png`) | [`docs/evidencias/ACT-006/MAPA_NAVEGACION.png`](../evidencias/ACT-006/MAPA_NAVEGACION.png) | Esquema visual del mapa de navegación con los 3 niveles jerárquicos y flujos hacia abajo. |
+| **Diagrama Vectorial Oficial** | SVG (`.svg`) | [`docs/evidencias/ACT-006/MAPA_NAVEGACION.svg`](../evidencias/ACT-006/MAPA_NAVEGACION.svg) | Diagrama vectorial en alta fidelidad optimizado y validado para visualización directa en GitHub. |
+| **Documento Maestro del Mapa** | Markdown (`.md`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.md`](../diseno-multimedial/MAPA_NAVEGACION.md) | Fundamentación metodológica, auditoría de rutas y verificación de la regla de $\le 3$ interacciones. |
+| **Carpeta de Evidencias ACT-006** | Directorio (`README.md`) | [`docs/evidencias/ACT-006/`](../evidencias/ACT-006/README.md) | Carpeta de evidencias y entregables de la Semana 03. |
+| **Registro de Inteligencia Artificial** | Markdown (`.md`) | [`docs/ia/REGISTRO_IA_ACT-006.md`](../ia/REGISTRO_IA_ACT-006.md) | Registro del soporte de IA bajo metodología ROCAS. |
 
 ---
 
