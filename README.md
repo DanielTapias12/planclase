@@ -116,3 +116,17 @@ Siguiendo el marco metodológico **MODESEC** (Fase II — Diseño Educativo), IN
 * **Evidencias:** [docs/evidencias/ACT-011/README.md](docs/evidencias/ACT-011/README.md)
 * **Registro Ético de IA (ROCAS):** [docs/ia/REGISTRO_IA_ACT-011.md](docs/ia/REGISTRO_IA_ACT-011.md)
 * **Análisis de los 7 Hábitos:** [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#512-act-011--elaboración-del-guion-didáctico-actividad-9)
+
+---
+
+## 9. Guía de Metáforas MODESEC (ACT-012)
+
+En cumplimiento de la **Fase II: Diseño Multimedial** de MODESEC, INSPIRATEC documenta formalmente su catálogo de metáforas e iconografía fidedigna:
+
+* **Documento Maestro:** [docs/diseno-multimedial/GUIA_DE_METAFORAS.md](docs/diseno-multimedial/GUIA_DE_METAFORAS.md)
+* **Documento Ejecutivo:** [GUIA_DE_METAFORAS.md](GUIA_DE_METAFORAS.md)
+* **Colección Vectorial Oficial:** [docs/diseno-multimedial/iconos/](docs/diseno-multimedial/iconos/) (33 iconos SVG nativos de producción)
+* **Ficha Técnica de Actividad:** [docs/actividades/ACT-012_GUIA_DE_METAFORAS.md](docs/actividades/ACT-012_GUIA_DE_METAFORAS.md)
+* **Evidencias:** [docs/evidencias/ACT-012/README.md](docs/evidencias/ACT-012/README.md)
+* **Registro Ético de IA (ROCAS):** [docs/ia/REGISTRO_IA_ACT-012.md](docs/ia/REGISTRO_IA_ACT-012.md)
+* **Análisis de los 7 Hábitos:** [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#513-act-012--diseño-de-la-guía-de-metáforas-actividad-10)

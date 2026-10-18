@@ -112,3 +112,13 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 * **A — Acción:** Prompt solicitando análisis holístico del repositorio, diseño pedagógico centrado en el usuario docente, formulación de 7 objetivos didácticos observables, fundamentación de carga cognitiva y autodeterminación, y estructuración de la unidad temática en 5 módulos secuenciales.
 * **S — Salida / Validación:** Creación de `docs/pedagogia/GUION_DIDACTICO.md`, `GUION_DIDACTICO.md` (raíz), ficha `docs/actividades/ACT-011_GUION_DIDACTICO.md`, registro individual `docs/ia/REGISTRO_IA_ACT-011.md` y carpeta de evidencias `docs/evidencias/ACT-011/README.md`. Validado de forma unánime por el Product Owner, Product Owner Support, Scrum Master y equipo de desarrollo.
 
+---
+
+### 9. Diseño de la Guía de Metáforas MODESEC (ACT-012)
+
+* **R — Rol:** Especialista Senior en UI/UX, Ergonomía Cognitiva y Diseño Multimedial MODESEC.
+* **O — Objetivo:** Elaborar la Guía de Metáforas de INSPIRATEC mediante un inventario fidedigno de 30 elementos gráficos reales del software, extrayendo sus fuentes vectoriales originales de `lucide-react` y fundamentando la metáfora instrumental implícita del «Taller de Co-Creación del Arquitecto Curricular» en la tabla institucional de 3 columnas (Nombre, Imagen, Descripción).
+* **C — Contexto:** Actividad 10 (ACT-012) de la asignatura Diseño y Desarrollo de Software Educativo III, correspondiente a la Fase II (Diseño Multimedial) de MODESEC, exigiendo fidelidad absoluta a los componentes visuales existentes sin inventar representaciones estilizadas.
+* **A — Acción:** Prompt solicitando inspección del código JSX, extracción de SVGs puros en `docs/diseno-multimedial/iconos/`, redacción de funciones operativas reales y justificación semiótica de la metáfora visual, representación y función operativa.
+* **S — Salida / Validación:** Creación de `docs/diseno-multimedial/GUIA_DE_METAFORAS.md`, `GUIA_DE_METAFORAS.md` (raíz), 33 archivos SVG en `docs/diseno-multimedial/iconos/`, ficha `docs/actividades/ACT-012_GUIA_DE_METAFORAS.md`, registro `docs/ia/REGISTRO_IA_ACT-012.md` y carpeta de evidencias `docs/evidencias/ACT-012/README.md`. Validado por el equipo técnico y pedagógico.
+

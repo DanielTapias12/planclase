@@ -61,7 +61,16 @@
 
 ---
 
+### 6. Diseño de la Guía de Metáforas MODESEC (ACT-012)
+- Se elaboró la Guía de Metáforas oficial de INSPIRATEC bajo la directriz de fidelidad estricta al software existente, sin inventar ni reinterpretar elementos visuales.
+- Se auditaron e inventariaron 30 elementos gráficos reales en la tabla institucional de 3 columnas (Nombre, Imagen, Descripción).
+- Se extrajeron 33 archivos vectoriales SVG originales de `node_modules/lucide-react/dist/esm/icons/` a `docs/diseno-multimedial/iconos/`, garantizando una representación gráfica 100% fidedigna.
+- Se fundamentó la metáfora instrumental del «Taller de Co-Creación del Arquitecto Curricular» en sus tres dimensiones: metáfora visual, representación visual y función operativa.
+- Se formalizó el entregable en [`docs/diseno-multimedial/GUIA_DE_METAFORAS.md`](../diseno-multimedial/GUIA_DE_METAFORAS.md) y [`GUIA_DE_METAFORAS.md`](../../GUIA_DE_METAFORAS.md), actualizando la ficha `ACT-012_GUIA_DE_METAFORAS.md`, evidencias y hábitos (Sección 5.13).
+
+---
+
 ## Acuerdos y Próximos Compromisos
-1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011 y preparar la entrega de la Semana 10.
-2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend, del soporte multimodal y de la arquitectura de Doble Lazo.
+1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011 y ACT-012, y preparar la entrega de la Semana 10.
+2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend, del soporte multimodal y de la iconografía vectorial.
 3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.

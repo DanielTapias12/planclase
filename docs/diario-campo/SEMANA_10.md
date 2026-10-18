@@ -147,3 +147,45 @@
 ### 4. Acuerdos y Próximos Compromisos
 1. **Equipo Completo:** Registrar formalmente el cierre de la Actividad 9 (ACT-011) en el repositorio y mantener la coherencia entre el Guion Didáctico y los próximos incrementos de software.
 2. **Desarrolladores Frontend (Daniel y Luis):** Continuar con la refactorización ergonómica y el soporte multimodal conforme a las especificaciones del guion.
+
+---
+
+## ACT-012 — Diseño de la Guía de Metáforas (Actividad 10)
+
+### 1. Contexto General
+* **Semana de Ejecución:** Semana 10
+* **Fecha:** 18 de Octubre de 2026
+* **Actividad Principal:** ACTIVIDAD 10 (ACT-012) — Diseño de la Guía de Metáforas.
+* **Marco Metodológico:** MODESEC (Fase II — Diseño Multimedial, Componente 5) y Formato Institucional.
+* **Participantes y Roles:**
+  * Zoe Peñata (Scrum Master — Control del sprint, verificación del formato de 3 columnas y remoción de bloqueos).
+  * Luis Caldera (Frontend / UI-UX Lead — Auditoría visual de la interfaz, mapeo de los 30 elementos e integridad iconográfica).
+  * Daniel Tapias (Frontend / Git Lead — Extracción fidedigna de 33 SVGs desde `lucide-react`, repositorio gráfico y trazabilidad Markdown).
+  * Maira Ortega (Facilitadora de Equipo — Redacción clara y accesible de descripciones funcionales sin sobrecarga técnica).
+  * María Soto (Product Owner — Validación de la metáfora del Arquitecto Curricular alineada con la Guía 30 MEN).
+  * María Ubarne (Product Owner Support — Revisión de metáforas inclusivas DUA/PIAR y radar de estilos de aprendizaje).
+
+---
+
+### 2. Desarrollo Cronológico de la Sesión de Trabajo
+1. **Revisión de la Directriz de Fidelidad Estricta:** Se estableció como premisa fundamental no inventar representaciones 3D, personajes ni reinterpretaciones artísticas; la guía debe reproducir fielmente los elementos visuales implementados en el código.
+2. **Auditoría e Inventario en el Código Fuente:** Se rastrearon los componentes en `src/App.jsx`, `src/pages/`, `src/components/` y `src/styles/ui.css`, identificando 30 elementos gráficos reales agrupados en: Navegación/Dock, Asistente de Planificación, Editor/Multimodalidad y Resiliencia/Control de Usuario.
+3. **Extracción Automatizada de SVGs:** Se ejecutó la extracción de los 33 glifos vectoriales oficiales desde `node_modules/lucide-react/dist/esm/icons/`, guardándolos como archivos puros en `docs/diseno-multimedial/iconos/*.svg` con estilo uniforme (24x24, trazo azul `#2563eb`, 2px).
+4. **Construcción de la Tabla Institucional y Justificación:** Se completó la matriz de 3 columnas (Nombre, Imagen, Descripción) y se redactó la fundamentación conceptual diferenciando rigurosamente *Metáfora visual* («El Taller de Co-Creación del Arquitecto Curricular»), *Representación visual* (Iconografía lineal Glassmorphism 2026) y *Función operativa* (Predecibilidad y control del docente).
+5. **Aprobación de Entregables:** Se aprobó formalmente `GUIA_DE_METAFORAS.md` en `docs/diseno-multimedial/` y en la raíz, cerrando la Actividad 10 como COMPLETADA.
+
+---
+
+### 3. Registro de Hábitos Aplicados por Integrante (Stephen R. Covey en ACT-012)
+* **Daniel Tapias (H1, H3, H7):** Proactividad en la extracción programática limpia de SVGs originales; priorización de la fidelidad documental; y *afilar la sierra* en la organización de activos.
+* **Luis Caldera (H1, H2, H6):** Liderazgo ergonómico; fin en mente en la correspondencia con la ventana estándar; y sinergia visual de los componentes.
+* **Zoe Peñata (H3, H6):** Priorización estricta de la entrega institucional de la Actividad 10; y articulación sinérgica del equipo.
+* **Maira Ortega (H4, H5):** Comprensión empática del usuario docente; y redacción ganar-ganar accesible de las funciones.
+* **María Soto (H2, H5):** Fin en mente curricular; y sustento de la metáfora profesional del docente frente a enfoques lúdicos superficiales.
+* **María Ubarne (H5, H6):** Comprensión de las necesidades DUA/PIAR; y sinergia pedagógica en la validación de controles inclusivos.
+
+---
+
+### 4. Acuerdos y Próximos Compromisos
+1. **Equipo Completo:** Registrar el cumplimiento de ACT-012 y actualizar la lista de productos pendientes de MODESEC (eliminando Guía de Metáforas de pendientes).
+2. **Equipo Técnico (Daniel y Luis):** Mantener la coherencia de la iconografía vectorial en los futuros incrementos de software.

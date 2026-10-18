@@ -19,7 +19,7 @@ Este directorio contiene las fichas técnicas individuales de cada actividad des
 | **ACT-009** | Descripción de Ventanas | Semana 6 | **EN PROCESO** | [ACT-009_DESCRIPCION_VENTANAS.md](ACT-009_DESCRIPCION_VENTANAS.md) |
 | **ACT-010** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
 | **ACT-011** | Elaboración del Guion Didáctico | Semana 6 / 10 | **COMPLETADA** | [ACT-011_GUION_DIDACTICO.md](ACT-011_GUION_DIDACTICO.md) |
-| **ACT-012** | Actividad no encontrada en la evidencia disponible | N/A | **NO ENCONTRADA** | N/A |
+| **ACT-012** | Diseño de la Guía de Metáforas | Semana 6 / 10 | **COMPLETADA** | [ACT-012_GUIA_DE_METAFORAS.md](ACT-012_GUIA_DE_METAFORAS.md) |
 | **ACT-013** | Consolidar el Diseño de Aprendizaje | Semana 6 | **COMPLETADA** | [ACT-013_DISENO_DE_APRENDIZAJE.md](ACT-013_DISENO_DE_APRENDIZAJE.md) |
 | **ACT-014** | Desarrollo del Frontend e Integración de Interfaz | Semana 5/6 | **EN PROCESO** | [ACT-014_DESARROLLO_FRONTEND.md](ACT-014_DESARROLLO_FRONTEND.md) |
 | **ACT-015** | Validar Usabilidad y Accesibilidad (DUA) | Semana 5/6 | **EN PROCESO** | [ACT-015_USABILIDAD_ACCESIBILIDAD.md](ACT-015_USABILIDAD_ACCESIBILIDAD.md) |

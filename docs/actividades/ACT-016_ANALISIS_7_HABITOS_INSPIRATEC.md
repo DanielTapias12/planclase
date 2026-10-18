@@ -190,6 +190,16 @@ A continuación se detalla exhaustivamente cómo cada una de las actividades del
   * **María Soto (H2, H4, H5):** Como Product Owner, definió con total claridad el propósito pedagógico central (fin en mente, H2), garantizando que el guion responda al constructivismo y a las competencias de la Guía 30 del MEN; comprendió profundamente la necesidad formativa de mitigar la sobrecarga burocrática docente (H5) y validó que el producto genere un valor transformador ganar-ganar para las instituciones educativas (H4).
   * **María Ubarne (H2, H5, H6):** Lideró la articulación pedagógica de la diversidad y el enfoque inclusivo, garantizando que el Diseño Universal para el Aprendizaje (DUA) y el Plan Individual de Ajustes Razonables (PIAR) estén fundamentados psicológica y curricularmente (H2, H5), co-diseñando de forma sinérgica con los desarrolladores los criterios de evaluación formativa en cuatro niveles (H6).
 
+### 5.13. ACT-012 — Diseño de la Guía de Metáforas (Actividad 10)
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Empezar con un Fin en Mente), H3 (Poner Primero lo Primero), H4 (Pensar Ganar-Ganar), H5 (Buscar Primero Comprender), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H3, H7):** Ejerció proactividad técnica al inspeccionar las dependencias de `lucide-react` en `node_modules` y programar la extracción automatizada y fidedigna de los 33 archivos SVG en `docs/diseno-multimedial/iconos/`, priorizando la preservación estricta de formas, trazos y proporciones originales (H3) y afilando la sierra del repositorio gráfico sin introducir elementos simulados (H7).
+  * **Luis Caldera (H1, H2, H6):** Lideró la auditoría ergonómica de la interfaz, asegurando con un claro "fin en mente" (H2) que los 30 elementos gráficos inventariados correspondan con fidelidad absoluta al sistema de diseño Glassmorphism 2026 y a las cinco áreas de la ventana estándar, colaborando sinérgicamente con el equipo (H6).
+  * **Zoe Peñata (H3, H6):** Como Scrum Master, priorizó el cierre de la Actividad 10 (ACT-012) en el backlog del sprint (H3), garantizando la exhaustividad de la tabla institucional de tres columnas (Nombre, Imagen, Descripción) y canalizando la sinergia de los 6 participantes (H6).
+  * **Maira Ortega (H4, H5):** Desarrolló una comprensión empática profunda (H5) respecto al lenguaje visual del software, asegurando que las descripciones funcionales traduzcan la iconografía técnica a un vocabulario diáfano y comprensible para cualquier docente en aula, logrando un beneficio mutuo ganar-ganar (H4).
+  * **María Soto (H2, H5):** Como Product Owner, veló por el "fin en mente" pedagógico (H2), sustentando la metáfora implícita del «Taller de Co-Creación del Arquitecto Curricular» frente a metáforas lúdicas infantiles descontextualizadas, comprendiendo la naturaleza profesional del maestro (H5).
+  * **María Ubarne (H5, H6):** Auditó la representación visual y metafórica de los controles inclusivos del DUA y PIAR (`Accessibility`) y el radar polar de estilos de aprendizaje, articulando sinérgicamente los conceptos pedagógicos con los iconos correspondientes (H6).
+
 ---
 
 ## 6. Diagnóstico y Balance Global del Equipo

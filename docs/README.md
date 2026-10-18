@@ -29,3 +29,7 @@ La documentación está organizada para mantener la trazabilidad entre la planif
   - [Guion Didáctico (MODESEC)](pedagogia/GUION_DIDACTICO.md)
   - [Diseño de Aprendizaje (MODESEC)](pedagogia/DISENO_DE_APRENDIZAJE.md)
   - [Modelo Pedagógico](pedagogia/MODELO_PEDAGOGICO.md)
+- [**diseno-multimedial/**](diseno-multimedial/):
+  - [Guía de Metáforas](diseno-multimedial/GUIA_DE_METAFORAS.md)
+  - [Mapa de Navegación](diseno-multimedial/MAPA_NAVEGACION.md)
+  - [Ventana Estándar](diseno-multimedial/VENTANA_ESTANDAR.md)
