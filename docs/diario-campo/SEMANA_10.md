@@ -105,3 +105,45 @@
   * *Juicios Metacognitivos:* Calibración de expectativas previas y posteriores mediante badges de ciclo de vida del plan y autoevaluación.
   * *Agencia Compartida (Shared Agency):* Empoderamiento del docente con control absoluto sobre la IA y guardado explícito no forzado.
 * **Calificación Global:** **24 / 24 pts (100%) — Sobresaliente**.
+
+---
+
+## ACT-011 — Elaboración del Guion Didáctico (Actividad 9)
+
+### 1. Contexto General
+* **Semana de Ejecución:** Semana 10
+* **Fecha:** 18 de Octubre de 2026
+* **Actividad Principal:** ACTIVIDAD 9 (ACT-011) — Elaboración del Guion Didáctico.
+* **Marco Metodológico:** MODESEC (Fase II — Diseño Educativo) y Directrices Institucionales.
+* **Participantes y Roles:**
+  * Zoe Peñata (Scrum Master — Coordinación, verificación de apartados y gestión del sprint).
+  * María Soto (Product Owner — Dirección pedagógica, metas formativas y alineación con la Guía 30 del MEN).
+  * María Ubarne (Product Owner Support — Articulación de inclusión DUA/PIAR y caracterización psicológica).
+  * Maira Ortega (Facilitadora de Equipo — Análisis de carga cognitiva y secuenciación modular de la unidad temática).
+  * Luis Caldera (Frontend / UI-UX Lead — Ergonomía de interfaz y mapeo de actividades con componentes visuales).
+  * Daniel Tapias (Frontend / Git Lead — Auditoría técnica de código fuente, trazabilidad Git y redacción Markdown).
+
+---
+
+### 2. Desarrollo Cronológico de la Sesión de Trabajo
+1. **Alineación de Requisitos y Formato Institucional (Zoe Peñata y María Soto):** Se revisaron los 10 apartados obligatorios del guion didáctico, estableciendo que el documento debía construirse a partir de la realidad operativa del software y no como un ejercicio teórico desconectado.
+2. **Auditoría Técnica y de Código (Daniel Tapias y Luis Caldera):** Se revisaron los componentes clave en `src/`: el flujo del Wizard de 4 pasos (`WizardPage.jsx`), las reglas disciplinares del MEN en `aiService.js`, los generadores de recursos interactivos HTML en `src/services/materials/` (quizzes, flashcards, diapositivas, sopas de letras, rúbricas) y el modelado de estilos en `FelderSilvermanModule.jsx`, identificando con honestidad las capacidades funcionales existentes y distinguiéndolas de las propuestas futuras.
+3. **Fundamentación Pedagógica y Psicológica (María Soto, María Ubarne y Maira Ortega):** Se estructuraron los 7 objetivos didácticos observables (OD-01 a OD-07), se fundamentó la psicología del aprendizaje en la Teoría de la Carga Cognitiva de Sweller, la transposición didáctica de Chevallard, la autodeterminación de Deci & Ryan y la autoeficacia de Bandura, delimitando claramente las edades de docentes (20 a 65 años) y estudiantes (6 a 18 años).
+4. **Respuesta a la Pregunta Central:** Se dio respuesta rigurosa y articulada a: *¿Qué aprenderá el usuario mediante este software, cómo lo aprenderá y qué evidencias permitirán reconocer ese aprendizaje?*.
+5. **Consolidación de Entregables:** Se aprobó unánimemente el documento maestro [`docs/pedagogia/GUION_DIDACTICO.md`](../pedagogia/GUION_DIDACTICO.md) y el resumen ejecutivo [`GUION_DIDACTICO.md`](../../GUION_DIDACTICO.md) en la raíz, formalizando la ficha `ACT-011_GUION_DIDACTICO.md` y la carpeta de evidencias `docs/evidencias/ACT-011/`.
+
+---
+
+### 3. Registro de Hábitos Aplicados por Integrante (Stephen R. Covey en ACT-011)
+* **Daniel Tapias (H1, H3, H7):** Proactividad en auditoría estática de código para sustentar cada apartado con evidencias reales; priorización técnica en el despliegue documental; y renovación continua (*afilar la sierra*) en el control de versiones.
+* **Luis Caldera (H2, H5, H6):** Fin en mente ergonómico que conecta cada apartado didáctico con los paneles visuales; comprensión empática de la navegación accesible; y sinergia visual con el equipo.
+* **Zoe Peñata (H3, H4, H6):** Priorización estricta del backlog del sprint; facilitación ganar-ganar entre requerimientos pedagógicos y viabilidad técnica; y fomento de la sinergia colaborativa.
+* **Maira Ortega (H4, H5, H6):** Enfoque ganar-ganar que concilia el beneficio docente con la experiencia del alumno en aula; escucha empática de las realidades escolares; y sinergia en la redacción modular.
+* **María Soto (H2, H4, H5):** Liderazgo con el fin pedagógico en mente; comprensión profunda de la necesidad formativa de aula; y validación ganar-ganar de la transposición didáctica constructivista.
+* **María Ubarne (H2, H5, H6):** Visión inclusiva del fin formativo (DUA/PIAR); comprensión de las barreras de aprendizaje; y sinergia pedagógica en la construcción de rúbricas analíticas en 4 niveles.
+
+---
+
+### 4. Acuerdos y Próximos Compromisos
+1. **Equipo Completo:** Registrar formalmente el cierre de la Actividad 9 (ACT-011) en el repositorio y mantener la coherencia entre el Guion Didáctico y los próximos incrementos de software.
+2. **Desarrolladores Frontend (Daniel y Luis):** Continuar con la refactorización ergonómica y el soporte multimodal conforme a las especificaciones del guion.

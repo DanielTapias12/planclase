@@ -180,6 +180,16 @@ A continuación se detalla exhaustivamente cómo cada una de las actividades del
   * **María Soto (H2, H4):** Verificó que los ajustes de interfaz preserven la promesa didáctica y curricular de la herramienta, garantizando una relación armónica entre usabilidad técnica y valor pedagógico.
   * **María Ubarne (H5, H6):** Evaluó la claridad y comprensibilidad de las ayudas contextuales y mensajes de error, sinergizando con el equipo técnico para fortalecer el diseño inclusivo DUA.
 
+### 5.12. ACT-011 — Elaboración del Guion Didáctico (Actividad 9)
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Empezar con un Fin en Mente), H3 (Poner Primero lo Primero), H4 (Pensar Ganar-Ganar), H5 (Buscar Primero Comprender), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H3, H7):** Ejerció proactividad al realizar una auditoría integral del código fuente (`src/pages`, `src/services/aiService.js`, `src/services/materials/`, `src/components/`), contrastando las funcionalidades técnicas existentes con los 10 apartados obligatorios del guion; priorizó la estructuración Markdown y la trazabilidad Git en `docs/pedagogia/GUION_DIDACTICO.md` y `GUION_DIDACTICO.md` en la raíz; y afiló la sierra sincronizando los registros documentales del proyecto.
+  * **Luis Caldera (H2, H5, H6):** Concibió la experiencia formativa desde el "fin en mente" de la interacción humana en la interfaz, asegurando que cada momento didáctico (Inicio, Desarrollo y Cierre) y los recursos multimodales se articulen con los componentes gráficos ergonómicos de la ventana estándar; empatizó con la carga cognitiva del educador (H5) y colaboró sinérgicamente con el equipo técnico y pedagógico (H6).
+  * **Zoe Peñata (H3, H4, H6):** Como Scrum Master, priorizó la entrega rigurosa de la Actividad 9 (ACT-011) en el sprint, facilitó los acuerdos de consenso entre los requerimientos pedagógicos y las capacidades tecnológicas en un esquema ganar-ganar (H4), y removió bloqueos canalizando la sinergia de los 6 participantes (H6).
+  * **Maira Ortega (H4, H5, H6):** Analizó empáticamente las condiciones de aula del docente colombiano (H5) para formular contextos valorativos realistas y organizó la unidad temática en 5 módulos didácticos que aseguran un beneficio mutuo (ganar-ganar) tanto para el maestro que diseña como para el alumno que aprende en el aula (H4), apoyando la redacción sinérgica de los entregables (H6).
+  * **María Soto (H2, H4, H5):** Como Product Owner, definió con total claridad el propósito pedagógico central (fin en mente, H2), garantizando que el guion responda al constructivismo y a las competencias de la Guía 30 del MEN; comprendió profundamente la necesidad formativa de mitigar la sobrecarga burocrática docente (H5) y validó que el producto genere un valor transformador ganar-ganar para las instituciones educativas (H4).
+  * **María Ubarne (H2, H5, H6):** Lideró la articulación pedagógica de la diversidad y el enfoque inclusivo, garantizando que el Diseño Universal para el Aprendizaje (DUA) y el Plan Individual de Ajustes Razonables (PIAR) estén fundamentados psicológica y curricularmente (H2, H5), co-diseñando de forma sinérgica con los desarrolladores los criterios de evaluación formativa en cuatro niveles (H6).
+
 ---
 
 ## 6. Diagnóstico y Balance Global del Equipo

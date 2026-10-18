@@ -53,7 +53,15 @@
 
 ---
 
+### 5. Elaboración del Guion Didáctico Integral (ACT-011)
+- Se desarrolló formalmente el Guion Didáctico institucional de INSPIRATEC, estructurado en los 10 apartados obligatorios y respondiendo a la pregunta central formativa: *¿Qué aprenderá el usuario mediante este software, cómo lo aprenderá y qué evidencias permitirán reconocer ese aprendizaje?*.
+- Se realizó una auditoría integral del código fuente (`src/`) para sustentar cada apartado con evidencias de funcionamiento real (Wizard de 4 pasos, editor interactivo, generador de quizzes, flashcards, diapositivas y soporte DUA/PIAR), diferenciando capacidades existentes de propuestas futuras.
+- Se documentó el producto oficial en [`docs/pedagogia/GUION_DIDACTICO.md`](../pedagogia/GUION_DIDACTICO.md) y [`GUION_DIDACTICO.md`](../../GUION_DIDACTICO.md) en la raíz.
+- Se registró el uso de IA bajo el marco ROCAS en `docs/ia/REGISTRO_IA_ACT-011.md` y se actualizó la matriz de hábitos en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md` (Sección 5.12).
+
+---
+
 ## Acuerdos y Próximos Compromisos
-1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación y preparar la entrega de la Semana 10.
-2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend y de la arquitectura de Doble Lazo.
+1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011 y preparar la entrega de la Semana 10.
+2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend, del soporte multimodal y de la arquitectura de Doble Lazo.
 3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.

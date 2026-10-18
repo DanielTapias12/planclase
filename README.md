@@ -103,3 +103,16 @@ $$\text{Pantalla Inicial} \longrightarrow \text{Módulos Principales} \longright
   * Ficha de Actividad: [docs/actividades/ACT-006_MAPA_NAVEGACION.md](docs/actividades/ACT-006_MAPA_NAVEGACION.md)
   * Evidencias: [docs/evidencias/ACT-006/README.md](docs/evidencias/ACT-006/README.md)
   * Registro de IA (ROCAS): [docs/ia/REGISTRO_IA_ACT-006.md](docs/ia/REGISTRO_IA_ACT-006.md)
+
+---
+
+## 8. Guion Didáctico Institucional (ACT-011)
+
+Siguiendo el marco metodológico **MODESEC** (Fase II — Diseño Educativo), INSPIRATEC formaliza su Guion Didáctico integral fundamentado en el funcionamiento real del software y su finalidad pedagógica:
+
+* **Documento Maestro Pedagógico:** [docs/pedagogia/GUION_DIDACTICO.md](docs/pedagogia/GUION_DIDACTICO.md)
+* **Documento Ejecutivo:** [GUION_DIDACTICO.md](GUION_DIDACTICO.md)
+* **Ficha Técnica de Actividad:** [docs/actividades/ACT-011_GUION_DIDACTICO.md](docs/actividades/ACT-011_GUION_DIDACTICO.md)
+* **Evidencias:** [docs/evidencias/ACT-011/README.md](docs/evidencias/ACT-011/README.md)
+* **Registro Ético de IA (ROCAS):** [docs/ia/REGISTRO_IA_ACT-011.md](docs/ia/REGISTRO_IA_ACT-011.md)
+* **Análisis de los 7 Hábitos:** [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#512-act-011--elaboración-del-guion-didáctico-actividad-9)

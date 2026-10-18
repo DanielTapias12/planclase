@@ -59,12 +59,13 @@
 
 ### Semana 10
 * **Actividades principales:**
+  * **ACT-011:** Elaboración del Guion Didáctico (Actividad 9) — Producto: `GUION_DIDACTICO.md` y `docs/pedagogia/GUION_DIDACTICO.md` con los 10 apartados normativos y respuesta a la pregunta formativa central. Estado: COMPLETADA.
   * **ACT-017:** Lista de Chequeo para la Verificación del Frontend: UX, Movilidad y Patrones de Diseño (Pressman Cap. 12, 13 y 14) — Calificación Final: 30/32 pts (93.75% - Sobresaliente).
   * **ACT-018:** Lista de Chequeo para la Verificación del Frontend: Sistemas Tutores Inteligentes y Metacognición (Caro Piñeres, 2015) — Calificación: 24/24 pts (100% - Sobresaliente).
-* **Objetivo:** Verificar mediante evidencia tangible en código y ejecución el cumplimiento de modelos ergonómicos, principios de movilidad, patrones de diseño y la arquitectura canónica de 4 módulos y doble lazo de razonamiento de un Sistema Tutor Inteligente.
+* **Objetivo:** Formalizar el guion didáctico institucional de mediación pedagógica y verificar mediante evidencia tangible en código y ejecución el cumplimiento ergonómico y la arquitectura canónica de 4 módulos y doble lazo de razonamiento.
 * **Participantes:** Todo el equipo (Zoe Peñata, Luis Caldera, Daniel Tapias, Maira Ortega, María Soto, María Ubarne).
 * **Estado:** COMPLETADA / PRODUCTOS CONSOLIDADOS.
-* **Evidencias:** `docs/actividades/ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md`, `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md`, `docs/diario-campo/SEMANA_10.md`, `docs/ia/REGISTRO_IA_ACT-017.md`, `docs/ia/REGISTRO_IA_ACT-018.md`.
+* **Evidencias:** `GUION_DIDACTICO.md`, `docs/pedagogia/GUION_DIDACTICO.md`, `docs/actividades/ACT-011_GUION_DIDACTICO.md`, `docs/evidencias/ACT-011/README.md`, `docs/actividades/ACT-017_LISTA_CHEQUEO_FRONTEND_PRESSMAN.md`, `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md`, `docs/diario-campo/SEMANA_10.md`, `docs/ia/REGISTRO_IA_ACT-011.md`.
 
 ---
 
@@ -72,7 +73,7 @@
 Tras la auditoría integral, se declara que las siguientes actividades **no cuentan con evidencia disponible** en el repositorio:
 - ACT-005
 - ACT-007
-- ACT-010, ACT-011, ACT-012
+- ACT-010, ACT-012
 
 ## Productos MODESEC Pendientes de Verificación
 - Guía de Metáforas (NO ENCONTRADA)

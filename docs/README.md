@@ -26,5 +26,6 @@ La documentación está organizada para mantener la trazabilidad entre la planif
   - [Registro de Uso de IA](ia/REGISTRO_USO_IA.md)
 
 - [**pedagogia/**](pedagogia/):
+  - [Guion Didáctico (MODESEC)](pedagogia/GUION_DIDACTICO.md)
   - [Diseño de Aprendizaje (MODESEC)](pedagogia/DISENO_DE_APRENDIZAJE.md)
   - [Modelo Pedagógico](pedagogia/MODELO_PEDAGOGICO.md)

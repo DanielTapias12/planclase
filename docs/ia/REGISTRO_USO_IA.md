@@ -102,3 +102,13 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 * **A — Acción:** Aplicación del instrumento de 12 ítems ponderado a 24 puntos (escala C: 2 pts, CP: 1 pt, NC: 0 pts, NA: N/A), documentando evidencias observables en componentes JSX, servicios de IA y estilos CSS, consolidando el dictamen cuantitativo y cualitativo.
 * **S — Salida / Validación:** Creación de `docs/actividades/ACT-018_LISTA_CHEQUEO_STI_CARO.md` y `docs/ia/REGISTRO_IA_ACT-018.md` con puntaje de 24/24 pts (100% - Sobresaliente). Validado técnicamente por el equipo de desarrollo frontend y pedagógico.
 
+---
+
+### 8. Elaboración del Guion Didáctico Integral (ACT-011)
+
+* **R — Rol:** Especialista Senior en Diseño Instruccional, Informática Educativa, Metodología MODESEC y Pedagogía Curricular Colombiana.
+* **O — Objetivo:** Redactar el Guion Didáctico integral de INSPIRATEC desarrollando los 10 apartados obligatorios requeridos institucionalmente, respondiendo a la pregunta central del aprendizaje del usuario y diferenciando de forma explícita capacidades existentes de propuestas futuras.
+* **C — Contexto:** Actividad 9 (ACT-011) de la asignatura Diseño y Desarrollo de Software Educativo III, articulando MODESEC con los componentes reales del frontend, los servicios de IA de Gemini y la Guía 30 del MEN.
+* **A — Acción:** Prompt solicitando análisis holístico del repositorio, diseño pedagógico centrado en el usuario docente, formulación de 7 objetivos didácticos observables, fundamentación de carga cognitiva y autodeterminación, y estructuración de la unidad temática en 5 módulos secuenciales.
+* **S — Salida / Validación:** Creación de `docs/pedagogia/GUION_DIDACTICO.md`, `GUION_DIDACTICO.md` (raíz), ficha `docs/actividades/ACT-011_GUION_DIDACTICO.md`, registro individual `docs/ia/REGISTRO_IA_ACT-011.md` y carpeta de evidencias `docs/evidencias/ACT-011/README.md`. Validado de forma unánime por el Product Owner, Product Owner Support, Scrum Master y equipo de desarrollo.
+
