@@ -123,6 +123,8 @@ function AutoResizingTextarea({ value, onChange, placeholder, style, ...props })
       {...props}
     />
   );
+}
+
 /**
  * CollapsibleMomentCard
  * Convierte cada fila de la matriz didáctica en una tarjeta colapsable táctil
@@ -596,7 +598,10 @@ export default function StructuredPlanDocument({
                 <div key={block.id || idx} style={{ margin: '20px 0' }}>
                   <hr style={{ border: 'none', borderTop: '1px solid rgba(49, 91, 84, 0.16)' }} />
                 </div>
-                        case 'table': {
+              );
+            }
+
+            case 'table': {
               const headers = block.headers || [];
               const rows = block.rows || [];
 
