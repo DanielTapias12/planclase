@@ -82,9 +82,9 @@ Conforme al marco de efectividad personal e interpersonal de Stephen R. Covey ar
 
 ## 6. Productos y Evidencias
 - **Producto Central:** [MAPA_NAVEGACION.md](../diseno-multimedial/MAPA_NAVEGACION.md)
-- **Evidencia Gráfica Vectorial:** [MAPA_NAVEGACION.svg](../diseno-multimedial/MAPA_NAVEGACION.svg)
-- **Carpeta de Evidencias:** `docs/evidencias/ACT-006/`
-- **Ubicación:** `docs/diseno-multimedial/`
+- **Evidencia Gráfica Vectorial (Oficial):** [MAPA_NAVEGACION.svg](../evidencias/ACT-006/MAPA_NAVEGACION.svg)
+- **Copia Canónica Multimedial:** [MAPA_NAVEGACION.svg](../diseno-multimedial/MAPA_NAVEGACION.svg)
+- **Carpeta de Evidencias:** [`docs/evidencias/ACT-006/`](../evidencias/ACT-006/README.md)
 
 ---
 
