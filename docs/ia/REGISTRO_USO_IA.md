@@ -74,17 +74,27 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 
 ---
 
-### 5. Auditoría Integral de Usabilidad y Accesibilidad por Pantallas (ACT-015)
+### 5. Desarrollo del Frontend e Integración de Interfaz (ACT-014)
 
-* **R — Rol:** Auditor de Usabilidad Heurística y Accesibilidad DUA/WCAG 2.1 AA.
-* **O — Objetivo:** Evaluar cada pantalla desarrollada en torno a Control del Usuario (regresar/cancelar/navegar), Carga Cognitiva (información/memoria/iconos) y Consistencia (colores/botones/tipografía).
-* **C — Contexto:** Validación de interfaces tras el rediseño con estética Glassmorphism 2026 y modales con `createPortal` montados en `document.body`.
-* **A — Acción:** Evaluación heurística y calificación detallada de las 12 pantallas y componentes transversales del aplicativo.
-* **S — Salida / Validación:** Ficha técnica actualizada en `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md`. Verificado en código y vistas activas por los desarrolladores frontend y facilitadores.
+* **R — Rol:** Arquitecto de Software Frontend, Ingeniero de Integración React 19 / Vite y Auditor de Calidad de Código (QA).
+* **O — Objetivo:** Integrar modularmente las 15 páginas de INSPIRATEC, el Wizard de 4 fases, el editor estructurado, el sistema de modales con `createPortal`, y una suite de 7 pruebas de aceptación automatizadas en Node.js.
+* **C — Contexto:** Cierre de la Fase III y consolidación del frontend sobre Vite, React 19, Tailwind CSS y Zustand.
+* **A — Acción:** Estructuración de componentes, creación de modales con portal, migas de pan reactivas, y suite de pruebas para KaTeX, grafo de prerrequisitos, diálogo socrático y materiales interactivos HTML.
+* **S — Salida / Validación:** Ficha `docs/actividades/ACT-014_DESARROLLO_FRONTEND.md`, registro `docs/ia/REGISTRO_IA_ACT-014.md` y evidencias en `docs/evidencias/ACT-014/README.md`. Batería `npm test` aprobada al 100% (7/7 suites). Validado en ejecución por el equipo de desarrollo y Scrum Master.
 
 ---
 
-### 6. Verificación de Frontend: UX, Movilidad y Patrones Pressman (ACT-017)
+### 6. Auditoría Integral de Usabilidad y Accesibilidad por Pantallas (ACT-015)
+
+* **R — Rol:** Auditor de Usabilidad Heurística y Accesibilidad DUA/WCAG 2.1 AA.
+* **O — Objetivo:** Evaluar cada una de las 15 pantallas bajo criterios de Control del Usuario, Carga Cognitiva y Consistencia, asegurando ratios de contraste > 4.5:1, soporte de teclado, atajos `Escape`, modo lectura accesible y adaptaciones DUA/PIAR.
+* **C — Contexto:** Validación de interfaces tras el rediseño con estética Glassmorphism 2026 y modales con `createPortal` montados en `document.body`.
+* **A — Acción:** Evaluación heurística y calificación detallada de las 15 pantallas, componentes transversales y resolución de hallazgos de usabilidad (barra fija en editor, stepper circular en móvil y SUS estandarizado).
+* **S — Salida / Validación:** Ficha técnica completada en `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md`, registro `docs/ia/REGISTRO_IA_ACT-015.md` y carpeta `docs/evidencias/ACT-015/README.md`. Validación humana colegiada y satisfacción evaluada en SUS de 86.4/100.
+
+---
+
+### 7. Verificación de Frontend: UX, Movilidad y Patrones Pressman (ACT-017)
 
 * **R — Rol:** Experto Senior en Ingeniería de Software Frontend y Auditor Ergonómico de Interfaces Educativas.
 * **O — Objetivo:** Auditar exhaustivamente la aplicación bajo los 16 criterios formales de los Capítulos 12, 13 y 14 de Roger S. Pressman & Bruce R. Maxim (9na Edición), cuantificando el nivel de cumplimiento y sustentándolo con evidencias tangibles de código y comportamiento de la interfaz interactiva.
@@ -94,7 +104,7 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 
 ---
 
-### 7. Verificación de Frontend: Sistemas Tutores Inteligentes y Metacognición (ACT-018)
+### 8. Verificación de Frontend: Sistemas Tutores Inteligentes y Metacognición (ACT-018)
 
 * **R — Rol:** Experto Senior en Frontend, Especialista en Sistemas Tutores Inteligentes (STI / ITS) y Metacognición Computacional (Marco Teórico Dr. Manuel Fernando Caro Piñeres, UNAL 2015).
 * **O — Objetivo:** Auditar exhaustivamente el frontend de INSPIRATEC verificando el reflejo en la interfaz de los 4 módulos canónicos de Wenger/Caro, las 5 características de interfaz adaptativa donde se experimenta la tutoría inteligente y el soporte a la metacognición mediante la arquitectura de Doble Lazo de Razonamiento (*Double-Loop Architecture*).
@@ -104,7 +114,7 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 
 ---
 
-### 8. Elaboración del Guion Didáctico Integral (ACT-011)
+### 9. Elaboración del Guion Didáctico Integral (ACT-011)
 
 * **R — Rol:** Especialista Senior en Diseño Instruccional, Informática Educativa, Metodología MODESEC y Pedagogía Curricular Colombiana.
 * **O — Objetivo:** Redactar el Guion Didáctico integral de INSPIRATEC desarrollando los 10 apartados obligatorios requeridos institucionalmente, respondiendo a la pregunta central del aprendizaje del usuario y diferenciando de forma explícita capacidades existentes de propuestas futuras.
@@ -114,7 +124,7 @@ Cada interacción significativa se documenta utilizando el marco estructurado:
 
 ---
 
-### 9. Diseño de la Guía de Metáforas MODESEC (ACT-012)
+### 10. Diseño de la Guía de Metáforas MODESEC (ACT-012)
 
 * **R — Rol:** Especialista Senior en UI/UX, Ergonomía Cognitiva y Diseño Multimedial MODESEC.
 * **O — Objetivo:** Elaborar la Guía de Metáforas de INSPIRATEC mediante un inventario fidedigno de 30 elementos gráficos reales del software, extrayendo sus fuentes vectoriales originales de `lucide-react` y fundamentando la metáfora instrumental implícita del «Taller de Co-Creación del Arquitecto Curricular» en la tabla institucional de 3 columnas (Nombre, Imagen, Descripción).

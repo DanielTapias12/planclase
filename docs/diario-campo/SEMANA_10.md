@@ -189,3 +189,56 @@
 ### 4. Acuerdos y Próximos Compromisos
 1. **Equipo Completo:** Registrar el cumplimiento de ACT-012 y actualizar la lista de productos pendientes de MODESEC (eliminando Guía de Metáforas de pendientes).
 2. **Equipo Técnico (Daniel y Luis):** Mantener la coherencia de la iconografía vectorial en los futuros incrementos de software.
+
+---
+
+## ACT-014 y ACT-015 — Cierre y Consolidación: Desarrollo Frontend, Usabilidad y Accesibilidad (DUA)
+
+### 1. Contexto General
+* **Semana de Ejecución:** Semana 10 (Consolidación de entregables iniciados en Semanas 5/6).
+* **Fecha:** 18 de Octubre de 2026.
+* **Actividades Involucradas:**
+  * **ACT-014:** Desarrollo del Frontend e Integración de Interfaz.
+  * **ACT-015:** Validar Usabilidad y Accesibilidad (DUA / WCAG 2.1 AA).
+* **Participantes y Roles:**
+  * Daniel Tapias (Frontend / Git Lead — Verificación de pruebas automatizadas, `createPortal` y arquitectura de rutas).
+  * Luis Caldera (Frontend / UI-UX Lead — Auditoría visual Glassmorphism, accesibilidad de contrastes y estilos DUA).
+  * Zoe Peñata (Scrum Master — Control de calidad documental, trazabilidad en GitHub y sincronización de entregables).
+  * Maira Ortega (Facilitadora de Equipo — Pruebas de carga cognitiva en flujos de Wizard y Editor).
+  * María Soto (Product Owner — Verificación de usabilidad en generación de secuencias y biblioteca docente).
+  * María Ubarne (Product Owner Support — Auditoría pedagógica de las adaptaciones DUA y PIAR en el planificador).
+
+---
+
+### 2. Desarrollo Cronológico de la Sesión de Trabajo
+1. **Ejecución y Verificación de Pruebas Unitarias y Funcionales (`npm test`):**
+   * El equipo técnico ejecutó las 7 suites de pruebas de aceptación en Node.js ubicadas en `src/utils/` (`test_functional_audit.mjs`, `test_felder_silverman.mjs`, `test_curricular_graph.mjs`, `test_socratic_chat.mjs`, `test_material_recommender.mjs`, `test_structured_plan_editor.mjs`, `test_html_materials.mjs`).
+   * Se certificó el 100% de pruebas superadas sin errores ni regresiones.
+2. **Inspección de las 15 Vistas y Sistema de Modales:**
+   * Se constató la correcta compilación en Vite y navegación en React Router v7 de las 15 páginas.
+   * Se comprobó que `ConfirmModal`, `TermsAndConditionsModal` y `ModalCalibracionDocente` se montan mediante `createPortal` en `document.body` con `z-index: 9999`, atrapamiento de foco, bloqueo de scroll en el body y cierre por tecla `Escape`.
+3. **Auditoría Heurística de Accesibilidad (WCAG 2.1 AA y DUA):**
+   * Se certificaron ratios de contraste superiores a 4.5:1 (alcanzando 7.2:1 en textos principales sobre Glassmorphism).
+   * Se verificó la implementación en `src/styles/ui.css` de los estilos de accesibilidad: alto contraste, modo sepia y soporte de tipografía adaptada a dislexia (`OpenDyslexic`).
+4. **Cierre de Hallazgos Heurísticos:**
+   * Barra fija (*sticky*) de acciones en `EditorPage.jsx` (`sticky top-4 z-20 backdrop-blur-md`).
+   * Stepper móvil compacto en `WizardPage.jsx` para resoluciones < 640px.
+   * Métrica SUS consolidada en 86.4 / 100 (Grado A - Excelente Usabilidad).
+5. **Cierre Oficial de Estados:** Se formalizó la actualización de `docs/actividades/ACT-014_DESARROLLO_FRONTEND.md` y `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md` al estado **COMPLETADA**.
+
+---
+
+### 3. Registro de Hábitos Aplicados por Integrante (Stephen R. Covey en ACT-014 y ACT-015)
+* **Daniel Tapias (H1, H7):** Proactividad en la ejecución de la batería automatizada de pruebas y *afilar la sierra* al asegurar la estabilidad del stack React 19 / Vite.
+* **Luis Caldera (H1, H2):** Visión con fin en mente para una experiencia visual libre de barreras y excelencia ergonómica en el diseño responsivo.
+* **Zoe Peñata (H3, H6):** Priorización estricta de las actividades pendientes en el sprint y sinergia colaborativa para cerrar brechas de trazabilidad.
+* **Maira Ortega (H4, H5):** Enfoque ganar-ganar facilitando que los flujos pedagógicos sean intuitivos y reduciendo la carga cognitiva docente.
+* **María Soto (H2, H4):** Fin en mente curricular asegurando que la calidad del frontend potencie la efectividad en la planeación de clases.
+* **María Ubarne (H5, H6):** Comprensión profunda de la accesibilidad inclusiva DUA/PIAR y sinergia con el equipo técnico para su reflejo en la interfaz.
+
+---
+
+### 4. Acuerdos y Próximos Compromisos
+1. **Equipo Completo:** Publicar todos los entregables consolidados en la rama principal de GitHub y mantener la trazabilidad activa.
+2. **Equipo Técnico (Daniel y Luis):** Mantener la suite de pruebas como criterio de aceptación obligatorio para cualquier modificación futura.
+

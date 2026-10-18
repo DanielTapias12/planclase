@@ -130,3 +130,21 @@ En cumplimiento de la **Fase II: Diseño Multimedial** de MODESEC, INSPIRATEC do
 * **Evidencias:** [docs/evidencias/ACT-012/README.md](docs/evidencias/ACT-012/README.md)
 * **Registro Ético de IA (ROCAS):** [docs/ia/REGISTRO_IA_ACT-012.md](docs/ia/REGISTRO_IA_ACT-012.md)
 * **Análisis de los 7 Hábitos:** [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#513-act-012--diseño-de-la-guía-de-metáforas-actividad-10)
+
+---
+
+## 10. Desarrollo Frontend, Usabilidad y Accesibilidad DUA (ACT-014 y ACT-015)
+
+En consolidación de las Fases II y III de MODESEC y los estándares de ingeniería de software educativo:
+
+* **Desarrollo Frontend e Integración (ACT-014):**
+  * Ficha Técnica Oficial: [docs/actividades/ACT-014_DESARROLLO_FRONTEND.md](docs/actividades/ACT-014_DESARROLLO_FRONTEND.md)
+  * Evidencias y Pruebas Automatizadas (`npm test` 7/7 suites): [docs/evidencias/ACT-014/README.md](docs/evidencias/ACT-014/README.md)
+  * Registro Ético de IA (ROCAS): [docs/ia/REGISTRO_IA_ACT-014.md](docs/ia/REGISTRO_IA_ACT-014.md)
+  * Análisis de los 7 Hábitos: [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#59-act-014--desarrollo-frontend-e-integración-de-interfaz)
+* **Validación de Usabilidad y Accesibilidad DUA (ACT-015):**
+  * Ficha Técnica Oficial: [docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md](docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md)
+  * Evidencias Heurísticas y WCAG 2.1 AA (SUS 86.4/100): [docs/evidencias/ACT-015/README.md](docs/evidencias/ACT-015/README.md)
+  * Registro Ético de IA (ROCAS): [docs/ia/REGISTRO_IA_ACT-015.md](docs/ia/REGISTRO_IA_ACT-015.md)
+  * Análisis de los 7 Hábitos: [docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md](docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md#510-act-015--validar-usabilidad-y-accesibilidad-dua)
+

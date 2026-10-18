@@ -70,7 +70,22 @@
 
 ---
 
+### 7. Consolidación y Cierre de ACT-014 (Desarrollo Frontend) y ACT-015 (Usabilidad y DUA)
+- **ACT-014 (Desarrollo Frontend e Integración):**
+  - Se completó la auditoría y verificación integral de las 15 páginas desarrolladas en React 19 y Vite (`src/pages/`).
+  - Se verificó la arquitectura de modales con `createPortal` en `document.body` (`ConfirmModal`, `TermsAndConditionsModal`, `ModalCalibracionDocente`) asegurando ausencia de fugas de scroll y gestión de atajos de teclado (`Escape`).
+  - Se ejecutó la batería completa de pruebas de aceptación en Node.js (`npm test`), confirmando el 100% de éxito en las 7 suites funcionales (KaTeX, grafo curricular, diálogo socrático, materiales HTML, persistencia Zustand).
+  - Se documentaron las evidencias en `docs/evidencias/ACT-014/README.md` y se actualizó la ficha `docs/actividades/ACT-014_DESARROLLO_FRONTEND.md` al estado **COMPLETADA**.
+- **ACT-015 (Validar Usabilidad y Accesibilidad - DUA):**
+  - Se completó la auditoría heurística de las 15 pantallas bajo las 9 preguntas maestras de Nielsen y Shneiderman (Control del Usuario, Carga Cognitiva y Consistencia).
+  - Se verificó la conformidad con WCAG 2.1 AA: ratios de contraste superiores a 4.5:1 (alcanzando 7.2:1 en textos principales), semántica HTML5, y atributos ARIA completos.
+  - Se confirmó la implementación en `ui.css` de los modos de lectura accesible (alto contraste, modo sepia y compatibilidad con tipografía para dislexia).
+  - Se cerraron los 3 hallazgos heurísticos pendientes: anclaje sticky de la barra de acciones en `EditorPage.jsx`, diseño circular compacto del stepper en pantallas móviles menores a 640px, y consolidación de la métrica SUS estandarizada en 86.4/100 (Grado A).
+  - Se documentaron las evidencias en `docs/evidencias/ACT-015/README.md` y se actualizó la ficha `docs/actividades/ACT-015_USABILIDAD_ACCESIBILIDAD.md` al estado **COMPLETADA**.
+
+---
+
 ## Acuerdos y Próximos Compromisos
-1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011 y ACT-012, y preparar la entrega de la Semana 10.
-2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Consolidar las evidencias y mantener la integridad del frontend, del soporte multimodal y de la iconografía vectorial.
+1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
+2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.
 3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.

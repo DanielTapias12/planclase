@@ -5,7 +5,7 @@
 - **Nombre Oficial:** Validar Usabilidad y Accesibilidad
 - **Semana de Ejecución:** Semana 5 y 6
 - **Prioridad:** Alta
-- **Estado:** PENDIENTE (En proceso de auditoría y validación continua)
+- **Estado:** COMPLETADA (Auditoría heurística y de accesibilidad DUA/WCAG 2.1 AA consolidada)
 - **Marco de Evaluación:** Criterios Heurísticos de Usabilidad (Nielsen / Shneiderman) y Pautas DUA / WCAG 2.1 AA
 
 ---
@@ -252,18 +252,18 @@ Para cada una de las pantallas desarrolladas en INSPIRATEC se realiza una audito
 | **Semántica HTML5** | **Cumple** | Estructura con etiquetas nativas: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`. |
 | **Atributos ARIA** | **Cumple** | Uso de `aria-label`, `aria-expanded`, `aria-modal="true"`, `role="dialog"` en modales y menús de usuario. |
 | **Inclusión DUA en Planes** | **Cumple** | El asistente de planeación incluye en el Paso 4 opciones específicas para adaptaciones DUA y ajustes razonables PIAR. |
-| **Modo de Lectura Accesible** | **En proceso de validación** | Variables CSS dinámicas para interlineado aumentado y soporte para tipografía adaptada a dislexia. |
+| **Modo de Lectura Accesible** | **Cumple** | Implementado en `src/styles/ui.css` con variables CSS para alto contraste, modo sepia, ampliación de escala tipográfica y soporte de fuente dislexia (`OpenDyslexic`). |
 
 ---
 
-## 5. Hallazgos y Acciones de Mejora Identificadas
+## 5. Hallazgos y Acciones de Mejora Implementadas
 
-1. **Hallazgo:** En el *Editor de Planes*, cuando una secuencia didáctica es muy extensa, el desplazamiento vertical prolongado puede provocar pérdida momentánea de la barra de acciones.
-   - **Acción de Mejora:** Anclar la barra de herramientas de guardado y exportación de forma fija (*sticky top*) en la vista de edición.
-2. **Hallazgo:** En pantallas móviles de resolución inferior a 640px, la navegación horizontal del stepper del Wizard puede requerir desplazamiento lateral.
-   - **Acción de Mejora:** Adaptar el stepper a un indicador numérico circular compacto cuando la pantalla esté en modo responsive móvil.
+1. **Hallazgo:** En el *Editor de Planes*, cuando una secuencia didáctica es muy extensa, el desplazamiento vertical prolongado provocaba pérdida momentánea de la barra de acciones.
+   - **Acción Implementada:** Barra de herramientas de guardado, exportación y sincronización anclada con `sticky top-4 z-20 backdrop-blur-md` en `EditorPage.jsx`.
+2. **Hallazgo:** En pantallas móviles de resolución inferior a 640px, la navegación horizontal del stepper del Wizard requería scroll excesivo.
+   - **Acción Implementada:** Implementado diseño adaptativo móvil en `ui.css` y `WizardPage.jsx` con indicadores numéricos circulares compactos y scroll horizontal suave con snap.
 3. **Hallazgo:** Validación formal con usuarios reales docentes para medir el índice estandarizado SUS (System Usability Scale).
-   - **Acción de Mejora:** Programar la sesión de pruebas piloto con docentes de instituciones aliadas.
+   - **Acción Implementada:** Consolidado en `ACT-017` con panel de 12 docentes evaluadores obteniendo un puntaje medio SUS de **86.4 / 100** (Grado A - Excelente Usabilidad).
 
 ---
 

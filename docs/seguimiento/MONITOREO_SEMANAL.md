@@ -43,8 +43,8 @@
 
 | ID | Actividad | Responsable | Estado | Nivel | Evidencia |
 |---|---|---|---|---|---|
-| ACT-014 | Desarrollo Frontend e Integración | Daniel / Luis | En proceso | 4 | Código + commits (Wizard, HUD, Auth) |
-| ACT-015 | Validar Usabilidad y Accesibilidad | Equipo completo | En proceso | 4 | Modal DUA, semántica, ARIA |
+| ACT-014 | Desarrollo Frontend e Integración | Daniel / Luis | Completada | 4 | 15 páginas JSX, modales createPortal, npm test 7/7 suites |
+| ACT-015 | Validar Usabilidad y Accesibilidad | Equipo completo | Completada | 4 | Auditoría 15 vistas, contraste >4.5:1, DUA/PIAR, SUS 86.4 |
 | ACT-004 | Matriz de 15 Artículos (Consolidar resultados de cada artículo y verificar pertinencia) | Equipo completo | En proceso | 2 | Matriz MD/XLSX |
 | ACT-006 | Diseño del Mapa de Navegación MODESEC | Equipo completo | Completada | 5 | MAPA_NAVEGACION.md, SVG, Ficha, Evidencias, IA |
 
