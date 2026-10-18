@@ -285,3 +285,110 @@
   user-select: none;
 }
 
+/* ==========================================================================
+   REGLAS CORRECTIVAS MOBILE-FIRST (< 640px)
+   ========================================================================== */
+body, #root {
+  overflow-x: hidden;
+}
+
+@media (max-width: 640px) {
+  /* 1. Contenedor principal en móvil: flujo vertical estricto sin anchos fijos */
+  .app-shell-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+  }
+
+  .app-shell-main {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .app-main-content-scroll {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  /* 2. Paneles de contenido: Ancho 100%, centrados y sin desborde */
+  .mgmt-container,
+  .home-content-container,
+  .editor-view,
+  .adn-container,
+  .wizard-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 16px 12px 36px !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    overflow-x: hidden !important;
+  }
+
+  .mgmt-header,
+  .home-editorial-welcome-panel,
+  .planificador-header-panel,
+  .editor-toolbar-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 18px 16px !important;
+    margin: 0 0 16px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+    float: none !important;
+    position: static !important;
+  }
+
+  .mgmt-header-info {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Apilar botones de estadísticas y acciones ('Crear Nuevo Plan', 'Sincronizar') verticalmente con gap de 12px */
+  .mgmt-stats-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 12px !important;
+    box-sizing: border-box !important;
+    margin-top: 4px !important;
+  }
+
+  .mgmt-stats-bar .mgmt-stat-pill,
+  .mgmt-stats-bar .btn,
+  .mgmt-stats-bar .btn-primary,
+  .mgmt-stats-bar .btn-secondary,
+  .mgmt-stats-bar .btn-outline {
+    width: 100% !important;
+    min-height: 46px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+  }
+}
+
+
