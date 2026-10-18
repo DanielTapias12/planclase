@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { parsePlanToStructuredBlocks, serializeStructuredBlocksToMarkdown } from '../utils/planDocumentParser';
-import { Plus, Trash2, Check, X, Table as TableIcon } from 'lucide-react';
+import { Plus, Trash2, Check, X, Table as TableIcon, ChevronDown, ChevronUp } from 'lucide-react';
 import EmbeddedInteractiveResource from './EmbeddedInteractiveResource';
 
 const GENERATE_IMAGE_REGEX = /\[GENERATE_IMAGE:\s*(?:&quot;|["'])(.*?)(?:&quot;|["'])\]/i;
@@ -122,6 +122,87 @@ function AutoResizingTextarea({ value, onChange, placeholder, style, ...props })
       }}
       {...props}
     />
+  );
+/**
+ * CollapsibleMomentCard
+ * Convierte cada fila de la matriz didáctica en una tarjeta colapsable táctil
+ * para dispositivos móviles y pantallas estrechas (< 768px).
+ */
+function CollapsibleMomentCard({
+  rIdx,
+  row,
+  headers,
+  onCellChange,
+  onRemove,
+  canRemove
+}) {
+  const [isOpen, setIsOpen] = useState(true);
+  const rawTitle = row[0] || `Momento ${rIdx + 1}`;
+  const displayTitle = rawTitle.replace(/\*\*/g, '').trim();
+
+  return (
+    <div className="structured-moment-card">
+      <div 
+        className="structured-moment-header"
+        onClick={() => setIsOpen(!isOpen)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+      >
+        <div className="structured-moment-title-wrap">
+          <span className="structured-moment-badge">Fase {rIdx + 1}</span>
+          <span className="structured-moment-title">{displayTitle || `Momento ${rIdx + 1}`}</span>
+        </div>
+        <div className="structured-moment-actions" onClick={(e) => e.stopPropagation()}>
+          {canRemove && (
+            <button
+              type="button"
+              className="structured-moment-del-btn"
+              onClick={onRemove}
+              title="Eliminar este momento"
+              aria-label={`Eliminar momento ${rIdx + 1}`}
+            >
+              <Trash2 size={15} />
+            </button>
+          )}
+          <button
+            type="button"
+            className="structured-moment-toggle-btn"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Contraer momento" : "Expandir momento"}
+          >
+            {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </button>
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="structured-moment-body">
+          {headers.map((h, cIdx) => (
+            <div key={cIdx} className="structured-moment-field">
+              <label className="structured-moment-label">
+                {h}
+              </label>
+              <AutoResizingTextarea
+                value={row[cIdx] || ''}
+                onChange={(e) => onCellChange(cIdx, e.target.value)}
+                placeholder={`Contenido de ${h}...`}
+                style={{
+                  fontSize: '13.5px',
+                  lineHeight: '1.5',
+                  padding: '9px 11px',
+                  borderRadius: '9px',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid rgba(49, 91, 84, 0.22)',
+                  width: '100%',
+                  boxSizing: 'border-box'
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -515,10 +596,7 @@ export default function StructuredPlanDocument({
                 <div key={block.id || idx} style={{ margin: '20px 0' }}>
                   <hr style={{ border: 'none', borderTop: '1px solid rgba(49, 91, 84, 0.16)' }} />
                 </div>
-              );
-            }
-
-            case 'table': {
+                        case 'table': {
               const headers = block.headers || [];
               const rows = block.rows || [];
 
@@ -532,10 +610,10 @@ export default function StructuredPlanDocument({
                     border: '1px solid rgba(49, 91, 84, 0.22)',
                     backgroundColor: '#FFFFFF',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                    overflowX: 'auto'
+                    overflow: 'hidden'
                   }}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', backgroundColor: '#EDF3F1', borderBottom: '1.5px solid #CBD5E1' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', backgroundColor: '#EDF3F1', borderBottom: '1.5px solid #CBD5E1', flexWrap: 'wrap', gap: '8px' }}>
                     <span style={{ fontSize: '13px', fontWeight: 700, color: '#142B25', display: 'flex', alignItems: 'center', gap: '6px' }}>
                       <TableIcon size={15} style={{ color: '#315B54' }} /> Secuencia Didáctica / Matriz Curricular
                     </span>
@@ -543,84 +621,124 @@ export default function StructuredPlanDocument({
                       type="button"
                       className="btn-outline"
                       onClick={() => handleAddTableRow(idx)}
-                      style={{ padding: '4px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', backgroundColor: '#FFFFFF' }}
+                      style={{ padding: '6px 12px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: '#FFFFFF', minHeight: '36px' }}
                       title="Agregar un nuevo momento o fila a la secuencia"
                     >
-                      <Plus size={13} /> Añadir fila
+                      <Plus size={13} /> Añadir momento
                     </button>
                   </div>
 
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-                    <thead>
-                      <tr>
-                        {headers.map((h, hIdx) => (
-                          <th 
-                            key={hIdx} 
-                            style={{ 
-                              backgroundColor: '#F8FAF9', 
-                              color: '#142B25', 
-                              fontWeight: 700, 
-                              padding: '10px 14px', 
-                              borderBottom: '1px solid #CBD5E1', 
-                              textAlign: 'left' 
-                            }}
-                          >
-                            {h}
-                          </th>
-                        ))}
-                        <th style={{ width: '48px', backgroundColor: '#F8FAF9', borderBottom: '1px solid #CBD5E1' }}></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rows.map((row, rIdx) => (
-                        <tr key={rIdx} style={{ borderBottom: '1px solid #E2E8F0' }}>
-                          {headers.map((_, cIdx) => (
-                            <td key={cIdx} style={{ padding: '8px 10px', verticalAlign: 'top' }}>
-                              <AutoResizingTextarea
-                                value={row[cIdx] || ''}
-                                onChange={(e) => handleTableCellChange(idx, rIdx, cIdx, e.target.value)}
-                                placeholder={`Contenido...`}
-                                style={{
-                                  fontSize: '13.5px',
-                                  lineHeight: '1.55',
-                                  fontWeight: cIdx === 0 ? 600 : 400,
-                                  color: cIdx === 0 ? '#142B25' : '#1C1917',
-                                  padding: '8px 10px'
-                                }}
-                              />
-                            </td>
+                  {/* VISTA ESCRITORIO / TABLET: Tabla Clásica con Scroll Horizontal */}
+                  <div className="structured-table-desktop-view" style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                      <thead>
+                        <tr>
+                          {headers.map((h, hIdx) => (
+                            <th 
+                              key={hIdx} 
+                              style={{ 
+                                backgroundColor: '#F8FAF9', 
+                                color: '#142B25', 
+                                fontWeight: 700, 
+                                padding: '10px 14px', 
+                                borderBottom: '1px solid #CBD5E1', 
+                                textAlign: 'left' 
+                              }}
+                            >
+                              {h}
+                            </th>
                           ))}
-                          <td style={{ padding: '8px 4px', textAlign: 'center', verticalAlign: 'middle' }}>
-                            {rows.length > 1 && (
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveTableRow(idx, rIdx)}
-                                style={{
-                                  background: 'none',
-                                  border: 'none',
-                                  color: '#DC2626',
-                                  cursor: 'pointer',
-                                  padding: '6px',
-                                  borderRadius: '6px',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  opacity: 0.7,
-                                  transition: 'opacity 0.2s ease'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-                                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
-                                title="Eliminar fila"
-                                aria-label="Eliminar fila"
-                              >
-                                <Trash2 size={15} />
-                              </button>
-                            )}
-                          </td>
+                          <th style={{ width: '48px', backgroundColor: '#F8FAF9', borderBottom: '1px solid #CBD5E1' }}></th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {rows.map((row, rIdx) => (
+                          <tr key={rIdx} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                            {headers.map((_, cIdx) => (
+                              <td key={cIdx} style={{ padding: '8px 10px', verticalAlign: 'top' }}>
+                                <AutoResizingTextarea
+                                  value={row[cIdx] || ''}
+                                  onChange={(e) => handleTableCellChange(idx, rIdx, cIdx, e.target.value)}
+                                  placeholder={`Contenido...`}
+                                  style={{
+                                    fontSize: '13.5px',
+                                    lineHeight: '1.55',
+                                    fontWeight: cIdx === 0 ? 600 : 400,
+                                    color: cIdx === 0 ? '#142B25' : '#1C1917',
+                                    padding: '8px 10px'
+                                  }}
+                                />
+                              </td>
+                            ))}
+                            <td style={{ padding: '8px 4px', textAlign: 'center', verticalAlign: 'middle' }}>
+                              {rows.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveTableRow(idx, rIdx)}
+                                  style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: '#DC2626',
+                                    cursor: 'pointer',
+                                    padding: '8px',
+                                    borderRadius: '6px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    opacity: 0.7,
+                                    transition: 'opacity 0.2s ease',
+                                    minHeight: '36px',
+                                    minWidth: '36px'
+                                  }}
+                                  onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                                  onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
+                                  title="Eliminar fila"
+                                  aria-label="Eliminar fila"
+                                >
+                                  <Trash2 size={15} />
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* VISTA MÓVIL: Tarjetas Colapsables Individuales por Momento Pedagógico */}
+                  <div className="structured-table-mobile-view" style={{ padding: '12px' }}>
+                    {rows.map((row, rIdx) => (
+                      <CollapsibleMomentCard
+                        key={rIdx}
+                        rIdx={rIdx}
+                        row={row}
+                        headers={headers}
+                        onCellChange={(cIdx, val) => handleTableCellChange(idx, rIdx, cIdx, val)}
+                        onRemove={() => handleRemoveTableRow(idx, rIdx)}
+                        canRemove={rows.length > 1}
+                      />
+                    ))}
+                    <button
+                      type="button"
+                      className="btn-outline"
+                      onClick={() => handleAddTableRow(idx)}
+                      style={{ 
+                        marginTop: '10px', 
+                        width: '100%', 
+                        padding: '10px', 
+                        fontSize: '13px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        gap: '6px', 
+                        backgroundColor: '#FFFFFF',
+                        minHeight: '44px',
+                        borderRadius: '10px'
+                      }}
+                    >
+                      <Plus size={15} /> Añadir momento a la secuencia
+                    </button>
+                  </div>
                 </div>
               );
             }

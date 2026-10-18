@@ -371,7 +371,7 @@ function AppContent() {
             </aside>
 
         {/* Área de Contenido Principal */}
-        <div className="app-shell-main">
+        <div className={`app-shell-main ${sidebarCollapsed ? 'sidebar-is-collapsed' : ''}`}>
           {/* Barra Superior Compacta de Utilidades (Esquina Superior Derecha en Escritorio) */}
           <header className="app-top-utilities-bar" aria-label="Utilidades y cuenta de usuario">
             <div className={`top-utilities-group ${topUtilitiesCollapsed ? 'is-collapsed' : ''}`}>
@@ -447,10 +447,64 @@ function AppContent() {
               <Route path="/acerca" element={<AboutPage />} />
               <Route path="/ayuda" element={<AyudaPage />} />
               <Route path="/administracion" element={<AdministracionPage />} />
-              <Route path="/animacion" element={<Navigate to="/home" replace />} />
             </Routes>
           </main>
         </div>
+
+        {/* Barra Inferior Fija (Mobile Bottom Navigation) - Mobile-First Thumb Zone */}
+        <nav className="mobile-bottom-nav" aria-label="Navegación principal en móviles">
+          <NavLink 
+            to="/home" 
+            end
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Home size={20} />
+            <span>Inicio</span>
+          </NavLink>
+
+          <NavLink 
+            to="/" 
+            end
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Sparkles size={20} />
+            <span>Planear</span>
+          </NavLink>
+
+          <NavLink 
+            to="/mis-planes" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <div className="mobile-bottom-icon-container">
+              <FileText size={20} />
+              {planesCount > 0 && <span className="mobile-bottom-counter-badge">{planesCount}</span>}
+            </div>
+            <span>Mis Planes</span>
+          </NavLink>
+
+          <NavLink 
+            to="/biblioteca" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Library size={20} />
+            <span>Biblioteca</span>
+          </NavLink>
+
+          <button 
+            type="button" 
+            className={`mobile-bottom-nav-item mobile-bottom-more-btn ${mobileMenuOpen ? 'active' : ''}`}
+            onClick={() => setMobileMenuOpen(prev => !prev)}
+            aria-label="Más opciones de navegación"
+            aria-expanded={mobileMenuOpen}
+          >
+            <Menu size={20} />
+            <span>Más</span>
+          </button>
+        </nav>
       </div>
     </FondoPixel>
   );

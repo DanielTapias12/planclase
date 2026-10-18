@@ -857,7 +857,8 @@ export default function AdministracionPage() {
               boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
             }}
           >
-            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            {/* VISTA ESCRITORIO / TABLET: Tabla Completa */}
+            <div className="admin-table-desktop-view" style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '640px' }}>
                 <thead>
                   <tr style={{ backgroundColor: 'rgba(71, 122, 114, 0.12)', borderBottom: '1px solid rgba(49, 91, 84, 0.18)' }}>
@@ -934,6 +935,109 @@ export default function AdministracionPage() {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* VISTA MÓVIL: Tarjetas de Perfil Resumen con Ficha Completa */}
+            <div className="admin-cards-mobile-view" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {filteredUsers.length === 0 ? (
+                <div style={{ padding: '24px', textAlign: 'center', color: '#4B635B' }}>
+                  No se encontraron docentes con los criterios de búsqueda seleccionados.
+                </div>
+              ) : (
+                filteredUsers.map(u => {
+                  const plainPhone = decryptSensitiveField(u.celular);
+                  const isRevealed = Boolean(revealedPhones[u.id]);
+                  const displayPhone = plainPhone ? (isRevealed ? plainPhone : maskPhoneNumber(plainPhone)) : 'No registrado';
+
+                  return (
+                    <div 
+                      key={u.id}
+                      className="admin-docente-mobile-card"
+                      style={{
+                        padding: '16px',
+                        backgroundColor: '#FFFFFF',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(49, 91, 84, 0.16)',
+                        boxShadow: '0 2px 8px rgba(16, 36, 32, 0.04)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '10px',
+                            backgroundColor: 'rgba(71, 122, 114, 0.16)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#166534',
+                            fontWeight: 700,
+                            fontSize: '15px'
+                          }}>
+                            {(u.nombre || 'D').charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 700, fontSize: '14px', color: '#142B25' }}>{u.nombre}</div>
+                            <div style={{ fontSize: '12px', color: '#4A655D' }}>{u.email}</div>
+                          </div>
+                        </div>
+
+                        <span style={{ 
+                          background: u.nivel === 'Primaria' ? 'rgba(71, 122, 114, 0.14)' : u.nivel === 'Secundaria' ? 'rgba(49, 91, 84, 0.18)' : 'rgba(24, 54, 48, 0.18)', 
+                          color: '#183630', 
+                          padding: '3px 9px', 
+                          borderRadius: '999px', 
+                          fontSize: '11px', 
+                          fontWeight: 700 
+                        }}>
+                          {u.nivel || u.rol || 'Docente'}
+                        </span>
+                      </div>
+
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '12px', padding: '10px', backgroundColor: '#F8FAF9', borderRadius: '10px' }}>
+                        <div>
+                          <span style={{ color: '#576864', display: 'block', fontSize: '11px' }}>Institución:</span>
+                          <strong style={{ color: '#142B25' }}>{u.institucion || 'Colegio'}</strong>
+                        </div>
+                        <div>
+                          <span style={{ color: '#576864', display: 'block', fontSize: '11px' }}>Planes Creados:</span>
+                          <strong style={{ color: '#166534' }}>{u.planesCount || 0} planes</strong>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '4px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px' }}>
+                          <span style={{ fontFamily: 'monospace', color: '#142B25' }}>{displayPhone}</span>
+                          {plainPhone && (
+                            <button
+                              type="button"
+                              onClick={() => togglePhoneReveal(u.id)}
+                              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', color: '#315B54' }}
+                              aria-label={isRevealed ? "Ocultar teléfono" : "Descifrar teléfono"}
+                            >
+                              {isRevealed ? <Lock size={13} color="#183630" /> : <Unlock size={13} />}
+                            </button>
+                          )}
+                        </div>
+
+                        <button 
+                          type="button"
+                          className="btn-outline" 
+                          style={{ padding: '6px 14px', fontSize: '12px', minHeight: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#FFFFFF' }}
+                          onClick={() => setSelectedUser(u)}
+                        >
+                          <Eye size={13} />
+                          <span>Ver Ficha Completa</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
 
@@ -1643,7 +1747,8 @@ export default function AdministracionPage() {
               </div>
             </div>
 
-            <div style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            {/* VISTA ESCRITORIO / TABLET: Tabla Completa */}
+            <div className="admin-table-desktop-view" style={{ width: '100%', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '700px' }}>
                 <thead>
                   <tr style={{ backgroundColor: 'rgba(71, 122, 114, 0.10)', borderBottom: '1px solid rgba(49, 91, 84, 0.16)' }}>
@@ -1746,6 +1851,80 @@ export default function AdministracionPage() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* VISTA MÓVIL: Tarjetas de ADN Pedagógico Docente */}
+            <div className="admin-cards-mobile-view" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {((adnInstitucional?.resumenDocentes || []).filter(t => {
+                const q = searchDnaTerm.toLowerCase();
+                const matchSearch = !q || 
+                  (t.nombre || '').toLowerCase().includes(q) ||
+                  (t.email || '').toLowerCase().includes(q) ||
+                  (t.institucion || '').toLowerCase().includes(q) ||
+                  (t.metodologiaFavorita || '').toLowerCase().includes(q);
+                const matchLevel = filterDnaLevel === 'Todos' || (t.nivel && t.nivel.toLowerCase().includes(filterDnaLevel.toLowerCase()));
+                return matchSearch && matchLevel;
+              })).map((t, index) => (
+                <div
+                  key={t.id || index}
+                  style={{
+                    padding: '16px',
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(49, 91, 84, 0.16)',
+                    boxShadow: '0 2px 8px rgba(16, 36, 32, 0.04)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div style={{ width: '38px', height: '38px', borderRadius: '10px', backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#1C3D36', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px' }}>
+                        {(t.nombre || 'D').charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '14px', color: '#142B25' }}>{t.nombre}</div>
+                        <div style={{ fontSize: '12px', color: '#4A655D' }}>{t.email}</div>
+                      </div>
+                    </div>
+                    {t.indiceInnovacion !== null && t.indiceInnovacion !== undefined && (
+                      <span style={{ backgroundColor: t.indiceInnovacion >= 60 ? 'rgba(22, 163, 74, 0.14)' : 'rgba(217, 119, 6, 0.14)', color: t.indiceInnovacion >= 60 ? '#166534' : '#92400E', padding: '3px 9px', borderRadius: '999px', fontSize: '11px', fontWeight: 700 }}>
+                        {t.indiceInnovacion}% Innovación
+                      </span>
+                    )}
+                  </div>
+
+                  <div style={{ fontSize: '12px', padding: '10px', backgroundColor: '#F8FAF9', borderRadius: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div>
+                      <span style={{ color: '#576864' }}>Colegio / Nivel:</span> <strong>{t.institucion || 'Colegio'} ({t.nivel || 'General'})</strong>
+                    </div>
+                    <div>
+                      <span style={{ color: '#576864' }}>Metodología:</span> <strong>{t.metodologiaFavorita || 'Estándar Institucional'}</strong>
+                    </div>
+                    {t.ejeTransversal && (
+                      <div>
+                        <span style={{ color: '#576864' }}>Proyecto Transversal:</span> <strong>{t.ejeTransversal}</strong>
+                      </div>
+                    )}
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '4px' }}>
+                    <span style={{ fontSize: '12px', color: '#166534', fontWeight: 700 }}>
+                      {t.planesCount} planes registrados
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDocenteDna(t)}
+                      className="btn-outline"
+                      style={{ padding: '6px 14px', fontSize: '12px', minHeight: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#FFFFFF' }}
+                    >
+                      <Eye size={13} />
+                      <span>Ver Ficha Completa</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

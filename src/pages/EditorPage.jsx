@@ -1508,6 +1508,15 @@ export default function EditorPage() {
             )}
           </div>
         </aside>
+
+        {/* Backdrop para móvil y tablet al abrir Co-docente IA */}
+        {isChatOpen && (
+          <div 
+            className="editor-chat-mobile-backdrop" 
+            onClick={toggleChat}
+            aria-hidden="true"
+          />
+        )}
       </div>
       
       {/* Botón flotante accesible para reabrir el Co-docente IA cuando el panel esté cerrado */}

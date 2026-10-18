@@ -732,8 +732,19 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 8px 24px rgba(28, 55, 50, 0.08) !important;
 }
 
-/* Adaptación responsive para Shell y Navegación Lateral */
-@media (max-width: 1024px) {
+/* ==========================================================================
+   REESTRUCTURACIÓN RESPONSIVA GLOBAL: NAVEGACIÓN MOBILE-FIRST
+   1. Móvil (< 768px): Bottom Nav fija con zona de pulgar + Drawer off-canvas
+   2. Tablet (768px - 1024px): Rail compacto lateral persistente de 70px
+   3. Escritorio (>= 1025px): Sidebar lateral persistente de 260px colapsable
+   ========================================================================== */
+
+/* --- 1. MÓVIL (< 768px) --- */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
   .app-top-utilities-bar {
     display: none !important;
   }
@@ -756,7 +767,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.28s ease;
-    z-index: 195;
+    z-index: 1050;
   }
 
   .sidebar-backdrop.open {
@@ -764,8 +775,9 @@ h1, h2, h3, h4, h5, h6 {
     pointer-events: auto;
   }
 
+  /* Sidebar convertido en Drawer deslizable completo */
   .app-sidebar-lateral {
-    width: min(290px, 86vw) !important;
+    width: min(300px, 86vw) !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -777,15 +789,15 @@ h1, h2, h3, h4, h5, h6 {
     border-left: none;
     transform: translateX(-100%);
     transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 200;
-    box-shadow: 8px 0 36px rgba(0, 0, 0, 0.35);
+    z-index: 1100;
+    box-shadow: 8px 0 36px rgba(0, 0, 0, 0.45);
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     -webkit-overflow-scrolling: touch;
   }
 
   .app-sidebar-lateral.collapsed {
-    width: min(290px, 86vw) !important;
+    width: min(300px, 86vw) !important;
   }
 
   .sidebar-collapse-toggle-btn {
@@ -799,10 +811,209 @@ h1, h2, h3, h4, h5, h6 {
   .sidebar-close-btn-mobile {
     display: block;
   }
+
+  .app-shell-main {
+    padding-left: 0 !important;
+    min-width: 0;
+  }
+
+  /* Padding inferior obligatorio en móvil para evitar superposición con la bottom nav */
+  .app-main-content-scroll {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 14px)) !important;
+  }
+
+  /* Barra Inferior Fija (Mobile Bottom Navigation) */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: rgba(14, 34, 29, 0.96);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  .mobile-bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 48px;
+    min-width: 48px;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    transition: color 0.18s ease, transform 0.18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-bottom-nav-item:hover,
+  .mobile-bottom-nav-item:focus-visible {
+    color: #FFFFFF;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: #5EEAD4;
+    font-weight: 700;
+  }
+
+  .mobile-bottom-nav-item.active svg {
+    color: #5EEAD4;
+    transform: translateY(-1px);
+  }
+
+  .mobile-bottom-icon-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-bottom-counter-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background-color: #10B981;
+    color: #064E3B;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    border-radius: 999px;
+    text-align: center;
+    padding: 0 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
 }
 
-/* Modo barra compacta colapsable en escritorio (Flotante por encima sin ocupar espacio) */
+/* --- 2. TABLET (768px - 1024px): RAIL LATERAL COMPACTO DE 70PX --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  .mobile-header-bar {
+    display: none !important;
+  }
+
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  .app-sidebar-lateral {
+    display: flex !important;
+    position: fixed !important;
+    top: 14px !important;
+    left: 14px !important;
+    bottom: 14px !important;
+    width: 70px !important;
+    max-width: 70px !important;
+    height: calc(100vh - 28px) !important;
+    max-height: calc(100vh - 28px) !important;
+    transform: translateX(0) !important;
+    border-radius: 20px !important;
+    z-index: 950 !important;
+    overflow-x: hidden !important;
+    padding: 12px 0 !important;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .sidebar-brand-header {
+    padding: 10px 0 14px !important;
+    justify-content: center !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  .sidebar-brand-link {
+    justify-content: center !important;
+    gap: 0 !important;
+  }
+
+  .sidebar-brand-texts {
+    display: none !important;
+  }
+
+  .sidebar-collapse-toggle-btn,
+  .sidebar-close-btn-mobile {
+    display: none !important;
+  }
+
+  .sidebar-group-label {
+    display: none !important;
+  }
+
+  .sidebar-nav-item {
+    justify-content: center !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    min-width: 48px !important;
+    margin: 4px auto !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    position: relative !important;
+  }
+
+  .sidebar-nav-item span:not(.sidebar-counter-badge) {
+    display: none !important;
+  }
+
+  .sidebar-counter-badge {
+    position: absolute !important;
+    top: 4px !important;
+    right: 4px !important;
+    font-size: 9.5px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    padding: 0 4px !important;
+  }
+
+  .sidebar-footer-institutional {
+    display: none !important;
+  }
+
+  .mobile-only-nav-group {
+    display: none !important;
+  }
+
+  .app-shell-main {
+    padding-left: 96px !important;
+    min-width: 0 !important;
+  }
+
+  .app-top-utilities-bar {
+    display: flex !important;
+    padding: 14px 24px 8px !important;
+  }
+}
+
+/* --- 3. ESCRITORIO (>= 1025px): SIDEBAR PERSISTENTE DE 260PX --- */
 @media (min-width: 1025px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  .mobile-header-bar {
+    display: none !important;
+  }
+
   .sidebar-backdrop {
     display: none;
     position: fixed;
@@ -831,6 +1042,7 @@ h1, h2, h3, h4, h5, h6 {
     max-height: calc(100vh - 32px) !important;
     margin: 0 !important;
     z-index: 950 !important;
+    transform: translateX(0) !important;
   }
 
   .app-sidebar-lateral.collapsed {
@@ -841,6 +1053,16 @@ h1, h2, h3, h4, h5, h6 {
   .app-sidebar-lateral:not(.collapsed) {
     width: 254px !important;
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.52), 0 4px 16px rgba(16, 36, 32, 0.25) !important;
+  }
+
+  .app-shell-main {
+    padding-left: 284px !important;
+    min-width: 0 !important;
+    transition: padding-left 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .app-shell-main.sidebar-is-collapsed {
+    padding-left: 96px !important;
   }
 
   .app-sidebar-lateral.collapsed .sidebar-brand-header {
@@ -5830,3 +6052,349 @@ h1, h2, h3, h4, h5, h6 {
     width: 45%;
   }
 }
+
+/* ==========================================================================
+   REESTRUCTURACIÓN RESPONSIVA DE COMPONENTES COMPLEJOS (OPCIÓN A)
+   1. StructuredPlanDocument: Tarjetas Colapsables vs Tabla Curricular
+   2. EditorPage: Co-docente IA FAB flotante + Bottom Sheet / Drawer
+   3. AdministracionPage: Directorio y ADN en Tarjetas Resumen vs Tablas Densas
+   4. Gráficos y Radars: Escalabilidad proporcional y contención estricta
+   ========================================================================== */
+
+/* --- 1. EDITOR: TARJETAS COLAPSABLES POR MOMENTO PEDAGÓGICO --- */
+.structured-moment-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1.5px solid rgba(49, 91, 84, 0.20);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(16, 36, 32, 0.07);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.structured-moment-card:hover {
+  border-color: rgba(49, 91, 84, 0.35);
+  box-shadow: 0 6px 20px rgba(16, 36, 32, 0.10);
+}
+
+.structured-moment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(71, 122, 114, 0.08);
+  border-bottom: 1px solid rgba(49, 91, 84, 0.12);
+  cursor: pointer;
+  user-select: none;
+  gap: 8px;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+.structured-moment-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.structured-moment-badge {
+  background: #183630;
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.structured-moment-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #142B25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.structured-moment-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.structured-moment-del-btn,
+.structured-moment-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  min-height: 38px;
+  min-width: 38px;
+  border-radius: 8px;
+  border: 1px solid rgba(49, 91, 84, 0.18);
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  color: #142B25;
+  transition: all 0.15s ease;
+}
+
+.structured-moment-del-btn:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+  border-color: #F87171;
+}
+
+.structured-moment-toggle-btn:hover {
+  background: #FFFFFF;
+  border-color: #315B54;
+}
+
+.structured-moment-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #FFFFFF;
+}
+
+.structured-moment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.structured-moment-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2B453E;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.structured-moment-add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1.5px dashed rgba(49, 91, 84, 0.35);
+  background: rgba(71, 122, 114, 0.06);
+  color: #183630;
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.structured-moment-add-btn:hover {
+  background: rgba(71, 122, 114, 0.14);
+  border-color: #315B54;
+  color: #0E2923;
+}
+
+/* Alternancia entre Vista Desktop (Tabla) y Vista Mobile (Tarjetas) */
+@media (max-width: 767px) {
+  .structured-table-desktop-view {
+    display: none !important;
+  }
+  .structured-table-mobile-view {
+    display: flex !important;
+    flex-direction: column;
+    gap: 14px;
+    margin: 16px 0;
+  }
+
+  .admin-table-desktop-view {
+    display: none !important;
+  }
+  .admin-cards-mobile-view {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .structured-table-desktop-view {
+    display: block !important;
+  }
+  .structured-table-mobile-view {
+    display: none !important;
+  }
+
+  .admin-table-desktop-view {
+    display: block !important;
+  }
+  .admin-cards-mobile-view {
+    display: none !important;
+  }
+}
+
+/* --- 2. CO-DOCENTE IA (EDITORPAGE.JSX): FAB + BOTTOM SHEET / DRAWER --- */
+.editor-chat-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(10, 26, 22, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2400;
+  opacity: 1;
+  pointer-events: auto;
+  animation: fadeIn 0.22s ease;
+}
+
+@keyframes slideUpSheet {
+  from {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDrawer {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Adaptación del Asistente en Celulares (< 640px): Bottom Sheet 100% de la Pantalla */
+@media (max-width: 640px) {
+  .editor-floating-chat-trigger {
+    position: fixed !important;
+    bottom: calc(74px + env(safe-area-inset-bottom, 8px)) !important;
+    right: 16px !important;
+    z-index: 2000 !important;
+    min-height: 48px !important;
+    padding: 10px 18px !important;
+    border-radius: 999px !important;
+    box-shadow: 0 8px 24px rgba(16, 36, 32, 0.32) !important;
+  }
+
+  .editor-chat-pane {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 90vh !important;
+    height: 90dvh !important;
+    max-height: 90vh !important;
+    z-index: 2500 !important;
+    border-radius: 24px 24px 0 0 !important;
+    margin: 0 !important;
+    animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .editor-chat-pane.is-collapsed {
+    display: none !important;
+  }
+
+  .editor-chat-card {
+    border-radius: 24px 24px 0 0 !important;
+    border-bottom: none !important;
+  }
+}
+
+/* Adaptación del Asistente en Tablets (641px - 1024px): Drawer Deslizable Lateral */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .editor-floating-chat-trigger {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 2000 !important;
+    min-height: 48px !important;
+    padding: 11px 20px !important;
+  }
+
+  .editor-chat-pane {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    width: min(440px, 85vw) !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 2500 !important;
+    border-radius: 24px 0 0 24px !important;
+    margin: 0 !important;
+    animation: slideInDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .editor-chat-pane.is-collapsed {
+    display: none !important;
+  }
+
+  .editor-chat-card {
+    border-radius: 24px 0 0 24px !important;
+    border-right: none !important;
+  }
+}
+
+/* En Escritorio (>= 1025px): Asistente integrado side-by-side */
+@media (min-width: 1025px) {
+  .editor-chat-mobile-backdrop {
+    display: none !important;
+  }
+}
+
+/* --- 3. GRÁFICOS Y RADARS: ESCALABILIDAD PROPORCIONAL Y FLEXIBLE --- */
+.fs-radar-wrapper {
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+.fs-radar-wrapper svg {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  display: block;
+}
+
+/* Touch Targets Accesibles (WCAG 2.5.5 - Mínimo 44px) en Móviles */
+@media (max-width: 767px) {
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline,
+  .mgmt-stat-pill,
+  .admin-docente-mobile-card button,
+  .ui-tab,
+  .structured-moment-header,
+  .mobile-bottom-nav-item {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  /* Evitar desbordes horizontales en contenedores de páginas */
+  .home-content-container,
+  .mgmt-container,
+  .editor-view,
+  .adn-container,
+  .wizard-container {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+}
+
