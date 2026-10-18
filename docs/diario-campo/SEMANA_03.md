@@ -21,7 +21,7 @@ Durante la Semana 3 se abordó el diseño conceptual y multimedial del software 
 - **Auditoría de la Regla de las 3 Interacciones:** Se construyó la matriz empírica de accesibilidad que demuestra que cualquier recurso formativo (Plan de aula, OVA, rúbrica, cuestionario, plantilla) es accesible en un máximo de 2 clics desde la pantalla inicial, cumpliendo con creces el límite de 3 establecido por la guía.
 - **Artefactos generados:**
   - `docs/diseno-multimedial/MAPA_NAVEGACION.md` (Documentación completa)
-  - `docs/diseno-multimedial/MAPA_NAVEGACION.svg` (Diagrama vectorial de alta fidelidad)
+  - `docs/evidencias/ACT-006/MAPA_NAVEGACION.png` (Esquema gráfico oficial en alta fidelidad)
   - `docs/actividades/ACT-006_MAPA_NAVEGACION.md` (Ficha de actividad actualizada)
   - `docs/evidencias/ACT-006/README.md` (Carpeta de evidencia y trazabilidad)
 

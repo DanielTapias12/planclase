@@ -86,8 +86,7 @@ Conforme al marco de efectividad personal e interpersonal de Stephen R. Covey ar
 
 | Entregable | Formato | Ubicación en el Repositorio | Descripción |
 |:---|:---:|:---|:---|
-| **Captura Gráfica Oficial** | Imagen (`.png`) | [`docs/evidencias/ACT-006/MAPA_NAVEGACION.png`](../evidencias/ACT-006/MAPA_NAVEGACION.png) | Esquema visual del mapa de navegación con los 3 niveles jerárquicos y flujos hacia abajo. |
-| **Diagrama Vectorial Oficial** | SVG (`.svg`) | [`docs/evidencias/ACT-006/MAPA_NAVEGACION.svg`](../evidencias/ACT-006/MAPA_NAVEGACION.svg) | Diagrama vectorial en alta fidelidad optimizado y validado para visualización directa en GitHub. |
+| **Mapa de Navegación Oficial** | Imagen (`.png`) | [`docs/evidencias/ACT-006/MAPA_NAVEGACION.png`](../evidencias/ACT-006/MAPA_NAVEGACION.png) | Esquema visual oficial del mapa de navegación con los 3 niveles jerárquicos y flujos hacia abajo. |
 | **Documento Maestro del Mapa** | Markdown (`.md`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.md`](../diseno-multimedial/MAPA_NAVEGACION.md) | Fundamentación metodológica, auditoría de rutas y verificación de la regla de $\le 3$ interacciones. |
 | **Carpeta de Evidencias ACT-006** | Directorio (`README.md`) | [`docs/evidencias/ACT-006/`](../evidencias/ACT-006/README.md) | Carpeta de evidencias y entregables de la Semana 03. |
 | **Registro de Inteligencia Artificial** | Markdown (`.md`) | [`docs/ia/REGISTRO_IA_ACT-006.md`](../ia/REGISTRO_IA_ACT-006.md) | Registro del soporte de IA bajo metodología ROCAS. |

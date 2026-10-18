@@ -22,14 +22,14 @@ El software educativo INSPIRATEC está desarrollado en **React 19 + React Router
 
 ### A — Acción
 1. Auditoría exhaustiva de la topología de rutas en el código fuente (`src/App.jsx`, `src/pages/`, `src/components/common/Breadcrumbs.jsx`, `src/components/layout/Sidebar.jsx`).
-2. Rediseño y generación del diagrama vectorial de ultra-alta fidelidad en SVG [`MAPA_NAVEGACION.svg`](../diseno-multimedial/MAPA_NAVEGACION.svg) (`viewBox="0 0 1320 1720"`), articulando los 5 niveles MODESEC, onboarding inmersivo, Mi ADN Pedagógico, suite didáctica portable y controles canónicos.
-3. Actualización técnica y metodológica del documento [`MAPA_NAVEGACION.md`](../diseno-multimedial/MAPA_NAVEGACION.md) con la matriz de 15 interfaces y el diagrama Mermaid.
+2. Consolidación y generación del esquema visual oficial en alta fidelidad [`MAPA_NAVEGACION.png`](../evidencias/ACT-006/MAPA_NAVEGACION.png), articulando la jerarquía de niveles, flujos hacia abajo y controles canónicos.
+3. Actualización técnica y metodológica del documento [`MAPA_NAVEGACION.md`](../diseno-multimedial/MAPA_NAVEGACION.md) con la matriz de interfaces y diagramas oficiales.
 4. Elaboración de la matriz de verificación empírica de accesibilidad ($\le 3$ clics, promedio 1.7 clics).
 5. Formalización de la ficha de actividad, evidencias y trazabilidad bajo los 7 hábitos de Covey.
 
 ### S — Salida
 - `docs/diseno-multimedial/MAPA_NAVEGACION.md`
-- `docs/diseno-multimedial/MAPA_NAVEGACION.svg`
+- `docs/evidencias/ACT-006/MAPA_NAVEGACION.png`
 - `docs/actividades/ACT-006_MAPA_NAVEGACION.md`
 - `docs/evidencias/ACT-006/README.md`
 - `docs/diario-campo/SEMANA_03.md`

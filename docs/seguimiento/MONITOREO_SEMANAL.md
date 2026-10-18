@@ -29,7 +29,7 @@
 * **Objetivo:** Representar la organización jerárquica y conceptual de los contenidos y estructurar el mapa de navegación en 5 niveles con base en MODESEC y la regla de ≤ 3 interacciones.
 * **Participantes:** Todo el equipo (Daniel Tapias, Luis Caldera, Zoe Peñata, María Soto, María Ubarne, Maira Ortega).
 * **Estado:** COMPLETADA / PRODUCTOS FINALES CONSOLIDADOS.
-* **Evidencias:** `DIAGRAMA_DE_CONTENIDOS.md`, `MAPA_NAVEGACION.md`, `MAPA_NAVEGACION.svg`, carpeta `docs/evidencias/ACT-006/`.
+* **Evidencias:** `DIAGRAMA_DE_CONTENIDOS.md`, `MAPA_NAVEGACION.md`, `MAPA_NAVEGACION.png`, carpeta `docs/evidencias/ACT-006/`.
 
 ### Semana 4
 * **Actividad principal:** ACT-003 — Análisis y Definición del Modelo Pedagógico.

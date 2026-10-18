@@ -162,62 +162,7 @@ A continuación se presenta la matriz de verificación empírica desde el punto 
 
 ## 6. Diagrama de Relaciones de Navegación
 
-```mermaid
-graph TD
-    %% Nivel 1: Autenticación (Ingreso)
-    subgraph L1 ["NIVEL 1: AUTENTICACIÓN (Ingreso)"]
-        AUTH1["🔒 Login / Registro"] --> AUTH2["⚙️ Recuperar Contraseña"] --> AUTH3["🔒 Validación de Credenciales"]
-    end
-
-    %% Nivel 2: Panel Principal
-    subgraph L2 ["NIVEL 2: PANEL PRINCIPAL"]
-        HOME["🏛️ Panel Principal (Inicio)"]
-    end
-
-    %% Conexión Nivel 1 a Nivel 2
-    AUTH2 --> HOME
-
-    %% Nivel 3: Divisiones Principales
-    subgraph L3_TOP ["2. BARRA SUPERIOR (Control Global)"]
-        CONF_IA["⚙️ Configuración IA<br>(Estado: Lista)"]
-        USER_MENU["👤 Menú de Usuario<br>(Admin)"]
-        CONF_IA --> USER_MENU
-        USER_MENU -.-> SUB1["👤 Mi Perfil"]
-        USER_MENU -.-> SUB2["🔑 Cambiar Contraseña"]
-        USER_MENU -.-> SUB3["✨ Bienvenida INSPIRATEC"]
-        USER_MENU -.-> SUB4["↪ Cerrar Sesión"]
-    end
-
-    subgraph L3_SIDE ["3. MENÚ LATERAL (Navegación Principal)"]
-        subgraph COL_PLAN ["PLANEACIÓN"]
-            P_INI["🏠 Inicio"]
-            P_PLAN["✨ Planificador"]
-            P_MIS["📑 Mis Planes (3)"]
-            P_ADN["🧬 Mi ADN Pedagógico"]
-            P_TEMP["📄 Plantillas"]
-            P_ADM["🛡️ Administración"]
-            P_INI --> P_PLAN --> P_MIS --> P_ADN --> P_TEMP --> P_ADM
-        end
-
-        subgraph COL_COM ["COMUNIDAD"]
-            C_BIB["📚 Biblioteca"]
-            C_EXP["🧭 Experiencias"]
-            C_FOR["💬 Foro Docente"]
-            C_BIB --> C_EXP --> C_FOR
-        end
-
-        subgraph COL_SOP ["SOPORTE"]
-            S_AYU["❓ Ayuda y Guías"]
-            S_SOP["🛟 Soporte Técnico"]
-            S_ACE["ℹ️ Acerca de"]
-            S_AYU --> S_SOP --> S_ACE
-        end
-    end
-
-    %% Ramificación desde Panel Principal
-    HOME --> L3_TOP
-    HOME --> L3_SIDE
-```
+![Diagrama del Mapa de Navegación Oficial — INSPIRATEC](./MAPA_NAVEGACION.png)
 
 ---
 

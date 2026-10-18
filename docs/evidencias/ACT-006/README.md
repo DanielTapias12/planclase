@@ -13,10 +13,8 @@
 
 | Entregable | Formato | Ruta en el Repositorio | Descripción |
 |---|---|---|---|
-| **Diagrama Vectorial Oficial** | SVG (`.svg`) | [`MAPA_NAVEGACION.svg`](./MAPA_NAVEGACION.svg) | Diagrama SVG oficial en alta resolución con la jerarquía en 3 niveles (Autenticación, Panel Principal, Divisiones). |
-| **Captura Gráfica Oficial** | Imagen (`.png`) | [`MAPA_NAVEGACION.png`](./MAPA_NAVEGACION.png) | Captura oficial del esquema jerárquico del mapa de navegación. |
+| **Mapa de Navegación Oficial** | Imagen (`.png`) | [`MAPA_NAVEGACION.png`](./MAPA_NAVEGACION.png) | Captura oficial del esquema jerárquico del mapa de navegación con los 3 niveles y flujos. |
 | **Documento del Mapa de Navegación** | Markdown (`.md`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.md`](../../diseno-multimedial/MAPA_NAVEGACION.md) | Documento metodológico y técnico que fundamenta la arquitectura y la matriz de validación de 3 interacciones. |
-| **Diagrama en Diseño Multimedial** | SVG (`.svg`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.svg`](../../diseno-multimedial/MAPA_NAVEGACION.svg) | Copia de referencia canónica en la carpeta de diseño multimedial. |
 | **Ficha de Actividad** | Markdown (`.md`) | [`docs/actividades/ACT-006_MAPA_NAVEGACION.md`](../../actividades/ACT-006_MAPA_NAVEGACION.md) | Ficha de seguimiento formal y trazabilidad de la actividad. |
 | **Registro de Inteligencia Artificial** | Markdown (`.md`) | [`docs/ia/REGISTRO_IA_ACT-006.md`](../../ia/REGISTRO_IA_ACT-006.md) | Registro del uso asistido de IA bajo metodología ROCAS. |
 
