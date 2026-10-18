@@ -14,6 +14,7 @@
 | Entregable | Formato | Ruta en el Repositorio | Descripción |
 |---|---|---|---|
 | **Diagrama Vectorial Oficial** | SVG (`.svg`) | [`MAPA_NAVEGACION.svg`](./MAPA_NAVEGACION.svg) | Diagrama SVG oficial en alta resolución con la jerarquía en 3 niveles (Autenticación, Panel Principal, Divisiones). |
+| **Captura Gráfica Oficial** | Imagen (`.png`) | [`MAPA_NAVEGACION.png`](./MAPA_NAVEGACION.png) | Captura oficial del esquema jerárquico del mapa de navegación. |
 | **Documento del Mapa de Navegación** | Markdown (`.md`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.md`](../../diseno-multimedial/MAPA_NAVEGACION.md) | Documento metodológico y técnico que fundamenta la arquitectura y la matriz de validación de 3 interacciones. |
 | **Diagrama en Diseño Multimedial** | SVG (`.svg`) | [`docs/diseno-multimedial/MAPA_NAVEGACION.svg`](../../diseno-multimedial/MAPA_NAVEGACION.svg) | Copia de referencia canónica en la carpeta de diseño multimedial. |
 | **Ficha de Actividad** | Markdown (`.md`) | [`docs/actividades/ACT-006_MAPA_NAVEGACION.md`](../../actividades/ACT-006_MAPA_NAVEGACION.md) | Ficha de seguimiento formal y trazabilidad de la actividad. |
@@ -21,9 +22,9 @@
 
 ---
 
-### Visualización del Mapa de Navegación Oficial (SVG)
+### Visualización del Mapa de Navegación Oficial
 
-![Mapa de Navegación Oficial INSPIRATEC](./MAPA_NAVEGACION.svg)
+![Mapa de Navegación Oficial INSPIRATEC](./MAPA_NAVEGACION.png)
 
 ---
 
