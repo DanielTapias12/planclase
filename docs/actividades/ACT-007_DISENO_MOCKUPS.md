@@ -36,7 +36,7 @@ Los mockups de alta fidelidad cierran la brecha entre el modelo conceptual (diag
 
 ## 4. Productos y Mockups Entregados
 
-Los 8 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
+Los 12 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
 
 1. **`mockup-inicio.png`:** Ventana de Inicio (`/home`), bienvenida personalizada, indicadores de estado y modelos.
 2. **`mockup-planificador.png`:** Planificador de Clases (`/`), asistente secuencial en 4 fases tripartitas con memoria de ADN pedagógico.
@@ -46,6 +46,10 @@ Los 8 mockups de alta fidelidad representativos del ecosistema fueron archivados
 6. **`mockup-dashboard.png`:** Panel y Repositorio de Mis Planes de Clase (`/mis-planes`), búsqueda en tiempo real, filtros y gestión de secuencias.
 7. **`mockup-actividad.png`:** Catálogo de Estructuras y Modelos Curriculares (`/plantillas`), transferencia al asistente e inspección de plantillas.
 8. **`mockup-resultados.png`:** Editor Curricular y Asistente Socrático (`/editor`), lienzo de trabajo con plan generado y panel de co-diseño con IA.
+9. **`mockup-admin-analiticas.png`:** Panel de Administración — Analíticas y Métricas Gráficas (`/administracion`), Donut Chart SVG, producción STEAM y solicitudes.
+10. **`mockup-admin-directorio.png`:** Panel de Administración — Directorio de Docentes (`/administracion`), búsqueda, filtros por nivel y cifrado Habeas Data.
+11. **`mockup-admin-adn-colectivo.png`:** Panel de Administración — ADN Pedagógico Colectivo (`/administracion`), diagnóstico declarada vs aplicada, caja DUA institucional y banco probado.
+12. **`mockup-admin-tickets.png`:** Panel de Administración — Tickets de Soporte (`/administracion`), gestión interactiva y resolución de solicitudes docentes.
 
 ---
 

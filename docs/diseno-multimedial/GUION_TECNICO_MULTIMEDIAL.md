@@ -389,19 +389,56 @@ La ventana de **Configuración de IA** (`/config`) otorga autonomía y soberaní
 
 ---
 
-### VENTANA 11 — Administración Institucional y Analíticas (`AdministracionPage.jsx`)
+### VENTANA 11 — Panel de Administración y Control (`AdministracionPage.jsx`)
 
-#### 11.1 Descripción Funcional y Arquitectura Visual
-La ventana de **Administración** (`/administracion`) está orientada a directivos docentes y coordinadores académicos. Ofrece métricas consolidadas sobre el ecosistema: porcentaje de adopción de principios DUA en los planes generados, distribución temática por áreas del conocimiento, volumen histórico de secuencias aprobadas y auditoría de alineación con los estándares de la Guía 30 del MEN.
+#### 11.1 Capturas de Pantalla Reales
 
-#### 11.2 Registro Técnico de Elementos
+| Pestaña 1: Analíticas y Métricas Gráficas | Pestaña 2: Directorio de Docentes (5) |
+|:---:|:---:|
+| ![Pestaña 1: Analíticas y Métricas](docs/evidencias/ACT-010/V10_administracion_analiticas.png) | ![Pestaña 2: Directorio de Docentes](docs/evidencias/ACT-010/V10_administracion_directorio.png) |
+
+| Pestaña 3: Identidad & ADN Pedagógico | Pestaña 4: Tickets de Soporte (1) |
+|:---:|:---:|
+| ![Pestaña 3: ADN Institucional Colectivo](docs/evidencias/ACT-010/V10_administracion_adn_colectivo.png) | ![Pestaña 4: Tickets de Soporte](docs/evidencias/ACT-010/V10_administracion_tickets.png) |
+
+#### 11.2 Descripción Funcional y Arquitectura Visual
+La ventana **Panel de Administración y Control** (`/administracion`) centraliza la gobernanza pedagógica, la auditoría y la supervisión curricular de INSPIRATEC. Garantiza la seguridad y confidencialidad de datos conforme a la **Ley 1581 de 2012 (Habeas Data)**, procesa analíticas cuantitativas del impacto docente, compara la metodología curricular declarada frente a la aplicada en aula, y gestiona la atención interactiva de tickets de soporte técnico e institucional.
+
+Su arquitectura se articula en:
+1. **Encabezado Institucional Glassmorphism:** Badge *"GOBERNANZA Y SUPERVISIÓN CURRICULAR"*, título H1, subtítulo normativo y píldoras cuantitativas superiores (*5 Docentes*, *4 Planes*, *0% Soporte*).
+2. **Barra de 4 Pestañas de Cristal:** Conmutador interactivo entre *Analíticas y Métricas Gráficas*, *Directorio de Docentes (5)*, *Identidad & ADN Pedagógico*, y *Tickets de Soporte (1)*.
+3. **Pestaña 1 — Analíticas y Métricas Gráficas:** Cuatro tarjetas KPI superiores con micrográficos sparkline (*Docentes Activos: 5*, *Planes de Clase: 4*, *Experiencias: 1*, *Impacto: 100 estudiantes*), gráfico circular Donut Chart SVG de distribución por nivel formativo (Primaria 40%, Secundaria 20%, Media 0%), barras de avance de producción curricular por área STEAM (Tecnología 42%, Matemáticas 34%, Lenguaje 24%) y barra de estado de solicitudes y atención.
+4. **Pestaña 2 — Directorio de Docentes (5):** Buscador reactivo por nombre, email o colegio, botones de filtro por nivel educativo (*Todos*, *Primaria*, *Secundaria*, *Media*), badge de protección Habeas Data y tabla tabular de 6 columnas (*Docente*, *Celular Cifrado*, *Nivel / Rol*, *Institución*, *Planes*, *Acción* con botón *"Ver Detalle"*).
+5. **Pestaña 3 — Identidad & ADN Pedagógico Colectivo:** Diagnóstico institucional comparativo (metodología declarada vs aplicada en clase, diferencia curricular del 80%), adopción de ejes STEAM/PRAE, caja de herramientas colectiva DUA, banco de recursos probados con alta efectividad y directorio de huella curricular docente con acceso a ficha individual.
+6. **Pestaña 4 — Tickets de Soporte (1):** Bandeja de solicitudes docentes en tiempo real con indicador de estado (Pendiente / Resuelto), emisor, consulta pedagógica, input de respuesta y botón de envío directo.
+
+#### 11.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Administración** | Métricas Rápidas KPI | Cuatro tarjetas de resumen: Total Planes, Docentes Activos, Tasa Cobertura DUA y Horas Ahorradas. | Paneles de cristal con cifras en fuente Lora | Muestra indicadores macroscópicos del impacto del software en la institución. | Carga reactiva de datos agregados en `useEffect`. |
-| **Administración** | Gráfico de Cobertura Curricular | Diagrama de barras de distribución de planes de clase elaborados por cada área del saber. | Gráficos con barras de progreso estilizadas | Permite a la coordinación detectar áreas rezagadas en planificación didáctica. | Estático con animación de carga inicial. |
-| **Administración** | Tabla de Auditoría Curricular | Registro tabular con los planes creados, autor, fecha, alineación MEN y estado de revisión. | Tabla HTML semántica `<table>` | Permite inspeccionar el detalle de cada plan y verificar su rigurosidad pedagógica. | `onClick` en fila abre el plan en modo lectura/supervisión. |
-| **Administración** | Botón "Exportar Informe Institucional" | Botón con icono de hoja de cálculo para descargar las métricas en formato CSV/Excel. | Botón HTML `<button>` / Icono `<Download size={15}>` | Compila los datos estadísticos y desencadena la descarga de un archivo de reporte. | `onClick`. |
+| **Admin** | Badge "Gobernanza y Supervisión" | Insignia superior que contextualiza el módulo de supervisión académica. | Badge Glassmorphism / Icono `<ShieldCheck size={13}>` | Elemento informativo de rol y seguridad. | Estático. |
+| **Admin** | Píldoras Métricas de Cabecera | Tres contadores de resumen institucional: *"5 Docentes"*, *"4 Planes"*, *"0% Soporte"*. | Contenedores translúcidos con iconos (`Users`, `BookOpen`, `Activity`) | Muestra los totales consolidados calculados desde `getGlobalStats()`. | Reactivo al montar la vista. |
+| **Admin** | Botón Pestaña "Analíticas" | Selector para activar la vista macroscópica de métricas y gráficos interactivos. | Botón tabulado con icono `<BarChart3 size={16}>` | Cambia el estado a `activeTab = 'Analiticas'`. | `onClick`. |
+| **Admin** | Botón Pestaña "Directorio" | Selector para desplegar la nómina docente con contador dinámico `({usuarios.length})`. | Botón tabulado con icono `<Users size={16}>` | Cambia el estado a `activeTab = 'Directorio'`. | `onClick`. |
+| **Admin** | Botón Pestaña "ADN Institucional" | Selector para el análisis colectivo de identidad pedagógica y transversalidad. | Botón tabulado con icono `<Dna size={16}>` | Cambia el estado a `activeTab = 'AdnInstitucional'`. | `onClick`. |
+| **Admin** | Botón Pestaña "Tickets de Soporte" | Selector de incidencias con badge numérico rojo condicional `pendientesCount > 0`. | Botón tabulado con icono `<MessageSquare size={16}>` | Cambia el estado a `activeTab = 'Tickets'`. | `onClick`. |
+| **Admin** | Tarjeta KPI "Docentes Activos" | Métrica de usuarios registrados (*5*) con indicador `+100% Cuentas` y sparkline SVG. | Tarjeta Glassmorphism / Icono `<Users size={18}>` | Visualiza el claustro docente activo en la plataforma. | Reactivo a `usuarios.length`. |
+| **Admin** | Tarjeta KPI "Planes de Clase" | Métrica del acervo didáctico (*4*) con promedio `0.8/docente` y sparkline SVG. | Tarjeta Glassmorphism / Icono `<BookOpen size={18}>` | Muestra el volumen total de secuencias curriculares generadas. | Reactivo a `stats.totalPlanes`. |
+| **Admin** | Tarjeta KPI "Experiencias Abiertas" | Métrica de secuencias compartidas en comunidad (*1*) con sparkline SVG. | Tarjeta Glassmorphism / Icono `<Sparkles size={18}>` | Exhibe la participación colectiva en el banco de experiencias. | Reactivo a `stats.totalExperiencias`. |
+| **Admin** | Tarjeta KPI "Impacto Escolar" | Estimación cuantitativa de estudiantes impactados (*100*) con sparkline SVG. | Tarjeta Glassmorphism / Icono `<Award size={18}>` | Cuantifica la cobertura formativa en las aulas institucionales. | Reactivo a `stats.estudiantesImpactados`. |
+| **Admin** | Gráfico Donut Chart SVG | Gráfico circular proporcional por niveles educativos (Primaria 40%, Secundaria 20%, Media 0%). | SVG nativo con `strokeDasharray` y radio `r=42` | Representa visualmente la distribución del claustro por nivel. | Renderizado matemático dinámico. |
+| **Admin** | Barras Producción Curricular STEAM | Barras de progreso de participación por área: Tecnología (42%), Matemáticas (34%), Lenguaje (24%). | Contenedores de barra con estilos en línea de porcentaje | Permite supervisar el balance de las áreas básicas en la planeación. | Calculado sobre `stats.allPlanes`. |
+| **Admin** | Barra de Solicitudes y Atención | Barra de progreso horizontal con indicadores de *0 Resueltos* y *1 Pendientes*. | Barra de avance estilizada en amarillo ámbar `#F59E0B` | Monitorea la efectividad de resolución de incidencias docentes. | Reactivo a `tickets`. |
+| **Admin** | Buscador Directorio Docente | Campo de búsqueda en tiempo real por nombre, correo electrónico o colegio. | Input HTML `<input type="text">` con icono `<Search size={16}>` | Filtra instantáneamente las filas de la tabla de usuarios. | `onChange` actualiza `searchTerm`. |
+| **Admin** | Filtros de Nivel Formativo | Botones tipo píldora: *Todos*, *Primaria*, *Secundaria*, *Media*. | Botones con clase `.btn-outline` | Acota la tabla de docentes según el nivel escolar asignado. | `onClick` actualiza `filterNivel`. |
+| **Admin** | Badge "Cifrado Habeas Data" | Indicador de cumplimiento de seguridad y privacidad según Ley 1581 de 2012. | Badge con icono `<CheckCircle2 size={13}>` | Certifica el encriptado y custodia responsable de datos personales. | Estático. |
+| **Admin** | Botón "Ver Detalle" Docente | Botón en cada fila de la tabla para abrir el modal de auditoría individual. | Botón HTML `<button>` | Carga la información del docente en `selectedUser` y abre modal. | `onClick`. |
+| **Admin** | Botón "Ir a mi ADN Personal" | Botón en Pestaña 3 para redirigir al autodiagnóstico pedagógico propio. | Enlace reactivo `<Link to="/adn-pedagogico">` | Redirige al docente a su espacio de huella profesional `/adn-pedagogico`. | `onClick`. |
+| **Admin** | Diagnóstico Curricular Comparativo | Panel analítico que contrasta metodologías declaradas (100%) vs aplicadas en aula (50%/25%/25%). | Gráfico de barras comparativas y badge de brecha (80%) | Revela discordancias entre el discurso pedagógico y la práctica real. | Calculado por `getInstitutionalDnaAnalysis`. |
+| **Admin** | Tarjeta de Ticket de Soporte | Contenedor de solicitud con asunto (*"jtut"*), estado (*"Pendiente"*), autor y mensaje. | Tarjeta Glassmorphism con badge ámbar | Expone el requerimiento técnico o pedagógico formulado por un docente. | Renderizado desde Firestore. |
+| **Admin** | Input "Escribir respuesta al docente" | Campo de texto para redactar la retroalimentación o solución a la incidencia. | Input HTML `<input type="text">` | Captura la solución emitida por el administrador para resolver el ticket. | `onChange` actualiza `replyText[ticketId]`. |
+| **Admin** | Botón "Responder" | Botón verde oscuro para despachar la solución al docente y cerrar el ticket. | Botón HTML `<button>` / Icono `<Send size={15}>` | Ejecuta `handleRespond(ticketId)`, cambia estado a 'Resuelto' y notifica. | `onClick`. |
+| **Admin** | Escape Key Handler | Listener de teclado para cancelar y cerrar cualquier modal de supervisión abierto. | Event listener global `window.addEventListener('keydown')` | Cierra `selectedUser` o `selectedDocenteDna` y restaura el scroll del body. | `keydown` con `e.key === 'Escape'`. |
 
 ---
 

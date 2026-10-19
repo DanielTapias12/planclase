@@ -348,11 +348,82 @@ La zona de trabajo se divide en **4 pestañas de navegación interna**:
 
 ---
 
+### Ventana 11: Panel de Administración y Control (`AdministracionPage.jsx`)
+
+#### Imágenes reales de las 4 Pestañas
+
+| Pestaña 1: Analíticas y Métricas Gráficas | Pestaña 2: Directorio de Docentes (5) |
+|:---:|:---:|
+| ![Pestaña 1: Analíticas y Métricas](docs/evidencias/ACT-009/V10_administracion_analiticas.png) | ![Pestaña 2: Directorio de Docentes](docs/evidencias/ACT-009/V10_administracion_directorio.png) |
+
+| Pestaña 3: Identidad & ADN Pedagógico | Pestaña 4: Tickets de Soporte (1) |
+|:---:|:---:|
+| ![Pestaña 3: ADN Institucional Colectivo](docs/evidencias/ACT-009/V10_administracion_adn_colectivo.png) | ![Pestaña 4: Tickets de Soporte](docs/evidencias/ACT-009/V10_administracion_tickets.png) |
+
+#### Objetivo
+Supervisar y auditar de manera centralizada la gobernanza curricular, el impacto escolar y la adopción pedagógica del claustro docente en INSPIRATEC, garantizando la trazabilidad y protección de datos conforme a la Ley 1581 de 2012 (Habeas Data), analizando el ADN pedagógico colectivo institucional y gestionando la resolución de tickets de soporte técnico y pedagógico en tiempo real.
+
+#### Descripción general
+La ventana presenta un encabezado translúcido esmerilado (*Glassmorphism* marfil `rgba(255, 254, 250, 0.86)` con `backdrop-filter: blur(16px)`) que integra:
+- Badge de contexto: *"GOBERNANZA Y SUPERVISIÓN CURRICULAR"* con icono de escudo verificado (`ShieldCheck`).
+- Título H1: *"Panel de Administración y Control"*.
+- Subtítulo: *"Métricas de impacto pedagógico en tiempo real, trazabilidad de datos docentes protegidos bajo Ley 1581 de 2012 y soporte activo."*
+- Píldoras de métricas rápidas superiores: *"5 Docentes"* (`Users`), *"4 Planes"* (`BookOpen`) y *"0% Soporte"* (`Activity`, tasa de resolución).
+- Barra de navegación con 4 pestañas de cristal:
+  1. *Analíticas y Métricas Gráficas* (`BarChart3`)
+  2. *Directorio de Docentes (5)* (`Users`)
+  3. *Identidad & ADN Pedagógico* (`Dna`)
+  4. *Tickets de Soporte (1)* (`MessageSquare` con badge numérico rojo)
+
+**Estructura interna por pestaña:**
+1. **Pestaña 1 — Analíticas y Métricas Gráficas:**
+   - 4 tarjetas KPI superiores con micrográficos de tendencia (*sparklines*):
+     - *DOCENTES ACTIVOS:* 5 (+100% Cuentas).
+     - *PLANES DE CLASE:* 4 (Promedio: 0.8/docente).
+     - *EXPERIENCIAS ABIERTAS:* 1 (Comunidad activa).
+     - *IMPACTO ESCOLAR:* 100 (Estudiantes en aula).
+   - *Gráfico de Distribución por Nivel:* Gráfico circular Donut Chart SVG con total central (*5 TOTAL*) y desglose por barras de progreso: Primaria (2 - 40.0%), Secundaria (1 - 20.0%), Media (0 - 0.0%).
+   - *Producción Curricular por Área (Enfoque STEAM):* Barras de distribución porcentual: Tecnología e Informática (42% del total - algoritmos y pensamiento computacional), Matemáticas (34% del total - modelación y problemas reales), Lenguaje e Inglés (24% del total - comprensión y expresión comunicativa).
+   - *Estado de Solicitudes y Atención a Docentes:* Barra de avance horizontal con indicadores de *0 Resueltos* y *1 Pendientes*.
+2. **Pestaña 2 — Directorio de Docentes (5):**
+   - Buscador en tiempo real: *"Buscar docente por nombre, email o colegio..."*.
+   - Filtros por nivel formativo: *Todos*, *Primaria*, *Secundaria*, *Media*.
+   - Badges de auditoría: *"Mostrando 5 de 5 docentes registrados"* y *"Cifrado Habeas Data (Ley 1581 de 2012)"*.
+   - Tabla administrativa con 6 columnas: *Docente*, *Celular Cifrado*, *Nivel / Rol*, *Institución*, *Planes*, *Acción* (con botón *"Ver Detalle"* para cada usuario).
+3. **Pestaña 3 — Identidad & ADN Pedagógico Institucional:**
+   - Badges: *"HUELLA CURRICULAR & GOBERNANZA PEDAGÓGICA"* y *"ANÁLISIS COLECTIVO (5 DOCENTES REGISTRADOS)"*.
+   - Título: *"ADN Pedagógico Institucional & Estudio Transversal Colectivo"*.
+   - Botón directo: *"Ir a mi ADN Personal"*.
+   - 4 Tarjetas métricas colectivas: *Claustro Docente: 5*, *Innovación Curricular: 51%*, *Metodología Líder: Aprendizaje social y emocional*, *Recurso Didáctico #1: Juegos y Trivias Gamificadas*.
+   - *Diagnóstico Curricular Comparativo (Declarada vs. Aplicada en Aula):* Mide la brecha curricular (Diferencia: 80%) contrastando metodologías declaradas en el registro (100% Aprendizaje social y emocional) frente a las efectivamente aplicadas en secuencias (50% Socioemocional, 25% Indagación, 25% Gamificación).
+   - *Matriz de Transversalidad Colectiva:* Adopción de proyectos STEAM, Alfabetización Digital, Innovación, Convivencia y PRAE Ambiental.
+   - *Caja de Herramientas Colectiva & Inclusión DUA:* Dinámicas de inicio, evaluación formativa y pautas DUA más utilizadas.
+   - *Banco de Recursos Probados con Alta Efectividad:* Materiales con valoración destacada (Juegos y Recursos Lúdicos con 5 estrellas).
+   - *Directorio de Huella Curricular Docente:* Tabla resumida con metodología predilecta, índice de innovación y botón *"Ver Ficha"*.
+4. **Pestaña 4 — Tickets de Soporte (1):**
+   - Buzón de incidencias y consultas pedagógicas en tiempo real.
+   - Tarjetas de ticket con asunto (*"jtut"*), estado (*"Pendiente"* en cápsula ámbar), emisor (*Docente Anónimo - danieltapiasacosta39@gmail.com*), cuerpo de la consulta (*"utuytiy"*), campo de entrada *"Escribir respuesta al docente..."* y botón de envío directo *"Responder"*.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Panel de Administración y Control (`AdministracionPage.jsx`) |
+| **Imagen** | Capturas reales de las 4 pestañas: [`V10_administracion_analiticas.png`](docs/evidencias/ACT-009/V10_administracion_analiticas.png), [`V10_administracion_directorio.png`](docs/evidencias/ACT-009/V10_administracion_directorio.png), [`V10_administracion_adn_colectivo.png`](docs/evidencias/ACT-009/V10_administracion_adn_colectivo.png), [`V10_administracion_tickets.png`](docs/evidencias/ACT-009/V10_administracion_tickets.png). Iconos Lucide: `ShieldCheck`, `BarChart3`, `Users`, `Dna`, `MessageSquare`, `BookOpen`, `Sparkles`, `Award`, `Activity`, `Search`, `Lock`, `Unlock`, `Send`, `CheckCircle2`, `Layers`, `Lightbulb`. |
+| **Texto** | • Badge: *"GOBERNANZA Y SUPERVISIÓN CURRICULAR"*.<br>• Título H1: *"Panel de Administración y Control"*.<br>• Subtítulo: *"Métricas de impacto pedagógico en tiempo real, trazabilidad de datos docentes protegidos bajo Ley 1581 de 2012 y soporte activo."*<br>• Píldoras de cabecera: *"5 Docentes"*, *"4 Planes"*, *"0% Soporte"*.<br>• Pestañas: *"Analíticas y Métricas Gráficas"*, *"Directorio de Docentes (5)"*, *"Identidad & ADN Pedagógico"*, *"Tickets de Soporte 1"*.<br>• Textos Pestaña 1: Tarjetas KPI (Docentes Activos 5, Planes de Clase 4, Experiencias Abiertas 1, Impacto Escolar 100), Distribución por Nivel (Primaria 40%, Secundaria 20%, Media 0%), Producción Curricular STEAM (Tecnología 42%, Matemáticas 34%, Lenguaje 24%), Solicitudes (0 Resueltos, 1 Pendientes).<br>• Textos Pestaña 2: Placeholder *"Buscar docente por nombre, email o colegio..."*, botones de filtro (Todos, Primaria, Secundaria, Media), *"Cifrado Habeas Data (Ley 1581 de 2012)"*, cabeceras de tabla (*Docente*, *Celular Cifrado*, *Nivel / Rol*, *Institución*, *Planes*, *Acción*).<br>• Textos Pestaña 3: Título *"ADN Pedagógico Institucional & Estudio Transversal Colectivo"*, métricas de claustro (51% innovación), diagnóstico comparativo declarada vs aplicada (diferencia 80%), proyectos STEAM/PRAE, caja DUA, banco probado y directorio de huella curricular.<br>• Textos Pestaña 4: Asunto *"jtut"*, badge *"Pendiente"*, emisor *"Docente Anónimo"*, placeholder *"Escribir respuesta al docente..."*. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Renderizado SVG animado del Donut Chart con cálculo de circunferencia (`circumference: 263.89px`) y `strokeDasharray`.<br>• Animación de llenado suave en las barras de progreso de las áreas STEAM y niveles educativos.<br>• Desvanecimiento suave al conmutar entre las 4 pestañas de trabajo.<br>• Transición en tiempo real al filtrar docentes en el directorio. |
+| **Acciones del usuario** | • Clic en cualquiera de las 4 pestañas (*Analíticas*, *Directorio*, *ADN*, *Tickets*) para conmutar la vista.<br>• Escribir en el buscador del directorio para filtrar docentes por nombre, correo o colegio.<br>• Clic en las píldoras de nivel (*Todos*, *Primaria*, *Secundaria*, *Media*) para acotar la tabla de docentes.<br>• Clic en *"Ver Detalle"* en el directorio para abrir la ficha individual del docente.<br>• Clic en *"Ir a mi ADN Personal"* (Pestaña 3) para navegar a `/adn-pedagogico`.<br>• Escribir en el input de respuesta de un ticket y pulsar *"Responder"* para resolver la incidencia.<br>• Pulsar tecla `Escape` para cerrar cualquier modal emergente de detalle. |
+| **Botones** | • 4 Botones de pestaña con estética Glassmorphism (`BarChart3`, `Users`, `Dna`, `MessageSquare`).<br>• Botones de filtro por nivel en Directorio (*Todos*, *Primaria*, *Secundaria*, *Media*).<br>• Botones *"Ver Detalle"* en cada fila de docente.<br>• Botón *"Ir a mi ADN Personal"* (fondo verde bosque `#183630`).<br>• Botón de acción *"Responder"* con icono `Send` en cada tarjeta de ticket. |
+| **Navegación** | • Clic en *"Ir a mi ADN Personal"* redirige a `/adn-pedagogico`.<br>• Navegación lateral permanente mediante el Dock izquierdo para acceder a cualquier módulo del ecosistema. |
+
+---
+
 ### Ventanas Restantes del Sistema (Inventario Completo)
 
 - **Ventana 08: Banco de Experiencias (`ExperienciasPage.jsx`):** Muro colaborativo donde los docentes consultan secuencias exitosas publicadas por colegas, con botones de valoración reflexiva (*"Útil"*, *"Innovador"*) y réplicas constructivas.
 - **Ventana 09: Foro Docente (`ForoPage.jsx`):** Espacio de discusión temática organizado por categorías (Evaluación, DUA, Metodologías Activas) para resolver dudas de aula y debatir la Guía 30 del MEN.
-- **Ventana 11: Administración (`AdministracionPage.jsx`):** Panel para directivos docentes con métricas agregadas de adopción DUA, distribución de planes por área curricular y estadísticas de producción.
 - **Ventana 12: Centro de Ayuda (`AyudaPage.jsx`):** Acordeones colapsables con preguntas frecuentes (FAQ), tutoriales de uso del asistente y glosario pedagógico.
 - **Ventana 13: Soporte Técnico (`SoportePage.jsx`):** Formulario para registrar problemas técnicos, incidencias con la IA y diagnóstico automático de red/navegador.
 - **Ventana 14: Acerca de INSPIRATEC (`AboutPage.jsx`):** Ficha institucional del software, justificación basada en MODESEC y créditos del equipo de desarrollo.

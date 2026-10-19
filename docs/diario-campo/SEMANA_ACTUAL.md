@@ -122,6 +122,16 @@
 
 ---
 
+### 12. Formalización de la Ventana de Administración y Control (ACT-007, ACT-009, ACT-010)
+- **Panel de Administración y Control (`/administracion`):** Se auditó e inventarió completamente la vista de supervisión institucional y gobernanza curricular con sus 4 pestañas operativas:
+  1. *Analíticas y Métricas Gráficas:* Métricas macroscópicas (5 Docentes activos +100%, 4 Planes promedio 0.8, 1 Experiencias, 100 Impacto escolar), gráfico circular Donut SVG de distribución por nivel escolar (Primaria 40%, Secundaria 20%, Media 0%), producción STEAM por áreas y barra de solicitudes.
+  2. *Directorio de Docentes:* Tabla administrativa de 5 docentes con filtrado por nivel formativo, buscador en tiempo real, botones de detalle y garantía de cifrado según la Ley 1581 de 2012 (Habeas Data).
+  3. *Identidad & ADN Pedagógico Colectivo:* Diagnóstico institucional de la brecha entre metodología declarada (100% socioemocional) vs aplicada en aula (50% socioemocional, 25% indagación, 25% gamificación), proyectos transversales, caja DUA colectiva y banco probado.
+  4. *Tickets de Soporte:* Bandeja de incidencias con estado de atención interactivo (0 Resueltos, 1 Pendientes) y formulario de respuesta directa al docente emisor.
+- Se incorporaron las 5 evidencias fotográficas reales en `docs/evidencias/ACT-009/` y `docs/evidencias/ACT-010/`, y los 4 mockups en `docs/diseno-interface/mockups/` (`mockup-admin-analiticas.png`, `mockup-admin-directorio.png`, `mockup-admin-adn-colectivo.png`, `mockup-admin-tickets.png`).
+
+---
+
 ## Acuerdos y Próximos Compromisos
 1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-007, ACT-009, ACT-010, ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
 2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.

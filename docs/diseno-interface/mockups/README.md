@@ -26,6 +26,10 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | **`mockup-dashboard.png`** | Repositorio / Dashboard | `/mis-planes` | Panel de gestión curricular, filtrado, sincronización y acciones sobre planes. |
 | **`mockup-actividad.png`** | Arquitectura Curricular / Plantillas | `/plantillas` | Catálogo de estructuras didácticas, transferencia al asistente e inspección. |
 | **`mockup-resultados.png`** | Editor Curricular / Resultados | `/editor` | Lienzo de trabajo con el plan generado, co-docente socrático IA y exportación. |
+| **`mockup-admin-analiticas.png`** | Administración — Analíticas | `/administracion` | Métricas KPI macroscópicas, Donut Chart SVG por nivel y producción STEAM. |
+| **`mockup-admin-directorio.png`** | Administración — Directorio | `/administracion` | Registro de claustro docente, filtros por nivel y protección Habeas Data. |
+| **`mockup-admin-adn-colectivo.png`** | Administración — ADN Colectivo | `/administracion` | Diagnóstico declarada vs aplicada, caja DUA institucional y banco probado. |
+| **`mockup-admin-tickets.png`** | Administración — Tickets Soporte | `/administracion` | Gestión y resolución en tiempo real de incidencias y dudas pedagógicas. |
 
 ---
 
@@ -91,4 +95,26 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 - **Iconos:** `Save`, `Download`, `MessageSquare`, `Layers`, `FileCheck`.
 - **Botones:** *"Guardar Plan"*, *"Exportar PDF"*, *"Descargar MD"*, *"Auditar DUA"*, *"Generar Rúbrica"*.
 - **Distribución:** Vista dividida (*split-screen*) con editor estructurado en el 65% del ancho y panel de asistencia socrática en el 35%.
+
+### 3.7 Mockups 7 a 10 — Módulo de Administración y Control
+- **`mockup-admin-analiticas.png`:**
+  - **Colores:** Pestañas translúcidas marfil `rgba(255, 254, 250, 0.86)`, Donut Chart SVG con arcos verde bosque `#183630`, verde salvia `#477A72` y gris platino, barras de progreso STEAM.
+  - **Tipografía:** Cifras KPI en `Lora` (32px, bold), leyendas y porcentajes en `DM Sans` (12px a 14px).
+  - **Iconos:** `BarChart3`, `Users`, `BookOpen`, `Sparkles`, `Award`, `Activity`.
+  - **Distribución:** 4 tarjetas KPI en cuadrícula superior, panel Donut a la izquierda y producción STEAM a la derecha.
+- **`mockup-admin-directorio.png`:**
+  - **Colores:** Tabla con filas de cristal blanco `rgba(255, 255, 255, 0.92)`, badge de Habeas Data verde esmeralda con borde fino.
+  - **Tipografía:** Cabeceras en `DM Sans` (13px, semibold), correos y nombres en `DM Sans` (14px).
+  - **Iconos:** `Search`, `CheckCircle2`, `Lock`, `Unlock`, `Users`.
+  - **Botones:** Filtros por nivel formativo (*Todos*, *Primaria*, *Secundaria*, *Media*), botones *"Ver Detalle"*.
+- **`mockup-admin-adn-colectivo.png`:**
+  - **Colores:** Badges institucionales verdes, barra comparativa con indicador de brecha curricular del 80%, estrellas doradas en banco de recursos.
+  - **Tipografía:** Títulos H1 y métricas de claustro en `Lora`, etiquetas DUA y proyectos en `DM Sans`.
+  - **Iconos:** `Dna`, `Layers`, `Lightbulb`, `Star`, `Compass`, `ShieldCheck`.
+  - **Botones:** Botón *"Ir a mi ADN Personal"*, botones *"Ver Ficha"* en huella curricular docente.
+- **`mockup-admin-tickets.png`:**
+  - **Colores:** Badge de estado "Pendiente" en fondo ámbar suave `#FEF3C7` con texto `#92400E`, botón de respuesta en verde bosque `#183630`.
+  - **Tipografía:** Asunto de ticket en `Lora` (20px, bold), metadatos y cuerpo en `DM Sans` (14px).
+  - **Iconos:** `MessageSquare`, `Send`, `Clock`, `ShieldAlert`.
+  - **Botones:** Botón primario *"Responder"* con icono `Send`.
 

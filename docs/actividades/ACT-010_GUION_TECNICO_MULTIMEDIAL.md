@@ -56,3 +56,8 @@ Bajo el marco de ingeniería de software educativo y la metodología MODESEC, el
   - `V06_plantillas.png` (Plantillas Curriculares)
   - `V07_biblioteca.png` (Biblioteca de Recursos y Generador)
   - `V10_configuracion.png` (Configuración de IA Gemini)
+  - `V10_administracion.png` (Panel de Administración y Control — Vista General)
+  - `V10_administracion_analiticas.png` (Administración — Pestaña 1: Analíticas y Métricas Gráficas)
+  - `V10_administracion_directorio.png` (Administración — Pestaña 2: Directorio de Docentes y Habeas Data)
+  - `V10_administracion_adn_colectivo.png` (Administración — Pestaña 3: Identidad & ADN Pedagógico Colectivo)
+  - `V10_administracion_tickets.png` (Administración — Pestaña 4: Tickets de Soporte y Atención)
