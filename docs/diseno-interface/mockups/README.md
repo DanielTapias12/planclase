@@ -19,9 +19,11 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | Archivo Mockup | Vista Representada | Ruta en el Frontend | Propósito en el Flujo |
 |---|---|---|---|
 | **`mockup-inicio.png`** | Ventana de Inicio | `/home` | Entrada editorial, resumen de métricas y acceso rápido a modelos. |
+| **`mockup-planificador.png`** | Planificador de Clases (Wizard) | `/` | Co-diseño guiado en 4 fases tripartitas (Básica, Metodología, MEN, DUA). |
+| **`mockup-grafo-prerrequisitos.png`** | Grafo Ontológico de Prerrequisitos | Modal / `/` | Explorador interactivo de competencias y progresión de la Guía 30 del MEN. |
 | **`mockup-dashboard.png`** | Repositorio / Dashboard | `/mis-planes` | Panel de gestión curricular, filtrado, sincronización y acciones sobre planes. |
-| **`mockup-actividad.png`** | Arquitectura Curricular / Actividad | `/plantillas` | Catálogo de estructuras didácticas, transferencia al asistente e inspección de formatos. |
-| **`mockup-resultados.png`** | Editor Curricular / Resultados | `/editor` | Lienzo de trabajo con el plan generado, co-docente socrático IA y exportación PDF/MD. |
+| **`mockup-actividad.png`** | Arquitectura Curricular / Plantillas | `/plantillas` | Catálogo de estructuras didácticas, transferencia al asistente e inspección. |
+| **`mockup-resultados.png`** | Editor Curricular / Resultados | `/editor` | Lienzo de trabajo con el plan generado, co-docente socrático IA y exportación. |
 
 ---
 
@@ -34,7 +36,7 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 
 ### Regla 2: Reducir la Carga de Memoria del Usuario
 - **Reconocimiento sobre Recuerdo:** En lugar de obligar al docente a recordar estándares del MEN o taxonomías, el sistema despliega selectores estructurados con los DBA, competencias de la Guía 30 y principios DUA.
-- **Visibilidad del Estado del Sistema:** La barra de pasos del wizard (`1. Parámetros`, `2. Metas`, `3. Secuencia`, `4. Recursos`) y el semáforo de conectividad con Gemini en la barra superior informan en todo momento la situación del sistema.
+- **Visibilidad del Estado del Sistema:** La barra de pasos del wizard (`1. Información básica`, `2. Metodología`, `3. Estándares`, `4. Inclusión DUA`) y el semáforo de conectividad con Gemini en la barra superior informan en todo momento la situación del sistema.
 - **Metadatos Explícitos en Tarjetas:** Cada tarjeta de plan o plantilla exhibe claramente su grado escolar, materia, fecha y estado de publicación, evitando la necesidad de abrir el archivo para conocer su contenido.
 
 ### Regla 3: Mantener la Consistencia Visual
@@ -53,23 +55,38 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 - **Botones:** Botón primario *"Iniciar Planificador de Clases"*, botón secundario *"Ver Plantillas Curriculares"*, botón *"Calibrar / Cambiar"*.
 - **Distribución:** Layout asimétrico con dock lateral flotante a la izquierda, barra de utilidades superior a la derecha y tres franjas de contenido centradas.
 
-### 3.2 Mockup 2 — Dashboard de Planes (`mockup-dashboard.png`)
+### 3.2 Mockup 2 — Planificador de Clases (`mockup-planificador.png`)
+- **Colores:** Banner verde suave para ADN Pedagógico, tarjetas de formulario en cristal marfil con bisel blanco de 1px, botones de acción en verde petróleo `#183630`.
+- **Tipografía:** Título H1 `Lora` (26px), stepper numerado en `DM Sans` (13px, semibold), inputs y selectores (14px).
+- **Iconos:** `RotateCcw`, `Check`, `CheckSquare`, `ArrowRight`, `ArrowLeft`, `Save`, `Sparkles`, `Share2`, `Eye`, `VolumeX`, `Accessibility`, `ShieldCheck`.
+- **Botones:** Botón *"Comenzar nuevo plan en blanco"*, *"Sugerir con IA"*, *"Grafo de Prerrequisitos (MEN)"*, *"Sugerir estándares"*, *"Guardar progreso"*, *"Siguiente →"*, *"← Volver"*, *"Generar Clase"*.
+- **Distribución:** Layout secuencial estructurado por tarjetas temáticas agrupadas (Tema, Audiencia, Recursos, Metodología, DUA).
+
+### 3.3 Mockup 3 — Grafo Interactivo de Prerrequisitos (`mockup-grafo-prerrequisitos.png`)
+- **Colores:** Columnas de cristal translúcido por ciclos escolares, nodos con bordes codificados por color según eje disciplinar (verde, azul, naranja), aristas SVG en verde salvia.
+- **Tipografía:** Encabezados de columna y códigos MEN en `DM Sans` (11px a 13px, bold).
+- **Iconos:** `Layers`, `Compass`, `ZoomIn`, `ZoomOut`, `RotateCcw`.
+- **Botones:** Selectores de Grado y Eje, controles de escala y zoom (85%), nodos clicables de transferencia.
+- **Distribución:** Modal/Drawer de amplia visualización (90% viewport) con canvas SVG interactivo.
+
+### 3.4 Mockup 4 — Dashboard de Planes (`mockup-dashboard.png`)
 - **Colores:** Tarjetas en cristal translúcido, insignias verdes de estado `#166534`, fondo de acento tenue `#E7EDE7`.
 - **Tipografía:** Título H1 `Lora` (28px), metadatos en `DM Sans` (12px, semibold), títulos de tarjetas `Lora` (18px).
 - **Iconos:** `Search`, `RefreshCw`, `PlusCircle`, `Eye`, `Sparkles`, `Share2`, `Download`, `Copy`, `Trash2`.
 - **Botones:** *"Sincronizar"*, *"Crear Nuevo Plan"*, pestañas de filtro (*Todos*, *Guardados*, *Sistematizados*, *En Biblioteca*), botoneras de tarjeta (*Abrir*, *Sistematizar*, etc.).
 - **Distribución:** Cabecera con migas de pan y métricas, barra de búsqueda y filtros intermedia, cuadrícula responsive de 3 columnas para tarjetas.
 
-### 3.3 Mockup 3 — Actividad y Plantillas (`mockup-actividad.png`)
+### 3.5 Mockup 5 — Actividad y Plantillas (`mockup-actividad.png`)
 - **Colores:** Badges ámbar de estructura predeterminada, badges verdes de pública, fondo marfil de alto contraste.
 - **Tipografía:** Título H1 `Lora` (28px), encabezados de plantillas en `Lora` (17px, bold), descripciones en `DM Sans` (13px).
 - **Iconos:** `Layers`, `Plus`, `Search`, `Globe`, `CheckCircle`, `Eye`, `Share2`, `Trash2`.
 - **Botones:** Botón primario *"+ Nueva Estructura"*, botones en tarjetas *"Usar en Asistente"*, botones *"Ver"*.
 - **Distribución:** Panel superior con contador cuantitativo de modelos, barra de búsqueda temática y rejilla de 6 tarjetas de modelos del MEN.
 
-### 3.4 Mockup 4 — Resultados y Editor (`mockup-resultados.png`)
+### 3.6 Mockup 6 — Resultados y Editor (`mockup-resultados.png`)
 - **Colores:** Superficie blanca elevada para el lienzo del documento, panel lateral con tinte suave de co-docente, texto de alto contraste WCAG AAA.
 - **Tipografía:** Formato Markdown con títulos H1-H3 en `Lora` y párrafos en `DM Sans`.
 - **Iconos:** `Save`, `Download`, `MessageSquare`, `Layers`, `FileCheck`.
 - **Botones:** *"Guardar Plan"*, *"Exportar PDF"*, *"Descargar MD"*, *"Auditar DUA"*, *"Generar Rúbrica"*.
 - **Distribución:** Vista dividida (*split-screen*) con editor estructurado en el 65% del ancho y panel de asistencia socrática en el 35%.
+

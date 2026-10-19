@@ -138,33 +138,64 @@ La **Ventana de Inicio** (`/home`) actúa como el centro de mando pedagógico de
 
 ---
 
-### VENTANA 2 — Planificador de Clases — Wizard Curricular (`WizardPage.jsx`)
+### VENTANA 2 — Planificador de Clases — Asistente Curricular Tripartito (`WizardPage.jsx`)
 
-#### 2.1 Captura de Pantalla Real
-![Planificador de Clases](docs/evidencias/ACT-010/V02_planificador.png)
+#### 2.1 Capturas de Pantalla Reales de las Fases del Wizard y Grafo Curricular
+
+| Fase 1: Información básica | Fase 2: Metodología |
+|:---:|:---:|
+| ![Fase 1: Información básica](docs/evidencias/ACT-010/V02_planificador_fase1.png) | ![Fase 2: Metodología](docs/evidencias/ACT-010/V02_planificador_fase2.png) |
+
+| Fase 3: Estándares | Fase 4: Inclusión (DUA) |
+|:---:|:---:|
+| ![Fase 3: Estándares](docs/evidencias/ACT-010/V02_planificador_fase3.png) | ![Fase 4: Inclusión (DUA)](docs/evidencias/ACT-010/V02_planificador_fase4.png) |
+
+| Componente Extendido: Grafo Interactivo de Prerrequisitos Curriculares (MEN) |
+|:---:|
+| ![Grafo Interactivo de Prerrequisitos](docs/evidencias/ACT-010/V02_planificador_grafo.png) |
 
 #### 2.2 Descripción Funcional y Arquitectura Visual
-El **Planificador de Clases** (`/`) es el núcleo de andamiaje pedagógico del software. Implementa un asistente (*wizard*) secuencial de 4 fases alineado estrictamente con los momentos de la clase recomendados por el MEN (Inicio, Desarrollo y Cierre) y los principios DUA (Múltiples formas de implicación, representación, acción y expresión):
-- **Fase 1 — Identificación y Parámetros Curriculares:** Grado escolar, área de conocimiento, duración en horas/semanas, metodología activa e institución educativa.
-- **Fase 2 — Metas y Estándares del MEN:** Definición del objetivo de aprendizaje, selección de competencias de la Guía 30 del MEN y formulación de Derechos Básicos de Aprendizaje (DBA).
-- **Fase 3 — Secuencia Didáctica Tripartita:** Estructuración de actividades para Inicio (exploración de saberes previos), Desarrollo (construcción conceptual colaborativa) y Cierre (evaluación formativa y metacognición), con ajustes DUA específicos.
-- **Fase 4 — Recursos Didácticos y Generación con IA:** Especificación de recursos analógicos y digitales, prompt de contexto pedagógico y botón de generación que conecta con la API de Google Gemini en modo streaming.
+El **Planificador de Clases** (`/`) es el núcleo de andamiaje pedagógico del software. Implementa un asistente (*wizard*) secuencial de 4 fases alineado estrictamente con los momentos de la clase recomendados por la Guía 30 del MEN y los principios DUA (Múltiples formas de implicación, representación, acción y expresión):
+- **Fase 1 — Información básica:** Tema de clase (Micro:bit), formato de plan predeterminado, audiencia (grado 9no, 90 minutos, 26 estudiantes), área (*Tecnología e Informática*), opción de transversalidad y recursos didácticos (*Aula Tecnológicamente Integrada 1 a 1*). Incorpora el banner de activación del **ADN Pedagógico** con memoria activa.
+- **Fase 2 — Metodología:** Selección de la metodología prioritaria (*Aprendizaje Basado en Proyectos - ABPro*), redacción de objetivos de aprendizaje competenciales y botón de asistencia generativa *"Sugerir con IA"*.
+- **Fase 3 — Estándares:** Articulación con los Estándares Básicos de Competencias y DBA del MEN. Integra el botón para abrir el **Grafo Interactivo de Prerrequisitos Curriculares** y el botón *"Sugerir estándares"*.
+- **Fase 4 — Inclusión (DUA):** Matriz de selección múltiple con 4 tarjetas para condiciones de ajustes razonables (*Discapacidad visual*, *Discapacidad auditiva*, *Discapacidad motora* y *PIAR Institucional*), más campo opcional para condiciones específicas (TEA, TDAH) y botón final de generación.
+- **Grafo Interactivo de Prerrequisitos Curriculares (`CurricularGraphViewer.jsx`):** Red interactiva ontológica estructurada en 5 columnas por ciclo de grado (1° a 3°, 4° a 5°, 6° a 7°, 8° a 9°, 10° a 11°), con filtros, controles de zoom (85%) y nodos transferibles al formulario.
 
-#### 2.3 Registro Técnico de Elementos
+#### 2.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Planificador** | Barra de Progreso de 4 Pasos | Indicador visual horizontal que resalta el paso activo, completado o pendiente con numeración e icono. | Componente horizontal / Clases `.wizard-stepper`, `.step-indicator` | Permite visualizar la etapa actual y retroceder a pasos previamente diligenciados. | `onClick` en los pasos completados; cambio de estado `wizardStep` en el store. |
-| **Planificador** | Selector de Grado Escolar | Menú desplegable (`<select>`) con grados desde 1.° de Primaria hasta 11.° de Educación Media. | Control de formulario / `src/pages/WizardPage.jsx` | Actualiza el grado del plan en el borrador en memoria y ajusta las sugerencias curriculares. | `onChange` actualiza `wizardData.grado`. |
-| **Planificador** | Selector de Área de Conocimiento | Menú desplegable con asignaturas (Matemáticas, Lenguaje, Ciencias Naturales, Tecnología, etc.). | Control de formulario / `src/pages/WizardPage.jsx` | Modifica el área formativa y alimenta el motor de estándares curriculares del MEN. | `onChange` actualiza `wizardData.materia`. |
-| **Planificador** | Campo "Duración de la Secuencia" | Campo de texto numérico para indicar el número de horas pedagógicas o sesiones proyectadas. | Input HTML `<input type="text">` | Almacena el tiempo planificado para la secuencia didáctica. | `onChange` actualiza `wizardData.duracion`. |
-| **Planificador** | Selector de Metodología Activa | Desplegable para seleccionar ABP, STEAM, Pensamiento Computacional, Gamificación o DUA puro. | Control de formulario / `src/pages/WizardPage.jsx` | Define la lente metodológica con la cual el asistente IA formulará las actividades. | `onChange` actualiza `wizardData.metodologia`. |
-| **Planificador** | Área de Texto "Objetivo de Aprendizaje" | Campo de texto multilinea para describir la meta formativa de la sesión. | Control `<textarea rows="3">` | Recoge el propósito pedagógico central; incluye asistente de redacción con verbos Bloom. | `onChange` actualiza `wizardData.objetivo`. |
-| **Planificador** | Botón "Sugerir Metas con IA" | Botón secundario con icono de varita mágica que consulta sugerencias basadas en el grado y área. | Botón `<button type="button">` / Icono `<Sparkles size={15}>` | Realiza una consulta asíncrona a Gemini para proponer metas alineadas a los DBA. | `onClick` ejecuta `handleSugerirMetas()`. |
-| **Planificador** | Bloques de Fases de Clase (1, 2, 3) | Tres contenedores visuales para Inicio, Desarrollo y Cierre con campos para descripción y DUA. | Contenedores Glassmorphism estructurados | Estructura las actividades didácticas según los tres momentos obligatorios del MEN. | `onChange` en cada campo de texto específico de fase. |
-| **Planificador** | Botón "Guardar Borrador" | Botón en la barra inferior para persistir los datos ingresados en `localStorage` / Firestore. | Botón HTML `<button>` / Icono `<Save size={16}>` | Serializa el estado actual del asistente y emite notificación toast de guardado exitoso. | `onClick` ejecuta `handleGuardarBorrador()`. |
-| **Planificador** | Botón "Siguiente Paso" | Botón primario para avanzar a la siguiente fase del asistente tras validar los campos requeridos. | Botón HTML `<button>` / Icono `<ChevronRight size={16}>` | Valida que los campos obligatorios del paso actual no estén vacíos y avanza el índice. | `onClick` ejecuta `handleNextStep()`. |
-| **Planificador** | Botón "Generar Plan con IA" | Botón de acción final destacado en el Paso 4 con animación de degradado interactivo. | Botón HTML `<button>` / Icono `<Sparkles size={18}>`, clase `.btn-generate-ai` | Envía el prompt curricular consolidado a la API de Gemini y redirige al `/editor`. | `onClick` ejecuta `handleGenerarPlan()`. |
+| **Planificador** | Migas de Pan (Breadcrumbs) | Navegación jerárquica *"Inicio > Planificador"*. | Componente visual / `src/pages/WizardPage.jsx` | Permite regresar con un clic a la vista `/home`. | `onClick` sobre el enlace "Inicio". |
+| **Planificador** | Badge "Secuencia Didáctica Guiada" | Píldora superior que identifica el modo de planificación guiada. | Badge Glassmorphism con icono `<Sparkles size={13}>` | Elemento informativo de contexto formativo. | Estático. |
+| **Planificador** | Botón "Comenzar nuevo plan en blanco" | Botón en cabecera con icono de reinicio para vaciar los campos del asistente. | Botón HTML `<button>` / Icono `<RotateCcw size={14}>` | Ejecuta `clearWizardFormOnly()` tras confirmación del usuario. | `onClick`. |
+| **Planificador** | Stepper de 4 Pasos | Indicador horizontal con números de paso y etiquetas: *1. Información básica*, *2. Metodología*, *3. Estándares*, *4. Inclusión (DUA)*. | Componente horizontal / Clases `.wizard-stepper`, `.step-indicator` | Permite visualizar el avance y retornar a fases previas ya validadas. | `onClick` sobre los pasos habilitados. |
+| **Planificador** | Banner "Aplicar mi ADN Pedagógico" | Tarjeta verde suave con badge "Memoria Activa" y switch de estado. | Contenedor interactivo con icono `<Sparkles>` | Activa o desactiva la inyección del perfil de Felder-Silverman en el prompt de la IA. | `onClick` conmuta el estado `aplicarAdnActivo`. |
+| **Planificador** | Enlace "Ver o ajustar mi ADN ↗" | Enlace rápido dentro del banner de ADN pedagógico. | Enlace de texto subrayado / Icono `<ExternalLink size={12}>` | Redirige al docente a `/adn-pedagogico` para calibrar su cuestionario. | `onClick`. |
+| **Planificador** | Campo "Nombre de la clase o tema *" | Input de texto obligatorio para titular la secuencia (ej. "Micro: bit"). | Input HTML `<input type="text" required>` | Define el núcleo temático de la sesión en el borrador en memoria. | `onChange` actualiza `wizardData.tema`. |
+| **Planificador** | Selector "Formato de plan de clase" | Menú desplegable con las estructuras pedagógicas disponibles. | Control `<select>` / `src/pages/WizardPage.jsx` | Selecciona la plantilla curricular base (ej. Estructura estándar INSPIRATEC). | `onChange` actualiza `wizardData.formato`. |
+| **Planificador** | Selector "Grado escolar" | Desplegable de ciclos educativos (ej. "9no Bachillerato"). | Control `<select>` / `src/pages/WizardPage.jsx` | Define el nivel formativo del grupo y ajusta los estándares curriculares del MEN. | `onChange` actualiza `wizardData.grado`. |
+| **Planificador** | Campo "Duración y sesiones" | Input de texto para la temporalidad (ej. "90 minutos, 1 sesión"). | Input HTML `<input type="text">` | Registra el tiempo estimado para la ejecución de la secuencia didáctica. | `onChange` actualiza `wizardData.duracion`. |
+| **Planificador** | Campo "Cantidad de estudiantes" | Input numérico para registrar el aforo de aula (ej. "26"). | Input HTML `<input type="number">` | Modela la viabilidad de actividades grupales y dinámicas cooperativas. | `onChange` actualiza `wizardData.estudiantes`. |
+| **Planificador** | Selector "Área curricular" | Desplegable de asignaturas principales (*Tecnología e Informática*, etc.). | Control `<select>` / `src/pages/WizardPage.jsx` | Establece el dominio temático y filtra los estándares curriculares del MEN. | `onChange` actualiza `wizardData.materia`. |
+| **Planificador** | Checkbox "Plan Transversal Articulado" | Casilla interactiva para proyectos interdisciplinares (PRAE, PESCC). | Control `<input type="checkbox">` | Habilita campos secundarios para vincular competencias de dos áreas. | `onChange` conmuta `wizardData.transversal`. |
+| **Planificador** | Selector / Textarea "Recursos didácticos" | Selector de perfiles rápidos y área de texto para el ambiente (ej. "Aula 1 a 1"). | Control mixto `<select>` + `<textarea>` | Especifica los recursos físicos o digitales disponibles en el aula. | `onChange` actualiza `wizardData.recursos`. |
+| **Planificador** | Selector "Metodología prioritaria" | Menú desplegable en Fase 2 (*Aprendizaje Basado en Proyectos (ABPro)*, etc.). | Control `<select>` / `src/pages/WizardPage.jsx` | Determina la estrategia activa que guiará los momentos de inicio, desarrollo y cierre. | `onChange` actualiza `wizardData.metodologia`. |
+| **Planificador** | Botón "Sugerir con IA" (Metas) | Botón en cabecera de Fase 2 para proponer competencias. | Botón HTML `<button>` / Icono `<Sparkles size={15}>` | Realiza una consulta asíncrona a Gemini para redactar metas de aprendizaje competenciales. | `onClick` ejecuta `handleSugerirMetas()`. |
+| **Planificador** | Textarea "Objetivos de Aprendizaje" | Campo multilinea para redactar los desempeños esperados de los estudiantes. | Control `<textarea rows="5">` | Recoge las metas formativas redactadas o sugeridas. | `onChange` actualiza `wizardData.objetivo`. |
+| **Planificador** | Botón "Grafo de Prerrequisitos (MEN)" | Botón en Fase 3 para inspeccionar la red ontológica curricular. | Botón HTML `<button>` / Icono `<Share2 size={15}>` | Abre el visualizador interactivo del grafo de competencias del MEN. | `onClick` activa `mostrarGrafoCurricular(true)`. |
+| **Planificador** | Botón "Sugerir estándares" | Botón en Fase 3 para autocompletar estándares según el tema y grado. | Botón HTML `<button>` / Icono `<Sparkles size={15}>` | Consulta a la IA los estándares y DBA aplicables de la Guía 30 del MEN. | `onClick` ejecuta `handleSugerirEstandares()`. |
+| **Planificador** | Textarea "Estándares Básicos (MEN)" | Campo de texto multilinea con los componentes curriculares oficiales. | Control `<textarea rows="6">` | Contiene los componentes, competencias y evidencias del MEN articulados al plan. | `onChange` actualiza `wizardData.estandares`. |
+| **Planificador** | Tarjetas de Ajustes Razonables (DUA) | 4 tarjetas interactivas de selección múltiple con iconos para DUA y PIAR. | Componentes tipo Card con checkboxes / Iconos `Eye`, `VolumeX`, `Accessibility`, `ShieldCheck` | Permite al docente seleccionar qué tipos de barreras de aprendizaje mitigar. | `onClick` conmuta la selección en `wizardData.condicionesDua`. |
+| **Planificador** | Campo "Necesidades Específicas" | Input opcional para registrar condiciones particulares (TEA, TDAH). | Input HTML `<input type="text">` | Incorpora adaptaciones pedagógicas contextualizadas en el prompt de la IA. | `onChange` actualiza `wizardData.necesidadesEspecificas`. |
+| **Planificador** | Botón "Guardar progreso" | Botón presente en las 4 fases para salvar el borrador intermedio. | Botón HTML `<button>` / Icono `<Save size={15}>` | Serializa el estado actual en Zustand y emite confirmación visual toast. | `onClick` ejecuta `handleGuardarBorrador()`. |
+| **Planificador** | Botón "Siguiente →" | Botón primario para avanzar de fase tras validar los campos obligatorios. | Botón HTML `<button>` / Icono `<ArrowRight size={15}>`, fondo `#183630` | Valida los inputs del paso actual y avanza el índice del stepper. | `onClick` ejecuta `handleNextStep()`. |
+| **Planificador** | Botón "← Volver" | Botón secundario para regresar al paso inmediatamente anterior. | Botón HTML `<button>` / Icono `<ArrowLeft size={15}>` | Retrocede el índice del stepper sin perder los datos diligenciados. | `onClick` ejecuta `handlePrevStep()`. |
+| **Planificador** | Botón "Generar Clase" | Botón de acción final destacado en la Fase 4 con animación y degradado. | Botón HTML `<button>` / Icono `<Sparkles size={18}>`, fondo `#183630` | Compila el contexto completo, envía la petición a Gemini y navega a `/editor`. | `onClick` ejecuta `handleGenerarPlan()`. |
+| **Grafo MEN** | Selector de Grado en Grafo | Dropdown en cabecera del visualizador de grafo curricular. | Control `<select>` / `CurricularGraphViewer.jsx` | Filtra los nodos conceptuales por nivel (ej. 8° a 9° Básica Secundaria Avanzada). | `onChange`. |
+| **Grafo MEN** | Selector de Eje Temático | Dropdown para acotar los conceptos a un eje disciplinar específico. | Control `<select>` / `CurricularGraphViewer.jsx` | Filtra las conexiones y aristas del grafo según el eje temático seleccionado. | `onChange`. |
+| **Grafo MEN** | Controles de Zoom del Grafo | Botonera con Zoom In, porcentaje (85%), Zoom Out y Restablecer. | Botones de icono Lucide (`ZoomIn`, `ZoomOut`, `RotateCcw`) | Escala la matriz de transformación SVG del canvas del grafo. | `onClick`. |
+| **Grafo MEN** | Nodos Conceptuales del Grafo | Nodos interactivos con código MEN (ej. `MEN-SOL-4.1 Sensores y robótica`). | Rectángulos SVG accesibles con estados hover y active | Al pulsar un nodo muestra sus prerrequisitos y permite transferirlo al planificador. | `onClick` ejecuta `handleSeleccionarNodo(nodo)`. |
 
 ---
 

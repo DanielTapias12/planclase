@@ -40,7 +40,12 @@ Bajo el marco de ingeniería de software educativo y la metodología MODESEC, el
 - **Copia de Respaldo Institucional:** [`docs/diseno-multimedial/GUION_TECNICO_MULTIMEDIAL.md`](../diseno-multimedial/GUION_TECNICO_MULTIMEDIAL.md)
 - **Carpeta de Evidencias y Capturas Reales:** `docs/evidencias/ACT-010/`
   - `V01_inicio.png` (Ventana de Inicio)
-  - `V02_planificador.png` (Planificador de Clases)
+  - `V02_planificador.png` (Planificador de Clases — Vista General)
+  - `V02_planificador_fase1.png` (Planificador — Fase 1: Información básica y ADN)
+  - `V02_planificador_fase2.png` (Planificador — Fase 2: Metodología y Metas)
+  - `V02_planificador_fase3.png` (Planificador — Fase 3: Estándares y DBA)
+  - `V02_planificador_fase4.png` (Planificador — Fase 4: Inclusión DUA/PIAR)
+  - `V02_planificador_grafo.png` (Planificador — Grafo Interactivo de Prerrequisitos MEN)
   - `V03_editor.png` (Editor Curricular y Co-docente IA)
   - `V04_mis_planes.png` (Mis Planes Guardados)
   - `V06_plantillas.png` (Plantillas Curriculares)

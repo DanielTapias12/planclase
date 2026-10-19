@@ -158,30 +158,60 @@ Cada tarjeta presenta badges identificadores (*Estructura predeterminada*, *Púb
 
 ---
 
-### Ventana 02: Planificador de Clases — Wizard Curricular (`WizardPage.jsx`)
+### Ventana 02: Planificador de Clases — Asistente Curricular Tripartito (`WizardPage.jsx`)
 
-#### Imagen de la ventana
-![Planificador de Clases](docs/evidencias/ACT-009/V02_planificador.png)
+#### Imágenes reales de las 4 Fases y Grafo Interactivo
+
+| Fase 1: Información básica | Fase 2: Metodología |
+|:---:|:---:|
+| ![Fase 1: Información básica](docs/evidencias/ACT-009/V02_planificador_fase1.png) | ![Fase 2: Metodología](docs/evidencias/ACT-009/V02_planificador_fase2.png) |
+
+| Fase 3: Estándares | Fase 4: Inclusión (DUA) |
+|:---:|:---:|
+| ![Fase 3: Estándares](docs/evidencias/ACT-009/V02_planificador_fase3.png) | ![Fase 4: Inclusión (DUA)](docs/evidencias/ACT-009/V02_planificador_fase4.png) |
+
+| Componente Extendido: Grafo Interactivo de Prerrequisitos Curriculares (MEN) |
+|:---:|
+| ![Grafo Interactivo de Prerrequisitos](docs/evidencias/ACT-009/V02_planificador_grafo.png) |
 
 #### Objetivo
-Guiar al docente paso a paso en la estructuración de una secuencia didáctica completa, asegurando la formulación de metas según la Guía 30 del MEN, la articulación tripartita de la clase (Inicio, Desarrollo, Cierre) y la inclusión de principios DUA antes de la generación con IA.
+Guiar al docente de manera secuencial y estructurada en el co-diseño de secuencias didácticas completas, articulando el contexto de aula con la metodología institucional activa (ABP, STEAM), los Estándares Básicos de Competencias y DBA de la Guía 30 del MEN mediante un grafo interactivo de prerrequisitos, y las adaptaciones inclusivas DUA/PIAR antes de procesar la generación curricular con la IA pedagógica.
 
 #### Descripción general
-Asistente secuencial de 4 fases con barra de progreso superior. Dispone de campos tipados para grado, área, duración, metodología institucional, objetivos de aprendizaje, actividades por momentos didácticos, adaptaciones inclusivas y botón final de generación mediante Google Gemini.
+La ventana implementa un asistente tipo *wizard* ergonómico dividido en 4 fases interactivas con un *stepper* superior accesible y persistencia en tiempo real (`useAppStore`):
+1. **Cabecera y Navegación:** Migas de pan (*Inicio > Planificador*), badge *"SECUENCIA DIDÁCTICA GUIADA"*, acción rápida *"Comenzar nuevo plan en blanco"*, título H1 *"Planificador de Clases"* y barra de progreso de 4 pasos numerados (*1. Información básica*, *2. Metodología*, *3. Estándares*, *4. Inclusión (DUA)*).
+2. **Fase 1 — Información básica:**
+   - Banner *"Aplicar mi ADN Pedagógico"* con badge *"Memoria Activa"*, interruptor *"Activado"* y enlace *"Ver o ajustar mi ADN ↗"*.
+   - Tarjeta *"TEMA Y ESTRUCTURA"*: campo para el nombre de la clase o tema (ej. *"Micro: bit"*) y selector de formato de plan (ej. *"Estructura estándar INSPIRATEC (Tecnología e Informática)"*).
+   - Tarjeta *"AUDIENCIA Y TEMPORALIDAD"*: selector de grado escolar (ej. *"9no Bachillerato"*), duración/sesiones (ej. *"90 minutos, 1 sesión"*) y cantidad de estudiantes (ej. *"26"*).
+   - Tarjeta *"ÁREA CURRICULAR Y RECURSOS"*: selector de área del saber (*Tecnología e Informática*), casilla de verificación *"Plan Transversal / Interdisciplinar Articulado"* y selector/área de recursos didácticos y ambiente (*"Aula Tecnológicamente Integrada (1 a 1)"*).
+3. **Fase 2 — Metodología:**
+   - Tarjeta *"METODOLOGÍA DE ENSEÑANZA"*: selector de metodología prioritaria (*Aprendizaje Basado en Proyectos (ABPro)*, STEAM, Gamificación, etc.).
+   - Tarjeta *"OBJETIVOS DE APRENDIZAJE"*: botón de asistencia *"Sugerir con IA"* y área de texto estructurada para competencias y desempeños esperados con Micro:bit y pensamiento computacional.
+4. **Fase 3 — Estándares:**
+   - Botón *"Grafo de Prerrequisitos (MEN)"* que abre la red conceptual interactiva y botón *"Sugerir estándares"*.
+   - Área de texto editable con los Estándares Básicos de Competencias (MEN), DBA y componentes de la Guía 30 (Grados 8° a 9°, Componente Solución de Problemas, Competencias y Desempeños).
+5. **Fase 4 — Inclusión (DUA):**
+   - Tarjeta *"CONDICIONES PARA AJUSTES RAZONABLES (DUA)"*: 4 tarjetas interactivas de selección múltiple con iconos para *Discapacidad visual*, *Discapacidad auditiva*, *Discapacidad motora* y *PIAR Institucional*.
+   - Tarjeta *"NECESIDADES ESPECÍFICAS ADICIONALES"*: campo de entrada opcional para Trastorno del Espectro Autista (TEA), TDAH o baja conectividad.
+   - Botonera de cierre con botones *"Volver"*, *"Guardar progreso"* y botón primario destacado *"Generar Clase"* (icono de chispas).
+6. **Modal/Drawer: Grafo Interactivo de Prerrequisitos Curriculares (`CurricularGraphViewer.jsx`):**
+   - Visualizador de red conceptual estructurada en 5 columnas por ciclos de grado: *1° a 3° Primaria Inicial*, *4° a 5° Primaria Avanzada*, *6° a 7° Secundaria Inicial*, *8° a 9° Secundaria Avanzada* y *10° a 11° Educación Media*.
+   - Filtros superiores por Grado y Eje Temático, controles de zoom (*Zoom In*, *Zoom Out*, porcentaje *85%*, *Restablecer*) y nodos clicables con identificadores MEN (`MEN-NAT-4.1`, `MEN-APR-4.1`, `MEN-SOL-4.1`, `MEN-SOC-4.1`) que se transfieren directamente al formulario del planificador.
 
 #### Tabla de elementos
 
 | Elemento | Descripción |
 |---|---|
-| **Nombre de la ventana** | Planificador de Clases (Wizard Curricular Tripartito) |
-| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V02_planificador.png`](docs/evidencias/ACT-009/V02_planificador.png). Iconos Lucide: `Check`, `ChevronRight`, `ChevronLeft`, `Save`, `Sparkles`, `BookOpen`. |
-| **Texto** | Indicador de pasos: *"Paso 1: Parámetros"*, *"Paso 2: Metas y MEN"*, *"Paso 3: Secuencia Didáctica"*, *"Paso 4: Recursos e IA"*. Títulos de sección, etiquetas de campo, textos de ayuda y placeholders pedagógicos. |
+| **Nombre de la ventana** | Planificador de Clases (Wizard Curricular Tripartito de 4 Fases y Grafo MEN) |
+| **Imagen** | Capturas reales del flujo completo: [`V02_planificador_fase1.png`](docs/evidencias/ACT-009/V02_planificador_fase1.png), [`V02_planificador_fase2.png`](docs/evidencias/ACT-009/V02_planificador_fase2.png), [`V02_planificador_fase3.png`](docs/evidencias/ACT-009/V02_planificador_fase3.png), [`V02_planificador_fase4.png`](docs/evidencias/ACT-009/V02_planificador_fase4.png), y [`V02_planificador_grafo.png`](docs/evidencias/ACT-009/V02_planificador_grafo.png). Iconos Lucide: `RotateCcw`, `Check`, `CheckSquare`, `ArrowRight`, `ArrowLeft`, `Save`, `Sparkles`, `Share2`, `ZoomIn`, `ZoomOut`, `Eye`, `VolumeX`, `Accessibility`, `ShieldCheck`. |
+| **Texto** | • Breadcrumbs: *"Inicio > Planificador"*.<br>• Badge: *"SECUENCIA DIDÁCTICA GUIADA"*.<br>• Botón superior: *"Comenzar nuevo plan en blanco"*.<br>• Título H1: *"Planificador de Clases"*.<br>• Subtítulo: *"Configura los propósitos pedagógicos, metodología y adaptaciones DUA para generar tu secuencia didáctica estructurada con asistencia de IA."*<br>• Stepper: *1. Información básica*, *2. Metodología*, *3. Estándares*, *4. Inclusión (DUA)*.<br>• Textos Fase 1: *"Tema y Estructura"*, *"Audiencia y Temporalidad"*, *"Área Curricular y Recursos"*, *"Aplicar mi ADN Pedagógico"*.<br>• Textos Fase 2: *"Metodología de Enseñanza"*, *"Objetivos de Aprendizaje"*.<br>• Textos Fase 3: *"Estándares y Referentes Curriculares"*, *"Grafo de Prerrequisitos (MEN)"*, *"Sugerir estándares"*.<br>• Textos Fase 4: *"Condiciones para Ajustes Razonables (DUA)"*, *"Necesidades Específicas Adicionales"*.<br>• Textos Grafo: *"Grafo Interactivo de Prerrequisitos Curriculares"*, columnas por ciclos escolares de 1° a 11°. |
 | **Audio** | No se identificaron archivos de audio en esta ventana. |
 | **Video** | No se identificaron archivos de video en esta ventana. |
-| **Animación** | Transición de deslizamiento horizontal entre pasos del wizard y animación de carga (spinner) durante la llamada a la API de Gemini. |
-| **Acciones del usuario** | Seleccionar opciones en desplegables, redactar metas curriculares, utilizar sugerencias automáticas de la IA, guardar borrador intermedio y generar la secuencia final. |
-| **Botones** | *"Siguiente"*, *"Anterior"*, *"Guardar Borrador"*, *"Sugerir con IA"* y *"Generar Plan de Clase con IA"*. |
-| **Navegación** | Al completar la fase 4 y pulsar "Generar Plan", redirige automáticamente a `/editor`. |
+| **Animación** | • Transiciones CSS de deslizamiento horizontal suave entre las 4 fases del wizard.<br>• Animación de renderizado y zoom en el canvas SVG del Grafo de Prerrequisitos Curriculares.<br>• Efecto hover de selección y borde reforzado en las 4 tarjetas DUA (Discapacidad visual, auditiva, motora, PIAR). |
+| **Acciones del usuario** | • Clic en *"Comenzar nuevo plan en blanco"*: resetea el formulario tras confirmar.<br>• Activar/desactivar el interruptor *"Aplicar mi ADN Pedagógico"*.<br>• Diligenciar inputs de texto y seleccionar opciones en los menús desplegables de las fases 1 a 4.<br>• Clic en *"Sugerir con IA"* (Fase 2): genera propuestas de competencias con base en la metodología.<br>• Clic en *"Grafo de Prerrequisitos (MEN)"* (Fase 3): abre el visualizador de red ontológica.<br>• Interactuar con el Grafo de Prerrequisitos: cambiar grado, aplicar zoom (85%), seleccionar un nodo conceptual y cargarlo al plan.<br>• Clic en las tarjetas DUA (Fase 4) para marcar adaptaciones de accesibilidad requeridas.<br>• Clic en *"Guardar progreso"*: almacena el borrador actual en Zustand y `localStorage`.<br>• Clic en *"Siguiente →"* / *"← Volver"*: navega secuencialmente entre las fases validando campos requeridos.<br>• Clic en *"Generar Clase"*: compila el prompt pedagógico, llama a la API de Gemini y redirige al `/editor`. |
+| **Botones** | • Botón de reinicio *"Comenzar nuevo plan en blanco"* (icono `RotateCcw`).<br>• Botón *"Siguiente →"* (icono `ArrowRight`, fondo `#183630`).<br>• Botón *"← Volver"* (icono `ArrowLeft`).<br>• Botón *"Guardar progreso"* (icono `Save`).<br>• Botones de asistencia IA: *"Sugerir con IA"* y *"Sugerir estándares"* (icono `Sparkles`).<br>• Botón *"Grafo de Prerrequisitos (MEN)"* (icono `Share2`).<br>• Controles del grafo: *Zoom In*, *Zoom Out*, *Restablecer*.<br>• Botón de finalización *"Generar Clase"* (icono `Sparkles`, fondo verde oscuro `#183630`). |
+| **Navegación** | • Transición interna entre las 4 fases del formulario.<br>• Al pulsar *"Generar Clase"* navega a la ruta `/editor` con el plan estructurado cargado.<br>• Clic en *"Inicio"* de los breadcrumbs regresa a `/home`.<br>• Navegación lateral permanente mediante el Dock izquierdo. |
 
 ---
 
