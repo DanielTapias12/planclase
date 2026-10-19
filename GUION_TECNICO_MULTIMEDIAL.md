@@ -244,19 +244,53 @@ La ventana **Mis Planes** (`/mis-planes`) constituye el portafolio curricular de
 
 ---
 
-### VENTANA 5 — Mi ADN Pedagógico (`AdnPedagogicoPage.jsx`)
+### VENTANA 5 — Mi ADN Pedagógico & Estudio Transversal (`AdnPedagogicoPage.jsx`)
 
-#### 5.1 Descripción Funcional y Arquitectura Visual
-La ventana **Mi ADN Pedagógico** (`/adn-pedagogico`) modela el perfil formativo y cognitivo del docente según el modelo de estilos de aprendizaje e instrucción de **Felder-Silverman**. Presenta un cuestionario reflexivo con 4 dimensiones bipolares (Sensorial/Intuitivo, Visual/Verbal, Activo/Reflexivo, Secuencial/Global) y un selector de metodología institucional. Los resultados se representan en un gráfico de radar interactivo y condicionan la manera en que el motor de IA personaliza las sugerencias didácticas.
+#### 5.1 Capturas de Pantalla Reales de las 4 Pestañas
 
-#### 5.2 Registro Técnico de Elementos
+| Pestaña 1: Memoria de Éxito Automática | Pestaña 2: Caja de Herramientas Favorita |
+|:---:|:---:|
+| ![Pestaña 1: Memoria de Éxito](docs/evidencias/ACT-010/V05_adn_pedagogico_pestana1.png) | ![Pestaña 2: Caja de Herramientas](docs/evidencias/ACT-010/V05_adn_pedagogico_pestana2.png) |
+
+| Pestaña 3: Matriz de Transversalidad | Pestaña 4: Recursos Probados en Aula |
+|:---:|:---:|
+| ![Pestaña 3: Matriz de Transversalidad](docs/evidencias/ACT-010/V05_adn_pedagogico_pestana3.png) | ![Pestaña 4: Recursos Probados](docs/evidencias/ACT-010/V05_adn_pedagogico_pestana4.png) |
+
+#### 5.2 Descripción Funcional y Arquitectura Visual
+La ventana **Mi ADN Pedagógico & Estudio Transversal** (`/adn-pedagogico`) modela y persiste la huella profesional de enseñanza del docente. Registra de forma continua las metodologías de mayor éxito en sus clases, sus dinámicas de inicio predilectas, estilos de evaluación formativa, principios DUA preferidos y conexiones interdisciplinares para alimentar la memoria contextual de la IA en cada nuevo plan generado.
+
+Se organiza en:
+1. **Encabezado Institucional:** Badges *"IDENTIDAD DOCENTE & MEMORIA CONTEXTUAL"* y *"Modo Administrador Curricular"*, botón *"Sincronizar Historial"*, botón *"Guardar ADN"*, checkbox *"Establecer como Estándar Curricular Institucional"* y switch *"Aplicar mi ADN Pedagógico por defecto al diseñar nuevos planes en el Planificador"*.
+2. **Pestaña 1 — Memoria de Éxito Automática:** 4 tarjetas de métricas analíticas (*Planes Analizados: 3*, *Índice de Innovación: 44%*, *Metodología Principal: Aprendizaje social y emocional*, *Recurso Favorito: Material de clase*) y gráficos de progreso de efectividad metodológica.
+3. **Pestaña 2 — Caja de Herramientas Favorita:** 4 bloques de selección rápida de dinámicas de inicio (desconectadas unplugged, preguntas socráticas, rompehielos, analogías), estilos de evaluación formativa (rúbricas analíticas, coevaluación), principios DUA predilectos y textarea para la receta pedagógica personal.
+4. **Pestaña 3 — Matriz de Transversalidad:** Selección de proyectos transversales institucionales (STEAM, PRAE ambiental, convivencia ciudadana, alfabetización digital) y configuración de articulación interdisciplinar con asignaturas secundarias y preguntas problémicas.
+5. **Pestaña 4 — Recursos Probados en Aula:** Repositorio personal de materiales validados con botón *"+ Añadir Recurso Probado"*.
+
+#### 5.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **ADN** | Instrumento de Diagnóstico Felder-Silverman | Serie de reactivos con escala de preferencia bipolar de 5 puntos. | Controles radio / Formularios accesibles | Registra la tendencia didáctica del docente en cada eje cognitivo. | `onChange` actualiza las puntuaciones dimensionales. |
-| **ADN** | Gráfico de Perfil Pedagógico | Diagrama poligonal visual que proyecta el equilibrio entre los cuatro estilos de enseñanza. | Renderizado SVG con coordenadas polares | Muestra la huella pedagógica única del usuario de forma inmediata. | Recálculo automático al actualizar las respuestas del cuestionario. |
-| **ADN** | Selector de Metodología Institucional | Menú desplegable para afinar el enfoque oficial del colegio (ABP, STEAM, DUA, etc.). | Control `<select>` / `src/pages/AdnPedagogicoPage.jsx` | Vincula la metodología principal al perfil docente y al generador del wizard. | `onChange` actualiza `userProfile.metodologiaInstitucional`. |
-| **ADN** | Botón "Guardar Perfil Pedagógico" | Botón primario para persistir la calibración docente en Firestore y `localStorage`. | Botón HTML `<button>` / Icono `<CheckCircle size={16}>` | Guarda las preferencias del ADN y sincroniza el contexto para el asistente IA. | `onClick` ejecuta `handleGuardarAdn()`. |
+| **ADN** | Badge "Identidad Docente" | Insignia superior que contextualiza el módulo de memoria contextual. | Badge Glassmorphism / Icono `<Sparkles size={13}>` | Elemento informativo de identidad pedagógica. | Estático. |
+| **ADN** | Badge "Modo Administrador" | Insignia para docentes con rol de coordinador académico o administrador. | Badge amarillo/ámbar / Icono `<Shield size={13}>` | Indica privilegios para fijar el ADN como estándar institucional. | Condicionado a `isAdmin`. |
+| **ADN** | Botón "Sincronizar Historial" | Botón superior para escanear los planes guardados y recalcular métricas. | Botón HTML `<button>` / Icono `<RotateCw size={15}>` | Ejecuta `autoSyncDnaFromHistory(userId)`, actualiza porcentajes y muestra toast. | `onClick`. |
+| **ADN** | Botón "Guardar ADN" | Botón de acción primario verde esmeralda para persistir las preferencias. | Botón HTML `<button>` / Icono `<Save size={15}>`, fondo `#16A34A` | Serializa el perfil en Firestore y Zustand mediante `savePedagogicalDna()`. | `onClick`. |
+| **ADN** | Checkbox "Estándar Institucional" | Casilla interactiva exclusiva para perfiles administradores. | Input HTML `<input type="checkbox">` | Establece el perfil activo como la plantilla metodológica base del colegio. | `onChange` actualiza `esEstandarInstitucional`. |
+| **ADN** | Switch "Aplicar por Defecto" | Interruptor con casilla verde de activación automática en el planificador. | Control interactivo con icono `<CheckSquare>` | Activa o desactiva la inyección del ADN en el prompt de Gemini. | `onClick` conmuta `aplicarPorDefecto`. |
+| **ADN** | 4 Pestañas de Navegación | Píldoras horizontales: *1. Memoria de Éxito*, *2. Caja de Herramientas*, *3. Matriz Transversal*, *4. Recursos Probados*. | Botones tabulados con iconos (`TrendingUp`, `Sliders`, `Layers`, `FolderCheck`) | Conmuta la sección visual activa en la vista de ADN pedagógico. | `onClick` actualiza `activeTab`. |
+| **ADN** | Tarjeta Métrica "Planes Analizados" | Indicador con valor numérico *"3"* y metadato de secuencias en historial. | Tarjeta Glassmorphism / Icono `<BookOpen size={18}>` | Informa la muestra documental sobre la que se calculan las métricas. | Reactivo al historial de planes. |
+| **ADN** | Tarjeta Métrica "Índice de Innovación" | Indicador porcentual *"44%"* (diversificación metodológica y DUA). | Tarjeta Glassmorphism / Icono `<Award size={18}>` | Mide la variabilidad de estrategias activas utilizadas en el aula. | Recalculado tras sincronización. |
+| **ADN** | Tarjeta Métrica "Metodología Principal" | Tarjeta con el enfoque más frecuente (*Aprendizaje social y emocional*). | Tarjeta Glassmorphism / Icono `<Compass size={18}>` | Exhibe la metodología predominante del docente en sus planes. | Derivado de `planesAnalizados`. |
+| **ADN** | Tarjeta Métrica "Recurso Favorito" | Indicador del formato predilecto (*Material de clase*). | Tarjeta Glassmorphism / Icono `<Star size={18}>` | Exhibe el tipo de material didáctico más anexado a las secuencias. | Derivado de los anexos. |
+| **ADN** | Barras de Progreso Metodológico | Indicadores visuales de distribución porcentual por metodología (67% / 33%). | Contenedor con barra de avance estilizada en verde `#16A34A` | Muestra qué metodologías han sido más efectivas y frecuentes. | Estático con animación de ancho. |
+| **ADN** | Tags de Dinámicas de Inicio | Etiquetas interactivas con estrellas (Desconectadas, Pregunta socrática, etc.). | Botones tipo tag con icono `<Star>` | Marca o desmarca las dinámicas que el docente desea priorizar en clase. | `onClick` conmuta la selección en `dinamicasFavoritas`. |
+| **ADN** | Input + Botón "+ Añadir dinámica" | Campo de texto y botón para registrar técnicas rompehielos propias. | Input `<input type="text">` + botón `<button>` | Añade una nueva dinámica a la lista personalizada del usuario. | `onClick` / `onKeyDown` con tecla `Enter`. |
+| **ADN** | Tags de Evaluación Formativa | Etiquetas interactivas (Rúbrica analítica, Coevaluación, Trivia de cierre). | Botones tipo tag con icono `<CheckCircle2>` | Selecciona las modalidades de evaluación que la IA debe sugerir. | `onClick` conmuta la selección en `evaluacionesFavoritas`. |
+| **ADN** | Tags de Principios DUA | Etiquetas con las pautas DUA prioritarias (Representación, Acción, Expresión). | Botones tipo tag con icono `<Lightbulb>` | Prioriza pautas de accesibilidad para estudiantes con barreras de aprendizaje. | `onClick` conmuta `duaFavoritos`. |
+| **ADN** | Textarea "Filosofía Pedagógica" | Campo de texto libre para anotar la receta docente de enseñanza en aula. | Control `<textarea rows="4">` | Inyecta las directrices de enseñanza del docente en el prompt de la IA. | `onChange` actualiza `filosofiaPersonal`. |
+| **ADN** | Tags de Ejes Transversales | Etiquetas con proyectos institucionales (STEAM, PRAE Ambiental, Convivencia). | Botones tipo tag con icono `<Layers>` | Selecciona los ejes curriculares transversales articulados a la institución. | `onClick` conmuta `ejesTransversales`. |
+| **ADN** | Selector de Área Secundaria | Menú desplegable con las áreas de conexión interdisciplinar (*Matemáticas*). | Control `<select>` / `AREAS_SECUNDARIAS` | Preselecciona el área secundaria para vincular en secuencias integradas. | `onChange` actualiza `areaSecundariaHabitual`. |
+| **ADN** | Input "Pregunta Problémica Habitual" | Campo de texto para el reto o pregunta conductora de los proyectos. | Input HTML `<input type="text">` | Define el hilo conductor para articular aprendizajes entre asignaturas. | `onChange` actualiza `preguntaProblemicaHabitual`. |
+| **ADN** | Botón "+ Añadir Recurso Probado" | Botón en Pestaña 4 para registrar materiales didácticos con alto engagement. | Botón HTML `<button>` / Icono `<Plus size={15}>` | Abre el formulario para documentar una actividad o recurso validado en aula. | `onClick` abre diálogo o formulario. |
 
 ---
 

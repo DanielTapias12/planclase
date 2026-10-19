@@ -21,6 +21,8 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | **`mockup-inicio.png`** | Ventana de Inicio | `/home` | Entrada editorial, resumen de métricas y acceso rápido a modelos. |
 | **`mockup-planificador.png`** | Planificador de Clases (Wizard) | `/` | Co-diseño guiado en 4 fases tripartitas (Básica, Metodología, MEN, DUA). |
 | **`mockup-grafo-prerrequisitos.png`** | Grafo Ontológico de Prerrequisitos | Modal / `/` | Explorador interactivo de competencias y progresión de la Guía 30 del MEN. |
+| **`mockup-adn-pedagogico.png`** | Mi ADN Pedagógico & Transversalidad | `/adn-pedagogico` | Memoria contextual, métricas de éxito y configuración del perfil docente. |
+| **`mockup-caja-herramientas.png`** | Caja de Herramientas y DUA | `/adn-pedagogico` | Selección de dinámicas de inicio, evaluación formativa y receta pedagógica. |
 | **`mockup-dashboard.png`** | Repositorio / Dashboard | `/mis-planes` | Panel de gestión curricular, filtrado, sincronización y acciones sobre planes. |
 | **`mockup-actividad.png`** | Arquitectura Curricular / Plantillas | `/plantillas` | Catálogo de estructuras didácticas, transferencia al asistente e inspección. |
 | **`mockup-resultados.png`** | Editor Curricular / Resultados | `/editor` | Lienzo de trabajo con el plan generado, co-docente socrático IA y exportación. |

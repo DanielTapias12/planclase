@@ -36,14 +36,16 @@ Los mockups de alta fidelidad cierran la brecha entre el modelo conceptual (diag
 
 ## 4. Productos y Mockups Entregados
 
-Los 6 mockups de alta fidelidad requeridos fueron archivados en `docs/diseno-interface/mockups/`:
+Los 8 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
 
 1. **`mockup-inicio.png`:** Ventana de Inicio (`/home`), bienvenida personalizada, indicadores de estado y modelos.
 2. **`mockup-planificador.png`:** Planificador de Clases (`/`), asistente secuencial en 4 fases tripartitas con memoria de ADN pedagógico.
 3. **`mockup-grafo-prerrequisitos.png`:** Grafo Interactivo de Prerrequisitos Curriculares (MEN), red ontológica de competencias por ciclos de grado de 1° a 11°.
-4. **`mockup-dashboard.png`:** Panel y Repositorio de Mis Planes de Clase (`/mis-planes`), búsqueda en tiempo real, filtros y gestión de secuencias.
-5. **`mockup-actividad.png`:** Catálogo de Estructuras y Modelos Curriculares (`/plantillas`), transferencia al asistente e inspección de plantillas.
-6. **`mockup-resultados.png`:** Editor Curricular y Asistente Socrático (`/editor`), lienzo de trabajo con plan generado y panel de co-diseño con IA.
+4. **`mockup-adn-pedagogico.png`:** Mi ADN Pedagógico & Transversalidad (`/adn-pedagogico`), memoria contextual de éxito, métricas y analíticas.
+5. **`mockup-caja-herramientas.png`:** Caja de Herramientas y DUA (`/adn-pedagogico`), dinámicas de inicio, evaluación formativa y receta docente.
+6. **`mockup-dashboard.png`:** Panel y Repositorio de Mis Planes de Clase (`/mis-planes`), búsqueda en tiempo real, filtros y gestión de secuencias.
+7. **`mockup-actividad.png`:** Catálogo de Estructuras y Modelos Curriculares (`/plantillas`), transferencia al asistente e inspección de plantillas.
+8. **`mockup-resultados.png`:** Editor Curricular y Asistente Socrático (`/editor`), lienzo de trabajo con plan generado y panel de co-diseño con IA.
 
 ---
 

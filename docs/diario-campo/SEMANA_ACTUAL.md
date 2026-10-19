@@ -111,6 +111,17 @@
 
 ---
 
+### 11. Registro Fidedigno de Ventanas Críticas: Planear y Mi ADN Pedagógico (ACT-007, ACT-009, ACT-010)
+- **Ventana Planear:** Se documentaron sus 4 fases de configuración curricular (1. Grado y Asignatura, 2. Estándares y DBA con Grafo MEN, 3. Metodología y DUA, 4. Generación y Resumen) en `DESCRIPCION_VENTANAS.md`, `GUION_TECNICO_MULTIMEDIAL.md` y `mockup-planificador.png`.
+- **Ventana Mi ADN Pedagógico & Estudio Transversal:** Se documentaron exhaustivamente sus 4 pestañas interactivas:
+  1. *Memoria de Éxito Automática:* Métricas en vivo (3 planes analizados, 44% innovación, metodología principal y recurso didáctico favorito con barras de progreso).
+  2. *Caja de Herramientas Favorita:* Dinámicas de inicio desconectadas/icebreakers, estilos de evaluación formativa, principios DUA y caja de texto para la Filosofía Pedagógica Personal.
+  3. *Matriz de Transversalidad:* Proyectos transversales institucionales (STEAM, PRAE, Convivencia), articulación interdisciplinar habitual y reto/pregunta problémica.
+  4. *Recursos Probados en Aula:* Repositorio de materiales pedagógicos validados y botón de anexión directa.
+- Se incorporaron las 5 capturas fotográficas reales de alta fidelidad en `docs/evidencias/ACT-009/` y `docs/evidencias/ACT-010/`, vinculándose a los mockups `mockup-adn-pedagogico.png` y `mockup-caja-herramientas.png` en `docs/diseno-interface/mockups/`.
+
+---
+
 ## Acuerdos y Próximos Compromisos
 1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-007, ACT-009, ACT-010, ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
 2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.

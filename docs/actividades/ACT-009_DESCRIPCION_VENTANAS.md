@@ -40,6 +40,11 @@ La descripción de ventanas constituye el inventario funcional y visual de refer
 - **Carpeta de Evidencias Fotográficas Reales (`docs/evidencias/ACT-009/`):**
   - `V01_inicio.png` (Ventana de Inicio)
   - `V04_mis_planes.png` (Mis Planes de Clase — Repositorio Personal)
+  - `V05_adn_pedagogico.png` (Mi ADN Pedagógico & Estudio Transversal — Vista General)
+  - `V05_adn_pedagogico_pestana1.png` (ADN — Pestaña 1: Memoria de Éxito Automática)
+  - `V05_adn_pedagogico_pestana2.png` (ADN — Pestaña 2: Caja de Herramientas y DUA)
+  - `V05_adn_pedagogico_pestana3.png` (ADN — Pestaña 3: Matriz de Transversalidad)
+  - `V05_adn_pedagogico_pestana4.png` (ADN — Pestaña 4: Recursos Probados en Aula)
   - `V06_plantillas.png` (Mis Estructuras de Clase — Catálogo de Modelos)
   - `V02_planificador.png` (Planificador de Clases — Vista General)
   - `V02_planificador_fase1.png` (Planificador — Fase 1: Información básica y ADN)

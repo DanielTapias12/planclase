@@ -296,27 +296,55 @@ Formulario de alta seguridad y estética Glassmorphism donde la clave se guarda 
 
 ---
 
-### Ventana 05: Mi ADN Pedagógico (`AdnPedagogicoPage.jsx`)
+### Ventana 05: Mi ADN Pedagógico & Estudio Transversal (`AdnPedagogicoPage.jsx`)
+
+#### Imágenes reales de las 4 Pestañas
+
+| Pestaña 1: Memoria de Éxito Automática | Pestaña 2: Caja de Herramientas Favorita |
+|:---:|:---:|
+| ![Pestaña 1: Memoria de Éxito](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana1.png) | ![Pestaña 2: Caja de Herramientas](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana2.png) |
+
+| Pestaña 3: Matriz de Transversalidad | Pestaña 4: Recursos Probados en Aula |
+|:---:|:---:|
+| ![Pestaña 3: Matriz de Transversalidad](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana3.png) | ![Pestaña 4: Recursos Probados](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana4.png) |
 
 #### Objetivo
-Determinar el estilo de enseñanza y la huella didáctica del docente según el modelo de cuatro dimensiones bipolares de **Felder-Silverman**, permitiendo que las sugerencias de la IA se calibren con su estilo pedagógico natural.
+Construir y persistir la huella profesional de enseñanza del docente, registrando automáticamente las metodologías más exitosas de sus clases, sus dinámicas de inicio predilectas, estilos de evaluación formativa, principios DUA preferidos y conexiones interdisciplinares para alimentar la memoria contextual de la IA en cada nueva planificación.
 
 #### Descripción general
-Cuestionario reflexivo con reactivos que miden las dimensiones Sensorial/Intuitivo, Visual/Verbal, Activo/Reflexivo y Secuencial/Global, acompañado de un gráfico de radar interactivo y selector de metodología institucional preferida.
+La ventana presenta un encabezado verde bosque oscuro con estética Glassmorphism que integra:
+- Badges de contexto: *"IDENTIDAD DOCENTE & MEMORIA CONTEXTUAL"* y *"Modo Administrador Curricular"*.
+- Título H1: *"Mi ADN Pedagógico & Estudio Transversal"*.
+- Subtítulo: *"Tu huella profesional de enseñanza. Inspiratec registra automáticamente las metodologías más exitosas en tus clases, tus recursos didácticos predilectos y conecta ejes transversales en cada nuevo plan generado con IA."*
+- Botones de acción superior: *"Sincronizar Historial"* (`RotateCw`), *"Guardar ADN"* (`Save`, botón verde esmeralda) y la casilla *"Establecer como Estándar Curricular Institucional"*.
+- Switch de activación: *"Aplicar mi ADN Pedagógico por defecto al diseñar nuevos planes en el Planificador"* (con estado *"Activado automáticamente"*).
+
+La zona de trabajo se divide en **4 pestañas de navegación interna**:
+1. **1. Memoria de Éxito Automática:** Cuatro tarjetas KPI cuantitativas (*Planes Analizados: 3*, *Índice de Innovación: 44%*, *Metodología Principal: Aprendizaje social y emocional*, *Recurso Didáctico Favorito: Material de clase*) y dos paneles analíticos de barras de progreso (*Metodologías que más te funcionan* y *Recursos más generados*).
+2. **2. Caja de Herramientas Favorita:** Cuatro bloques configurables:
+   - *Dinámicas de Inicio Predilectas (Fase de Exploración):* Etiquetas interactivas con estrellas (Desconectadas Unplugged, Pregunta socrática, Veo-Pienso-Me pregunto, Rompehielos, Lluvia de ideas, Analogías, Demostración experimental) e input para añadir dinámicas personalizadas.
+   - *Estilos y Formas de Evaluación Favoritas:* Etiquetas seleccionables (Rúbrica analítica, Coevaluación reflexiva, Retroalimentación sin penalización, Autoevaluación metacognitiva, Portafolio digital, Trivia gamificada) e input para añadir estilos.
+   - *Principios DUA Predilectos:* Opciones de representación visual, esfuerzo/persistencia, acción/expresión, andamiaje gradual y material concreto.
+   - *Tu Filosofía y Receta Pedagógica Personal:* Textarea libre para directrices docentes que Gemini toma como directriz de redacción.
+3. **3. Matriz de Transversalidad:**
+   - *Ejes Transversales Institucionales Prioritarios:* Etiquetas seleccionables para Enfoque STEAM, PRAE Ambiental, Convivencia Ciudadana, Alfabetización Digital, Emprendimiento y Salud Socioemocional, con input para proyectos propios (ej. Cátedra de Paz).
+   - *Articulación Interdisciplinar Habitual:* Selector de área secundaria predilecta (*Matemáticas*) y campo para el reto o pregunta problémica del entorno habitual.
+4. **4. Recursos Probados en Aula:**
+   - Repositorio personal de materiales validados (*"Banco de Recursos Probados y Efectivos en Aula"*), botón *"+ Añadir Recurso Probado"* y panel de estado vacío con icono de carpeta.
 
 #### Tabla de elementos
 
 | Elemento | Descripción |
 |---|---|
-| **Nombre de la ventana** | Mi ADN Pedagógico (Autodiagnóstico Felder-Silverman) |
-| **Imagen** | Gráfico de radar SVG dinámico que proyecta el polígono del perfil docente. Iconos Lucide: `Dna`, `Compass`, `Award`, `CheckCircle`. |
-| **Texto** | Cuestionario con reactivos pedagógicos, descripciones de los polos de aprendizaje, recomendaciones metodológicas personalizadas y selector de enfoque institucional. |
+| **Nombre de la ventana** | Mi ADN Pedagógico & Estudio Transversal (`AdnPedagogicoPage.jsx`) |
+| **Imagen** | Capturas reales de las 4 pestañas: [`V05_adn_pedagogico_pestana1.png`](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana1.png), [`V05_adn_pedagogico_pestana2.png`](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana2.png), [`V05_adn_pedagogico_pestana3.png`](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana3.png), [`V05_adn_pedagogico_pestana4.png`](docs/evidencias/ACT-009/V05_adn_pedagogico_pestana4.png). Iconos Lucide: `Dna`, `Sparkles`, `RotateCw`, `Save`, `ShieldCheck`, `TrendingUp`, `Sliders`, `FolderCheck`, `Star`, `Check`, `Plus`, `Trash2`. |
+| **Texto** | • Badges: *"IDENTIDAD DOCENTE & MEMORIA CONTEXTUAL"*, *"Modo Administrador Curricular"*.<br>• Título H1: *"Mi ADN Pedagógico & Estudio Transversal"*.<br>• Subtítulo: *"Tu huella profesional de enseñanza. Inspiratec registra automáticamente las metodologías más exitosas en tus clases..."*<br>• Switch: *"Aplicar mi ADN Pedagógico por defecto al diseñar nuevos planes en el Planificador"*.<br>• Pestañas: *1. Memoria de Éxito Automática*, *2. Caja de Herramientas Favorita*, *3. Matriz de Transversalidad*, *4. Recursos Probados en Aula*.<br>• Tarjetas métricas: Planes Analizados (3), Índice de Innovación (44%), Metodología Principal, Recurso Favorito.<br>• Bloques de herramientas: Dinámicas de inicio, Estilos de evaluación, Principios DUA, Filosofía docente.<br>• Matriz transversal: Ejes PRAE/STEAM, Área secundaria, Reto problémico.<br>• Banco probado: *"Materiales didácticos generados que han demostrado alto engagement..."* |
 | **Audio** | No se identificaron archivos de audio en esta ventana. |
 | **Video** | No se identificaron archivos de video en esta ventana. |
-| **Animación** | Animación de transición en los vértices del polígono del gráfico de radar al modificar las respuestas del cuestionario. |
-| **Acciones del usuario** | Responder los ítems del autodiagnóstico, seleccionar la metodología institucional y guardar la calibración del perfil docente. |
-| **Botones** | Botones de opción en escala de 5 puntos y botón primario *"Guardar Perfil Pedagógico"*. |
-| **Navegación** | Navegación global a través del menú lateral flotante. |
+| **Animación** | • Transiciones de cambio de pestaña con desvanecimiento de contenido.<br>• Microanimación de selección en tags con cambio de color y relleno de estrella.<br>• Animación de barra de progreso en las metodologías analizadas.<br>• Giro en el icono al pulsar "Sincronizar Historial". |
+| **Acciones del usuario** | • Clic en *"Sincronizar Historial"*: analiza los planes en Firestore y recalcula métricas automáticamente.<br>• Clic en *"Guardar ADN"*: persiste las preferencias en Firestore y Zustand.<br>• Alternar la casilla *"Establecer como Estándar Curricular Institucional"* (modo admin).<br>• Conmutar el switch *"Aplicar por defecto en el Planificador"*.<br>• Cambiar entre las 4 pestañas de trabajo.<br>• Marcar o desmarcar dinámicas, evaluaciones, principios DUA y proyectos transversales con un clic.<br>• Escribir y añadir dinámicas o proyectos personalizados con los botones `+`.<br>• Redactar la receta pedagógica personal en el textarea.<br>• Seleccionar área secundaria y definir pregunta problémica en la matriz transversal.<br>• Clic en *"+ Añadir Recurso Probado"* en la pestaña 4. |
+| **Botones** | • Botón secundario *"Sincronizar Historial"* (icono `RotateCw`).<br>• Botón primario verde esmeralda *"Guardar ADN"* (icono `Save`).<br>• 4 Botones de pestaña (`.tab-pill`).<br>• Botones de adición: *"+ Añadir dinámica"*, *"+ Añadir evaluación"*, *"+ Añadir apoyo DUA"*, *"+ Añadir proyecto transversal"*, *"+ Añadir Recurso Probado"*.<br>• Tags interactivos clicables de dinámicas, evaluaciones y ejes. |
+| **Navegación** | • La configuración guardada se refleja inmediatamente en el banner de ADN de la ventana `/` (Planificador) y en `/home`.<br>• Menú lateral flotante permanente para navegar a cualquier sección. |
 
 ---
 
