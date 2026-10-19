@@ -51,7 +51,7 @@ export default function ConfigPage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
+    <div className="mgmt-container">
       
       {/* Cabecera del Módulo */}
       <header 

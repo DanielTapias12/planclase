@@ -353,7 +353,7 @@ export default function StructuredPlanDocument({
   // ====================================================
   if (!isEditing) {
     return (
-      <article className="markdown-content" id="plan-content-wrapper" style={{ maxWidth: '820px', margin: '0 auto', padding: '12px 6px' }}>
+      <article className="markdown-content" id="plan-content-wrapper" style={{ maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '12px 6px', boxSizing: 'border-box' }}>
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
@@ -502,7 +502,7 @@ export default function StructuredPlanDocument({
   // MODO EDICIÓN ESTRUCTURADA: Documento in-situ sin Markdown crudo
   // ====================================================
   return (
-    <div className="structured-plan-editor" style={{ maxWidth: '820px', margin: '0 auto', padding: '8px 4px' }}>
+    <div className="structured-plan-editor" style={{ maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '8px 4px', boxSizing: 'border-box' }}>
       
       {/* Barra de estado y confirmación superior del editor */}
       <div 

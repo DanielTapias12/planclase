@@ -1140,7 +1140,7 @@ h6 {
     padding: 14px 24px 8px !important;
   }
 
-  /* Contenedores de página con ancho armónico idéntico a ADN Pedagógico para eliminar el espacio muerto */
+  /* Contenedores de página con ancho fluido completo sin espacio muerto lateral */
   .mgmt-container,
   .home-content-container,
   .wizard-container,
@@ -1148,10 +1148,10 @@ h6 {
   .editor-view,
   .foro-page-container {
     width: 100% !important;
-    max-width: 1360px !important;
-    margin: 0 auto !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: clamp(16px, 2vw, 28px) !important;
+    padding-right: clamp(16px, 2vw, 28px) !important;
     box-sizing: border-box !important;
   }
 
@@ -1592,10 +1592,10 @@ h6 {
    ENHANCED WIZARD & CHOICE CARDS SYSTEM
    ======================================================== */
 .wizard-container {
-  max-width: 1360px;
+  max-width: 100%;
   width: 100%;
-  margin: 0 auto;
-  padding: 16px 20px 36px;
+  margin: 0;
+  padding: 16px clamp(16px, 2vw, 28px) 36px;
   box-sizing: border-box;
 }
 
@@ -1961,9 +1961,9 @@ h6 {
 .planificador-actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 36px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border-color);
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(49, 91, 84, 0.16);
 }
 
 /* Plan Generado Classes */
@@ -3436,9 +3436,9 @@ h6 {
 
 .mgmt-container {
   width: 100%;
-  max-width: 1360px;
-  margin: 0 auto;
-  padding: 16px clamp(16px, 2.5vw, 24px) 36px;
+  max-width: 100%;
+  margin: 0;
+  padding: 16px clamp(16px, 2vw, 28px) 36px;
   box-sizing: border-box;
 }
 
@@ -5901,12 +5901,14 @@ h6 {
   .mgmt-container,
   .home-content-container,
   .wizard-container {
-    max-width: 1360px;
+    max-width: 100%;
+    margin: 0;
   }
 
   .editor-view {
-    max-width: 1360px;
-    padding: 20px 24px 64px !important;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px clamp(16px, 2vw, 28px) 64px !important;
   }
 
   .editor-doc-table-wrapper {

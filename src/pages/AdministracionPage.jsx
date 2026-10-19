@@ -130,16 +130,7 @@ export default function AdministracionPage() {
 
   if (loading) {
     return (
-      <div 
-        className="mgmt-container" 
-        style={{ 
-          maxWidth: '1360px', 
-          width: '100%', 
-          margin: '0 auto', 
-          padding: '24px clamp(16px, 3.5vw, 28px) 52px',
-          boxSizing: 'border-box'
-        }}
-      >
+      <div className="mgmt-container">
         <PageLoadingState 
           icon={ShieldCheck}
           badge="Administración Institucional"
@@ -192,17 +183,7 @@ export default function AdministracionPage() {
   const offsetOtros = -(strokePrimaria + strokeSecundaria + strokeMedia);
 
   return (
-    <div 
-      className="mgmt-container" 
-      style={{ 
-        maxWidth: '1360px', 
-        width: '100%', 
-        margin: '0 auto',
-        boxSizing: 'border-box', 
-        overflowX: 'hidden',
-        padding: '24px clamp(16px, 3.5vw, 28px) 52px'
-      }}
-    >
+    <div className="mgmt-container" style={{ overflowX: 'hidden' }}>
       
       {/* 1. Cabecera Institucional Translúcida (Mismo desenfoque y panel de cristal de Inicio) */}
       <header 

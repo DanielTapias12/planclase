@@ -33,7 +33,8 @@ import {
   Info,
   ChevronUp,
   Lightbulb,
-  Check
+  Check,
+  Layers
 } from 'lucide-react';
 
 import { savePlanToDB, updatePlanInDB, getPlanById } from '../services/dbService';
@@ -479,7 +480,7 @@ export default function EditorPage() {
     }
   };
 
-  if (!planGenerado) {
+  if (!planGenerado && !isLoadingPlan && !urlPlanId) {
     return (
       <div className="editor-view" style={{ textAlign: 'center', padding: '80px 20px' }}>
         <div className="mgmt-header" style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center', flexDirection: 'column', alignItems: 'center' }}>
@@ -1066,7 +1067,7 @@ export default function EditorPage() {
                 </div>
               </div>
             ) : (
-              <div style={{ maxWidth: '820px', margin: '0 auto', padding: '8px 4px' }}>
+              <div style={{ maxWidth: '1020px', width: '100%', margin: '0 auto', padding: '8px 4px', boxSizing: 'border-box' }}>
                 {/* 1. Modo Vista Exclusiva de Materiales Didácticos */}
                 {activeDocumentView === 'materiales' && (
                   <div className="editor-materials-standalone-view">

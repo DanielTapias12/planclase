@@ -26,6 +26,7 @@ import ModalCalibracionDocente from './components/ModalCalibracionDocente';
 import UserMenu from './components/UserMenu';
 import FondoPixel from './components/FondoPixel';
 import NetworkStatusBanner from './components/NetworkStatusBanner';
+import ErrorBoundary from './components/ErrorBoundary';
 import { 
   Settings, 
   Lightbulb, 
@@ -428,23 +429,25 @@ function AppContent() {
           </header>
 
           <main className="app-main-content-scroll">
-            <Routes>
-              <Route path="/" element={<WizardPage />} />
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/editor" element={<EditorPage />} />
-              <Route path="/config" element={<ConfigPage />} />
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<WizardPage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/editor" element={<EditorPage />} />
+                <Route path="/config" element={<ConfigPage />} />
 
-              <Route path="/mis-planes" element={<MisPlanesPage />} />
-              <Route path="/adn-pedagogico" element={<AdnPedagogicoPage />} />
-              <Route path="/experiencias" element={<ExperienciasPage />} />
-              <Route path="/biblioteca" element={<BibliotecaPage />} />
-              <Route path="/plantillas" element={<PlantillasPage />} />
-              <Route path="/foro" element={<ForoPage />} />
-              <Route path="/soporte" element={<SoportePage />} />
-              <Route path="/acerca" element={<AboutPage />} />
-              <Route path="/ayuda" element={<AyudaPage />} />
-              <Route path="/administracion" element={<AdministracionPage />} />
-            </Routes>
+                <Route path="/mis-planes" element={<MisPlanesPage />} />
+                <Route path="/adn-pedagogico" element={<AdnPedagogicoPage />} />
+                <Route path="/experiencias" element={<ExperienciasPage />} />
+                <Route path="/biblioteca" element={<BibliotecaPage />} />
+                <Route path="/plantillas" element={<PlantillasPage />} />
+                <Route path="/foro" element={<ForoPage />} />
+                <Route path="/soporte" element={<SoportePage />} />
+                <Route path="/acerca" element={<AboutPage />} />
+                <Route path="/ayuda" element={<AyudaPage />} />
+                <Route path="/administracion" element={<AdministracionPage />} />
+              </Routes>
+            </ErrorBoundary>
           </main>
         </div>
 
