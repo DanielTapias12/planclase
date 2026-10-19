@@ -145,19 +145,23 @@ export default function ForoPage() {
 
   // Paneles retráctiles
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return false;
+    }
     if (typeof window !== 'undefined' && window.localStorage) {
       const saved = localStorage.getItem('inspiratec_foro_cat_open');
       if (saved !== null) return saved !== 'false';
-    }
-    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
-      return false;
     }
     return true;
   });
 
   const [isContextOpen, setIsContextOpen] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return false;
+    }
     if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem('inspiratec_foro_ctx_open') !== 'false';
+      const saved = localStorage.getItem('inspiratec_foro_ctx_open');
+      if (saved !== null) return saved !== 'false';
     }
     return true;
   });
@@ -541,6 +545,34 @@ export default function ForoPage() {
               <span><strong>{savedIds.length}</strong> guardadas</span>
             </div>
           </div>
+        </div>
+
+        {/* Chips de filtro rápido por categoría (Ideal para celular y tablet con scroll horizontal) */}
+        <div className="foro-category-chips-scroll" role="tablist" aria-label="Filtro rápido de categorías">
+          <button
+            type="button"
+            className={`foro-category-chip-btn ${activeCategoryFilter === 'todas' ? 'active' : ''}`}
+            onClick={() => { setActiveCategoryFilter('todas'); if (activeView === 'detail') setActiveView('list'); }}
+          >
+            Todas ({mensajes.length})
+          </button>
+          {FORO_CATEGORIAS.map(cat => {
+            const count = categoryCounts[cat.id] || 0;
+            const isActive = activeCategoryFilter === cat.id;
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                className={`foro-category-chip-btn ${isActive ? 'active' : ''}`}
+                onClick={() => { setActiveCategoryFilter(cat.id); if (activeView === 'detail') setActiveView('list'); }}
+              >
+                <Icon size={13} style={{ color: isActive ? '#FFF' : cat.color }} />
+                <span>{cat.label}</span>
+                {count > 0 && <span className="foro-category-chip-count">{count}</span>}
+              </button>
+            );
+          })}
         </div>
 
         {/* Botones de control para contraer/expandir paneles en escritorio */}

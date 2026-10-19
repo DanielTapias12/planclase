@@ -292,7 +292,7 @@ body, #root {
   overflow-x: hidden;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   /* 1. Contenedor principal en móvil: flujo vertical estricto sin anchos fijos */
   .app-shell-layout {
     display: flex !important;
@@ -329,7 +329,8 @@ body, #root {
   .home-content-container,
   .editor-view,
   .adn-container,
-  .wizard-container {
+  .wizard-container,
+  .foro-page-container {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
@@ -342,7 +343,8 @@ body, #root {
   .mgmt-header,
   .home-editorial-welcome-panel,
   .planificador-header-panel,
-  .editor-toolbar-card {
+  .editor-toolbar-card,
+  .foro-header-panel {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;

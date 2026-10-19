@@ -461,11 +461,14 @@ export default function HomePage() {
               </button>
             </div>
           ) : (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-              gap: '18px' 
-            }}>
+            <div 
+              className="home-models-grid"
+              style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
+                gap: '18px' 
+              }}
+            >
               {plantillasDisponibles.slice(0, 6).map((tpl) => (
                 <div 
                   key={tpl.id || tpl.titulo} 

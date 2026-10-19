@@ -127,22 +127,12 @@ function AppContent() {
 
         {/* Barra superior compacta solo para vista móvil */}
         <header className="mobile-header-bar">
-              <button
-                type="button"
-                className="mobile-nav-toggle"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú de navegación"}
-                aria-expanded={mobileMenuOpen}
-              >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
+          <NavLink to="/home" className="mobile-brand-title">
+            <Lightbulb size={20} color="var(--color-brand-active)" /> INSPIRATEC
+          </NavLink>
 
-              <NavLink to="/home" className="mobile-brand-title">
-                <Lightbulb size={20} color="var(--color-brand-active)" /> INSPIRATEC
-              </NavLink>
-
-              <UserMenu />
-            </header>
+          <UserMenu />
+        </header>
 
             {/* Overlay para móvil y escritorio al expandir */}
             <div
@@ -451,15 +441,14 @@ function AppContent() {
           </main>
         </div>
 
-        {/* Barra Inferior Fija (Mobile Bottom Navigation) - Mobile-First Thumb Zone */}
+        {/* Barra Inferior Fija (Mobile Bottom Navigation) - Scroll Horizontal Continuo */}
         <nav className="mobile-bottom-nav" aria-label="Navegación principal en móviles">
           <NavLink 
             to="/home" 
             end
             className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
           >
-            <Home size={20} />
+            <Home size={19} />
             <span>Inicio</span>
           </NavLink>
 
@@ -467,43 +456,103 @@ function AppContent() {
             to="/" 
             end
             className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
           >
-            <Sparkles size={20} />
+            <Sparkles size={19} />
             <span>Planear</span>
           </NavLink>
 
           <NavLink 
             to="/mis-planes" 
             className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
           >
             <div className="mobile-bottom-icon-container">
-              <FileText size={20} />
+              <FileText size={19} />
               {planesCount > 0 && <span className="mobile-bottom-counter-badge">{planesCount}</span>}
             </div>
             <span>Mis Planes</span>
           </NavLink>
 
           <NavLink 
+            to="/adn-pedagogico" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <Dna size={19} />
+            <span>Mi ADN</span>
+          </NavLink>
+
+          <NavLink 
+            to="/plantillas" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <BookOpen size={19} />
+            <span>Plantillas</span>
+          </NavLink>
+
+          <NavLink 
             to="/biblioteca" 
             className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(false)}
           >
-            <Library size={20} />
+            <Library size={19} />
             <span>Biblioteca</span>
           </NavLink>
 
-          <button 
-            type="button" 
-            className={`mobile-bottom-nav-item mobile-bottom-more-btn ${mobileMenuOpen ? 'active' : ''}`}
-            onClick={() => setMobileMenuOpen(prev => !prev)}
-            aria-label="Más opciones de navegación"
-            aria-expanded={mobileMenuOpen}
+          <NavLink 
+            to="/experiencias" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
           >
-            <Menu size={20} />
-            <span>Más</span>
-          </button>
+            <Compass size={19} />
+            <span>Experiencias</span>
+          </NavLink>
+
+          <NavLink 
+            to="/foro" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <MessageSquare size={19} />
+            <span>Foro</span>
+          </NavLink>
+
+          <NavLink 
+            to="/ayuda" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <HelpCircle size={19} />
+            <span>Ayuda</span>
+          </NavLink>
+
+          <NavLink 
+            to="/soporte" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <LifeBuoy size={19} />
+            <span>Soporte</span>
+          </NavLink>
+
+          <NavLink 
+            to="/config" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <Settings size={19} />
+            <span>Config IA</span>
+          </NavLink>
+
+          <NavLink 
+            to="/acerca" 
+            className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+          >
+            <Info size={19} />
+            <span>Acerca</span>
+          </NavLink>
+
+          {isAdmin && (
+            <NavLink 
+              to="/administracion" 
+              className={({ isActive }) => `mobile-bottom-nav-item ${isActive ? 'active' : ''}`}
+            >
+              <Shield size={19} />
+              <span>Admin</span>
+            </NavLink>
+          )}
         </nav>
       </div>
     </FondoPixel>

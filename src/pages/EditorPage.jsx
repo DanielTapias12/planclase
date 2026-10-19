@@ -82,7 +82,12 @@ export default function EditorPage() {
 
   const [prompt, setPrompt] = useState('');
   const [chatMode, setChatMode] = useState('direct'); // 'direct' | 'socratic'
-  const [showModeHelp, setShowModeHelp] = useState(true);
+  const [showModeHelp, setShowModeHelp] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth > 768;
+    }
+    return true;
+  });
 
   // Separación estricta de canales para que cada modo muestre únicamente sus propios mensajes
   const directMessages = useMemo(() => {
@@ -117,6 +122,7 @@ export default function EditorPage() {
   const [loadError, setLoadError] = useState(null);
   const [editablePlan, setEditablePlan] = useState(planGenerado || '');
   const [activeMobileTab, setActiveMobileTab] = useState('doc'); // 'doc' | 'chat'
+  const [activeDocumentView, setActiveDocumentView] = useState('todo'); // 'todo' | 'plan' | 'materiales'
   const [saveFeedback, setSaveFeedback] = useState(null); // { type: 'success' | 'error', text: string }
   const [generatingRecId, setGeneratingRecId] = useState(null);
   const [currentGeneratingTypeKey, setCurrentGeneratingTypeKey] = useState(null);
@@ -129,20 +135,37 @@ export default function EditorPage() {
   
   // Estado de visibilidad del co-docente IA con persistencia local
   const [isChatOpen, setIsChatOpen] = useState(() => {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+      return false; // En móvil y tablet inicia cerrado para priorizar la lectura del documento
+    }
     if (typeof window !== 'undefined' && window.localStorage) {
       return localStorage.getItem('inspiratec_chat_collapsed') !== 'true';
     }
     return true;
   });
 
+  const openChat = () => {
+    setIsChatOpen(true);
+    setActiveMobileTab('chat');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('inspiratec_chat_collapsed', 'false');
+    }
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setActiveMobileTab('doc');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('inspiratec_chat_collapsed', 'true');
+    }
+  };
+
   const toggleChat = () => {
-    setIsChatOpen(prev => {
-      const next = !prev;
-      if (typeof window !== 'undefined' && window.localStorage) {
-        localStorage.setItem('inspiratec_chat_collapsed', String(!next));
-      }
-      return next;
-    });
+    if (isChatOpen) {
+      closeChat();
+    } else {
+      openChat();
+    }
   };
 
   // Modal states for complementary materials
@@ -652,8 +675,8 @@ export default function EditorPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '22px',
-          padding: '24px 32px',
-          marginBottom: '24px',
+          padding: '20px 28px',
+          marginBottom: '14px',
           boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)',
           width: '100%',
           boxSizing: 'border-box'
@@ -785,10 +808,10 @@ export default function EditorPage() {
             <PlusCircle size={16} /> <span>Nuevo</span>
           </button>
 
-          {/* Botón de alternancia del Co-docente IA */}
+          {/* Botón de alternancia del Co-docente IA (Oculto en móvil) */}
           <button 
             type="button"
-            className={`editor-btn-pill editor-chat-toggle-pill ${isChatOpen ? 'active' : ''}`} 
+            className={`editor-btn-pill editor-chat-toggle-pill mobile-hide-chat-btn ${isChatOpen ? 'active' : ''}`} 
             style={{ 
               backgroundColor: isChatOpen ? 'rgba(71, 122, 114, 0.16)' : undefined,
               borderColor: isChatOpen ? 'rgba(71, 122, 114, 0.40)' : undefined,
@@ -806,7 +829,7 @@ export default function EditorPage() {
             )}
           </button>
 
-          {/* Menú Dropdown para Materiales Interactivos */}
+          {/* Menú Dropdown para Materiales Didácticos */}
           <div ref={materialMenuRef} style={{ position: 'relative', zIndex: 120 }}>
             <button 
               className="btn btn-primary" 
@@ -828,25 +851,7 @@ export default function EditorPage() {
             </button>
             
             {showMaterialMenu && (
-              <div 
-                style={{ 
-                  position: 'absolute', 
-                  top: 'calc(100% + 8px)', 
-                  right: 0, 
-                  backgroundColor: 'rgba(255, 255, 255, 0.98)', 
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  borderRadius: '18px', 
-                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.22), 0 4px 14px rgba(0, 0, 0, 0.08)', 
-                  border: '1.5px solid rgba(49, 91, 84, 0.20)', 
-                  zIndex: 1000, 
-                  minWidth: '350px', 
-                  maxWidth: '380px',
-                  maxHeight: '480px',
-                  overflowY: 'auto',
-                  overflowX: 'hidden'
-                }}
-              >
+              <div className="editor-material-dropdown-menu">
                 <div style={{ padding: '14px 18px', backgroundColor: 'rgba(71, 122, 114, 0.10)', borderBottom: '1px solid rgba(49, 91, 84, 0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
                     <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E3B34', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -870,6 +875,7 @@ export default function EditorPage() {
                         if (!opt.anexado) {
                           handleGenerateMaterial(opt.id, opt.label); 
                           setShowMaterialMenu(false); 
+                          setActiveDocumentView('materiales');
                         }
                       }}
                       style={{ 
@@ -932,6 +938,22 @@ export default function EditorPage() {
                     </button>
                   ))}
                 </div>
+
+                {/* Acceso directo para alternar la vista a Materiales Didácticos */}
+                <div style={{ padding: '10px 14px', backgroundColor: 'rgba(71, 122, 114, 0.08)', borderTop: '1px solid rgba(49, 91, 84, 0.12)' }}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    style={{ width: '100%', fontSize: '12px', padding: '7px 12px', justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    onClick={() => {
+                      setActiveDocumentView('materiales');
+                      setShowMaterialMenu(false);
+                    }}
+                  >
+                    <Layers size={13} />
+                    <span>Ver sección interactiva en documento</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -939,22 +961,37 @@ export default function EditorPage() {
         </div>
       </header>
 
-      {/* Selector de pestañas para vista móvil / tablet */}
-      <div className="editor-mobile-tabs">
+      {/* Selector de Vistas: Plan de Clase vs Materiales Didácticos (Móvil, Tablet y Escritorio) */}
+      <nav className="editor-doc-view-switcher" aria-label="Cambiar vista del documento y recursos">
         <button 
-          className={`editor-mobile-tab-btn ${activeMobileTab === 'doc' ? 'active' : ''}`}
-          onClick={() => setActiveMobileTab('doc')}
+          type="button"
+          className={`editor-doc-view-btn ${activeDocumentView === 'todo' ? 'active' : ''}`}
+          onClick={() => setActiveDocumentView('todo')}
+          title="Ver el documento completo de plan y recursos didácticos integrados"
         >
-          <BookOpen size={16} /> <span>Documento</span>
+          <Layers size={15} /> <span>Todo el Plan</span>
         </button>
         <button 
-          className={`editor-mobile-tab-btn ${activeMobileTab === 'chat' ? 'active' : ''}`}
-          onClick={() => setActiveMobileTab('chat')}
+          type="button"
+          className={`editor-doc-view-btn ${activeDocumentView === 'plan' ? 'active' : ''}`}
+          onClick={() => setActiveDocumentView('plan')}
+          title="Ver únicamente la secuencia didáctica del plan de clase"
         >
-          <MessageSquare size={16} /> 
-          <span>Co-docente IA {sesionChatIA.length > 0 && `(${sesionChatIA.length})`}</span>
+          <BookOpen size={15} /> <span>Plan de Clase</span>
         </button>
-      </div>
+        <button 
+          type="button"
+          className={`editor-doc-view-btn ${activeDocumentView === 'materiales' ? 'active' : ''}`}
+          onClick={() => setActiveDocumentView('materiales')}
+          title="Ver y generar materiales didácticos interactivos adaptados al plan"
+        >
+          <Sparkles size={15} /> 
+          <span>Material Didáctico</span>
+          {recursosAnexos && recursosAnexos.length > 0 && (
+            <span className="editor-view-badge-count">{recursosAnexos.length}</span>
+          )}
+        </button>
+      </nav>
 
       {/* Espacio de Trabajo: Documento Principal + Co-docente IA */}
       <div 
@@ -1030,23 +1067,124 @@ export default function EditorPage() {
               </div>
             ) : (
               <div style={{ maxWidth: '820px', margin: '0 auto', padding: '8px 4px' }}>
-                <StructuredPlanDocument 
-                  markdown={processedDoc}
-                  isEditing={isEditMode}
-                  onSave={(newMarkdown) => {
-                    setPlanGenerado(newMarkdown);
-                    setPlanStatus('modificado');
-                    setEstadoCambios(true);
-                    setIsEditMode(false);
-                    setSaveFeedback({ type: 'success', text: 'Cambios aplicados exitosamente al documento.' });
-                    setTimeout(() => setSaveFeedback(null), 3500);
-                  }}
-                  onCancel={() => {
-                    setIsEditMode(false);
-                  }}
-                />
+                {/* 1. Modo Vista Exclusiva de Materiales Didácticos */}
+                {activeDocumentView === 'materiales' && (
+                  <div className="editor-materials-standalone-view">
+                    <MaterialesGenerablesSection
+                      recomendaciones={recomendaciones}
+                      onGenerarMaterial={handleGenerarRecomendacion}
+                      isGenerating={isGeneratingMaterial}
+                      generatingId={generatingRecId}
+                      recursosAnexos={recursosAnexos}
+                      onVerMaterial={(rec) => {
+                        const match = (recursosAnexos || []).find(a => (a.title || '').toLowerCase().includes((rec.typeKey || '').toLowerCase()));
+                        if (match) {
+                          setModalTitle(match.title);
+                          setModalContentHtml(match.html);
+                          setIsGeneratingMaterial(false);
+                          setIsModalOpen(true);
+                        }
+                      }}
+                    />
 
-                {!isEditMode && (
+                    {/* Render de Materiales Anexos (Iframes interactivos aislados) */}
+                    {recursosAnexos && recursosAnexos.length > 0 && (
+                      <div style={{ marginTop: '28px', borderTop: '2px dashed var(--border-color)', paddingTop: '20px' }}>
+                        <h3 style={{ color: 'var(--primary-active)', fontSize: '20px', marginBottom: '16px', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <MonitorPlay size={20} /> Recursos Didácticos Anexos ({recursosAnexos.length})
+                        </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                          {recursosAnexos.map((recurso, idx) => (
+                            <div key={idx} style={{ backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
+                              <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', backgroundColor: 'var(--bg-surface)' }}>
+                                <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '14.5px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                  <MonitorPlay size={16} style={{ color: 'var(--primary-sage)' }} /> {recurso.title}
+                                </h4>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                  <button 
+                                    className="btn-outline" 
+                                    onClick={() => {
+                                      setModalTitle(recurso.title);
+                                      setModalContentHtml(recurso.html);
+                                      setIsGeneratingMaterial(false);
+                                      setIsModalOpen(true);
+                                    }}
+                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px' }}
+                                    title="Ver en ventana emergente con fondo desenfocado"
+                                  >
+                                    <Maximize2 size={13} /> Ver en Ventana
+                                  </button>
+                                  <button 
+                                    className="btn" 
+                                    onClick={() => {
+                                      const blob = new Blob([recurso.html], { type: 'text/html' });
+                                      const url = URL.createObjectURL(blob);
+                                      const a = document.createElement('a');
+                                      a.href = url;
+                                      a.download = `${recurso.title.replace(/ /g, '_')}.html`;
+                                      a.click();
+                                    }}
+                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: 'var(--primary-sage)' }}
+                                  >
+                                    <Download size={13} /> Descargar
+                                  </button>
+                                  <button 
+                                    className="btn-outline" 
+                                    onClick={async () => {
+                                      removeRecursoAnexo(idx);
+                                      const updated = (recursosAnexos || []).filter((_, i) => i !== idx);
+                                      if (planId) {
+                                        try {
+                                          await updatePlanInDB(planId, planGenerado, updated);
+                                        } catch (e) {
+                                          console.error("Error al remover anexo en Firestore:", e);
+                                        }
+                                      }
+                                    }}
+                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px', color: '#DC2626', borderColor: 'rgba(220, 38, 38, 0.35)' }}
+                                    title="Desanexar material de este plan"
+                                  >
+                                    <Trash2 size={13} /> Quitar
+                                  </button>
+                                </div>
+                              </div>
+                              <div style={{ padding: 0, height: '420px', width: '100%', backgroundColor: '#FFF' }}>
+                                <iframe 
+                                  srcDoc={recurso.html}
+                                  sandbox="allow-scripts"
+                                  style={{ width: '100%', height: '100%', border: 'none' }}
+                                  title={recurso.title}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* 2. Modos que incluyen el Plan Estructurado ('plan' o 'todo') */}
+                {activeDocumentView !== 'materiales' && (
+                  <StructuredPlanDocument 
+                    markdown={processedDoc}
+                    isEditing={isEditMode}
+                    onSave={(newMarkdown) => {
+                      setPlanGenerado(newMarkdown);
+                      setPlanStatus('modificado');
+                      setEstadoCambios(true);
+                      setIsEditMode(false);
+                      setSaveFeedback({ type: 'success', text: 'Cambios aplicados exitosamente al documento.' });
+                      setTimeout(() => setSaveFeedback(null), 3500);
+                    }}
+                    onCancel={() => {
+                      setIsEditMode(false);
+                    }}
+                  />
+                )}
+
+                {/* 3. Apartado de Materiales al final cuando se visualiza 'todo' */}
+                {!isEditMode && activeDocumentView === 'todo' && (
                   <>
                     {/* Apartado pedagógico: Materiales que puedes generar */}
                     <MaterialesGenerablesSection
@@ -1523,9 +1661,8 @@ export default function EditorPage() {
       {!isChatOpen && (
         <button 
           type="button" 
-          className="editor-floating-chat-trigger"
-          style={{ position: 'fixed', bottom: '28px', right: '32px', zIndex: 3000 }}
-          onClick={toggleChat}
+          className="editor-floating-chat-trigger mobile-hide-chat-btn"
+          onClick={openChat}
           aria-label="Abrir panel del co-docente didáctico"
           title="Abrir panel del co-docente IA para conversar o ajustar"
         >
