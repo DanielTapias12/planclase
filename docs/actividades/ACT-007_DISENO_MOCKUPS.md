@@ -81,3 +81,18 @@ Los 26 mockups de alta fidelidad representativos del ecosistema fueron archivado
    - Paleta corporativa de marca: Verde salvia (`#477A72`) y petróleo (`#142B25`, `#183630`).
    - Tipografía dual armónica: `Lora` (serif para encabezados) y `DM Sans` (sans-serif para lectura y controles).
    - Tratamientos Glassmorphism canónicos de alto contraste (`rgba(255, 254, 250, 0.86)` con `backdrop-filter: blur(16px)`).
+
+---
+
+## 6. Aplicación de los 7 Hábitos de Stephen R. Covey en ACT-007
+
+Conforme al marco de efectividad personal e interpersonal establecido en [ACT-016](../actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) (Sección 5.14), cada integrante aplicó los 7 hábitos de Covey de manera concreta en la ejecución de ACT-007:
+
+| Integrante | Rol Oficial | Hábitos Predominantes | Evidencia Operativa en ACT-007 |
+|---|---|:---:|---|
+| **Luis Caldera** | Development Team / UI-UX Lead | **H1 (Ser Proactivo)<br>H2 (Empezar con un Fin en Mente)<br>H6 (Sinergizar)** | Lideró la concepción visual de los 26 mockups de alta fidelidad, asegurando con un claro fin en mente (H2) que la interfaz Glassmorphism cumpla rigurosamente las tres reglas de oro de Theo Mandel y los estándares ergonómicos de MODESEC. |
+| **Daniel Tapias** | Development Team / Git Lead | **H1 (Ser Proactivo)<br>H3 (Poner Primero lo Primero)** | Ejerció proactividad y priorización técnica al estructurar la exportación de capturas reales de alta fidelidad sobre la aplicación en ejecución y verificar la consistencia cromática y tipográfica con el sistema de tokens en `src/index.css`. |
+| **Zoe Peñata** | Scrum Master | **H3 (Poner Primero lo Primero)<br>H6 (Sinergizar)** | Facilitó el cronograma de diseño, garantizando que los entregables se ubiquen en `docs/diseno-interface/mockups/` según los lineamientos de la Semana 03 y canalizando la sinergia colaborativa entre los roles pedagógicos y de desarrollo. |
+| **Maira Ortega** | Facilitadora de Equipo | **H5 (Buscar Primero Comprender y Después Ser Comprendido)** | Analizó la ergonomía visual y la reducción de la carga de memoria (Regla 2 de Mandel), verificando que los metadatos explícitos en tarjetas y vistas eviten esfuerzo nemotécnico innecesario en los docentes usuarios. |
+| **María Soto** | Product Owner | **H2 (Empezar con un Fin en Mente)<br>H5 (Buscar Primero Comprender)** | Como Product Owner, veló porque los mockups del planificador, plantillas y editor preserven la secuencia didáctica tripartita del MEN (Inicio, Desarrollo y Cierre) y las necesidades formativas del aula colombiana. |
+| **María Ubarne** | Product Owner Support | **H5 (Buscar Primero Comprender)<br>H6 (Sinergizar)** | Comprobó la visibilidad, consistencia y articulación de los apoyos inclusivos DUA/PIAR en los mockups de resultados, planificador y configuraciones, garantizando el diseño universal en todas las pantallas. |

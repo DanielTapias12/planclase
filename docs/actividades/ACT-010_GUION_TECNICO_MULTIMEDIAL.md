@@ -76,3 +76,18 @@ Bajo el marco de ingeniería de software educativo y la metodología MODESEC, el
   - `M06_informacion_docente.png` (Ventana Emergente — Información del Docente y Habeas Data)
   - `M07_cambiar_contrasena.png` (Ventana Emergente — Cambio Seguro de Contraseña)
 - **Registro de Uso de IA:** [`docs/ia/REGISTRO_IA_ACT-010.md`](../ia/REGISTRO_IA_ACT-010.md)
+
+---
+
+## 5. Aplicación de los 7 Hábitos de Stephen R. Covey en ACT-010
+
+Conforme al marco de efectividad personal e interpersonal establecido en [ACT-016](../actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) (Sección 5.16), cada integrante aplicó los 7 hábitos de Covey de manera concreta en la ejecución de ACT-010:
+
+| Integrante | Rol Oficial | Hábitos Predominantes | Evidencia Operativa en ACT-010 |
+|---|---|:---:|---|
+| **Daniel Tapias** | Development Team / Git Lead | **H1 (Ser Proactivo)<br>H3 (Poner Primero lo Primero)<br>H7 (Afilar la Sierra)** | Lideró la estructuración de la matriz técnica de 6 columnas (`Ventana`, `Elemento`, `Descripción`, `Formato/Fuente`, `Acción`, `Evento`), auditando 86 elementos reales en `src/pages/*` y formalizando el documento maestro `GUION_TECNICO_MULTIMEDIAL.md` en la raíz. |
+| **Luis Caldera** | Development Team / UI-UX Lead | **H1 (Ser Proactivo)<br>H6 (Sinergizar)** | Respaldó la documentación con el archivo de capturas reales en `docs/evidencias/ACT-010/` y la verificación de tokens visuales, animaciones CSS/SVG y componentes Glassmorphism 2026. |
+| **Zoe Peñata** | Scrum Master | **H3 (Poner Primero lo Primero)** | Priorizó el control de calidad y la verificación de trazabilidad técnica, asegurando que no existan componentes ni recursos multimedia inventados y que se cumpla la totalidad de las ventanas y modales. |
+| **Maira Ortega** | Facilitadora de Equipo | **H5 (Buscar Primero Comprender y Después Ser Comprendido)** | Validó la correspondencia entre los eventos registrados y las respuestas perceptibles en pantalla para docentes usuarios, garantizando claridad en las respuestas del sistema. |
+| **María Soto** | Product Owner | **H2 (Empezar con un Fin en Mente)** | Aseguró la alineación del guion técnico con la intencionalidad formativa del software y las directrices curriculares del MEN, validando la coherencia pedagógica de las acciones y eventos. |
+| **María Ubarne** | Product Owner Support | **H6 (Sinergizar)** | Auditó la consistencia técnica de las llamadas a la Web Speech API para síntesis vocal en los materiales didácticos generados y la articulación sinérgica de los controles inclusivos DUA. |

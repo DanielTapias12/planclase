@@ -75,3 +75,18 @@ La descripción de ventanas constituye el inventario funcional y visual de refer
   - `M06_informacion_docente.png` (Ventana Emergente — Información del Docente y Habeas Data)
   - `M07_cambiar_contrasena.png` (Ventana Emergente — Cambio Seguro de Contraseña)
 - **Registro de Uso de IA:** [`docs/ia/REGISTRO_IA_ACT-009.md`](../ia/REGISTRO_IA_ACT-009.md)
+
+---
+
+## 4. Aplicación de los 7 Hábitos de Stephen R. Covey en ACT-009
+
+Conforme al marco de efectividad personal e interpersonal establecido en [ACT-016](../actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md) (Sección 5.15), cada integrante aplicó los 7 hábitos de Covey de manera concreta en la ejecución de ACT-009:
+
+| Integrante | Rol Oficial | Hábitos Predominantes | Evidencia Operativa en ACT-009 |
+|---|---|:---:|---|
+| **Zoe Peñata** | Scrum Master | **H3 (Poner Primero lo Primero)<br>H6 (Sinergizar)** | Como Scrum Master, coordinó la actualización integral de la matriz institucional de descripción de ventanas, asegurando que cada una de las 15 pantallas y 5 modales cumpla los 9 campos obligatorios de MODESEC sin omitir información comprobable. |
+| **Luis Caldera** | Development Team / UI-UX Lead | **H1 (Ser Proactivo)<br>H5 (Buscar Primero Comprender)** | Gestionó el levantamiento fotográfico real de alta fidelidad sobre la interfaz en ejecución, empatizando con el usuario docente para describir con precisión las zonas de interacción, los elementos multimedia y los botones de acción. |
+| **Daniel Tapias** | Development Team / Git Lead | **H1 (Ser Proactivo)<br>H7 (Afilar la Sierra)** | Auditó las rutas en `src/App.jsx`, los manejadores de eventos DOM (`onClick`, `onChange`) y los estados en Zustand, afilando la sierra para que la documentación Markdown (`DESCRIPCION_VENTANAS.md`) refleje exactamente el código fuente implementado. |
+| **Maira Ortega** | Facilitadora de Equipo | **H5 (Buscar Primero Comprender y Después Ser Comprendido)** | Revisó la comprensibilidad de los textos instruccionales y las acciones del usuario, garantizando que el guion describa la experiencia pedagógica real sin ambigüedades técnicas para el maestro. |
+| **María Soto** | Product Owner | **H2 (Empezar con un Fin en Mente)<br>H4 (Pensar en Ganar-Ganar)** | Validó que la descripción de las plantillas y el planificador responda al propósito constructivista de beneficio mutuo ganar-ganar entre docente y estudiante, facilitando la planeación curricular de calidad. |
+| **María Ubarne** | Product Owner Support | **H5 (Buscar Primero Comprender)<br>H6 (Sinergizar)** | Comprobó que los elementos de accesibilidad (síntesis de voz en biblioteca, adaptaciones DUA y radar polar en configuración) estuvieran formalmente registrados sin invenciones. |
