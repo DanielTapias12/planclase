@@ -1566,7 +1566,7 @@ h6 {
 .planificador-form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 0;
 }
 
 .planificador-row {
@@ -1647,13 +1647,13 @@ h6 {
 }
 
 .wizard-card {
-  background-color: var(--glass-bg-surface);
-  backdrop-filter: blur(var(--glass-blur-surface));
-  -webkit-backdrop-filter: blur(var(--glass-blur-surface));
-  border: 1px solid var(--glass-border-light);
-  border-radius: 18px;
-  padding: clamp(18px, 2.2vw, 24px) clamp(16px, 2.5vw, 26px);
-  box-shadow: var(--glass-shadow-surface);
+  background-color: rgba(255, 254, 250, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.94);
+  border-radius: 20px;
+  padding: clamp(16px, 2vw, 24px);
+  box-shadow: 0 10px 32px rgba(16, 36, 32, 0.08);
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
@@ -1662,14 +1662,14 @@ h6 {
 }
 
 .planificador-actions {
-  margin-top: 18px;
+  margin-top: 14px;
   padding-top: 14px;
   border-top: 1px solid rgba(49, 91, 84, 0.16);
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
 }
 
@@ -1838,9 +1838,13 @@ h6 {
   -webkit-backdrop-filter: blur(var(--glass-blur-group));
   border: 1px solid var(--glass-border-light);
   border-radius: 18px;
-  padding: 24px 26px;
-  margin-bottom: 22px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
   box-shadow: 0 4px 18px rgba(20, 42, 38, 0.03);
+}
+
+.wizard-group:last-child {
+  margin-bottom: 0 !important;
 }
 
 .wizard-group-title {
@@ -1956,14 +1960,6 @@ h6 {
   margin-top: 12px;
   font-size: 14px;
   color: var(--text-main);
-}
-
-.planificador-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(49, 91, 84, 0.16);
 }
 
 /* Plan Generado Classes */
