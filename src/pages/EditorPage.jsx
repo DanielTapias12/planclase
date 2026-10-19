@@ -27,8 +27,6 @@ import {
   MessageSquare,
   Trash2,
   AlertCircle,
-  PanelRightClose,
-  PanelRightOpen,
   Zap,
   Info,
   ChevronUp,
@@ -809,27 +807,6 @@ export default function EditorPage() {
             <PlusCircle size={16} /> <span>Nuevo</span>
           </button>
 
-          {/* Botón de alternancia del Co-docente IA (Oculto en móvil) */}
-          <button 
-            type="button"
-            className={`editor-btn-pill editor-chat-toggle-pill mobile-hide-chat-btn ${isChatOpen ? 'active' : ''}`} 
-            style={{ 
-              backgroundColor: isChatOpen ? 'rgba(71, 122, 114, 0.16)' : undefined,
-              borderColor: isChatOpen ? 'rgba(71, 122, 114, 0.40)' : undefined,
-              color: isChatOpen ? '#142B25' : undefined,
-              fontWeight: isChatOpen ? 700 : 600
-            }} 
-            onClick={toggleChat}
-            aria-label={isChatOpen ? "Ocultar panel del co-docente IA" : "Mostrar panel del co-docente IA"}
-            title={isChatOpen ? "Ocultar co-docente IA para ampliar la vista del documento" : "Mostrar co-docente IA para conversar o ajustar"}
-          >
-            {isChatOpen ? <PanelRightClose size={15} /> : <PanelRightOpen size={15} />}
-            <span>{isChatOpen ? 'Ocultar Co-docente' : 'Co-docente IA'}</span>
-            {sesionChatIA.length > 0 && (
-              <span className="editor-badge-chat-count">{sesionChatIA.length}</span>
-            )}
-          </button>
-
           {/* Menú Dropdown para Materiales Didácticos */}
           <div ref={materialMenuRef} style={{ position: 'relative', zIndex: 120 }}>
             <button 
@@ -962,8 +939,8 @@ export default function EditorPage() {
         </div>
       </header>
 
-      {/* Selector de Vistas: Plan de Clase vs Materiales Didácticos (Móvil, Tablet y Escritorio) */}
-      <nav className="editor-doc-view-switcher" aria-label="Cambiar vista del documento y recursos">
+      {/* Selector de Vistas: Plan de Clase vs Materiales Didácticos vs Co-docente IA (Móvil, Tablet y Escritorio) */}
+      <nav className="editor-doc-view-switcher" aria-label="Cambiar vista del documento, recursos y co-docente">
         <button 
           type="button"
           className={`editor-doc-view-btn ${activeDocumentView === 'todo' ? 'active' : ''}`}
@@ -990,6 +967,22 @@ export default function EditorPage() {
           <span>Material Didáctico</span>
           {recursosAnexos && recursosAnexos.length > 0 && (
             <span className="editor-view-badge-count">{recursosAnexos.length}</span>
+          )}
+        </button>
+        <button 
+          type="button"
+          className={`editor-doc-view-btn ${activeDocumentView === 'chat' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveDocumentView('chat');
+            setIsChatOpen(true);
+            setActiveMobileTab('chat');
+          }}
+          title="Conversar y calibrar la secuencia didáctica con el co-docente de Inteligencia Artificial"
+        >
+          <MessageSquare size={15} style={{ color: activeDocumentView === 'chat' ? '#5EEAD4' : '#D4AF37' }} /> 
+          <span>Co-docente IA</span>
+          {sesionChatIA && sesionChatIA.length > 0 && (
+            <span className="editor-view-badge-count">{sesionChatIA.length}</span>
           )}
         </button>
       </nav>
@@ -1165,8 +1158,307 @@ export default function EditorPage() {
                   </div>
                 )}
 
-                {/* 2. Modos que incluyen el Plan Estructurado ('plan' o 'todo') */}
-                {activeDocumentView !== 'materiales' && (
+                {/* 2. Apartado Co-docente IA cuando se visualiza 'chat' */}
+                {activeDocumentView === 'chat' && (
+                  <div className="editor-chat-standalone-view" style={{ maxWidth: '880px', width: '100%', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+                    <div className="editor-chat-header" style={{ marginBottom: '16px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                        <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#142B25', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontFamily: 'var(--font-heading)' }}>
+                          <Sparkles size={20} style={{ color: '#D4AF37' }} /> Co-docente IA — Asistente Pedagógico
+                        </h2>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span className="editor-chat-online-badge">
+                            <span className="editor-chat-online-dot" />
+                            En línea
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Selector de Modalidad Pedagógica: Pestañas separadas */}
+                      <div style={{ display: 'flex', gap: '6px', backgroundColor: 'rgba(49, 91, 84, 0.08)', padding: '4px', borderRadius: '12px' }} role="tablist" aria-label="Modalidad del co-docente">
+                        <button
+                          type="button"
+                          role="tab"
+                          aria-selected={chatMode === 'direct'}
+                          onClick={() => setChatMode('direct')}
+                          style={{
+                            flex: 1,
+                            padding: '8px 12px',
+                            fontSize: '12.5px',
+                            fontWeight: chatMode === 'direct' ? 700 : 500,
+                            backgroundColor: chatMode === 'direct' ? '#FFFFFF' : 'transparent',
+                            color: chatMode === 'direct' ? '#142B25' : '#477A72',
+                            border: 'none',
+                            borderRadius: '9px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            boxShadow: chatMode === 'direct' ? '0 1px 4px rgba(16, 36, 32, 0.10)' : 'none',
+                            transition: 'all 0.15s ease'
+                          }}
+                          title="Modo directo: reescribe y ajusta el documento inmediatamente"
+                        >
+                          <Zap size={14} color={chatMode === 'direct' ? '#315B54' : '#477A72'} />
+                          <span>Directo</span>
+                          {directMessages.length > 0 && (
+                            <span className="editor-chat-tab-badge">{directMessages.length}</span>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          role="tab"
+                          aria-selected={chatMode === 'socratic'}
+                          onClick={() => setChatMode('socratic')}
+                          style={{
+                            flex: 1,
+                            padding: '8px 12px',
+                            fontSize: '12.5px',
+                            fontWeight: chatMode === 'socratic' ? 700 : 500,
+                            backgroundColor: chatMode === 'socratic' ? '#FFFFFF' : 'transparent',
+                            color: chatMode === 'socratic' ? '#142B25' : '#477A72',
+                            border: 'none',
+                            borderRadius: '9px',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '6px',
+                            boxShadow: chatMode === 'socratic' ? '0 1px 4px rgba(16, 36, 32, 0.10)' : 'none',
+                            transition: 'all 0.15s ease'
+                          }}
+                          title="Modo socrático: diálogo reflexivo con preguntas orientadoras y propuesta guiada (Caro 2015)"
+                        >
+                          <Lightbulb size={14} color={chatMode === 'socratic' ? '#D97706' : '#477A72'} />
+                          <span>Socrático</span>
+                          {socraticMessages.length > 0 && (
+                            <span className="editor-chat-tab-badge" style={{ backgroundColor: 'rgba(217, 119, 6, 0.18)', color: '#92400E' }}>
+                              {socraticMessages.length}
+                            </span>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Botón interactivo para ver la explicación detallada de funcionalidad y limpiar canal */}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px', flexWrap: 'wrap', gap: '8px' }}>
+                        <button
+                          type="button"
+                          onClick={() => setShowModeHelp(prev => !prev)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: '2px 0',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                            fontSize: '11.5px',
+                            fontWeight: 600,
+                            color: chatMode === 'socratic' ? '#B45309' : '#315B54',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <Info size={13} />
+                          <span>¿Cómo funciona el modo {chatMode === 'direct' ? 'Directo' : 'Socrático'}?</span>
+                          {showModeHelp ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                        </button>
+
+                        {activeChatMessages.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={handleClearCurrentModeChat}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              fontSize: '11px',
+                              color: '#718096',
+                              cursor: 'pointer',
+                              padding: '2px 6px',
+                              borderRadius: '4px'
+                            }}
+                            title={`Limpiar mensajes del canal ${chatMode === 'direct' ? 'Directo' : 'Socrático'}`}
+                          >
+                            <Trash2 size={12} />
+                            <span>Limpiar conversación</span>
+                          </button>
+                        )}
+                      </div>
+
+                      {showModeHelp && (
+                        <div className={`editor-chat-explanation-card ${chatMode}`} style={{ marginTop: '8px' }}>
+                          {chatMode === 'direct' ? (
+                            <div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 700, marginBottom: '3px', color: '#183630' }}>
+                                <Zap size={12} color="#315B54" />
+                                <span>Edición Ejecutiva Inmediata</span>
+                              </div>
+                              <p style={{ margin: 0, fontSize: '11.5px', color: '#2D3748', lineHeight: '1.45' }}>
+                                <strong>¿Para qué sirve?</strong> Aplica tus órdenes pedagógicas directamente en el texto del plan de clase. Ideal para redactar rúbricas, reajustar tiempos o enriquecer actividades de inmediato.
+                              </p>
+                              <div style={{ marginTop: '6px', fontSize: '11px', color: '#4A5568', fontWeight: 600 }}>
+                                Sugerencias rápidas (haz clic para usar):
+                              </div>
+                              <div className="editor-chat-chips-container">
+                                <button type="button" className="editor-chat-chip" onClick={() => handleApplyPromptSuggestion('Añade una rúbrica analítica con escala valorativa de 1 a 5')}>
+                                  + Rúbrica analítica
+                                </button>
+                                <button type="button" className="editor-chat-chip" onClick={() => handleApplyPromptSuggestion('Ajusta el tiempo de la fase de inicio a 15 min y agrega una lluvia de ideas')}>
+                                  + Ajustar tiempos y lluvia de ideas
+                                </button>
+                                <button type="button" className="editor-chat-chip" onClick={() => handleApplyPromptSuggestion('Incluye una pausa activa socioemocional de 5 minutos en el desarrollo')}>
+                                  + Pausa socioemocional
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 700, marginBottom: '3px', color: '#92400E' }}>
+                                <Lightbulb size={12} color="#D97706" />
+                                <span>Diálogo Socrático & Agencia Compartida</span>
+                              </div>
+                              <p style={{ margin: 0, fontSize: '11.5px', color: '#78350F', lineHeight: '1.45' }}>
+                                <strong>¿Para qué sirve?</strong> Actúa como un co-docente crítico. Analiza contigo la coherencia didáctica, transposición y DUA/PIAR planteando preguntas reflexivas. Si formula una propuesta de cambio, tú decides libremente si aplicarla.
+                              </p>
+                              <div style={{ marginTop: '6px', fontSize: '11px', color: '#92400E', fontWeight: 600 }}>
+                                Preguntas pedagógicas sugeridas:
+                              </div>
+                              <div className="editor-chat-chips-container">
+                                <button type="button" className="editor-chat-chip socratic" onClick={() => handleApplyPromptSuggestion('¿Cómo puedo activar saberes previos con una rutina de pensamiento?')}>
+                                  🤔 Activar saberes previos
+                                </button>
+                                <button type="button" className="editor-chat-chip socratic" onClick={() => handleApplyPromptSuggestion('¿Qué posibles barreras de aprendizaje DUA podrían presentarse en el desarrollo?')}>
+                                  🔍 Analizar barreras DUA
+                                </button>
+                                <button type="button" className="editor-chat-chip socratic" onClick={() => handleApplyPromptSuggestion('¿Es coherente la evaluación formativa con los estándares MEN del grado?')}>
+                                  ⚖️ Coherencia evaluativa
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Mensajes del Chat */}
+                    <div className="editor-chat-messages" style={{ minHeight: '320px', maxHeight: '500px', overflowY: 'auto', padding: '12px 4px', marginBottom: '16px' }}>
+                      {activeChatMessages.length === 0 && (
+                        <div className="editor-chat-welcome-bubble" style={chatMode === 'socratic' ? { background: 'rgba(255, 251, 235, 0.90)', borderColor: 'rgba(217, 119, 6, 0.3)' } : undefined}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: chatMode === 'socratic' ? '#92400E' : '#142B25', marginBottom: '6px' }}>
+                            {chatMode === 'direct' ? (
+                              <>
+                                <Zap size={15} color="#315B54" />
+                                <span>Canal de Edición Directa</span>
+                              </>
+                            ) : (
+                              <>
+                                <Lightbulb size={15} color="#D97706" />
+                                <span>Canal de Diálogo Socrático</span>
+                              </>
+                            )}
+                          </div>
+                          {chatMode === 'direct' ? (
+                            <div>
+                              Escribe la instrucción puntual que deseas aplicar y actualizaré el documento en tiempo real.
+                              <div style={{ marginTop: '6px', paddingLeft: '8px', borderLeft: '2px solid rgba(49, 91, 84, 0.4)', fontStyle: 'italic', fontSize: '12.5px' }}>
+                                "Agrega una escala valorativa de 3 niveles a la evaluación" o "Cambia el inicio por un estudio de caso".
+                              </div>
+                            </div>
+                          ) : (
+                            <div>
+                              Conversemos reflexivamente sobre el diseño didáctico, barreras de inclusión DUA o adecuación curricular.
+                              <div style={{ marginTop: '6px', paddingLeft: '8px', borderLeft: '2px solid rgba(217, 119, 6, 0.5)', fontStyle: 'italic', fontSize: '12.5px', color: '#78350F' }}>
+                                "¿Cómo dialoga esta actividad con estudiantes con ritmos diversos?" o "¿Qué preguntas de metacognición recomiendas?".
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {activeChatMessages.map((msg, i) => (
+                        <div 
+                          key={i} 
+                          className={msg.role === 'user' ? 'editor-chat-msg-user' : 'editor-chat-msg-ia'}
+                          style={msg.tipo === 'socratico' || msg.modo === 'socratic' ? { borderLeft: '3px solid #D97706', backgroundColor: 'rgba(255, 251, 235, 0.90)' } : undefined}
+                        >
+                          {msg.role === 'ia' && (
+                            <div style={{ 
+                              display: 'inline-flex', 
+                              alignItems: 'center', 
+                              gap: '4px', 
+                              fontSize: '11px', 
+                              fontWeight: 800, 
+                              color: (msg.tipo === 'socratico' || msg.modo === 'socratic') ? '#92400E' : '#315B54', 
+                              textTransform: 'uppercase', 
+                              marginBottom: '6px', 
+                              letterSpacing: '0.04em' 
+                            }}>
+                              {(msg.tipo === 'socratico' || msg.modo === 'socratic') ? (
+                                <>
+                                  <Lightbulb size={12} color="#D97706" /> Diálogo Socrático
+                                </>
+                              ) : (
+                                <>
+                                  <Zap size={12} color="#315B54" /> Edición Directa
+                                </>
+                              )}
+                            </div>
+                          )}
+                          <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', fontSize: '14px' }}>{msg.text}</div>
+
+                          {msg.planSugerido && (
+                            <div style={{ marginTop: '12px', paddingTop: '10px', borderTop: '1px solid rgba(49, 91, 84, 0.16)' }}>
+                              <button
+                                type="button"
+                                onClick={() => handleAplicarPropuestaSocratica(msg.planSugerido)}
+                                className="btn btn-primary"
+                                style={{ fontSize: '12.5px', padding: '7px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: '#D97706', borderColor: '#B45309' }}
+                              >
+                                <Check size={14} />
+                                <span>Aplicar propuesta al plan</span>
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+
+                      {isModifying && (
+                        <div className="editor-chat-msg-ia" style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#142B25', fontWeight: 500, padding: '14px' }}>
+                          <Loader2 size={18} className="spin" style={{ color: chatMode === 'socratic' ? '#D97706' : '#315B54' }} />
+                          <span>{chatMode === 'socratic' ? 'Elaborando diálogo socrático reflexivo...' : 'Reescribiendo la secuencia pedagógica...'}</span>
+                        </div>
+                      )}
+                      <div ref={chatEndRef} />
+                    </div>
+
+                    {/* Formulario de Entrada */}
+                    <form onSubmit={handleModify} className="editor-chat-input-bar" style={{ width: '100%', boxSizing: 'border-box' }}>
+                      <input 
+                        type="text" 
+                        value={prompt} 
+                        onChange={(e) => setPrompt(e.target.value)} 
+                        placeholder={chatMode === 'direct' ? "Escribe qué deseas modificar en el plan..." : "Pregúntale algo sobre la secuencia didáctica..."} 
+                        disabled={isModifying || !apiKey}
+                        style={{ flex: 1, minHeight: '44px', fontSize: '14px', padding: '10px 14px' }}
+                      />
+                      <button 
+                        type="submit" 
+                        disabled={isModifying || !prompt.trim() || !apiKey} 
+                        className="btn btn-primary"
+                        style={{ minHeight: '44px', padding: '10px 18px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                      >
+                        {isModifying ? <Loader2 size={16} className="spin" /> : <Send size={16} />}
+                        <span className="mobile-hide-text">Enviar</span>
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {/* 3. Modos que incluyen el Plan Estructurado ('plan' o 'todo') */}
+                {(activeDocumentView === 'plan' || activeDocumentView === 'todo') && (
                   <StructuredPlanDocument 
                     markdown={processedDoc}
                     isEditing={isEditMode}
@@ -1658,11 +1950,11 @@ export default function EditorPage() {
         )}
       </div>
       
-      {/* Botón flotante accesible para reabrir el Co-docente IA cuando el panel esté cerrado */}
-      {!isChatOpen && (
+      {/* Botón flotante accesible solo en escritorio si el panel está cerrado y no estamos en la pestaña chat */}
+      {!isChatOpen && activeDocumentView !== 'chat' && (
         <button 
           type="button" 
-          className="editor-floating-chat-trigger mobile-hide-chat-btn"
+          className="editor-floating-chat-trigger desktop-only-floating-btn"
           onClick={openChat}
           aria-label="Abrir panel del co-docente didáctico"
           title="Abrir panel del co-docente IA para conversar o ajustar"

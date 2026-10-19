@@ -36,7 +36,7 @@ Los mockups de alta fidelidad cierran la brecha entre el modelo conceptual (diag
 
 ## 4. Productos y Mockups Entregados
 
-Los 17 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
+Los 26 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
 
 1. **`mockup-inicio.png`:** Ventana de Inicio (`/home`), bienvenida personalizada, indicadores de estado y modelos.
 2. **`mockup-planificador.png`:** Planificador de Clases (`/`), asistente secuencial en 4 fases tripartitas con memoria de ADN pedagógico.
@@ -55,6 +55,15 @@ Los 17 mockups de alta fidelidad representativos del ecosistema fueron archivado
 15. **`mockup-ayuda.png`:** Centro de Ayuda Pedagógica (`/ayuda`), base de conocimiento, acordeones interactivos y FAQ.
 16. **`mockup-soporte.png`:** Soporte Técnico Institucional (`/soporte`), mesa de ayuda, formulario de tickets y protección Ley 1581.
 17. **`mockup-experiencias.png`:** Banco de Experiencias Pedagógicas (`/experiencias`), sistematización de práctica docente, alternancia de privacidad, valoración por estrellas y retroalimentación entre pares.
+18. **`mockup-acerca.png`:** Acerca de INSPIRATEC (`/acerca`), identidad institucional, principios axiológicos (Misión, Inclusión DUA, Innovación Pedagógica) y directorio del equipo creador con roles Scrum.
+19. **`mockup-configuracion.png`:** Configuración de Inteligencia Artificial (`/config` — Pestaña API Key), gestión de clave privada BYOK Google Gemini, privacidad y prueba de conectividad en vivo.
+20. **`mockup-autodiagnostico.png`:** Autodiagnóstico Pedagógico Felder-Silverman (`/config` — Pestaña Autodiagnóstico), instrumento de 8 reactivos reflexivos, gráfico radial interactivo y recomendaciones DUA.
+21. **`mockup-menu-usuario.png`:** Menú Desplegable de Usuario (`UserMenu.jsx`), popover desacoplado de cristal con identificación, rol administrativo y accesos directos.
+22. **`mockup-informacion-docente.png`:** Ventana Emergente de Información del Docente (`ProfileModal`), diálogo modal accesible de consulta y edición de datos con garantía Habeas Data.
+23. **`mockup-cambiar-contrasena.png`:** Ventana Emergente de Cambio de Contraseña (`PasswordModal`), diálogo de seguridad con verificación de contraseña actual y nueva clave cifrada.
+24. **`mockup-bienvenida.png`:** Ventana Inmersiva de Bienvenida Narrativa (`BienvenidaNarrativa.jsx`), onboarding editorial 2026 con recorrido interactivo en 8 escenas curriculares.
+25. **`mockup-auth-login.png`:** Autenticación — Inicio de Sesión (`/login`), atmósfera cinematográfica con carrusel narrativo de 5 escenas pedagógicas, credenciales seguras y protección JWT.
+26. **`mockup-auth-registro.png`:** Autenticación — Registro Docente (`/login`), vinculación curricular con institución, nivel, metodología institucional y consentimiento informado Ley 1581.
 
 ---
 

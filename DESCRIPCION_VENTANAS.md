@@ -403,6 +403,64 @@ La zona de trabajo se divide en **4 pestañas de navegación interna**:
 
 ---
 
+### Ventana 10: Configuración de Inteligencia Artificial y Autodiagnóstico (`ConfigPage.jsx`)
+
+#### Imágenes de la ventana
+
+| Pestaña 1: Conectividad e Inteligencia Artificial (API Key) | Pestaña 2: Autodiagnóstico Pedagógico (Felder-Silverman) |
+|:---:|:---:|
+| ![Configuración de IA Gemini](docs/evidencias/ACT-009/V10_configuracion_ia.png) | ![Autodiagnóstico Felder-Silverman](docs/evidencias/ACT-009/V10_configuracion_autodiagnostico.png) |
+
+#### Objetivo
+Garantizar la soberanía tecnológica y metodológica del docente en dos ámbitos complementarios:
+1. Administrar de forma segura su clave privada BYOK (*Bring Your Own Key*) de Google Gemini con persistencia local en `localStorage` y cifrado en el perfil docente de Firestore, validando la conectividad del co-piloto en tiempo real.
+2. Explorar y calibrar sus tendencias y preferencias didácticas mediante el autodiagnóstico científico de 8 reactivos de Felder-Silverman, proyectando su estilo en un gráfico radial interactivo y obteniendo recomendaciones pedagógicas fundamentadas en el Diseño Universal para el Aprendizaje (DUA).
+
+#### Descripción general
+La ventana se despliega sobre el lienzo dinámico con fondo pixel art `FondoPixel.jsx` y paneles translúcidos de cristal esmerilado (*Glassmorphism* marfil `rgba(255, 254, 250, 0.86)` a `0.88`, `backdrop-filter: blur(16px)` y bordes blancos finos `1px solid rgba(255, 255, 255, 0.94)`).
+
+La arquitectura funcional se organiza en tres secciones:
+1. **Cabecera Dinámica del Módulo:**
+   - Icono variable en contenedor redondeado: `<Key size={24}>` al seleccionar la pestaña de IA o `<Compass size={24}>` al seleccionar Autodiagnóstico.
+   - Insignia superior editorial: *"CONECTIVIDAD E INTELIGENCIA ARTIFICIAL"* o *"PERFIL DOCENTE & MEDIACIÓN DUA"*, con icono `Sparkles`.
+   - Título principal H1: *"Configuración de Inteligencia Artificial"* o *"Autodiagnóstico Pedagógico (Felder-Silverman)"* (fuente `Lora`, 28px, negrita 700).
+   - Subtítulo orientador contextual según la pestaña activa.
+   - Franja de píldoras de estado (*stat pills*):
+     - *API Key Configurada* (icono `ShieldCheck` verde) o *Sin Clave Activa* (ámbar).
+     - *Perfil Docente Activo* (icono `Compass` verde) o *Autodiagnóstico Pendiente* (ámbar).
+2. **Selector de Pestañas de Cristal (Barra Tablist):**
+   - Pestaña 1: *"Inteligencia Artificial (API Key)"* con icono `Key`.
+   - Pestaña 2: *"Autodiagnóstico Felder-Silverman"* con icono `Compass`.
+   Permite conmutar fluidamente entre la soberanía de credenciales y el autodiagnóstico con microanimaciones de entrada `framer-motion`.
+3. **Contenido Específico por Pestaña:**
+   - **Pestaña 1 — Inteligencia Artificial (API Key):**
+     - Tarjeta de cristal con título *"Google Gemini API Key"* (icono `Sparkles`).
+     - Explicación de autonomía y velocidad para el planificador pedagógico, sugerencias DUA y co-docente interactivo.
+     - Campo obligatorio *"Clave de API de Gemini *"*: input protegido con botón conmutador de máscara (`Eye` / `EyeOff`).
+     - Aviso de privacidad: *"Tu clave se almacena de forma segura en tu navegador y en tu perfil docente. Nunca se comparte con terceros."*
+     - Botón primario de validación: *"Guardar y Probar Conexión"* (icono `ShieldCheck`, con spinner `Loader2` durante la verificación).
+     - Banner inferior: *"¿Aún no tienes una clave de API gratuita?"* con enlace externo *"Obtener en Google AI Studio"* (icono `ExternalLink`).
+   - **Pestaña 2 — Autodiagnóstico Pedagógico (Felder-Silverman):**
+     - *Tarjeta de Marco Teórico y Rigor Científico:* Insignia *"MARCO TEÓRICO Y RIGOR CIENTÍFICO"* (icono `BookOpen`), contextualización de las 4 dimensiones continuas de Felder-Silverman (FSLSM) y postulado ético de no encasillamiento formativo conforme al DUA.
+     - *Cuestionario Docente:* Insignia *"CUESTIONARIO DOCENTE"* (icono `Sliders`), título H2 *"Exploración de Preferencias de Enseñanza y Aprendizaje"*, barra de progreso porcentual (*0 de 8 respondidas - 0%*), 8 reactivos de situaciones de aula reales con dos alternativas mutuamente excluyentes (Polo A vs Polo B), y botones de acción: *"Guardar Resultados en mi Perfil"* y *"Reiniciar Cuestionario"*.
+     - *Panel de Interpretación y Gráfico Radial:* Título H2 *"Interpretación del Perfil y Gráfico Radial"*, gráfico radial interactivo SVG de 8 polos (*Activo*, *Reflexivo*, *Sensorial*, *Intuitivo*, *Visual*, *Verbal*, *Secuencial*, *Global*) y 4 tarjetas de dimensión curricular con barras de balance y recomendaciones formativas DUA.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Configuración de IA y Autodiagnóstico Pedagógico (`ConfigPage.jsx`) |
+| **Imagen** | Capturas reales de ambas pestañas: [`V10_configuracion_ia.png`](docs/evidencias/ACT-009/V10_configuracion_ia.png) y [`V10_configuracion_autodiagnostico.png`](docs/evidencias/ACT-009/V10_configuracion_autodiagnostico.png). Iconografía Lucide: `Key`, `Compass`, `Sparkles`, `ShieldCheck`, `Eye`, `EyeOff`, `ExternalLink`, `BookOpen`, `Sliders`, `Dna`, `CheckCircle`, `RefreshCw`, `Loader2`. |
+| **Texto** | • Badges: *"Conectividad e Inteligencia Artificial"*, *"Perfil Docente & Mediación DUA"*, *"Marco Teórico y Rigor Científico"*, *"Cuestionario Docente"*.<br>• Título H1: *"Configuración de Inteligencia Artificial"* / *"Autodiagnóstico Pedagógico (Felder-Silverman)"* (fuente `Lora`, 28px).<br>• Subtítulos explicativos de BYOK y exploración en 4 dimensiones.<br>• Píldoras de estado: *"API Key Configurada"*, *"Autodiagnóstico Pendiente"* / *"Perfil Docente Activo"*.<br>• Pestañas: *"Inteligencia Artificial (API Key)"*, *"Autodiagnóstico Felder-Silverman"*.<br>• Formulario IA: *"Google Gemini API Key"*, placeholder/campo con viñetas protegidas, mensaje de almacenamiento seguro, botón *"Guardar y Probar Conexión"*, enlace a Google AI Studio.<br>• Cuestionario: 8 reactivos de enseñanza/aprendizaje, progreso porcentual, opciones de respuesta Polo A y Polo B.<br>• Interpretación: Gráfico radial de 8 polos y 4 dimensiones (Procesamiento, Percepción, Entrada/Recepción, Comprensión) con sugerencias DUA. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Transición suave de entrada y salida entre pestañas con `framer-motion` (`initial={{ opacity: 0, y: 12 }}`, `duration: 0.2`).<br>• Conmutación visual inmediata al pulsar el botón de visibilidad de la contraseña.<br>• Spinner animado `Loader2` durante la prueba de conectividad con Gemini.<br>• Renderizado reactivo dinámico del polígono en el Gráfico Radial SVG al marcar los reactivos.<br>• Avance gradual animado en la barra de progreso del cuestionario. |
+| **Acciones del usuario** | • Conmutar entre la pestaña de API Key y la de Autodiagnóstico.<br>• Digitar o pegar la clave de API de Gemini.<br>• Clic en el icono de ojo (`Eye`/`EyeOff`) para revelar u ocultar la clave.<br>• Clic en *"Guardar y Probar Conexión"*: ejecuta `testApiConnection()`, almacena en `localStorage` y actualiza Firestore.<br>• Clic en el enlace externo para abrir Google AI Studio.<br>• Responder a cada uno de los 8 reactivos seleccionando la opción A o B.<br>• Clic en *"Guardar Resultados en mi Perfil"*: persiste el perfil vectorial en Firestore y activa la personalización DUA.<br>• Clic en *"Reiniciar Cuestionario"*: restablece las respuestas a su estado inicial. |
+| **Botones** | • Botones de pestaña tablist (*API Key* y *Autodiagnóstico*).<br>• Botón conmutador de visibilidad (`Eye`/`EyeOff`).<br>• Botón primario verde oscuro *"Guardar y Probar Conexión"* (`ShieldCheck`).<br>• Enlace/botón de contorno *"Obtener en Google AI Studio"* (`ExternalLink`).<br>• Botones de selección de opción en cada reactivo.<br>• Botón primario *"Guardar Resultados en mi Perfil"* (`ShieldCheck`).<br>• Botón secundario *"Reiniciar Cuestionario"* (`RefreshCw`). |
+| **Navegación** | • Destino externo: Portal de desarrolladores de Google AI Studio.<br>• Menú lateral flotante y barra superior de utilidades permanentes para acceder a los demás módulos de INSPIRATEC. |
+
+---
+
 ### Ventana 11: Panel de Administración y Control (`AdministracionPage.jsx`)
 
 #### Imágenes reales de las 4 Pestañas
@@ -583,20 +641,260 @@ La ventana presenta un layout asimétrico equilibrado en dos columnas con tratam
 
 ---
 
-### Ventanas Restantes del Sistema (Inventario Completo)
+### Ventana 14: Acerca de INSPIRATEC (`AboutPage.jsx`)
 
-- **Ventana 14: Acerca de INSPIRATEC (`AboutPage.jsx`):** Ficha institucional del software, justificación basada en MODESEC y créditos del equipo de desarrollo.
-- **Ventana 15: Autenticación (`AuthPage.jsx`):** Formulario para inicio de sesión y registro de docentes con Firebase Auth y botón de acceso rápido con Google OAuth.
+#### Imagen de la ventana
+![Acerca de INSPIRATEC](docs/evidencias/ACT-009/V14_acerca.png)
+
+#### Objetivo
+Presentar la identidad institucional, misión, principios pedagógicos inclusivos (DUA) y el equipo multidisciplinario de la Universidad de Córdoba detrás de INSPIRATEC, reconociendo formalmente sus roles Scrum y brindando total transparencia respecto a la autoría académica, el enfoque metodológico de la Guía 30 del MEN y la soberanía del docente ante el uso reflexivo de la inteligencia artificial.
+
+#### Descripción general
+La ventana se despliega sobre el lienzo ambiental con fondo pixel art animado `FondoPixel.jsx` y capas translúcidas de cristal esmerilado (*Glassmorphism* marfil `rgba(255, 254, 250, 0.86)` a `0.88` con `backdrop-filter: blur(16px)` y bordes blancos finos `1px solid rgba(255, 255, 255, 0.94)`). Su diseño se estructura en tres bloques modulares:
+1. **Cabecera Editorial Institucional:**
+   - Icono distintivo de comunidad (`Users`) en caja redondeada con fondo verde salvia translúcido (`rgba(71, 122, 114, 0.16)`).
+   - Insignia editorial superior: *"IDENTIDAD, ENFOQUE Y PROPÓSITO"* acompañada del icono de chispa (`Sparkles`).
+   - Título principal H1: *"Transformando la Educación Colombiana"* (fuente `Lora`, 28px, color `#142B25`, negrita 700).
+   - Párrafo descriptor: *"INSPIRATEC es un ecosistema pedagógico potenciado por Inteligencia Artificial diseñado por y para docentes, con rigurosidad metodológica, accesibilidad universal y respeto por el contexto escolar."*
+   - Franja lateral de píldoras informativas (*stat pills*): *"Enfoque MEN & DUA"* con icono `BookOpen` y *"6 Creadores"* con icono `Users`.
+2. **Tríada de Valores y Principios del Proyecto:**
+   Cuadrícula de tres tarjetas de cristal con iconos vectoriales centrados sobre círculos cromáticos temáticos:
+   - *Nuestra Misión* (icono `Target` en verde petróleo `#183630`): Empoderar a los docentes de instituciones públicas y privadas de Colombia uniendo rigor curricular con la asistencia de co-pilotos pedagógicos avanzados.
+   - *Inclusión Total (DUA)* (icono `Heart` en verde esmeralda `#166534`): Diseño fundamentado en el Diseño Universal para el Aprendizaje, anticipando ajustes razonables para evitar exclusiones en el aula.
+   - *Innovación Pedagógica* (icono `Lightbulb` en violeta `#6D28D9`): Postura ética donde la IA actúa como copiloto operativo que nunca reemplaza al maestro, permitiéndole centrarse en la inspiración humana.
+3. **Módulo de Talento Creador Unicordobés:**
+   - Panel introductorio con insignia *"Talento Unicordobés"* (icono `Users`), título H2 *"El Equipo Creador"* y texto explicativo del compromiso de los estudiantes e investigadores de la Universidad de Córdoba.
+   - Cuadrícula responsiva de 6 tarjetas de integrantes con tratamiento de cristal, avatares circulares de 88px con reborde blanco y sombra:
+     1. **Zoe Peñata** — *Scrum Master* (Avatar con iniciales ZP sobre `#315B54`).
+     2. **María Soto** — *Product Owner* (Avatar con iniciales MS sobre `#477A72`).
+     3. **María Ubarne** — *Product Owner* (Avatar con iniciales MU sobre `#183630`).
+     4. **Luis Caldera** — *Development Team* (Avatar con iniciales LC sobre `#2B524A`).
+     5. **Daniel Tapias** — *Development Team* (Avatar gráfico personalizado `miniyo.png`).
+     6. **Maira Ortega** — *Development Team* (Avatar con iniciales MO sobre `#3C6760`).
+   - Cada tarjeta integra un botón píldora (*btn-outline*) *"Ver Perfil"* con icono `<ExternalLink size={13}>` vinculado a GitHub.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Acerca de INSPIRATEC (`AboutPage.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V14_acerca.png`](docs/evidencias/ACT-009/V14_acerca.png). Iconografía Lucide: `Users`, `Sparkles`, `BookOpen`, `Target`, `Heart`, `Lightbulb`, `ExternalLink`. Avatares de integrantes (UI-Avatars con paleta de marca y avatar digital `miniyo.png` para Daniel Tapias). |
+| **Texto** | • Badge: *"Identidad, Enfoque y Propósito"*.<br>• Título H1: *"Transformando la Educación Colombiana"* (fuente `Lora`, 28px).<br>• Subtítulo institucional: *"INSPIRATEC es un ecosistema pedagógico potenciado por Inteligencia Artificial diseñado por y para docentes, con rigurosidad metodológica, accesibilidad universal y respeto por el contexto escolar."*<br>• Píldoras: *"Enfoque MEN & DUA"*, *"6 Creadores"*.<br>• Tarjeta Misión: *"Nuestra Misión"* / *"Empoderar a los docentes de instituciones públicas y privadas de Colombia brindando una herramienta que une rigor curricular con la eficiencia de co-pilotos pedagógicos avanzados."*<br>• Tarjeta DUA: *"Inclusión Total (DUA)"* / *"Diseñamos con el Diseño Universal para el Aprendizaje en mente, anticipando ajustes razonables y garantizando que ningún estudiante se quede atrás independientemente de sus capacidades."*<br>• Tarjeta Innovación: *"Innovación Pedagógica"* / *"La Inteligencia Artificial nunca reemplaza al maestro: lo acompaña. Actúa como un co-piloto pedagógico que acelera el trabajo operativo para permitirle concentrarse en la inspiración humana."*<br>• Badge sección: *"Talento Unicordobés"*.<br>• Título H2: *"El Equipo Creador"*.<br>• Subtítulo equipo: *"Estudiantes e investigadores de la Universidad de Córdoba comprometidos con el desarrollo de software educativo de alta calidad."*<br>• Tarjetas de integrantes: Nombres de los 6 participantes, insignias de rol (*Scrum Master*, *Product Owner*, *Development Team*) y etiquetas *"Ver Perfil"*. |
+| **Audio** | No se identificaron archivos de audio ni efectos sonoros en esta ventana. |
+| **Video** | No se identificaron archivos ni reproductores de video en esta ventana. |
+| **Animación** | • Animación continua SVG en el lienzo ambiental `FondoPixel.jsx`.<br>• Elevación suave y sombreado perimetral al pasar el cursor sobre las tarjetas de valores y de integrantes (`transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1)`). |
+| **Acciones del usuario** | • Clic en el botón *"Ver Perfil"* de cualquiera de los 6 integrantes: abre el enlace de GitHub correspondiente en una nueva pestaña del navegador.<br>• Lectura reflexiva de los fundamentos institucionales y axiológicos de INSPIRATEC. |
+| **Botones** | • 6 botones de contorno redondeado (*btn-outline*) *"Ver Perfil"* con icono `ExternalLink`. |
+| **Navegación** | • Destinos externos: Repositorios y perfiles de GitHub de los autores.<br>• Navegación interna permanente mediante el dock lateral izquierdo y la barra superior de utilidades. |
+
+---
+
+### Ventana 15: Acceso y Autenticación Docente (`AuthPage.jsx`)
+
+#### Imagen de la ventana
+
+##### Modo 1: Inicio de Sesión / Acceso
+![Inicio de Sesión — INSPIRATEC](docs/evidencias/ACT-009/V15_auth_login.png)
+
+##### Modo 2: Registro Docente y Vinculación Curricular
+![Registro Docente — INSPIRATEC](docs/evidencias/ACT-009/V15_auth_registro.png)
+
+#### Objetivo
+Garantizar el ingreso y la vinculación segura y soberana de los docentes al ecosistema pedagógico INSPIRATEC, gestionando la verificación criptográfica de credenciales mediante JSON Web Tokens (JWT) y Firebase Authentication, así como la captación rigurosa del perfil docente en el registro (nombre, institución educativa, nivel de enseñanza, metodología pedagógica institucional y consentimiento informado bajo la Ley Estatutaria 1581 de 2012 de Habeas Data).
+
+#### Descripción general
+La interfaz se despliega a pantalla completa (`min-height: 100vh`) sobre una experiencia inmersiva cinematográfica concebida para inspirar y transmitir serenidad, rigor y concentración pedagógica. El diseño se articula en tres componentes arquitectónicos:
+
+1. **Fondo Ambiental Cinematográfico y Degradado Dinámico:**
+   - Carrusel fotográfico en alta resolución de espacios educativos reales, bibliotecas, laboratorios y aulas colaborativas (`campus.jpg`, `criterio-docente.jpg`, `inclusion.jpg`, `colaboracion.jpg`, `innovacion.jpg`).
+   - Transición automatizada cada 7 segundos con disolución cruzada y sutil efecto de escala zoom (`transition: opacity 1.2s ease-in-out, transform 8s ease-out`), pausándose cuando el usuario interactúa con el formulario (`isHoveringForm`).
+   - Máscara oscura lateral en degradado (`linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent)`) que garantiza el cumplimiento de la relación de contraste WCAG AAA para textos de lectura.
+2. **Panel Izquierdo — Narrativa y Filosofía Pedagógica:**
+   - Insignia superior de marca: Píldora translúcida de cristal con la leyenda *"INSPIRATEC"* y borde sutil.
+   - Frases editoriales de gran escala (H1 de 48px, peso 800) articuladas con acento verde esmeralda (`#10b981`), barra divisoria turquesa (`#14b8a6`) y párrafos de fundamentación (*"Ideas hoy, mejores aulas mañana"*, *"Tu criterio docente importa"*, *"Inclusión desde el diseño"*, *"Aprender también es compartir"*, *"Innovar con propósito"*).
+   - Selector inferior de navegación manual del carrusel compuesto por 5 píldoras interactivas con cambio dinámico de anchura (de 12px a 36px) para la escena activa.
+3. **Panel Derecho — Tarjeta de Autenticación Glassmorphism:**
+   - Módulo flotante con radio de 28px en cristal oscuro esmerilado `rgba(24, 35, 34, 0.4)`, filtro `backdrop-filter: blur(20px)`, bisel de luz perimetral `1px solid rgba(255, 255, 255, 0.6)` y sombra profunda contra fondos fotográficos.
+   - **Encabezado:** Título de marca institucional *"INSPIRATEC"* en fuente con remate `Georgia` (28px, tracking 1px) y subtítulo contextual de invitación.
+   - **Modo Inicio de Sesión (`isLogin = true`):**
+     - Campo *Correo Electrónico* (`tu.correo@institucion.edu.co`).
+     - Campo *Contraseña* protegida con botón interactivo de visibilidad (`Eye`/`EyeOff`).
+     - Botón primario *"Ingresar"* en verde esmeralda con efecto visual de realce al pasar el cursor.
+     - Badge inferior de confianza con icono `<Shield size={14} color="#14b8a6">` y texto *"Protección con JWT y Cifrado"*.
+     - Enlace conmutador inferior: *"¿No tienes cuenta? Regístrate aquí"*.
+   - **Modo Registro Docente (`isLogin = false`):**
+     - Subtítulo: *"Crea tu cuenta docente protegida y únete a la comunidad"*.
+     - Campo *Nombre Completo* (`Ej. Profe María Pérez`).
+     - Fila de 2 columnas para *Institución* (`Colegio...`) y selector *Nivel* (`Primaria`, `Secundaria`, `Media`).
+     - Selector *Metodología o Enfoque Institucional* con 9 opciones pedagógicas estándar del MEN (ABP, STEAM, Cooperativo/Socrático, Aula Invertida, EpC, Socioformativo, Constructivismo, Escuela Nueva, Otra). Al seleccionar "Otra", despliega un input adicional para especificarla.
+     - Campos de *Correo Electrónico* y *Contraseña* (mínimo 6 caracteres).
+     - Caja destacada de aceptación legal con casilla de verificación: *"He leído y acepto los Términos y Condiciones (Ley 1581 / Habeas Data)"*, enlazada al diálogo modal accesible `TermsAndConditionsModal.jsx`.
+     - Botón primario *"Registrarme"*.
+     - Enlace conmutador inferior: *"¿Ya tienes cuenta? Inicia sesión"*.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Acceso y Autenticación Docente (`AuthPage.jsx`) |
+| **Imagen** | Capturas reales: [`docs/evidencias/ACT-009/V15_auth_login.png`](docs/evidencias/ACT-009/V15_auth_login.png) y [`docs/evidencias/ACT-009/V15_auth_registro.png`](docs/evidencias/ACT-009/V15_auth_registro.png). Fondos reales fotográficos de campus universitario y biblioteca. Iconos Lucide: `Shield`, `Eye`, `EyeOff`. |
+| **Texto** | • Insignia superior izquierda: *"INSPIRATEC"*.<br>• Títulos de escenas narrativas: *"Ideas hoy, mejores aulas mañana."*, *"Tu criterio docente importa."*, *"Inclusión desde el diseño."*, *"Aprender también es compartir."*, *"Innovar con propósito."*<br>• Textos explicativos del carrusel: Párrafos de fundamentación pedagógica y soberanía docente.<br>• Marca del formulario: *"INSPIRATEC"* (fuente `Georgia`, 28px).<br>• Subtítulos dinámicos: *"Inicia sesión para continuar creando experiencias educativas"* / *"Crea tu cuenta docente protegida y únete a la comunidad"*.<br>• Etiquetas: *"Correo Electrónico"*, *"Contraseña"*, *"Nombre Completo"*, *"Institución"*, *"Nivel"*, *"Metodología o Enfoque Institucional"*, *"Escribe la metodología de tu colegio"*.<br>• Placeholders: *"tu.correo@institucion.edu.co"*, *"••••••••"*, *"Ej. Profe María Pérez"*, *"Colegio..."*, *"Ej. Pedagogía Dialogante, Waldorf, Holística..."*.<br>• Botones de acción: *"Ingresar"*, *"Registrarme"*, *"Procesando..."*.<br>• Badge de seguridad: *"Protección con JWT y Cifrado"*.<br>• Consentimiento legal: *"He leído y acepto los Términos y Condiciones (Ley 1581 / Habeas Data)"*.<br>• Alternador de vista: *"¿No tienes cuenta? Regístrate aquí"* / *"¿Ya tienes cuenta? Inicia sesión"*. |
+| **Audio** | No se identificaron archivos de audio ni efectos sonoros en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Disolución cruzada y animación de escala zoom continua (`Ken Burns effect`) en los fondos fotográficos cada 7 segundos.<br>• Pausa automática del temporizador del carrusel al pasar el cursor sobre el formulario (`isHoveringForm`).<br>• Transición de anchura de 12px a 36px en las píldoras de navegación del carrusel.<br>• Conmutación fluida entre modo login y registro con renderizado reactivo de campos.<br>• Efecto hover de realce de color en el botón primario (`var(--primary-active)` a `var(--primary-sage)`). |
+| **Acciones del usuario** | • Clic en las píldoras inferiores para cambiar manualmente la escena pedagógica.<br>• Alternar entre modo login y registro con el botón inferior.<br>• Escribir credenciales de correo y contraseña.<br>• Clic en el icono de ojo (`Eye`/`EyeOff`) para revelar u ocultar los caracteres de la contraseña.<br>• En modo registro: diligenciar nombre, colegio, seleccionar nivel y metodología pedagógica.<br>• Si elige "Otra" metodología: ingresar el nombre del modelo pedagógico institucional.<br>• Clic en el enlace *"Términos y Condiciones"* para abrir el modal explicativo de Habeas Data.<br>• Marcar la casilla de aceptación de términos obligatoria.<br>• Clic en *"Ingresar"* o *"Registrarme"*: dispara autenticación en Firebase y redirige a `/home`. |
+| **Botones** | • 5 píldoras interactivas de cambio de escena del carrusel.<br>• Botón conmutador de visibilidad de contraseña (`Eye`/`EyeOff`).<br>• Botón primario de formulario (*"Ingresar"* / *"Registrarme"*).<br>• Botón de texto para abrir el modal de Términos y Condiciones.<br>• Botón conmutador de modo (*"Regístrate aquí"* / *"Inicia sesión"*). |
+| **Navegación** | • Tras autenticación exitosa: Redirección automática a la Ventana de Inicio (`/home`).<br>• Apertura del modal `TermsAndConditionsModal` sobre la misma pantalla sin perder datos diligenciados. |
 
 ---
 
 ### Ventanas Emergentes y Modales del Sistema
 
+---
+
+#### Modal M02: Ventana Inmersiva de Bienvenida Narrativa (`BienvenidaNarrativa.jsx`)
+
+##### Imagen de la ventana
+![Bienvenida a INSPIRATEC](docs/evidencias/ACT-009/M02_bienvenida_narrativa.png)
+
+##### Objetivo
+Guiar al docente en su primer contacto con el ecosistema o cuando lo requiera a través del menú de usuario, presentando la visión editorial 2026, los principios de co-diseño con IA, la soberanía docente y el recorrido interactivo por las 8 escenas formativas de INSPIRATEC.
+
+##### Descripción general
+Experiencia inmersiva a pantalla completa montada con `createPortal` sobre un mosaico ambiental desenfocado. Incorpora:
+- Barra superior de bienvenida con isotipo de INSPIRATEC, indicador *"Guía de Bienvenida"* y botón de cierre `<X>`.
+- Indicador vertical de pasos a la izquierda con puntos interactivos para desplazarse directamente entre las 8 escenas.
+- Tarjeta editorial flotante en cristal verde petróleo profundo (`rgba(19, 38, 34, 0.94)`, `backdrop-filter: blur(24px)`), con badge *"BIENVENIDA · VISIÓN EDITORIAL 2026"*, contador de avance (*01 / 08*), título H1 en `Lora` (*"Bienvenido a INSPIRATEC"*), descripción pedagógica sobre el co-piloto reflexivo y caja de sugerencia (*"Qué puedes hacer"* con icono `CheckCircle2`).
+- Botón primario de avance *"Comenzar Recorrido →"* con pista de interacción.
+- Dock inferior flotante con chevrones de salto arriba/abajo (`ChevronUp`/`ChevronDown`), contador de escena (*01 / 08*) y botón de salida rápida *"Explorar por mi cuenta"*.
+
+##### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Bienvenida Inmersiva INSPIRATEC (`BienvenidaNarrativa.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/M02_bienvenida_narrativa.png`](docs/evidencias/ACT-009/M02_bienvenida_narrativa.png). Mosaico fotográfico de aula y software, icono `Lightbulb`, `Sparkles`, `CheckCircle2`, `ArrowRight`, `ChevronUp`, `ChevronDown`, `X`. |
+| **Texto** | • Barra: *"INSPIRATEC"* / *"Guía de Bienvenida"*.<br>• Badge: *"BIENVENIDA · VISIÓN EDITORIAL 2026"* / Contador *"01 / 08"*.<br>• Título H1: *"Bienvenido a INSPIRATEC"* (fuente `Lora`, 30px, color blanco marfil).<br>• Párrafo editorial: Declaración de serenidad, rigor pedagógico y co-diseño reflexivo con IA.<br>• Caja de consejo: *"Qué puedes hacer: Descubre en este recorrido los apartados esenciales..."*<br>• Botón: *"Comenzar Recorrido →"* / Subtexto: *"Desplázate hacia abajo o pulsa continuar"*.<br>• Dock inferior: *"01 / 08"*, *"Explorar por mi cuenta"*. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Transiciones de desplazamiento vertical suave entre escenas mediante rueda del ratón (`wheel`), teclado o botones.<br>• Efecto de micro-elevación y cambio de escala en los puntos interactivos del indicador de paso.<br>• Animación de desvanecimiento en el montaje del portal modal. |
+| **Acciones del usuario** | • Clic en *"Comenzar Recorrido"* para avanzar a la escena 2 (Planificador).<br>• Clic en flechas de navegación arriba/abajo para recorrer las 8 escenas.<br>• Desplazamiento con la rueda del ratón (scroll vertical) para avanzar o retroceder.<br>• Clic en *"Explorar por mi cuenta"* o en el botón `<X>`: cierra la guía, marca `onboardingCompletado = true` en el store y restaura la vista activa.<br>• Pulsar tecla `Escape` para cerrar el modal. |
+| **Botones** | • Botón de cierre superior `<X>`.<br>• Botón primario *"Comenzar Recorrido →"*.<br>• Botones de salto arriba `<ChevronUp>` y abajo `<ChevronDown>` en el dock inferior.<br>• Botón *"Explorar por mi cuenta"*. |
+| **Navegación** | • Navegación secuencial entre las 8 escenas modulares (Inicio, Planificador, ADN Pedagógico, Editor Socrático, Materiales Didácticos, Mis Planes, Comunidad y Configuración).<br>• Cierre y permanencia en la ventana desde la cual se invocó. |
+
+---
+
+#### Modal M05: Menú Desplegable de Usuario y Cuenta (`UserMenu.jsx`)
+
+##### Imagen de la ventana
+![Menú Desplegable de Usuario](docs/evidencias/ACT-009/M05_menu_usuario.png)
+
+##### Objetivo
+Proporcionar acceso inmediato y unificado a la información de identidad del docente, credenciales institucionales, cambio de contraseña, invocación de la guía de bienvenida y desconexión segura (Logout).
+
+##### Descripción general
+Popover flotante desacoplado montado mediante `createPortal` sobre `document.body` con cálculo reactivo de posición (`top`, `bottom`, `left`, `right`) según el viewport. Presenta acabado en cristal esmerilado translúcido marfil (`rgba(255, 254, 250, 0.94)`, `backdrop-filter: blur(20px)` y sombra `0 12px 32px rgba(16, 36, 32, 0.16)`).
+
+Se estructura en tres zonas:
+1. **Encabezado de Identidad:** Nombre del docente (*Daniel*), correo electrónico verificado (*danieltapiasacosta39@gmail.com*) y badge redondeado con el rol asignado (*Admin* en violeta o *Docente* en salvia).
+2. **Cuerpo de Acciones de Cuenta:** Tres opciones tabulares interactivas con iconos representativos:
+   - *"Mi Perfil"* (icono `User` en verde petróleo): Abre el modal de información del docente.
+   - *"Cambiar Contraseña"* (icono `Key` en verde petróleo): Abre el modal de cambio de clave.
+   - *"Bienvenida INSPIRATEC"* (icono `Sparkles` en dorado `#D4AF37`): Dispara el evento global `open-bienvenida`.
+3. **Pie de Seguridad:** Botón delimitado con línea tenue *"Cerrar Sesión"* (icono `LogOut` en rojo carmesí `#DC2626`).
+
+##### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Apartado de Usuario — Menú Popover (`UserMenu.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/M05_menu_usuario.png`](docs/evidencias/ACT-009/M05_menu_usuario.png). Iconos Lucide: `User`, `Key`, `Sparkles`, `LogOut`. |
+| **Texto** | • Nombre: *"Daniel"*.<br>• Correo: *"danieltapiasacosta39@gmail.com"*.<br>• Badge: *"Admin"*.<br>• Opciones: *"Mi Perfil"*, *"Cambiar Contraseña"*, *"Bienvenida INSPIRATEC"*, *"Cerrar Sesión"*. |
+| **Audio** | No se identificaron archivos de audio en este menú. |
+| **Video** | No se identificaron archivos de video en este menú. |
+| **Animación** | • Transición de escala y opacidad al abrirse (`initial={{ opacity: 0, scale: 0.96 }}`) mediante `framer-motion`.<br>• Efecto hover con fondo tenue al pasar el cursor sobre cada opción. |
+| **Acciones del usuario** | • Clic en el avatar superior para alternar la apertura/cierre del popover.<br>• Clic en *"Mi Perfil"*: abre `ProfileModal`.<br>• Clic en *"Cambiar Contraseña"*: abre `PasswordModal`.<br>• Clic en *"Bienvenida INSPIRATEC"*: emite `open-bienvenida`.<br>• Clic en *"Cerrar Sesión"*: ejecuta `logoutUser()`, revoca tokens y redirige a `/auth`.<br>• Clic fuera del popover o tecla `Escape` para cerrar. |
+| **Botones** | • Disparador de avatar con inicial (`user-menu-btn`).<br>• 3 botones de opción de cuenta (`user-menu-item-glass`).<br>• Botón peligroso *"Cerrar Sesión"*. |
+| **Navegación** | • Invocación de modales de perfil y contraseña en la misma vista.<br>• Redirección a `/auth` tras cerrar sesión. |
+
+---
+
+#### Modal M06: Ventana Emergente de Información del Docente (`ProfileModal` en `UserMenu.jsx`)
+
+##### Imagen de la ventana
+![Información del Docente](docs/evidencias/ACT-009/M06_informacion_docente.png)
+
+##### Objetivo
+Permitir al docente consultar y actualizar sus datos de identificación personal, correo y contacto móvil, certificando la verificación de sesión JWT y el amparo estricto bajo la Ley 1581 de 2012 (Habeas Data).
+
+##### Descripción general
+Cuadro de diálogo modal accesible con portal sobre el cuerpo del documento, telón de fondo oscuro semitransparente con desenfoque de cristal (`backdrop-filter: blur(8px)`).
+
+Estructura de la ventana:
+- **Cabecera del Diálogo:** Icono `<User size={20}>`, título en `Lora` *"Información del Docente"* y botón de cierre `<X>`.
+- **Banner de Seguridad y Protección:** Caja esmeralda suave con icono `<ShieldCheck size={16}>` y leyenda *"Sesión JWT Verificada & Cifrado de datos personales activo (Ley 1581)"*.
+- **Campos del Perfil Docente:**
+  - *NOMBRE COMPLETO:* Input accesible con el nombre registrado (*Daniel*).
+  - *CORREO ELECTRÓNICO:* Campo protegido con badge *"Solo lectura"* (*danieltapiasacosta39@gmail.com*).
+  - *CELULAR / WHATSAPP (PROTEGIDO HABEAS DATA):* Campo de contacto (*No registrado* o número telefónico cifrado).
+  - *ROL ASIGNADO:* Badge estilizado (*Admin* en violeta o *Docente* en salvia).
+- **Botonera Inferior:** Botón secundario *"Cerrar"* y botón primario *"Editar Información"* (icono `Edit2`/`PenSquare`). Al activar la edición, conmuta a *"Guardar Cambios"* con persistencia en Firestore.
+
+##### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Ventana Emergente — Información del Docente (`ProfileModal`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/M06_informacion_docente.png`](docs/evidencias/ACT-009/M06_informacion_docente.png). Iconos Lucide: `User`, `X`, `ShieldCheck`, `Edit2`. |
+| **Texto** | • Título: *"Información del Docente"* (fuente `Lora`, 22px).<br>• Banner: *"Sesión JWT Verificada & Cifrado de datos personales activo (Ley 1581)."*<br>• Etiquetas: *"NOMBRE COMPLETO"*, *"CORREO ELECTRÓNICO"*, *"CELULAR / WHATSAPP (PROTEGIDO HABEAS DATA)"*, *"ROL ASIGNADO"*.<br>• Badges: *"Solo lectura"*, *"Admin"*.<br>• Botones: *"Cerrar"*, *"Editar Información"*. |
+| **Audio** | No se identificaron archivos de audio en este modal. |
+| **Video** | No se identificaron archivos de video en este modal. |
+| **Animación** | • Transición suave de entrada con desvanecimiento y escala (`framer-motion`).<br>• Conmutación fluida entre modo visualización y modo edición de campos. |
+| **Acciones del usuario** | • Inspección de los datos de sesión y estado de Habeas Data.<br>• Clic en *"Editar Información"*: habilita los campos editables.<br>• Escribir el nuevo nombre o celular y pulsar *"Guardar Cambios"*: despacha `updateUserProfile()` hacia Firestore.<br>• Clic en *"Cerrar"* o en `<X>` para salir del diálogo. |
+| **Botones** | • Botón de cierre `<X>`.<br>• Botón secundario *"Cerrar"*.<br>• Botón primario *"Editar Información"* / *"Guardar Cambios"*. |
+| **Navegación** | • Diálogo modal en capa superior; no altera la ruta URL del navegador. |
+
+---
+
+#### Modal M07: Ventana Emergente de Cambio de Contraseña (`PasswordModal` en `UserMenu.jsx`)
+
+##### Imagen de la ventana
+![Cambiar Contraseña](docs/evidencias/ACT-009/M07_cambiar_contrasena.png)
+
+##### Objetivo
+Proveer un canal criptográficamente seguro para la renovación periódica de credenciales de acceso docente mediante reautenticación en Firebase Authentication.
+
+##### Descripción general
+Ventana modal centrada de alta seguridad montada con `createPortal`. Presenta superficie de cristal marfil con radio redondeado de 24px, sombra perimetral y las siguientes áreas:
+- **Cabecera de Seguridad:** Icono de llave `<Key size={20}>`, título en `Lora` *"Cambiar Contraseña"* y botón de cierre `<X>`.
+- **Formulario de Renovación de Clave:**
+  - Campo *"Contraseña Actual"*: input protegido con placeholder *"Ingresa tu clave actual"* y botón conmutador de visibilidad (`Eye`/`EyeOff`).
+  - Campo *"Nueva Contraseña"*: input protegido con placeholder *"Mínimo 6 caracteres"* y toggle de visibilidad.
+  - Campo *"Confirmar Nueva Contraseña"*: input protegido con placeholder *"Repite la nueva clave"* y toggle de visibilidad.
+- **Validaciones en Tiempo Real:** Detección de coincidencia de claves, longitud mínima y alertas de seguridad.
+- **Botonera de Control:** Botón secundario *"Cancelar"* y botón primario *"Actualizar Contraseña"* con icono de candado (`Lock`) y spinner durante el despacho hacia Firebase.
+
+##### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Ventana Emergente — Cambiar Contraseña (`PasswordModal`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/M07_cambiar_contrasena.png`](docs/evidencias/ACT-009/M07_cambiar_contrasena.png). Iconos Lucide: `Key`, `X`, `Eye`, `EyeOff`, `Lock`, `Loader2`. |
+| **Texto** | • Título: *"Cambiar Contraseña"* (fuente `Lora`, 22px).<br>• Etiquetas: *"Contraseña Actual"*, *"Nueva Contraseña"*, *"Confirmar Nueva Contraseña"*.<br>• Placeholders: *"Ingresa tu clave actual"*, *"Mínimo 6 caracteres"*, *"Repite la nueva clave"*.<br>• Botones: *"Cancelar"*, *"Actualizar Contraseña"*. |
+| **Audio** | No se identificaron archivos de audio en este modal. |
+| **Video** | No se identificaron archivos de video en este modal. |
+| **Animación** | • Transición de escala y desenfoque al montarse en el portal.<br>• Spinner animado `Loader2` durante la reautenticación en Firebase. |
+| **Acciones del usuario** | • Diligenciar la contraseña vigente y la nueva clave dos veces.<br>• Alternar la visibilidad de caracteres con los botones de ojo.<br>• Clic en *"Actualizar Contraseña"*: ejecuta `changeUserPassword()`, verifica credenciales en Firebase Auth y emite alerta de éxito.<br>• Clic en *"Cancelar"* o tecla `Escape` para cerrar sin modificar. |
+| **Botones** | • Botón de cierre `<X>`.<br>• 3 botones de visibilidad de contraseña (`Eye`/`EyeOff`).<br>• Botón secundario *"Cancelar"*.<br>• Botón primario *"Actualizar Contraseña"* con icono `Lock`. |
+| **Navegación** | • Diálogo modal en capa superior; al completarse con éxito cierra automáticamente la ventana emergente. |
+
+---
+
+#### Otros Modales y Cuadros de Diálogo del Sistema
+
 1. **Modal de Calibración Docente (`ModalCalibracionDocente.jsx`):** Activado desde el enlace de la Ventana de Inicio; permite reconfigurar en caliente la metodología institucional (ABP, STEAM, DUA) y los proyectos transversales (PRAE, PESCC).
-2. **Modal de Bienvenida Narrativa (`BienvenidaNarrativa.jsx`):** Onboarding inicial para nuevos usuarios que contextualiza la soberanía docente y el uso reflexivo de la IA.
-3. **Modal de Confirmación Segura (`ConfirmModal.jsx`):** Diálogo de seguridad accesible montado con portal para confirmar la eliminación de planes o descarte de borradores.
-4. **Modal Visor de Materiales (`MaterialModal.jsx`):** Contenedor emergente de pantalla completa con `iframe sandbox` para probar los juegos interactivos generados en la Biblioteca.
-5. **Menú de Usuario y Cuenta (`UserMenu.jsx`):** Popover flotante en la barra superior para cerrar sesión y ver el rol docente activo.
+2. **Modal de Confirmación Segura (`ConfirmModal.jsx`):** Diálogo de seguridad accesible montado con portal para confirmar la eliminación de planes o descarte de borradores.
+3. **Modal Visor de Materiales (`MaterialModal.jsx`):** Contenedor emergente de pantalla completa con `iframe sandbox` para probar los juegos interactivos generados en la Biblioteca.
 
 ---
 

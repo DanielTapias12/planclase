@@ -6714,105 +6714,140 @@ h6 {
   }
 }
 
-/* Adaptación del Asistente en Móviles (<= 768px): Bottom Sheet Ergonomía Pulgar */
-@media (max-width: 768px) {
-  /* En modo celular, quitar los dos botones del chatbot: el flotante y el de la barra de acciones al lado de Nuevo */
+/* Adaptación del Asistente en Móviles y Tablets (<= 1024px):
+   El Chatbot se integra de forma limpia y soberana como un APARTADO en el selector de vistas (Todo el Plan, Plan de Clase, Material Didáctico, Co-docente IA).
+   Se eliminan completamente los botones flotantes y los cajones/drawers invasivos en móvil y tablet para una experiencia 100% responsive. */
+@media (max-width: 1024px) {
   .editor-floating-chat-trigger,
   .editor-ia-floating-btn,
   .editor-chat-toggle-pill,
-  .mobile-hide-chat-btn {
+  .mobile-hide-chat-btn,
+  .desktop-only-floating-btn,
+  .editor-chat-mobile-backdrop {
     display: none !important;
   }
 
   .editor-chat-pane {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    top: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 86vh !important;
-    height: 86dvh !important;
-    max-height: 86vh !important;
-    z-index: 2500 !important;
-    border-radius: 24px 24px 0 0 !important;
-    margin: 0 !important;
-    animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    box-sizing: border-box !important;
-    padding: 0 !important;
-  }
-
-  .editor-chat-pane.is-collapsed {
     display: none !important;
   }
 
-  .editor-chat-card {
-    border-radius: 24px 24px 0 0 !important;
-    border-bottom: none !important;
-    height: 100% !important;
+  /* El selector de vistas permite scroll horizontal fluido táctil sin scrollbar */
+  .editor-doc-view-switcher {
     display: flex !important;
-    flex-direction: column !important;
-    padding: 16px 14px 14px !important;
-    box-sizing: border-box !important;
-    background-color: #FFFFFF !important;
-  }
-
-  .editor-chat-messages {
-    flex: 1 1 0 !important;
-    min-height: 120px !important;
-    overflow-y: auto !important;
+    gap: 6px !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
     -webkit-overflow-scrolling: touch !important;
-    margin-bottom: 10px !important;
+    flex-wrap: nowrap !important;
+    padding: 5px !important;
+    box-sizing: border-box !important;
+    border-radius: 14px !important;
+    margin-bottom: 12px !important;
   }
 
-  .editor-chat-input-row {
-    display: flex !important;
-    gap: 8px !important;
-    align-items: flex-end !important;
+  .editor-doc-view-switcher::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .editor-doc-view-btn {
+    flex: 1 0 auto !important;
+    min-height: 38px !important;
+    padding: 7px 13px !important;
+    font-size: 12.5px !important;
+    white-space: nowrap !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+  }
+
+  /* Contenedor del documento adaptativo */
+  .editor-doc-card {
+    padding: clamp(14px, 3vw, 24px) clamp(12px, 3vw, 22px) !important;
+    border-radius: 18px !important;
+  }
+
+  /* Tablas de secuencia didáctica responsive con scroll táctil limpio */
+  .editor-doc-table-wrapper {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin: 14px 0 !important;
+    border-radius: 12px !important;
+  }
+
+  .editor-doc-table-wrapper table,
+  .plan-sequence-table {
+    min-width: 480px !important;
+    font-size: 13px !important;
+  }
+
+  .editor-doc-table-wrapper th,
+  .editor-doc-table-wrapper td {
+    padding: 8px 10px !important;
+  }
+
+  /* Barra de herramientas de acciones responsive */
+  .editor-toolbar-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 16px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .editor-title {
+    font-size: clamp(18px, 4vw, 23px) !important;
+    word-break: break-word !important;
+  }
+
+  .editor-toolbar-actions {
     width: 100% !important;
-    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .editor-btn-pill {
+    padding: 7px 12px !important;
+    font-size: 12.5px !important;
   }
 }
 
-/* Adaptación del Asistente en Tablets (769px - 1024px): Drawer Deslizable Lateral */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .editor-floating-chat-trigger {
-    position: fixed !important;
-    bottom: 24px !important;
-    right: 24px !important;
-    z-index: 2000 !important;
-    min-height: 48px !important;
-    padding: 11px 20px !important;
+/* Estilos para el Apartado Co-docente IA Integrado */
+.editor-chat-standalone-view {
+  width: 100%;
+  box-sizing: border-box;
+  animation: fadeIn 0.22s ease-in-out;
+}
+
+.editor-chat-standalone-view .editor-chat-messages {
+  background: rgba(248, 250, 249, 0.7);
+  border: 1px solid rgba(49, 91, 84, 0.12);
+  border-radius: 16px;
+  padding: 14px 12px !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .editor-chat-standalone-view .editor-chat-messages {
+    min-height: 260px !important;
+    max-height: 420px !important;
+    padding: 10px 8px !important;
   }
 
-  .editor-chat-pane {
-    position: fixed !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    right: 0 !important;
-    left: auto !important;
-    width: min(440px, 85vw) !important;
-    max-width: 85vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    z-index: 2500 !important;
-    border-radius: 24px 0 0 24px !important;
-    margin: 0 !important;
-    animation: slideInDrawer 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.35) !important;
+  .editor-chat-standalone-view .editor-chat-input-bar {
+    gap: 6px !important;
   }
 
-  .editor-chat-pane.is-collapsed {
-    display: none !important;
+  .editor-chat-standalone-view .editor-chat-input-bar input {
+    font-size: 13px !important;
+    padding: 8px 10px !important;
   }
 
-  .editor-chat-card {
-    border-radius: 24px 0 0 24px !important;
-    border-right: none !important;
+  .editor-chat-standalone-view .editor-chat-input-bar button {
+    padding: 8px 12px !important;
   }
 }
 
@@ -7107,12 +7142,22 @@ h6 {
   .editor-doc-view-switcher {
     padding: 4px !important;
     margin-bottom: 10px !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .editor-doc-view-switcher::-webkit-scrollbar {
+    display: none !important;
   }
 
   .editor-doc-view-btn {
-    font-size: 11.5px !important;
-    padding: 6px 4px !important;
+    font-size: 12px !important;
+    padding: 7px 11px !important;
     min-height: 36px !important;
-    gap: 4px !important;
+    gap: 5px !important;
+    flex: 1 0 auto !important;
+    white-space: nowrap !important;
   }
 }

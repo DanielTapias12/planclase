@@ -414,25 +414,41 @@ El **Foro Docente** (`/foro`) es una plataforma dialógica estructurada para res
 
 ---
 
-### VENTANA 10 — Configuración de Inteligencia Artificial Gemini (`ConfigPage.jsx`)
+### VENTANA 10 — Configuración de Inteligencia Artificial y Autodiagnóstico (`ConfigPage.jsx`)
 
-#### 10.1 Captura de Pantalla Real
-![Configuración de IA Gemini](docs/evidencias/ACT-010/V10_configuracion.png)
+#### 10.1 Capturas de Pantalla Reales
+
+| Pestaña 1: Conectividad e Inteligencia Artificial (API Key) | Pestaña 2: Autodiagnóstico Pedagógico (Felder-Silverman) |
+|:---:|:---:|
+| ![Configuración de IA Gemini](docs/evidencias/ACT-010/V10_configuracion_ia.png) | ![Autodiagnóstico Felder-Silverman](docs/evidencias/ACT-010/V10_configuracion_autodiagnostico.png) |
 
 #### 10.2 Descripción Funcional y Arquitectura Visual
-La ventana de **Configuración de IA** (`/config`) otorga autonomía y soberanía tecnológica al usuario docente. Permite gestionar su propia clave de API de **Google Gemini** (almacenada estrictamente en el almacenamiento local del navegador `localStorage`, sin exponerse a servidores intermedios), seleccionar el modelo de lenguaje (`gemini-2.5-flash`, `gemini-1.5-pro`), realizar una prueba de conexión en vivo con respuesta inmediata y calibrar la temperatura de creatividad pedagógica.
+La ventana de **Configuración** (`/config`) materializa el principio de soberanía docente, autonomía pedagógica y transparencia algorítmica en INSPIRATEC. Integra dos submódulos complementarios accesibles mediante una barra de pestañas tablist con animaciones `framer-motion`:
+1. **Pestaña 1 — Conectividad e Inteligencia Artificial (API Key BYOK):** Permite al docente vincular su propia clave de API de **Google Gemini** (*Bring Your Own Key*), la cual se almacena de forma segura en `localStorage` y en el perfil docente de Firestore sin exponerse a servidores intermediarios. Ofrece validación de conectividad en vivo mediante `testApiConnection()`, conmutación de visibilidad de contraseña y enlace de asistencia directa a Google AI Studio.
+2. **Pestaña 2 — Autodiagnóstico Pedagógico (Felder-Silverman y DUA):** Despliega el instrumento reflexivo de 8 reactivos de aula basado en el modelo FSLSM, garantizando el principio ético de no encasillamiento formativo. Al completar las respuestas, calcula un espacio vectorial continuo proyectado en un **Gráfico Radial interactivo SVG de 8 polos** (*Activo*, *Reflexivo*, *Sensorial*, *Intuitivo*, *Visual*, *Verbal*, *Secuencial*, *Global*) y genera recomendaciones de intervención curricular adaptadas a las pautas DUA (CAST 2018).
 
-#### 10.3 Registro Técnico de Elementos
+#### 10.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Configuración** | Campo "Google Gemini API Key" | Campo de contraseña con opción para revelar texto (`type="password" / type="text"`). | Input HTML accesible con icono de llave `<Key size={16}>` | Permite ingresar o editar la credencial secreta de Google AI Studio. | `onChange` actualiza el valor en memoria; `onBlur` limpia espacios. |
-| **Configuración** | Botón "Mostrar / Ocultar Clave" | Botón adyacente con icono de ojo para conmutar la visibilidad de los caracteres de la clave. | Botón HTML `<button>` / Iconos `<Eye size={16}>` / `<EyeOff size={16}>` | Cambia el atributo `type` entre `password` y `text` para verificar la transcripción. | `onClick`. |
-| **Configuración** | Selector de Modelo LLM | Menú desplegable para elegir entre `gemini-2.5-flash` (rápido/eficiente) y otros modelos compatibles. | Control `<select>` / `src/pages/ConfigPage.jsx` | Define el identificador de modelo utilizado en las peticiones a la API de Google. | `onChange` actualiza `selectedModel`. |
-| **Configuración** | Control Deslizante de Temperatura | Slider numérico continuo entre 0.0 (estricto/analítico) y 1.0 (creativo/exploratorio). | Input HTML `<input type="range" min="0" max="1" step="0.1">` | Modifica el nivel de determinismo con el que la IA genera las actividades de clase. | `onChange` actualiza la temperatura pedagógica. |
-| **Configuración** | Botón "Probar Conectividad en Vivo" | Botón secundario con icono de rayo para verificar si la clave y el modelo responden. | Botón HTML `<button>` / Icono `<Zap size={16}>` | Realiza una petición mínima de prueba ("Ping pedagógico") a la API de Google Gemini. | `onClick` ejecuta `handleTestConnection()`. |
-| **Configuración** | Indicador de Estado de Conexión | Caja de mensaje de color verde (éxito) o rojo (error) con el diagnóstico de la prueba. | Contenedor reactivo con iconos `<CheckCircle>` / `<AlertCircle>` | Exhibe el resultado de la validación: latencia, estado del servicio o causa de falla. | Reactivo al resolver o rechazar la promesa del test. |
-| **Configuración** | Botón "Guardar Configuración de IA" | Botón primario para guardar la clave, el modelo y los parámetros en `localStorage`. | Botón HTML `<button>` / Icono `<Save size={16}>`, fondo `#183630` | Persiste los ajustes, actualiza el store global y muestra alerta toast de éxito. | `onClick` ejecuta `handleGuardarConfig()`. |
+| **Configuración** | Badge "Conectividad / Perfil DUA" | Insignia superior editorial que conmuta según la pestaña activa. | Badge `.editorial-badge` Glassmorphism con `<Sparkles size={13}>` | Contextualiza la función activa (IA o Estilos de Aprendizaje). | Estático reactivo al estado `activeTab`. |
+| **Configuración** | Icono Institucional de Cabecera | Caja redondeada con icono variable: llave (`Key`) o brújula (`Compass`). | Contenedor 46x46px / Fondo `rgba(71, 122, 114, 0.16)` | Representa gráficamente la naturaleza del submódulo activo. | Estático reactivo a `activeTab`. |
+| **Configuración** | Título H1 Dinámico | Titular principal en Lora: *"Configuración de Inteligencia Artificial"* o *"Autodiagnóstico Pedagógico"*. | Fuente `Lora`, 28px, negrita 700, color `#142B25` | Enmarca formalmente el propósito de la pantalla. | Estático reactivo a `activeTab`. |
+| **Configuración** | Píldora "API Key Configurada" | Indicador de estado de clave privada activa (`saved` o `draft`). | Píldora `.mgmt-stat-pill` con icono `<ShieldCheck size={14}>` | Informa al docente si cuenta con credencial válida de Gemini. | Reactivo al estado `apiKey`. |
+| **Configuración** | Píldora "Perfil Docente" | Indicador de autodiagnóstico completado o pendiente. | Píldora `.mgmt-stat-pill` con icono `<Compass size={14}>` | Indica si el perfil pedagógico ya fue registrado en el store. | Reactivo a `tienePerfilFelder`. |
+| **Configuración** | Botón Pestaña "IA (API Key)" | Selector para conmutar a la gestión de credenciales Google Gemini. | Botón tablist `.btn-outline` / Icono `<Key size={15}>` | Conmuta a `activeTab = 'ia'` con animación `framer-motion`. | `onClick`. |
+| **Configuración** | Botón Pestaña "Autodiagnóstico" | Selector para conmutar al instrumento Felder-Silverman. | Botón tablist `.btn-outline` / Icono `<Compass size={15}>` | Conmuta a `activeTab = 'estilos'` con animación `framer-motion`. | `onClick`. |
+| **Configuración** | Campo "Clave de API de Gemini" | Input protegido con viñetas de contraseña y soporte de pegado. | Input HTML `<input type={showPassword ? 'text' : 'password'}>` | Recibe la clave privada de Google AI Studio digitada por el docente. | `onChange` actualiza `inputKey`. |
+| **Configuración** | Botón "Mostrar / Ocultar Clave" | Botón en el interior del campo para conmutar visibilidad. | Botón HTML `<button>` / Iconos `<Eye size={16}>` / `<EyeOff size={16}>` | Alterna entre `showPassword: true/false` para auditar la clave escrita. | `onClick`. |
+| **Configuración** | Botón "Guardar y Probar Conexión" | Botón primario verde oscuro para validar credenciales en Google AI. | Botón HTML / Icono `<ShieldCheck size={16}>` o `<Loader2>` animado | Despacha `testApiConnection()`, persiste en store y actualiza perfil. | `onClick` / `onSubmit`. |
+| **Configuración** | Enlace "Obtener en Google AI Studio" | Enlace de asistencia con destino a la consola oficial de Google. | Enlace HTML `<a target="_blank">` con icono `<ExternalLink size={13}>` | Despacha la navegación externa hacia `aistudio.google.com`. | `onClick`. |
+| **Configuración** | Tarjeta "Marco Teórico y Rigor" | Panel que fundamenta el modelo Felder-Silverman y la no-etiquetación. | Contenedor Glassmorphism / Icono `<BookOpen size={18}>` | Comunica el rigor metodológico y el respeto por la plasticidad docente. | Estático de lectura. |
+| **Configuración** | Barra de Progreso del Cuestionario | Indicador de completitud porcentual de los 8 reactivos de aula. | Barra de avance HTML/CSS con texto *"Progreso: X de 8 (Y%)"* | Retroalimenta la completitud del instrumento reflexivo. | Reactivo al número de respuestas. |
+| **Configuración** | Reactivos de Cuestionario (1 a 8) | Fichas de dilemas pedagógicos con dos alternativas opuestas (Polo A vs B). | Bloques interactivos con opciones radio seleccionables | Captura la inclinación espontánea del docente ante situaciones de clase. | `onClick` actualiza la respuesta. |
+| **Configuración** | Botón "Guardar Resultados en Perfil" | Botón para persistir el autodiagnóstico en Firestore y Zustand. | Botón primario verde oscuro con icono `<ShieldCheck size={16}>` | Serializa el perfil de 8 polos y activa la personalización DUA. | `onClick` ejecuta guardado. |
+| **Configuración** | Botón "Reiniciar Cuestionario" | Botón secundario para restablecer las respuestas a cero. | Botón HTML `.btn-outline` con icono `<RefreshCw size={15}>` | Limpia los reactivos respondidos para permitir un nuevo autodiagnóstico. | `onClick` resetea respuestas. |
+| **Configuración** | Gráfico Radial Interactivo SVG | Radar Chart matemático con 8 ejes vectoriales y polígono dinámico. | SVG nativo interactivo con coordenadas polares (`cos`/`sin`) | Proyecta visualmente el balance del estilo didáctico del maestro. | Renderizado matemático dinámico. |
+| **Configuración** | Tarjetas de 4 Dimensiones DUA | 4 Paneles con barras de distribución porcentual y sugerencias DUA. | Contenedores Glassmorphism con badges temáticos | Ofrece andamiaje didáctico para diversificar la enseñanza en aula. | Calculado según las respuestas. |
 
 ---
 
@@ -538,34 +554,89 @@ La ventana de **Soporte Técnico** (`/soporte`) brinda un canal formal y seguro 
 ### VENTANA 14 — Acerca de INSPIRATEC (`AboutPage.jsx`)
 
 #### 14.1 Descripción Funcional y Arquitectura Visual
-La ventana **Acerca de** (`/acerca`) presenta la ficha técnica institucional del proyecto de software educativo, detallando su vinculación con el marco **MODESEC** (Modelo de Diseño de Software Educativo con Criterio), la justificación psicopedagógica (teoría de la carga cognitiva de Sweller, transposición didáctica de Chevallard, autodeterminación de Deci & Ryan), las licencias de código abierto utilizadas y los créditos del equipo de investigación y desarrollo.
+La ventana **Acerca de** (`/acerca`) formaliza la identidad institucional, principios pedagógicos y la autoría académica del software educativo INSPIRATEC. Implementada con un layout editorial cálido sobre el fondo ambiental pixel art animado (`FondoPixel.jsx`), utiliza contenedores de cristal esmerilado (*Glassmorphism* marfil `rgba(255, 254, 250, 0.86)` a `0.88`, `backdrop-filter: blur(16px)` y bordes blancos ultrafinos). 
 
-#### 14.2 Registro Técnico de Elementos
+La arquitectura visual se organiza en tres niveles jerárquicos:
+1. **Cabecera Editorial Institucional:** Encabezado con icono representativo de comunidad (`Users`), insignia editorial *"Identidad, Enfoque y Propósito"*, título principal H1 *"Transformando la Educación Colombiana"*, párrafo de declaración misional y barra de píldoras estadísticas (*Enfoque MEN & DUA* y *6 Creadores*).
+2. **Tríada Axiológica de Principios:** Cuadrícula de 3 tarjetas translúcidas con iconos vectoriales en cápsulas cromáticas:
+   - *Nuestra Misión* (`Target` en verde petróleo): Rigor curricular articulado con co-pilotos pedagógicos avanzados.
+   - *Inclusión Total (DUA)* (`Heart` en verde esmeralda): Diseño Universal para el Aprendizaje y ajustes razonables anticipados.
+   - *Innovación Pedagógica* (`Lightbulb` en violeta): La IA como copiloto que asiste el trabajo operativo sin sustituir la sensibilidad e inspiración del maestro.
+3. **Módulo de Talento Creador Unicordobés:** Panel con badge *"Talento Unicordobés"*, título H2 *"El Equipo Creador"* y cuadrícula responsiva de 6 tarjetas individuales que reconocen la autoría investigativa de los estudiantes de la Universidad de Córdoba con sus roles Scrum oficiales, avatares de alta resolución y botones de enlace externo a GitHub.
+
+#### 14.2 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Acerca de** | Logotipo e Identidad INSPIRATEC | Emblema gráfico con icono de bombilla/chispa y tipografía institucional. | SVG vectorial con tratamiento de cristal | Refuerza la identidad visual del software educativo. | Estático. |
-| **Acerca de** | Panel de Marco Teórico y Pedagógico | Resumen de los fundamentos metodológicos MODESEC, DUA y Guía 30 del MEN. | Bloques de texto editorial en fuente Lora y DM Sans | Expone el sustento científico que diferencia a INSPIRATEC de un software genérico. | Estático de lectura. |
-| **Acerca de** | Ficha de Créditos de Autores | Cuadrícula con los integrantes del equipo y sus roles (Product Owner, Scrum Master, Dev Team). | Tarjetas individuales con roles Scrum oficiales | Reconoce la autoría académica e investigativa del proyecto educativo. | Estático. |
-| **Acerca de** | Información de Versión y Licencia | Píldora inferior con el número de versión (1.0.0), entorno de ejecución y derechos de autor. | Texto de pie de página / Color `#435750` | Proporciona trazabilidad de la versión del software educativo entregado. | Estático. |
+| **Acerca de** | Badge "Identidad, Enfoque y Propósito" | Insignia superior que contextualiza el sentido axiológico y curricular del ecosistema. | Badge `.editorial-badge` Glassmorphism con `<Sparkles size={13} color="#2B524A">` | Comunica la orientación ética e institucional del software. | Estático. |
+| **Acerca de** | Icono Institucional de Cabecera | Caja redondeada con icono de comunidad y trabajo colaborativo. | Contenedor 46x46px / Fondo `rgba(71, 122, 114, 0.16)` / Icono `<Users size={24}>` | Refuerza la identidad comunitaria del ecosistema educativo. | Estático. |
+| **Acerca de** | Título H1 "Transformando la Educación Colombiana" | Titular principal con tipografía editorial de alto impacto. | Fuente `Lora`, 28px, negrita 700, color `#142B25`, interlineado 1.25 | Enmarca el propósito de modernizar la labor docente en Colombia. | Estático. |
+| **Acerca de** | Párrafo Editorial de Propósito | Síntesis descriptiva del ecosistema, rigor metodológico y accesibilidad universal. | Fuente `DM Sans`, 14.5px, color `#243630`, interlineado 1.55 | Explica la fundamentación pedagógica y el respeto por el contexto escolar. | Estático de lectura. |
+| **Acerca de** | Píldora "Enfoque MEN & DUA" | Insignia informativa de alineación normativa ministerial e inclusión universal. | Píldora `.mgmt-stat-pill` translúcida con icono `<BookOpen size={14}>` | Comunica la observancia de la Guía 30 del MEN y pautas CAST 2018. | Estático. |
+| **Acerca de** | Píldora "6 Creadores" | Insignia cuantitativa de autoría investigativa y multidisciplinar. | Píldora `.mgmt-stat-pill` translúcida con icono `<Users size={14}>` | Indica el número de integrantes del equipo de desarrollo. | Estático. |
+| **Acerca de** | Tarjeta de Principio: "Nuestra Misión" | Panel de cristal con icono de diana y declaración de empoderamiento curricular. | Tarjeta Glassmorphism `rgba(255, 254, 250, 0.88)` / Icono `<Target size={24}>` | Comunica el compromiso de unir rigor curricular y co-pilotos IA. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta de Principio: "Inclusión Total (DUA)" | Panel de cristal con icono de corazón y compromiso con ajustes razonables. | Tarjeta Glassmorphism / Icono `<Heart size={24}>` en cápsula verde `#166534` | Enfatiza la eliminación de barreras para que nadie quede atrás. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta de Principio: "Innovación Pedagógica" | Panel de cristal con icono de bombilla y principio ético del uso de IA. | Tarjeta Glassmorphism / Icono `<Lightbulb size={24}>` en cápsula `#6D28D9` | Consagra que la IA nunca reemplaza al docente, sino que lo acompaña. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Panel Divisor: "Talento Unicordobés" | Franja central con badge temático y título H2 del equipo desarrollador. | Badge con icono `<Users size={13}>` y título H2 `Lora` (22px, negrita) | Contextualiza la autoría de estudiantes de la Universidad de Córdoba. | Estático. |
+| **Acerca de** | Tarjeta Creador: Zoe Peñata | Ficha de integrante con avatar de iniciales ZP y rol Scrum Master. | Tarjeta de cristal / Avatar 88px (`UI-Avatars ZP` `#315B54`) / Badge de rol | Presenta a la Scrum Master del proyecto y control metodológico. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta Creador: María Soto | Ficha de integrante con avatar de iniciales MS y rol Product Owner. | Tarjeta de cristal / Avatar 88px (`UI-Avatars MS` `#477A72`) / Badge de rol | Presenta a la Product Owner encargada de requerimientos y Guía 30 MEN. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta Creador: María Ubarne | Ficha de integrante con avatar de iniciales MU y rol Product Owner. | Tarjeta de cristal / Avatar 88px (`UI-Avatars MU` `#183630`) / Badge de rol | Presenta a la responsable de inclusión DUA y accesibilidad por voz. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta Creador: Luis Caldera | Ficha de integrante con avatar de iniciales LC y rol Development Team. | Tarjeta de cristal / Avatar 88px (`UI-Avatars LC` `#2B524A`) / Badge de rol | Presenta al líder de diseño visual, Glassmorphism y frontend UX/UI. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta Creador: Daniel Tapias | Ficha de integrante con ilustración digital y rol Development Team. | Tarjeta de cristal / Avatar 88px gráfico `miniyo.png` / Badge de rol | Presenta al desarrollador de lógica React, servicios IA y persistencia Git. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Tarjeta Creador: Maira Ortega | Ficha de integrante con avatar de iniciales MO y rol Development Team. | Tarjeta de cristal / Avatar 88px (`UI-Avatars MO` `#3C6760`) / Badge de rol | Presenta a la facilitadora de equipo y auditora de carga cognitiva. | Efecto CSS `:hover` con elevación. |
+| **Acerca de** | Botones "Ver Perfil" (x6) | Enlaces interactivos con icono externo presentes en cada tarjeta de autor. | Botón píldora `.btn-outline` / Icono `<ExternalLink size={13}>` | Despacha la navegación hacia los perfiles de GitHub en pestaña nueva. | `onClick` (enlace `<a target="_blank">`). |
 
 ---
 
 ### VENTANA 15 — Acceso y Autenticación Docente (`AuthPage.jsx`)
 
 #### 15.1 Descripción Funcional y Arquitectura Visual
-La ventana de **Autenticación** (`/auth`) gestiona el control de acceso y registro de usuarios en la plataforma a través de **Firebase Authentication**. Permite autenticación tradicional mediante correo institucional y contraseña, así como inicio de sesión con un solo clic mediante **Google OAuth**. Presenta un formulario centrado con estética de cristal translúcido de alto impacto sobre el fondo dinámico.
+La ventana de **Autenticación** (`/login` o `/auth`) gestiona el control de acceso soberano y la vinculación docente al ecosistema INSPIRATEC mediante **Firebase Authentication** y verificación criptográfica de credenciales con JSON Web Tokens (JWT). Diseñada como una experiencia inmersiva cinematográfica a pantalla completa (`min-height: 100vh`), conjuga serenidad visual, rigor institucional y apego irrestricto a la Ley Estatutaria 1581 de 2012 (Habeas Data).
 
-#### 15.2 Registro Técnico de Elementos
+La arquitectura visual se distribuye en dos hemisferios coordinados sobre un fondo dinámico:
+1. **Lienzo Ambiental Cinematográfico y Degradado Dinámico:**
+   - 5 escenas fotográficas en alta resolución de espacios formativos reales (`campus.jpg`, `criterio-docente.jpg`, `inclusion.jpg`, `colaboracion.jpg`, `innovacion.jpg`).
+   - Temporizador reactivo que transiciona de escena cada 7 segundos mediante disolución de opacidad (1.2s) y sutil escala zoom (8s), el cual se congela automáticamente cuando el docente interactúa o pasa el cursor sobre el formulario (`onMouseEnter` -> `isHoveringForm = true`).
+   - Máscara lateral en degradado oscuro progresivo (`linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent)`) que garantiza contraste WCAG AAA para los textos de lectura reflexiva.
+2. **Panel Izquierdo — Narrativa y Principios Pedagógicos:**
+   - Insignia superior de marca: Cápsula de cristal *"INSPIRATEC"* con borde tenue de 1px.
+   - Títulos tipográficos de gran escala (H1 de 48px, peso 800) que resaltan en verde esmeralda (`#10b981`) la postura pedagógica del software (*"Ideas hoy, mejores aulas mañana"*, *"Tu criterio docente importa"*, *"Inclusión desde el diseño"*, *"Aprender también es compartir"*, *"Innovar con propósito"*), acentuados por una barra turquesa (`#14b8a6`) y párrafos de fundamentación curricular.
+   - Dock de navegación del carrusel con 5 píldoras interactivas que expanden su anchura de 12px a 36px para la escena activa y permiten saltos manuales.
+3. **Panel Derecho — Módulo de Formulario Glassmorphism:**
+   - Tarjeta flotante de 440px en cristal esmerilado oscuro `rgba(24, 35, 34, 0.4)`, filtro `backdrop-filter: blur(20px)`, bisel perimetral de luz blanca `1px solid rgba(255, 255, 255, 0.6)` y esquinas redondeadas de 28px.
+   - Encabezado con logotipo editorial *"INSPIRATEC"* en fuente con remate `Georgia` (28px, negrita) y subtítulo contextual de bienvenida.
+   - Conmutación dinámica entre **Modo 1: Inicio de Sesión** (`isLogin = true`) y **Modo 2: Registro Docente** (`isLogin = false`), preservando la integridad del estado `formData`.
+   - Badge inferior de confianza con icono `<Shield size={14} color="#14b8a6">` y texto *"Protección con JWT y Cifrado"*.
+   - Botón alternador para conmutar libremente entre login y registro.
+
+#### 15.2 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Autenticación** | Selector "Iniciar Sesión" vs "Registrarse" | Pestañas superiores para alternar entre el modo de entrada y la creación de cuenta. | Botones de alternancia con estado `.active` | Cambia los campos del formulario (añadiendo nombre y rol en modo registro). | `onClick` actualiza `isLoginMode`. |
-| **Autenticación** | Campo "Correo Institucional" | Input accesible con icono de correo para digitar la dirección de email del docente. | Input HTML `<input type="email" required>` con icono `<Mail size={16}>` | Almacena y valida el formato del correo electrónico ingresado. | `onChange` actualiza el estado `email`. |
-| **Autenticación** | Campo "Contraseña" | Input protegido con opción de visibilidad para introducir la clave de acceso. | Input HTML `<input type="password" required>` con icono `<Lock size={16}>` | Almacena la contraseña con verificación mínima de longitud (6 caracteres). | `onChange` actualiza el estado `password`. |
-| **Autenticación** | Botón "Acceder a INSPIRATEC" | Botón primario verde oscuro para procesar la autenticación tradicional. | Botón HTML `<button type="submit">` / Fondo `#183630`, color blanco | Llama al servicio `signInWithEmailAndPassword` o `createUserWithEmailAndPassword`. | `onSubmit` del formulario de autenticación. |
-| **Autenticación** | Botón "Continuar con Google" | Botón secundario con el logotipo oficial multicolor de Google para OAuth. | Botón HTML con SVG de Google | Inicia el flujo de autenticación emergente con `signInWithPopup(auth, googleProvider)`. | `onClick` ejecuta autenticación federada. |
-| **Autenticación** | Mensaje de Error / Validación | Alerta de color rojo tenue que aparece ante credenciales erróneas o cuenta inexistente. | Contenedor reactivo con icono `<AlertCircle size={15}>` | Informa al docente el motivo del fallo de acceso sin exponer detalles vulnerables. | Renderizado condicionado por el estado `authError`. |
+| **Autenticación** | Fondos Fotográficos Cinematográficos (x5) | Carrusel ambiental con imágenes de aulas y campus universitarios reales. | Fondos CSS `background-size: cover` con `opacity` cruzada y `transform: scale` | Transiciona de escena fotográfica cada 7 segundos para ambientar la experiencia. | Temporizador `setInterval` sincronizado con el estado `currentScene`. |
+| **Autenticación** | Insignia Superior de Marca | Píldora translúcida con el nombre institucional del proyecto. | Contenedor Glassmorphism `rgba(255,255,255,0.15)` / 13px, negrita, tracking 2px | Enmarca la identidad de la plataforma educativa. | Estático. |
+| **Autenticación** | Titular Narrativo Dinámico | Encabezado H1 de gran escala que cambia con cada escena del carrusel. | Fuente `DM Sans`, 48px, negrita 800 / Acento `<span style={{ color: '#10b981' }}>` | Enfatiza que la IA propone y el criterio docente contextualiza y decide. | Estático reactivo al índice de escena. |
+| **Autenticación** | Barra de Acento Turquesa | Indicador visual de separación cromática institucional. | Bloque 40x4px / Fondo `#14b8a6`, radio 2px | Refuerza la jerarquía visual de la narrativa pedagógica. | Estático. |
+| **Autenticación** | Párrafo Editorial de Escena | Descripción reflexiva que sintetiza el enfoque ético y DUA de la escena. | Fuente `DM Sans`, 18px, color `#E2E8F0`, interlineado 1.5 | Comunica los valores de inclusión, colaboración e innovación con propósito. | Estático reactivo. |
+| **Autenticación** | Píldoras de Navegación del Carrusel (x5) | Botones interactivos alargados para conmutar manualmente entre escenas. | Botones de 6px de alto, anchura dinámica 12px / 36px (activa `#10b981`) | Salta de manera inmediata a la escena seleccionada por el usuario. | `onClick` ejecuta `setCurrentScene(index)`. |
+| **Autenticación** | Panel Formulario Glassmorphism | Tarjeta flotante de cristal esmerilado que aloja los campos de autenticación. | Contenedor 440px / `rgba(24, 35, 34, 0.4)` / `backdrop-filter: blur(20px)` | Contiene el formulario y congela el cambio de fondos al posicionar el cursor. | `onMouseEnter` / `onMouseLeave` alternan `isHoveringForm`. |
+| **Autenticación** | Logotipo de Marca del Formulario | Título institucional que preside la tarjeta de acceso. | Fuente `Georgia`, 28px, negrita, color `#F8FAFC`, tracking 1px | Identifica formalmente el acceso al ecosistema INSPIRATEC. | Estático. |
+| **Autenticación** | Subtítulo Contextual Dinámico | Leyenda que orienta al docente según el modo activo. | Fuente `DM Sans`, 14px, color `#E2E8F0` | Informa si se está iniciando sesión o vinculando una nueva cuenta. | Reactivo al estado `isLogin`. |
+| **Autenticación** | Banner de Alerta de Error | Cuadro de notificación en rojo claro ante fallos de credenciales o validación. | Caja `#FEE2E2` / Borde `#FCA5A5` / Texto `#B91C1C` / 14px | Informa al usuario sobre campos incompletos o credenciales inválidas. | Renderizado condicionado por `error !== null`. |
+| **Autenticación** | Campo "Nombre Completo" (Registro) | Input para ingresar el nombre y apellidos del maestro. | Input HTML `<input type="text">` / Fondo blanco marfil 90% / 14px | Captura el nombre del educador para su posterior visualización en el menú y planes. | `onChange` actualiza `formData.nombre`. |
+| **Autenticación** | Campo "Institución" (Registro) | Input de texto para digitar el colegio, escuela o universidad de procedencia. | Input HTML `<input type="text">` / Placeholder `"Colegio..."` | Registra el contexto escolar para la contextualización de los planes de aula. | `onChange` actualiza `formData.institucion`. |
+| **Autenticación** | Selector "Nivel" (Registro) | Menú desplegable para indicar el ciclo escolar en que labora el docente. | Selector HTML `<select>` con opciones: Primaria, Secundaria, Media | Parametriza los estándares y matrices de DBA del Ministerio de Educación. | `onChange` actualiza `formData.nivel`. |
+| **Autenticación** | Selector "Metodología Institucional" (Registro) | Dropdown con 9 enfoques curriculares estándar (ABP, STEAM, EpC, DUA, etc.). | Selector HTML `<select>` con 9 modelos pedagógicos formales | Define el marco didáctico por defecto con el que el co-docente IA andamiará los planes. | `onChange` actualiza `formData.metodologiaInstitucional`. |
+| **Autenticación** | Campo "Otra Metodología" (Condicional) | Input de texto que emerge si el docente selecciona la opción "Otra". | Input HTML `<input type="text">` / Placeholder descriptivo | Permite especificar pedagogías alternativas (Dialogante, Waldorf, etc.). | `onChange` actualiza `formData.otraMetodologia`. |
+| **Autenticación** | Campo "Correo Electrónico" | Input accesible con validación de tipo email. | Input HTML `<input type="email">` / Placeholder `"tu.correo@institucion.edu.co"` | Recibe el correo electrónico del docente para autenticación en Firebase. | `onChange` actualiza `formData.email`. |
+| **Autenticación** | Campo "Contraseña" | Input protegido con puntos o caracteres visibles según el conmutador. | Input HTML `<input type={showPassword ? "text" : "password"}>` | Almacena la clave con exigencia mínima de 6 caracteres en el registro. | `onChange` actualiza `formData.password`. |
+| **Autenticación** | Botón Conmutador de Ojo (`Eye`/`EyeOff`) | Botón interactivo integrado en el extremo derecho del input de clave. | Botón accesible sin borde con icono `<Eye size={18}>` / `<EyeOff size={18}>` | Alterna entre mostrar y ocultar los caracteres de la contraseña para verificación. | `onClick` invierte el booleano `showPassword`. |
+| **Autenticación** | Checkbox "Términos y Condiciones (Ley 1581)" | Casilla de consentimiento informado obligatorio para Habeas Data en registro. | Input `<input type="checkbox">` dentro de tarjeta translúcida de 12px | Certifica la aceptación explícita de la política de protección de datos personales. | `onChange` actualiza `formData.aceptaTerminos`. |
+| **Autenticación** | Enlace Modal "Términos y Condiciones" | Hipervínculo subrayado en verde menta para leer los términos completos. | Botón HTML de texto plano con subrayado y color `var(--primary-active)` | Despliega el cuadro de diálogo modal accesible `TermsAndConditionsModal.jsx`. | `onClick` ejecuta `setShowTermsModal(true)`. |
+| **Autenticación** | Botón Primario "Ingresar" / "Registrarme" | Botón principal de acción en verde institucional activo. | Botón HTML `<button type="submit">` con fondo `var(--primary-active)` (15px bold) | Despacha la autenticación a `loginUser()` o `registerUser()` en Firebase. | `onSubmit` del formulario de autenticación. |
+| **Autenticación** | Badge de Confianza "JWT y Cifrado" | Distintivo visual inferior con icono de escudo y garantía criptográfica. | Contenedor redondeado translúcido con icono `<Shield size={14} color="#14b8a6">` | Garantiza visualmente que la sesión se encuentra firmada y protegida. | Estático. |
+| **Autenticación** | Botón Alternador "¿No tienes cuenta? / Inicia sesión" | Botón de texto que conmuta entre los formularios de login y registro. | Botón HTML sin borde con texto bicoloreado verde y blanco marfil | Alterna el estado `isLogin`, limpia los errores y actualiza los campos visibles. | `onClick` invierte `isLogin` y limpia `error`. |
+| **Autenticación** | Modal de Términos (`TermsAndConditionsModal`) | Diálogo emergente accesible con el articulado de la Ley 1581 y privacidad. | Modal en capa superior con botones de cierre y aceptación expresa | Permite leer las cláusulas de Habeas Data y aceptar directamente en el modal. | Props `onClose` y `onAccept`. |
 
 ---
 
@@ -584,12 +655,24 @@ La ventana de **Autenticación** (`/auth`) gestiona el control de acceso y regis
   5. *Botón "Aplicar Calibración":* Actualiza el perfil docente en `useAppStore` y Firestore, y cierra el diálogo.
 
 #### MODAL M2 — Modal de Bienvenida Narrativa (`BienvenidaNarrativa.jsx`)
-- **Trigger de Apertura:** Detección de primer ingreso del docente (`!userProfile.onboardingCompletado`).
-- **Implementación Técnica:** Diálogo modal interactivo guiado por pasos con avatar del asistente de INSPIRATEC.
-- **Elementos Registrados:**
-  1. *Ilustración Narrativa:* Gráfico de bienvenida en pixel art.
-  2. *Texto de Inducción:* Explicación breve de la filosofía de andamiaje y soberanía docente.
-  3. *Botón "Comenzar Recorrido":* Cierra la bienvenida narrativa, marca `onboardingCompletado: true` y posiciona al usuario en el inicio.
+- **Trigger de Apertura:** Detección de primer ingreso del docente (`!userProfile.onboardingCompletado`) o disparo manual desde el menú de usuario (`window.dispatchEvent(new Event('open-bienvenida'))`).
+- **Implementación Técnica:** Experiencia inmersiva a pantalla completa montada con `createPortal` sobre el nodo `document.body`, con fondo fotográfico ambiental desenfocado y tarjeta flotante Glassmorphism en verde petróleo (`rgba(19, 38, 34, 0.94)`, `backdrop-filter: blur(24px)`).
+- **Captura Real:** [`docs/evidencias/ACT-010/M02_bienvenida_narrativa.png`](docs/evidencias/ACT-010/M02_bienvenida_narrativa.png).
+- **Matriz Técnica de Elementos:**
+
+| Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
+|---|---|---|---|---|---|
+| **Bienvenida** | Barra Superior de Marca | Insignia con logotipo INSPIRATEC, indicador "Guía de Bienvenida" y botón de salida. | Barra Glassmorphism / Botón `<X size={18}>` | Provee contexto y salida inmediata del onboarding. | `onClick` ejecuta `handleClose()`. |
+| **Bienvenida** | Indicador de Pasos Vertical | Barra lateral izquierda con 8 puntos interactivos de navegación directa. | Elementos `.nav-dot` con estado `.active` | Permite saltar directamente a cualquiera de las 8 escenas formativas. | `onClick` actualiza `currentSceneIndex`. |
+| **Bienvenida** | Badge "Visión Editorial 2026" | Insignia editorial superior con icono de chispa y contador numérico `01 / 08`. | Badge Glassmorphism / Icono `<Sparkles size={14}>` | Sitúa al docente en el paso actual del recorrido. | Estático reactivo al índice. |
+| **Bienvenida** | Título H1 "Bienvenido a INSPIRATEC" | Titular de bienvenida en tipografía Lora de alta jerarquía. | Fuente `Lora`, 30px, negrita 700, color blanco marfil `#FFFDF9` | Comunica la visión pedagógica y calidez editorial del software. | Estático. |
+| **Bienvenida** | Párrafo Narrativo Reflexivo | Síntesis que declara la soberanía docente y el rol de copiloto de la IA. | Fuente `DM Sans`, 14px, interlineado 1.6, color `#E0EAE6` | Orienta sobre la mediación socrática y respeto por el aula. | Estático de lectura. |
+| **Bienvenida** | Caja de Consejo "Qué puedes hacer" | Panel contextual con icono de chequeo que resume las acciones sugeridas. | Contenedor `.can-do-box` / Icono `<CheckCircle2 size={16}>` | Ofrece pautas concretas de exploración del ecosistema. | Estático. |
+| **Bienvenida** | Botón "Comenzar Recorrido" | Botón primario verde para avanzar secuencialmente a la siguiente escena. | Botón HTML / Icono `<ArrowRight size={15}>` | Incrementa `currentSceneIndex` y desplaza el contenido con animación. | `onClick`. |
+| **Bienvenida** | Dock Inferior de Navegación | Barra flotante inferior con flechas arriba/abajo, contador y salida rápida. | Dock Glassmorphism con `<ChevronUp>`, `<ChevronDown>`, `01 / 08` | Control bidireccional accesible para navegar entre escenas. | `onClick`. |
+| **Bienvenida** | Botón "Explorar por mi cuenta" | Botón secundario para finalizar el recorrido y acceder de inmediato a la app. | Botón HTML con estilo sutil de contorno | Marca `onboardingCompletado = true` en store y desmonta el portal. | `onClick`. |
+
+---
 
 #### MODAL M3 — Diálogo de Confirmación Segura (`ConfirmModal.jsx`)
 - **Trigger de Apertura:** Clic en botones destructivos (eliminar plan de clase, restablecer formulario o descartar cambios sin guardar).
@@ -601,6 +684,8 @@ La ventana de **Autenticación** (`/auth`) gestiona el control de acceso y regis
   4. *Botón "Cancelar":* Cierra el modal sin efectuar cambios (`onCancel`).
   5. *Botón "Confirmar":* Ejecuta la función destructiva (`onConfirm`) con estilo visual de peligro (`color: #DC2626`).
 
+---
+
 #### MODAL M4 — Visor de Materiales Didácticos Interactivos (`MaterialModal.jsx`)
 - **Trigger de Apertura:** Clic en "Compilar y Probar Recurso" en la Biblioteca de Recursos.
 - **Implementación Técnica:** Ventana modal de alta dimensión (viewport 90%) con contenedor `<iframe>` provisto de atributos de seguridad `sandbox="allow-scripts allow-same-origin"` para aislar la ejecución de los juegos interactivos.
@@ -610,14 +695,57 @@ La ventana de **Autenticación** (`/auth`) gestiona el control de acceso y regis
   3. *Control de Audio:* Botón accesible para activar o silenciar la narración por voz sintetizada (`speechSynthesis`).
   4. *Botón "Cerrar Visor":* Desmonta el iframe y detiene inmediatamente cualquier reproducción de audio en curso.
 
+---
+
 #### MODAL M5 — Menú Desplegable de Usuario y Cuenta (`UserMenu.jsx`)
-- **Trigger de Apertura:** Clic sobre la píldora de usuario o avatar en la esquina superior derecha (`app-top-utilities-bar`).
-- **Implementación Técnica:** Popover posicionado de forma absoluta con desenfoque de cristal y sombra perimetral de elevación.
-- **Elementos Registrados:**
-  1. *Identificación de Usuario:* Nombre completo del docente, correo y rol asignado.
-  2. *Opción "Mi Perfil / ADN":* Enlace directo a `/adn-pedagogico`.
-  3. *Opción "Configuración IA":* Enlace directo a `/config`.
-  4. *Opción "Cerrar Sesión":* Disparador que ejecuta `auth.signOut()`, limpia credenciales volátiles y redirige a `/auth`.
+- **Trigger de Apertura:** Clic sobre la píldora de usuario o avatar en la esquina superior derecha (`app-top-utilities-bar`) o en el sidebar móvil.
+- **Implementación Técnica:** Popover desacoplado montado mediante `createPortal` en `document.body` con cálculo dinámico de coordenadas (`popoverPos`), telón de fondo invisible (`.user-menu-backdrop`) y animación de escala `framer-motion`.
+- **Captura Real:** [`docs/evidencias/ACT-010/M05_menu_usuario.png`](docs/evidencias/ACT-010/M05_menu_usuario.png).
+- **Matriz Técnica de Elementos:**
+
+| Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
+|---|---|---|---|---|---|
+| **Menú Usuario** | Encabezado de Identidad | Tarjeta con el nombre del usuario, correo y badge de rol institucional. | Panel Glassmorphism / Nombre en `DM Sans` (14px, bold), badge violeta `#6D28D9` | Identifica la sesión activa y privilegios asignados. | Estático reactivo al store. |
+| **Menú Usuario** | Opción "Mi Perfil" | Botón de acceso a la ficha de datos del docente. | Botón `.user-menu-item-glass` / Icono `<User size={15} color="#315B54">` | Cierra el menú y abre `ProfileModal` (`showProfile = true`). | `onClick`. |
+| **Menú Usuario** | Opción "Cambiar Contraseña" | Botón para abrir la ventana de renovación de clave. | Botón `.user-menu-item-glass` / Icono `<Key size={15} color="#315B54">` | Cierra el menú y abre `PasswordModal` (`showPassword = true`). | `onClick`. |
+| **Menú Usuario** | Opción "Bienvenida INSPIRATEC" | Botón para relanzar la guía de bienvenida narrativa. | Botón `.user-menu-item-glass` / Icono `<Sparkles size={15} color="#D4AF37">` | Cierra el menú y dispara `open-bienvenida` en `window`. | `onClick`. |
+| **Menú Usuario** | Opción "Cerrar Sesión" | Botón de cierre de sesión seguro en color rojo de advertencia. | Botón `.user-menu-item-glass.danger` / Icono `<LogOut size={15}>` | Cierra sesión mediante `logoutUser()`, limpia almacenamiento y redirige a `/auth`. | `onClick`. |
+
+---
+
+#### MODAL M6 — Ventana Emergente de Información del Docente (`ProfileModal` en `UserMenu.jsx`)
+- **Trigger de Apertura:** Clic en la opción "Mi Perfil" del menú de usuario (`showProfile = true`).
+- **Implementación Técnica:** Diálogo modal montado con `createPortal` sobre `document.body`, con telón de fondo oscuro y desenfoque (`backdrop-filter: blur(8px)`).
+- **Captura Real:** [`docs/evidencias/ACT-010/M06_informacion_docente.png`](docs/evidencias/ACT-010/M06_informacion_docente.png).
+- **Matriz Técnica de Elementos:**
+
+| Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
+|---|---|---|---|---|---|
+| **Info Docente** | Cabecera y Botón Cierre | Icono `<User>`, título "Información del Docente" y botón de salida. | Fuente `Lora` (22px, bold) / Botón `<X size={18}>` | Enmarca el diálogo y permite cerrarlo sin cambios. | `onClick` ejecuta `onClose()`. |
+| **Info Docente** | Banner Sesión JWT y Habeas Data | Insignia verde esmeralda de certificación de seguridad Ley 1581. | Contenedor translúcido / Icono `<ShieldCheck size={16}>` | Garantiza al docente la confidencialidad de sus datos personales. | Estático. |
+| **Info Docente** | Campo "Nombre Completo" | Campo con el nombre oficial del docente usuario. | Input accesible con fondo de alto contraste | Muestra el nombre visible o permite su edición según `isEditing`. | `onChange` actualiza `nombre`. |
+| **Info Docente** | Campo "Correo Electrónico" | Campo con la dirección de correo institucional y badge "Solo lectura". | Input bloqueado con badge `.solo-lectura` | Exhibe el email autenticado en Firebase sin permitir mutación arbitraria. | Estático de lectura. |
+| **Info Docente** | Campo "Celular / WhatsApp" | Campo protegido bajo Habeas Data para contacto formativo. | Input de teléfono con máscara de protección | Permite asociar o editar el número móvil para notificaciones. | `onChange` actualiza `telefono`. |
+| **Info Docente** | Campo "Rol Asignado" | Insignia con el rol oficial en la plataforma (*Admin* o *Docente*). | Badge redondeado violeta `#6D28D9` o verde salvia | Exhibe el nivel de autorización y acceso a funciones directivas. | Estático. |
+| **Info Docente** | Botón "Editar Información / Guardar" | Botón primario verde oscuro para alternar entre edición y guardado. | Botón HTML / Icono `<Edit2 size={15}>` o `<Save size={15}>` | Conmuta a modo edición o despacha `updateUserProfile()` a Firestore. | `onClick`. |
+| **Info Docente** | Botón "Cerrar" | Botón secundario para descartar cambios y salir del diálogo. | Botón HTML con estilo de contorno | Restablece `isEditing = false` y cierra la ventana emergente. | `onClick`. |
+
+---
+
+#### MODAL M7 — Ventana Emergente de Cambio de Contraseña (`PasswordModal` en `UserMenu.jsx`)
+- **Trigger de Apertura:** Clic en la opción "Cambiar Contraseña" del menú de usuario (`showPassword = true`).
+- **Implementación Técnica:** Diálogo modal montado con `createPortal` sobre `document.body`, con formulario interactivo y llamada segura al servicio `changeUserPassword()`.
+- **Captura Real:** [`docs/evidencias/ACT-010/M07_cambiar_contrasena.png`](docs/evidencias/ACT-010/M07_cambiar_contrasena.png).
+- **Matriz Técnica de Elementos:**
+
+| Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
+|---|---|---|---|---|---|
+| **Contraseña** | Cabecera y Botón Cierre | Icono `<Key>`, título "Cambiar Contraseña" y botón de salida. | Fuente `Lora` (22px, bold) / Botón `<X size={18}>` | Enmarca el formulario de renovación de credenciales. | `onClick` ejecuta `onClose()`. |
+| **Contraseña** | Campo "Contraseña Actual" | Input protegido con placeholder *"Ingresa tu clave actual"* y botón conmutador de visibilidad. | Input HTML `<input type="password">` con icono `<Eye size={16}>` | Recibe la clave vigente para verificar identidad ante Firebase. | `onChange` actualiza `currentPassword`. |
+| **Contraseña** | Campo "Nueva Contraseña" | Input protegido con placeholder *"Mínimo 6 caracteres"* y toggle de visibilidad. | Input HTML `<input type="password">` con icono `<Eye size={16}>` | Recibe la nueva contraseña deseada con validación de longitud. | `onChange` actualiza `newPassword`. |
+| **Contraseña** | Campo "Confirmar Nueva Contraseña" | Input protegido con placeholder *"Repite la nueva clave"* y toggle de visibilidad. | Input HTML `<input type="password">` con icono `<Eye size={16}>` | Recoge la verificación duplicada para evitar errores tipográficos. | `onChange` actualiza `confirmPassword`. |
+| **Contraseña** | Botón "Actualizar Contraseña" | Botón primario verde oscuro con icono de candado o spinner de carga. | Botón HTML / Icono `<Lock size={15}>` o `<Loader2>` | Valida coincidencia, ejecuta `changeUserPassword()` y muestra confirmación. | `onClick` / `onSubmit`. |
+| **Contraseña** | Botón "Cancelar" | Botón secundario para abortar la operación sin alterar credenciales. | Botón HTML con estilo de contorno | Limpia los campos del formulario y cierra la ventana modal. | `onClick`. |
 
 ---
 
@@ -683,10 +811,19 @@ Todos los elementos y comportamientos descritos en este documento guardan corres
    - `docs/evidencias/ACT-010/V08_experiencias.png` (Banco de Experiencias - Comunidad)
    - `docs/evidencias/ACT-010/V08_experiencias_mis_experiencias.png` (Banco de Experiencias - Mis Prácticas)
    - `docs/evidencias/ACT-010/V09_foro.png` (Foro Docente Interactivo)
-   - `docs/evidencias/ACT-010/V10_configuracion.png` (Configuración de IA Gemini)
+   - `docs/evidencias/ACT-010/V10_configuracion.png` (Configuración de IA Gemini — Vista General)
+   - `docs/evidencias/ACT-010/V10_configuracion_ia.png` (Configuración de IA — Pestaña 1: API Key BYOK)
+   - `docs/evidencias/ACT-010/V10_configuracion_autodiagnostico.png` (Configuración — Pestaña 2: Autodiagnóstico Felder-Silverman y Gráfico Radial DUA)
    - `docs/evidencias/ACT-010/V10_administracion_*.png` (Panel de Administración - 4 pestañas)
    - `docs/evidencias/ACT-010/V12_ayuda.png` (Centro de Ayuda Pedagógica)
    - `docs/evidencias/ACT-010/V13_soporte.png` (Soporte Técnico Institucional)
+   - `docs/evidencias/ACT-010/V14_acerca.png` (Acerca de INSPIRATEC — Identidad, Propósito y Equipo Creador)
+   - `docs/evidencias/ACT-010/V15_auth_login.png` (Ventana de Autenticación — Inicio de Sesión y Acceso Seguro)
+   - `docs/evidencias/ACT-010/V15_auth_registro.png` (Ventana de Autenticación — Registro Docente y Habeas Data)
+   - `docs/evidencias/ACT-010/M02_bienvenida_narrativa.png` (Modal Inmersivo — Bienvenida a INSPIRATEC)
+   - `docs/evidencias/ACT-010/M05_menu_usuario.png` (Apartado de Usuario — Popover Menú Desplegable)
+   - `docs/evidencias/ACT-010/M06_informacion_docente.png` (Ventana Emergente — Información del Docente y Habeas Data)
+   - `docs/evidencias/ACT-010/M07_cambiar_contrasena.png` (Ventana Emergente — Cambio Seguro de Contraseña)
    Todas las vistas operativas cuentan con respaldo visual y trazabilidad de código completa sobre el entorno de producción.
 2. **Dependencia de Clave de API:** La generación en vivo de planes mediante Gemini en el Paso 4 del Wizard y en el Asistente Socrático del Editor requiere una clave de API válida suministrada por el docente en la ventana `/config`. Cuando no se cuenta con clave, el software activa de forma segura los mensajes de contingencia preventiva y andamiaje guiado documentados.
 3. **Persistencia Híbrida:** En ausencia de conectividad a internet con Firebase Firestore, el sistema commuta automáticamente a persistencia local reactiva mediante `localStorage`, garantizando que el docente nunca pierda el trabajo realizado en sus planes de clase.

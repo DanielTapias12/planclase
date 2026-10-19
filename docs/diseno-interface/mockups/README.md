@@ -35,6 +35,15 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | **`mockup-ayuda.png`** | Centro de Ayuda Pedagógica | `/ayuda` | Base de conocimiento, acordeones interactivos colapsables y FAQ de uso. |
 | **`mockup-soporte.png`** | Soporte Técnico Institucional | `/soporte` | Mesa de ayuda, formulario de tickets con validación y protección Ley 1581. |
 | **`mockup-experiencias.png`** | Banco de Experiencias | `/experiencias` | Sistematización de práctica docente, privacidad, valoración por estrellas y réplicas. |
+| **`mockup-acerca.png`** | Acerca de INSPIRATEC | `/acerca` | Identidad institucional, principios axiológicos (Misión, DUA, Innovación) y equipo creador Unicordobés. |
+| **`mockup-configuracion.png`** | Configuración de IA (API Key) | `/config` | Soberanía tecnológica, ingreso seguro de clave BYOK Google Gemini y prueba en vivo. |
+| **`mockup-autodiagnostico.png`** | Autodiagnóstico Felder-Silverman | `/config` | Autoevaluación en 8 reactivos, gráfico radial interactivo DUA y 4 dimensiones. |
+| **`mockup-menu-usuario.png`** | Menú Desplegable de Usuario | Global / Barra superior | Popover de cristal con datos de sesión, rol de usuario y accesos directos de cuenta. |
+| **`mockup-informacion-docente.png`** | Ventana Emergente Información Docente | Modal / `UserMenu` | Diálogo modal accesible con verificación JWT, datos protegidos y opción de edición. |
+| **`mockup-cambiar-contrasena.png`** | Ventana Emergente Cambiar Contraseña | Modal / `UserMenu` | Diálogo modal de seguridad para reautenticación y actualización de clave en Firebase. |
+| **`mockup-bienvenida.png`** | Bienvenida Inmersiva INSPIRATEC | Modal global / Onboarding | Experiencia interactiva de 8 escenas con narrativa pedagógica y recorrido guiado. |
+| **`mockup-auth-login.png`** | Autenticación — Inicio de Sesión | `/login` | Acceso seguro a la plataforma con credenciales docentes, carrusel narrativo y protección JWT. |
+| **`mockup-auth-registro.png`** | Autenticación — Registro Docente | `/login` | Formulario de vinculación institucional, nivel, metodología pedagógica y aceptación de Términos (Ley 1581). |
 
 ---
 
@@ -151,5 +160,70 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
   - **Tipografía:** Título H1 `Lora` (28px), títulos de experiencias en `Lora` (20px, bold), metadatos curriculares y autoría en `DM Sans` (13px/14px).
   - **Iconos:** `Sparkles`, `Globe`, `Lock`, `FileCheck`, `Search`, `Heart`, `Calendar`, `BookOpen`, `GraduationCap`, `Star`, `MessageSquare`, `Edit3`, `Trash2`.
   - **Botones:** Conmutadores de pestañas (*Mis Experiencias* vs *Comunidad*), botones de acción en tarjetas (*"Editar"*, *"Hacer Privada"*, *"Ver Experiencia"*, *"Calificar"*).
+
+### 3.10 Mockup 16 — Acerca de INSPIRATEC
+- **`mockup-acerca.png` (Acerca de INSPIRATEC — Identidad, Propósito y Equipo Creador):**
+  - **Colores:** Superficies de cristal esmerilado marfil `rgba(255, 254, 250, 0.86)` con `backdrop-filter: blur(16px)`, bordes blancos ultradelgados `rgba(255, 255, 255, 0.94)`, acentos cromáticos armónicos: verde petróleo (`#142B25`, `#183630`), verde salvia (`#477A72`), verde esmeralda DUA (`#166534`), violeta innovación (`#6D28D9`), y gris/verde neutro (`#243630`, `#2B453E`).
+  - **Tipografía:** Título H1 en `Lora` (28px, bold, color `#142B25`), títulos de sección H2 en `Lora` (22px, bold), subtítulos de tarjetas en `DM Sans` (16px a 17px, bold), cuerpo textual explicativo en `DM Sans` (13.5px a 14.5px, regular/medium), insignias editoriales y píldoras en `DM Sans` (12px / 14px, semibold/bold).
+  - **Iconos:** `Users`, `Sparkles`, `BookOpen`, `Target`, `Heart`, `Lightbulb`, `ExternalLink`.
+  - **Botones y Enlaces:** Botones píldora de contorno (*btn-outline*) *"Ver Perfil"* con icono `<ExternalLink size={13}>` vinculados a los repositorios de GitHub de cada uno de los 6 integrantes del equipo.
+  - **Distribución:** Layout editorial estructurado en cuatro bloques:
+    1. Cabecera editorial con icono distintivo `<Users>`, insignia *"Identidad, Enfoque y Propósito"*, título, subtítulo y píldoras cuantitativas (*Enfoque MEN & DUA*, *6 Creadores*).
+    2. Cuadrícula de 3 tarjetas de principios axiológicos (*Nuestra Misión*, *Inclusión Total (DUA)*, *Innovación Pedagógica*).
+    3. Franja introductoria de talento local con insignia *"Talento Unicordobés"*, título *"El Equipo Creador"* y síntesis investigativa.
+    4. Cuadrícula responsiva de 6 tarjetas de integrantes con avatares circulares de alta fidelidad, nombres, etiquetas de rol Scrum y enlaces de perfil.
+
+### 3.11 Mockup 17 y 18 — Configuración de IA y Autodiagnóstico Pedagógico
+- **`mockup-configuracion.png` (Configuración de IA — Pestaña API Key):**
+  - **Colores:** Superficie de cristal marfil translúcido `rgba(255, 254, 250, 0.88)` con `backdrop-filter: blur(16px)`, acento verde petróleo `#142B25` en pestaña activa y botón primario, bisel blanco fino, indicador de estado seguro en verde salvia y aviso informativo de privacidad en gris suave.
+  - **Tipografía:** Título H1 `Lora` (28px, bold, `#142B25`), encabezado de tarjeta H2 `Lora` (18px, bold), subtítulos y etiquetas en `DM Sans` (14.5px y 13.5px).
+  - **Iconos:** `Key`, `Sparkles`, `ShieldCheck`, `Eye`, `EyeOff`, `ExternalLink`, `Compass`.
+  - **Botones y Controles:** Selector de pestañas tablist de cristal (*Inteligencia Artificial (API Key)* y *Autodiagnóstico Felder-Silverman*), campo de contraseña con máscara oculta y toggle de visibilidad `Eye`, botón primario *"Guardar y Probar Conexión"* con icono `ShieldCheck`, y enlace inferior de ayuda *"Obtener en Google AI Studio"* con icono `ExternalLink`.
+  - **Distribución:** Cabecera con icono `<Key>`, badge editorial, título, subtítulo explicativo de soberanía BYOK y dos píldoras de estado (*API Key Configurada*, *Autodiagnóstico Pendiente*); barra intermedia con conmutador de pestañas y tarjeta principal centrada de gestión de credenciales.
+
+- **`mockup-autodiagnostico.png` (Autodiagnóstico Pedagógico Felder-Silverman — Pestaña Autodiagnóstico):**
+  - **Colores:** Lienzo extendido de cristal translúcido, insignias temáticas con fondos pasteles suaves (ámbar para advertencias científicas, verde para progreso y azul tenue para dimensiones), gráfico radial SVG con polígonos translúcidos en verde salvia (`#477A72`) y aristas de alta visibilidad, barras de progreso de las 4 dimensiones curriculares en degradé esmeralda/verde bosque.
+  - **Tipografía:** Título H1 `Lora` (28px), títulos H2 y H3 en `Lora` (20px / 16px bold), enunciados de reactivos en `DM Sans` (13.5px semibold), opciones de respuesta en `DM Sans` (13px), recomendaciones DUA en `DM Sans` (12.5px).
+### 3.12 Mockups 19 a 22 — Modales de Usuario, Credenciales y Bienvenida Narrativa
+- **`mockup-menu-usuario.png` (Menú Desplegable de Usuario — Popover Glassmorphism):**
+  - **Colores:** Contenedor flotante desacoplado en cristal translúcido marfil `rgba(255, 254, 250, 0.94)` con `backdrop-filter: blur(20px)`, borde blanco fino `1px solid rgba(255, 255, 255, 0.95)`, sombra de elevación profunda `0 12px 32px rgba(16, 36, 32, 0.16)`, badge de rol "Admin" en violeta suave (`background: rgba(124, 58, 237, 0.12)`, `color: #6D28D9`), texto peligroso "Cerrar Sesión" en rojo carmesí `#DC2626`.
+  - **Tipografía:** Nombre de usuario en `DM Sans` (14px, bold, `#142B25`), correo institucional en `DM Sans` (12px, `#4A5551`), opciones de menú en `DM Sans` (13px, semibold).
+  - **Iconos:** `User`, `Key`, `Sparkles` (dorado institucional `#D4AF37`), `LogOut`.
+  - **Botones y Controles:** Opciones clicables con hover suave (`.user-menu-item-glass`): *"Mi Perfil"*, *"Cambiar Contraseña"*, *"Bienvenida INSPIRATEC"*, y separador con *"Cerrar Sesión"*.
+
+- **`mockup-informacion-docente.png` (Ventana Emergente — Información del Docente):**
+  - **Colores:** Telón modal con desenfoque de fondo, caja de diálogo en cristal blanco marfil `rgba(255, 254, 250, 0.96)`, cabecera con icono `<User>` en verde salvia, tarjeta de verificación de sesión en verde esmeralda translúcido (`rgba(22, 163, 74, 0.10)` con borde y texto verde `#166534`), inputs de lectura en gris claro `#F1F5F3` con bordes suaves, badge "Solo lectura" y badge de rol "Admin" en violeta.
+  - **Tipografía:** Título de diálogo en `Lora` (22px, bold, `#142B25`), etiquetas de metadato en mayúsculas `DM Sans` (11px, bold, `#435750`), valores en `DM Sans` (14px, medium), botones en `DM Sans` (13.5px, bold).
+  - **Iconos:** `User`, `X`, `ShieldCheck`, `Edit2` / `PenSquare`.
+  - **Botones y Controles:** Botón de cierre superior `<X>`, botón secundario *"Cerrar"* y botón primario *"Editar Información"* (fondo verde bosque `#183630`, color blanco).
+
+- **`mockup-cambiar-contrasena.png` (Ventana Emergente — Cambiar Contraseña):**
+  - **Colores:** Diálogo centrado con esquinas redondeadas (`borderRadius: 24px`), superficie de cristal marfil con bisel perimetral, campos de texto con iconos conmutadores de ojo (`Eye`/`EyeOff`), botón primario en verde bosque oscuro `#142B25`.
+  - **Tipografía:** Título en `Lora` (22px, bold), etiquetas de campo en `DM Sans` (13px, semibold), placeholders descriptivos en `DM Sans` (13px).
+  - **Iconos:** `Key`, `X`, `Eye`, `EyeOff`, `Lock`.
+  - **Botones y Controles:** 3 campos de contraseña protegidos (*Contraseña Actual*, *Nueva Contraseña*, *Confirmar Nueva Contraseña*) con botones de visibilidad, botón *"Cancelar"* y botón primario *"Actualizar Contraseña"* con icono `Lock`.
+
+- **`mockup-bienvenida.png` (Ventana Inmersiva — Bienvenida Narrativa INSPIRATEC):**
+  - **Colores:** Experiencia editorial inmersiva a pantalla completa con mosaico visual de fondo desenfocado, tarjeta flotante en verde petróleo profundo `#132622` con `backdrop-filter: blur(24px)` y borde sutil, insignia superior con chispa dorada, píldora de avance numerada (*01 / 08*), tarjeta de consejo en verde oscuro translúcido con icono verde de chequeo `CheckCircle2`.
+  - **Tipografía:** Título principal H1 en `Lora` (30px, bold, color blanco marfil `#FFFDF9`), texto editorial reflexivo en `DM Sans` (14px, interlineado 1.6, color `#E0EAE6`), botón de acción en `DM Sans` (13.5px, bold).
+  - **Iconos:** `Lightbulb`, `X`, `Sparkles`, `CheckCircle2`, `ArrowRight`, `ChevronUp`, `ChevronDown`.
+  - **Botones y Controles:** Barra de cierre superior con marca INSPIRATEC y botón `<X>`, indicador vertical de pasos con puntos interactivos a la izquierda, botón primario *"Comenzar Recorrido →"*, y dock flotante inferior con flechas de navegación arriba/abajo, contador de escena (*01 / 08*) y botón *"Explorar por mi cuenta"*.
+
+### 3.13 Mockups 25 y 26 — Autenticación: Inicio de Sesión y Registro Docente (`mockup-auth-login.png`, `mockup-auth-registro.png`)
+- **`mockup-auth-login.png` (Inicio de Sesión / Acceso):**
+  - **Colores:** Fondo cinematográfico de campus universitario y aula activa con degradado oscuro progresivo lateral (`linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.4), transparent)`), panel derecho en cristal esmerilado *Glassmorphism* oscuro `rgba(24, 35, 34, 0.4)` con `backdrop-filter: blur(20px)` y borde de luz `1px solid rgba(255, 255, 255, 0.6)`. Botón primario en verde institucional activo `var(--primary-active)` (`#10b981`), badge de seguridad en gris ahumado translúcido con icono verde menta `#14b8a6`.
+  - **Tipografía:** Logotipo superior en `Georgia` / serif editorial (28px, negrita, `#F8FAFC`, tracking 1px), titular narrativo izquierdo H1 en `DM Sans` (48px, 800) con resaltado verde `#10b981`, cuerpo del formulario en `DM Sans` (13px semibold para etiquetas, 14px para campos), botón en 15px negrita.
+  - **Iconos:** `Shield` (en badge de protección JWT y cifrado), `Eye` / `EyeOff` (toggle de visibilidad de contraseña).
+  - **Botones y Controles:** 5 píldoras interactivas de cambio de escena en el carrusel narrativo inferior (anchura reactiva 36px/12px), campos de texto (*Correo Electrónico*, *Contraseña* protegida con botón de ojo), botón primario *"Ingresar"* con estado `:hover` verde salvia, badge de seguridad *"Protección con JWT y Cifrado"* y enlace interactivo *"¿No tienes cuenta? Regístrate aquí"*.
+
+- **`mockup-auth-registro.png` (Registro Docente y Vinculación Curricular):**
+  - **Colores:** Misma atmósfera cinematográfica nocturna/crepuscular de aula viva. Tarjeta flotante con barra de desplazamiento estilizada, contenedores de inputs en blanco perlado translúcido `rgba(255, 255, 255, 0.9)` con texto oscuro `#0F172A`, caja de consentimiento informado en cristal translúcido con borde tenue, acento verde esmeralda en el botón de acción principal.
+  - **Tipografía:** Idéntica jerarquía visual estricta para garantizar consistencia: título de marca en serif, etiquetas de formulario de 13px con contraste de alta legibilidad sobre cristal oscuro, advertencias de validación en 11px (*"Mínimo 6 caracteres"*).
+  - **Iconos:** `Eye`, `EyeOff`, `Shield`.
+  - **Botones y Controles:** Cuadrícula de 2 columnas para *Institución* y *Nivel* (Primaria, Secundaria, Media), selector desplegable de *Metodología o Enfoque Institucional* (ABP, STEAM, EpC, etc.), campo de correo y contraseña con revelador, checkbox legal de *Aceptación de Términos y Condiciones (Ley 1581 / Habeas Data)* con hipervínculo que dispara el modal de términos, botón primario *"Registrarme"* y enlace alternador *"¿Ya tienes cuenta? Inicia sesión"*.
+
+
+
+
 
 
