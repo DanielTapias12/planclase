@@ -1,43 +1,48 @@
 # ACT-009 — Descripción de Ventanas
 
-## Información General
-- **ID de la Actividad:** ACT-009
+## 1. Información General
+- **ID de la Actividad:** ACT-009 (Actividad 7 del Plan de Trabajo)
 - **Nombre:** Descripción de Ventanas
-- **Semana de Ejecución:** Semana 6
-- **Estado:** EN PROCESO
+- **Semana de Ejecución:** Semana 6 / Semana 10 (Consolidación)
+- **Estado:** COMPLETADA
+- **Marco Metodológico:** MODESEC (Fase II — Diseño Educativo y Multimedial)
+- **Producto Esperado:** `DESCRIPCION_VENTANAS.md` en la raíz del proyecto y en `docs/diseno-multimedial/`.
 
-## Objetivo
-Documentar formalmente el diseño y la estructura gráfica de cada ventana del frontend de INSPIRATEC, mediante la extracción y descripción de elementos visuales comprobables, siguiendo los lineamientos metodológicos de MODESEC y el nuevo sistema visual Glassmorphism 2026.
+---
 
-## Descripción y Estado Actual (En Proceso)
-Esta actividad se encuentra actualmente **en proceso**. A partir del despliegue del nuevo lenguaje visual con paneles de cristal translúcido (Glassmorphism), desenfoque ambiental dinámico en todas las vistas y el sistema unificado de ventanas emergentes montadas con `createPortal`, se está llevando a cabo una actualización integral de las descripciones y capturas fotográficas de la interfaz.
+## 2. Objetivo y Justificación
 
-Las evidencias visuales anteriores fueron depuradas de la carpeta de evidencias para consolidar un registro fotográfico limpio y homogéneo con la versión vigente del software.
+### Objetivo General
+Documentar formal y exhaustivamente la interfaz gráfica de usuario de INSPIRATEC mediante la inspección real de cada ventana, describiendo sus áreas principales, elementos multimedia, tipografía, acciones del usuario, botones y mecanismos de navegación, siguiendo el formato estándar de MODESEC.
 
-## Alcance de las Vistas en Proceso de Descripción
-El análisis abarca los módulos funcionales del sistema:
-1. **Generador de Planes de Clase (Wizard de 4 pasos):** Flujo guiado con integración de Google Gemini y asistente pedagógico.
-2. **Experiencias de Aprendizaje (Foro Docente):** Muro comunitario de interacción, valoración y respuestas reflexivas.
-3. **Plantillas Institucionales:** Catálogo de estructuras pedagógicas predefinidas (DUA, ABP, Tradicional) con modales informativos.
-4. **Biblioteca Comunitaria de Recursos:** Repositorio de materiales didácticos con filtros y previsualización de Markdown.
-5. **Mis Planes:** Panel de administración y gestión del historial docente con diálogos de confirmación segura.
-6. **Ayuda, Soporte y Administración:** Vistas institucionales con soporte técnico, preguntas frecuentes (FAQ) y métricas de uso.
+### Justificación Técnica
+La descripción de ventanas constituye el inventario funcional y visual de referencia para el equipo de desarrollo, el aseguramiento de la calidad (QA) y la validación pedagógica. Asegura que cada pantalla implementada en el código fuente (`src/pages/*`) cumpla con los principios de diseño DUA, la regla de accesibilidad WCAG y la coherencia metodológica con la Guía 30 del MEN.
 
-## Metodología de Análisis
-1. Ejecución del sistema en entorno de desarrollo local con Vite.
-2. Recorrido navegacional por cada ruta y estado interactivo de la interfaz.
-3. Clasificación de elementos multimedia, texto, áreas interactivas y navegación según la matriz MODESEC.
-4. Vinculación estricta de las funcionalidades con los componentes JSX desplegados en `src/`.
+---
 
-## Participación del Equipo
-- **Daniel Tapias (Desarrollo Frontend):** Implementación técnica, rutas y arquitectura de componentes (`src/`, HTML/CSS).
-- **Luis Caldera (Desarrollo Frontend / UX):** Diseño de interfaces, maquetación visual y refinamiento de estilos.
-- **Zoe Peñata, Maira Ortega, María Soto, María Ubarne:** Auditoría funcional, estructuración de tablas descriptivas y validación de coherencia pedagógica con MODESEC.
+## 3. Participantes y Roles Scrum
 
-## Evidencias
-- Documento descriptivo en: `docs/diseno-multimedial/DESCRIPCION_VENTANAS.md` (en proceso de actualización fotográfica).
-- Capturas y esquemas visuales: en proceso de captura estandarizada sobre la versión actual del proyecto.
+| Participante | Rol Scrum Oficial | Contribución en ACT-009 |
+|---|---|---|
+| **Zoe Peñata** | Scrum Master | Facilitación del sprint, control de completitud del inventario de ventanas y verificación del formato institucional. |
+| **Luis Caldera** | Development Team / UI-UX Lead | Levantamiento de capturas de pantalla reales en alta resolución del sistema Glassmorphism y mapeo visual. |
+| **Daniel Tapias** | Development Team / Git Lead | Auditoría técnica de rutas en `App.jsx`, verificación de eventos DOM (`onClick`, `onChange`), props y serialización Markdown. |
+| **Maira Ortega** | Facilitadora de Equipo | Revisión de consistencia en textos instruccionales y verificación de la carga cognitiva en la navegación. |
+| **María Soto** | Product Owner | Validación de coherencia curricular de las plantillas y alineación con los momentos didácticos del MEN. |
+| **María Ubarne** | Product Owner Support | Auditoría de componentes inclusivos DUA y accesibilidad por voz (Web Speech API) en la biblioteca. |
 
-## Acciones en Desarrollo
-- Finalizar el levantamiento fotográfico de alta resolución con las nuevas transparencias y modales.
-- Consolidar las tablas descriptivas finales para aprobación por el equipo y el docente asesor.
+---
+
+## 4. Evidencias y Productos Generados
+
+- **Documento Maestro:** [`DESCRIPCION_VENTANAS.md`](../../DESCRIPCION_VENTANAS.md)
+- **Copia Institucional:** [`docs/diseno-multimedial/DESCRIPCION_VENTANAS.md`](../diseno-multimedial/DESCRIPCION_VENTANAS.md)
+- **Carpeta de Evidencias Fotográficas Reales (`docs/evidencias/ACT-009/`):**
+  - `V01_inicio.png` (Ventana de Inicio)
+  - `V04_mis_planes.png` (Mis Planes de Clase — Repositorio Personal)
+  - `V06_plantillas.png` (Mis Estructuras de Clase — Catálogo de Modelos)
+  - `V02_planificador.png` (Planificador de Clases — Wizard Tripartito)
+  - `V03_editor.png` (Editor Curricular y Co-docente IA)
+  - `V07_biblioteca.png` (Biblioteca de Recursos y Generador Didáctico)
+  - `V10_configuracion.png` (Configuración de IA Gemini)
+- **Registro de Uso de IA:** [`docs/ia/REGISTRO_IA_ACT-009.md`](../ia/REGISTRO_IA_ACT-009.md)

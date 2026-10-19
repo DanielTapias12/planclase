@@ -200,6 +200,36 @@ A continuación se detalla exhaustivamente cómo cada una de las actividades del
   * **María Soto (H2, H5):** Como Product Owner, veló por el "fin en mente" pedagógico (H2), sustentando la metáfora implícita del «Taller de Co-Creación del Arquitecto Curricular» frente a metáforas lúdicas infantiles descontextualizadas, comprendiendo la naturaleza profesional del maestro (H5).
   * **María Ubarne (H5, H6):** Auditó la representación visual y metafórica de los controles inclusivos del DUA y PIAR (`Accessibility`) y el radar polar de estilos de aprendizaje, articulando sinérgicamente los conceptos pedagógicos con los iconos correspondientes (H6).
 
+### 5.14. ACT-007 — Diseñar Mockups de Alta Fidelidad
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Empezar con un Fin en Mente), H3 (Poner Primero lo Primero), H5 (Buscar Primero Comprender), H6 (Sinergizar)**.
+* **Aplicación por Participante:**
+  * **Luis Caldera (H1, H2, H6):** Lideró la concepción visual de los 4 mockups de alta fidelidad (`mockup-inicio.png`, `mockup-dashboard.png`, `mockup-actividad.png`, `mockup-resultados.png`), asegurando con un claro fin en mente (H2) que la interfaz Glassmorphism cumpla las tres reglas de oro de Theo Mandel.
+  * **Daniel Tapias (H1, H3):** Ejerció proactividad y priorización al estructurar la exportación de capturas reales de alta fidelidad y verificar la consistencia cromática y tipográfica con el sistema de tokens en `src/index.css`.
+  * **Zoe Peñata (H3, H6):** Facilitó el cronograma de diseño, garantizando que los entregables se ubiquen en `docs/diseno-interface/mockups/` según los lineamientos de la Semana 03 y canalizando la sinergia de equipo.
+  * **Maira Ortega (H5):** Analizó la ergonomía visual y la reducción de la carga de memoria (Regla 2 de Mandel), verificando que los metadatos explícitos en tarjetas eviten esfuerzo nemotécnico innecesario.
+  * **María Soto (H2, H5):** Como Product Owner, veló porque los mockups de actividad y resultados preserven la secuencia didáctica tripartita del MEN (Inicio, Desarrollo y Cierre).
+  * **María Ubarne (H5, H6):** Comprobó la visibilidad y consistencia de los apoyos inclusivos DUA en los mockups de resultados y el planificador.
+
+### 5.15. ACT-009 — Descripción de Ventanas
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Empezar con un Fin en Mente), H3 (Poner Primero lo Primero), H5 (Buscar Primero Comprender), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Zoe Peñata (H3, H6):** Como Scrum Master, coordinó la actualización integral de la matriz institucional de descripción de ventanas, asegurando que cada una de las 15 pantallas y 5 modales cumpla los 9 campos obligatorios de MODESEC sin omitir información comprobable.
+  * **Luis Caldera (H1, H5):** Gestionó el levantamiento fotográfico real de alta fidelidad sobre la interfaz en ejecución, empatizando con el usuario docente para describir con precisión las zonas de interacción y los botones de acción.
+  * **Daniel Tapias (H1, H7):** Auditó las rutas en `src/App.jsx`, los manejadores de eventos DOM (`onClick`, `onChange`) y los estados en Zustand, afilando la sierra para que la documentación Markdown (`DESCRIPCION_VENTANAS.md`) refleje exactamente el código fuente implementado.
+  * **Maira Ortega (H5):** Revisó la comprensibilidad de los textos instruccionales y las acciones del usuario, garantizando que el guion describa la experiencia pedagógica real.
+  * **María Soto (H2, H4):** Validó que la descripción de las plantillas y el planificador responda al propósito constructivista de beneficio mutuo ganar-ganar entre docente y estudiante.
+  * **María Ubarne (H5, H6):** Comprobó que los elementos de accesibilidad (síntesis de voz en biblioteca, adaptaciones DUA) estuvieran formalmente registrados sin invenciones.
+
+### 5.16. ACT-010 — Elaboración del Guion Técnico Multimedial
+* **Hábitos Clave de la Actividad:** **H1 (Ser Proactivo), H2 (Empezar con un Fin en Mente), H3 (Poner Primero lo Primero), H6 (Sinergizar), H7 (Afilar la Sierra)**.
+* **Aplicación por Participante:**
+  * **Daniel Tapias (H1, H3, H7):** Lideró la estructuración de la matriz técnica de 6 columnas (`Ventana`, `Elemento`, `Descripción`, `Formato/Fuente`, `Acción`, `Evento`), auditando 86 elementos reales en `src/pages/*` y formalizando el documento maestro `GUION_TECNICO_MULTIMEDIAL.md` en la raíz.
+  * **Luis Caldera (H1, H6):** Respaldó la documentación con el archivo de capturas reales en `docs/evidencias/ACT-010/` y la verificación de tokens visuales y animaciones CSS/SVG.
+  * **Zoe Peñata (H3):** Priorizó el control de calidad y la verificación de trazabilidad técnica, asegurando que no existan componentes ni recursos multimedia inventados.
+  * **Maira Ortega (H5):** Validó la correspondencia entre los eventos registrados y las respuestas perceptibles en pantalla para docentes usuarios.
+  * **María Soto (H2):** Aseguró la alineación del guion técnico con la intencionalidad formativa del software y las directrices curriculares del MEN.
+  * **María Ubarne (H6):** Auditó la consistencia técnica de las llamadas a la Web Speech API para síntesis vocal en los materiales didácticos generados.
+
 ---
 
 ## 6. Diagnóstico y Balance Global del Equipo

@@ -85,7 +85,33 @@
 
 ---
 
+### 8. Diseño y Formalización de Mockups de Alta Fidelidad (ACT-007)
+- Se consolidaron los 4 mockups de alta fidelidad exigidos por la Semana 03 en `docs/diseno-interface/mockups/`:
+  - `mockup-inicio.png` (Ventana de Inicio)
+  - `mockup-dashboard.png` (Repositorio de Planes de Clase)
+  - `mockup-actividad.png` (Arquitectura Curricular y Plantillas)
+  - `mockup-resultados.png` (Editor y Plan de Clase con Co-docente IA)
+- Se evaluó rigurosamente el cumplimiento de las Tres Reglas de Oro de Theo Mandel: (1) Dar el control al usuario, (2) Reducir la carga de memoria y (3) Mantener consistencia visual.
+- Se documentó la ficha técnica en `docs/actividades/ACT-007_DISENO_MOCKUPS.md`, el `README.md` descriptivo en `docs/diseno-interface/mockups/` y el registro ROCAS en `docs/ia/REGISTRO_IA_ACT-007.md`.
+
+---
+
+### 9. Descripción de Ventanas según Plantilla Institucional MODESEC (ACT-009)
+- Se elaboró la descripción integral de las 15 ventanas y 5 modales emergentes de INSPIRATEC en `DESCRIPCION_VENTANAS.md` y `docs/diseno-multimedial/DESCRIPCION_VENTANAS.md`.
+- Se aplicó estrictamente la plantilla institucional de 9 campos obligatorios: Nombre de la ventana, Imagen, Texto, Audio, Video, Animación, Acciones del usuario, Botones y Navegación.
+- Se incorporaron las capturas fotográficas reales de alta fidelidad obtenidas del software en ejecución en `docs/evidencias/ACT-009/`, declarando la ausencia de audios o videos en pantallas estáticas para evitar invenciones.
+- Se formalizó la ficha `docs/actividades/ACT-009_DESCRIPCION_VENTANAS.md` en estado **COMPLETADA** y el registro ROCAS en `docs/ia/REGISTRO_IA_ACT-009.md`.
+
+---
+
+### 10. Elaboración del Guion Técnico Multimedial (ACT-010)
+- Se formuló la matriz técnica de 6 columnas (`Ventana`, `Elemento`, `Descripción`, `Formato / Fuente`, `Acción`, `Evento`) documentando 86 elementos reales en `GUION_TECNICO_MULTIMEDIAL.md` y `docs/diseno-multimedial/GUION_TECNICO_MULTIMEDIAL.md`.
+- Se integraron las capturas reales en `docs/evidencias/ACT-010/` y se documentó la síntesis de voz en español mediante la Web Speech API para los materiales interactivos compilados desde la biblioteca.
+- Se formalizó la ficha `docs/actividades/ACT-010_GUION_TECNICO_MULTIMEDIAL.md` en estado **COMPLETADA**, el registro ROCAS en `docs/ia/REGISTRO_IA_ACT-010.md` y la matriz de los 7 hábitos en `docs/actividades/ACT-016_ANALISIS_7_HABITOS_INSPIRATEC.md`.
+
+---
+
 ## Acuerdos y Próximos Compromisos
-1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
+1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-007, ACT-009, ACT-010, ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
 2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.
 3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.
