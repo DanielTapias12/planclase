@@ -36,7 +36,7 @@ Los mockups de alta fidelidad cierran la brecha entre el modelo conceptual (diag
 
 ## 4. Productos y Mockups Entregados
 
-Los 16 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
+Los 17 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
 
 1. **`mockup-inicio.png`:** Ventana de Inicio (`/home`), bienvenida personalizada, indicadores de estado y modelos.
 2. **`mockup-planificador.png`:** Planificador de Clases (`/`), asistente secuencial en 4 fases tripartitas con memoria de ADN pedagógico.
@@ -54,6 +54,7 @@ Los 16 mockups de alta fidelidad representativos del ecosistema fueron archivado
 14. **`mockup-foro.png`:** Foro Docente Interactivo (`/foro`), diálogo pedagógico, vistas de navegación y categorías temáticas.
 15. **`mockup-ayuda.png`:** Centro de Ayuda Pedagógica (`/ayuda`), base de conocimiento, acordeones interactivos y FAQ.
 16. **`mockup-soporte.png`:** Soporte Técnico Institucional (`/soporte`), mesa de ayuda, formulario de tickets y protección Ley 1581.
+17. **`mockup-experiencias.png`:** Banco de Experiencias Pedagógicas (`/experiencias`), sistematización de práctica docente, alternancia de privacidad, valoración por estrellas y retroalimentación entre pares.
 
 ---
 

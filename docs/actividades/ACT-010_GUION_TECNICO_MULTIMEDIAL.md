@@ -55,6 +55,8 @@ Bajo el marco de ingeniería de software educativo y la metodología MODESEC, el
   - `V05_adn_pedagogico_pestana4.png` (ADN — Pestaña 4: Recursos Probados en Aula)
   - `V06_plantillas.png` (Plantillas Curriculares)
   - `V07_biblioteca.png` (Biblioteca Comunitaria — Recursos Abiertos)
+  - `V08_experiencias.png` (Banco de Experiencias Pedagógicas — Vista Comunidad)
+  - `V08_experiencias_mis_experiencias.png` (Banco de Experiencias — Mis Experiencias Sistematizadas)
   - `V09_foro.png` (Foro Docente Interactivo — Diálogo y Comunidades)
   - `V10_configuracion.png` (Configuración de IA Gemini)
   - `V10_administracion.png` (Panel de Administración y Control — Vista General)

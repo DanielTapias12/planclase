@@ -54,6 +54,8 @@ La descripción de ventanas constituye el inventario funcional y visual de refer
   - `V02_planificador_grafo.png` (Planificador — Grafo Interactivo de Prerrequisitos MEN)
   - `V03_editor.png` (Editor Curricular y Co-docente IA)
   - `V07_biblioteca.png` (Biblioteca Comunitaria — Recursos Abiertos)
+  - `V08_experiencias.png` (Banco de Experiencias Pedagógicas — Vista Comunidad)
+  - `V08_experiencias_mis_experiencias.png` (Banco de Experiencias — Mis Experiencias Sistematizadas)
   - `V09_foro.png` (Foro Docente Interactivo — Diálogo y Comunidades)
   - `V10_configuracion.png` (Configuración de IA Gemini)
   - `V10_administracion.png` (Panel de Administración y Control — Vista General)

@@ -34,6 +34,7 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | **`mockup-foro.png`** | Foro Docente Interactivo | `/foro` | Comunidad académica de aprendizaje, debate pedagógico y categorización temática. |
 | **`mockup-ayuda.png`** | Centro de Ayuda Pedagógica | `/ayuda` | Base de conocimiento, acordeones interactivos colapsables y FAQ de uso. |
 | **`mockup-soporte.png`** | Soporte Técnico Institucional | `/soporte` | Mesa de ayuda, formulario de tickets con validación y protección Ley 1581. |
+| **`mockup-experiencias.png`** | Banco de Experiencias | `/experiencias` | Sistematización de práctica docente, privacidad, valoración por estrellas y réplicas. |
 
 ---
 
@@ -143,4 +144,12 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
   - **Tipografía:** Título H1 `Lora` (28px), subtítulo en `DM Sans` (15px), etiquetas de formulario en `DM Sans` (14px, semibold).
   - **Iconos:** `LifeBuoy`, `Clock`, `MessageSquare`, `Send`, `Sparkles`, `AlertCircle`, `CheckCircle2`.
   - **Botones:** Botón primario *"Enviar Solicitud"* con icono `Send`.
+
+### 3.9 Mockup 15 — Banco de Experiencias Pedagógicas
+- **`mockup-experiencias.png` (Banco de Experiencias Pedagógicas):**
+  - **Colores:** Badges verde bosque translúcido, estrellas de calificación en amarillo ámbar `#F59E0B`, botón primario verde bosque `#183630`, tarjetas en cristal marfil con borde de 1px.
+  - **Tipografía:** Título H1 `Lora` (28px), títulos de experiencias en `Lora` (20px, bold), metadatos curriculares y autoría en `DM Sans` (13px/14px).
+  - **Iconos:** `Sparkles`, `Globe`, `Lock`, `FileCheck`, `Search`, `Heart`, `Calendar`, `BookOpen`, `GraduationCap`, `Star`, `MessageSquare`, `Edit3`, `Trash2`.
+  - **Botones:** Conmutadores de pestañas (*Mis Experiencias* vs *Comunidad*), botones de acción en tarjetas (*"Editar"*, *"Hacer Privada"*, *"Ver Experiencia"*, *"Calificar"*).
+
 

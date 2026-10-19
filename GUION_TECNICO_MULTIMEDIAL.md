@@ -337,19 +337,50 @@ La ventana **Biblioteca Comunitaria** (`/biblioteca`) constituye el repositorio 
 
 ---
 
-### VENTANA 8 — Banco de Experiencias y Calificación Colaborativa (`ExperienciasPage.jsx`)
+### VENTANA 8 — Banco de Experiencias Pedagógicas (`ExperienciasPage.jsx`)
 
-#### 8.1 Descripción Funcional y Arquitectura Visual
-La ventana **Experiencias** (`/experiencias`) es el muro formativo comunitario donde los docentes publican planes de clase exitosos y reciben retroalimentación entre pares. Incorpora un sistema de valoración pedagógica reflexiva ("Útil", "Innovador", "Inclusivo DUA") en lugar de calificaciones cuantitativas banales, fomentando el aprendizaje dialógico.
+#### 8.1 Capturas de Pantalla Reales
 
-#### 8.2 Registro Técnico de Elementos
+| Pestaña 1: Experiencias de la Comunidad | Pestaña 2: Mis Experiencias Sistematizadas |
+|:---:|:---:|
+| ![Experiencias de la Comunidad](docs/evidencias/ACT-010/V08_experiencias.png) | ![Mis Experiencias Sistematizadas](docs/evidencias/ACT-010/V08_experiencias_mis_experiencias.png) |
+
+#### 8.2 Descripción Funcional y Arquitectura Visual
+La ventana **Experiencias Pedagógicas** (`/experiencias`) es el módulo de sistematización de la práctica docente en el aula y de intercambio reflexivo en comunidad. Permite a los profesores documentar el impacto didáctico de sus secuencias aplicadas, gestionar su privacidad (privadas o públicas en la comunidad), calificar mediante rúbricas cuantitativas de 1 a 5 estrellas y redactar retroalimentaciones cualitativas entre pares.
+
+Su arquitectura interactiva comprende:
+1. **Cabecera Institucional Glassmorphism:** Badge *"SISTEMATIZACIÓN DE PRÁCTICA DOCENTE"* con icono de destello (`Sparkles`), título H1 *"Experiencias Pedagógicas"*, subtítulo orientador y píldora con contador dinámico (`1 Experiencia registrada` / `Experiencias registradas` con `<FileCheck size={14}>`).
+2. **Selector Editorial de Pestañas:** Conmutador estilizado entre *Mis Experiencias Sistematizadas* (`Sparkles`) y *Experiencias de la Comunidad* (`Globe`).
+3. **Buscador de Cristal:** Campo de búsqueda en tiempo real con icono `<Search size={16}>` para filtrar por tema, asignatura o autor.
+4. **Cuadrícula de Experiencias (`.mgmt-card`):** Tarjetas esmeriladas que exponen el estado de publicación (`Pública en Comunidad` / `Sistematización Privada`), fecha de registro, título formal (ej. *"Pensamiento Computacional"*), autoría, asignatura, grado escolar, distintivo *"Destacada"* (`Heart`) y bloque de evaluación de estrellas con botón *"Ver / Calificar"*.
+5. **Botonera según Pestaña:**
+   - *Mis Experiencias:* Botón primario *"Editar"* (`Edit3`), botón de privacidad *"Hacer Privada"* / *"Publicar"* (`Lock` / `Globe`) y botón destructivo *"Eliminar"* (`Trash2`).
+   - *Comunidad:* Botón primario *"Ver Experiencia"* y botón secundario *"Calificar ({num})"* (`Star`).
+6. **Modales Integrados:** `ConfirmModal.jsx` (confirmación segura de eliminación) y `CalificacionExperienciaModal.jsx` (evaluación y comentarios en Firestore).
+
+#### 8.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Experiencias** | Muro de Publicaciones Docentes | Listado vertical cronológico de tarjetas de experiencias con autor, colegio, grado y secuencia. | Tarjetas Glassmorphism con avatar del docente | Presenta el relato pedagógico y permite leer la justificación de la práctica. | Desplazamiento vertical (`scroll`). |
-| **Experiencias** | Botón de Valoración "Útil" | Botón de reacción reflexiva con icono de pulgar arriba y contador de apoyos. | Botón HTML `<button>` / Icono `<ThumbsUp size={15}>` | Incrementa el indicador de utilidad pedagógica en la base de datos Firestore. | `onClick` ejecuta `handleVotarExperiencia(id, 'util')`. |
-| **Experiencias** | Botón "Aportar Reflexión / Réplica" | Botón para abrir el hilo de comentarios y añadir sugerencias de mejora pedagógica. | Botón HTML `<button>` / Icono `<MessageCircle size={15}>` | Despliega el área de texto para redactar un comentario constructivo. | `onClick` conmuta visibilidad del formulario de réplica. |
-| **Experiencias** | Botón "Adoptar esta Secuencia" | Botón para transferir una experiencia compartida al planificador de clases propio. | Botón secundario con icono `<Download size={14}>` | Clona los datos de la experiencia en el wizard personal para su contextualización. | `onClick` ejecuta `handleAdoptarSecuencia(exp)`. |
+| **Experiencias** | Badge "Sistematización Docente" | Insignia superior identificadora del módulo de práctica docente. | Badge Glassmorphism / Icono `<Sparkles size={14}>` | Elemento visual de cabecera. | Estático. |
+| **Experiencias** | Píldora de Conteo de Experiencias | Contador reactivo del total de secuencias registradas (`1 Experiencia registrada`). | Píldora translúcida con icono `<FileCheck size={14}>` | Informa el volumen de prácticas disponibles en la vista. | Reactivo a `experiencias.length`. |
+| **Experiencias** | Pestaña "Mis Experiencias" | Selector para desplegar las prácticas propias del docente autenticado. | Botón tabulado con icono `<Sparkles size={15}>` | Carga secuencias con `estado === 'Sistematizado'` o `'Biblioteca'`. | `onClick` actualiza `activeTab = 'Mis Experiencias'`. |
+| **Experiencias** | Pestaña "Comunidad" | Selector para desplegar todas las experiencias públicas de otros colegas. | Botón tabulado con icono `<Globe size={15}>` | Consulta en Firestore planes con `estado === 'Biblioteca'`. | `onClick` actualiza `activeTab = 'Comunidad'`. |
+| **Experiencias** | Buscador de Experiencias | Campo de texto para filtrar por tema, materia o autor en tiempo real. | Input HTML `<input type="text">` con icono `<Search size={16}>` | Filtra dinámicamente las tarjetas de la cuadrícula. | `onChange` actualiza `searchTerm`. |
+| **Experiencias** | Tarjeta de Experiencia (`.mgmt-card`) | Contenedor Glassmorphism para cada práctica pedagógica. | Tarjeta esmerilada con bisel blanco de 1px | Presenta metadatos curriculares, autor, fecha y evaluación. | `onClick` ejecuta `handleAction(exp.id, 'view')`. |
+| **Experiencias** | Badge de Privacidad | Insignia superior: *"Pública en Comunidad"* o *"Sistematización Privada"*. | Badge con icono `<Globe size={12}>` o `<Lock size={12}>` | Indica el alcance de difusión de la secuencia. | Condicional según `exp.estado === 'Biblioteca'`. |
+| **Experiencias** | Indicador de Fecha de Práctica | Fecha formateada en español (*16 de oct de 2026* o *Reciente*). | Contenedor inline con icono `<Calendar size={13}>` | Muestra la antigüedad de la sistematización. | Formateado con `toLocaleDateString`. |
+| **Experiencias** | Metadatos Curriculares | Etiquetas con la asignatura (*Tecnología e Informática*) y grado (*8vo*). | Iconos `<BookOpen size={13}>` y `<GraduationCap size={13}>` | Contextualiza el nivel y campo disciplinar de la experiencia. | Renderizado condicional. |
+| **Experiencias** | Badge "Destacada" | Distintivo visual perimetral de relevancia formativa. | Texto inline con icono `<Heart size={13}>` en verde salvia | Resalta la calidad de la propuesta pedagógica. | Estático con acento cromático. |
+| **Experiencias** | Bloque de Estrellas de Calificación | Fila con 5 estrellas vectoriales y puntaje numérico promedio (*5 / 5.0*). | 5 iconos `<Star size={13}>` con relleno condicional `#F59E0B` | Refleja visualmente la valoración formativa otorgada por colegas. | Calculado por `getCalificacionesPlan()`. |
+| **Experiencias** | Botón "Ver / Calificar" | Botón interactivo dentro del bloque de puntuación con icono de mensaje. | Botón HTML `<button>` / Icono `<MessageSquare size={12}>` | Detiene propagación y abre `CalificacionExperienciaModal`. | `onClick` con `e.stopPropagation()`. |
+| **Experiencias** | Botón "Editar" (Mis Experiencias) | Botón primario verde oscuro en la tarjeta de práctica propia. | Botón HTML `<button>` / Icono `<Edit3 size={14}>` | Carga el plan en el store global y navega a `/editor?id={id}`. | `onClick` ejecuta `handleAction(exp.id, 'edit')`. |
+| **Experiencias** | Botón "Hacer Privada" / "Publicar" | Botón de alternancia de privacidad de la secuencia didáctica. | Botón de contorno con icono `<Lock size={14}>` o `<Globe size={14}>` | Modifica `estado` en Firestore entre `'Biblioteca'` y `'Sistematizado'`. | `onClick` ejecuta `handleAction(exp.id, 'togglePrivacy')`. |
+| **Experiencias** | Botón "Eliminar" (Mis Experiencias) | Botón de peligro con icono de papelera para descartar la práctica. | Botón de contorno con icono `<Trash2 size={14}>`, color rojo | Abre el diálogo de confirmación segura `ConfirmModal`. | `onClick` ejecuta `handleAction(exp, 'delete')`. |
+| **Experiencias** | Botón "Ver Experiencia" (Comunidad) | Botón primario para inspeccionar la práctica compartida por un colega. | Botón HTML `<button>` / Fondo `#183630`, color blanco | Carga la secuencia didáctica en el store y abre el editor. | `onClick` ejecuta `handleAction(exp.id, 'view')`. |
+| **Experiencias** | Botón "Calificar (n)" (Comunidad) | Botón secundario con icono de estrella dorada y contador de reseñas. | Botón de contorno con icono `<Star size={14} fill="#F59E0B">` | Abre el modal de evaluación para calificar y comentar la práctica. | `onClick` asigna `selectedPlanForCalificar`. |
+| **Experiencias** | Modal Confirmación Segura | Diálogo emergente para confirmar la eliminación de la experiencia. | Componente `<ConfirmModal>` con bloqueo de foco | Solicita confirmación explícita antes de borrar de Firestore. | Disparado por `expToDelete !== null`. |
+| **Experiencias** | Modal de Calificación y Reseñas | Diálogo emergente para registrar estrellas (1-5) y retroalimentación. | Componente `<CalificacionExperienciaModal>` | Permite valorar y persistir comentarios pedagógicos en Firestore. | Disparado por `selectedPlanForCalificar !== null`. |
 
 ---
 
@@ -646,10 +677,17 @@ Todos los elementos y comportamientos descritos en este documento guardan corres
    - `docs/evidencias/ACT-010/V02_planificador.png` (Planificador de Clases)
    - `docs/evidencias/ACT-010/V03_editor.png` (Editor Curricular)
    - `docs/evidencias/ACT-010/V04_mis_planes.png` (Mis Planes Guardados)
+   - `docs/evidencias/ACT-010/V05_adn_pedagogico_*.png` (Mi ADN Pedagógico - 4 pestañas)
    - `docs/evidencias/ACT-010/V06_plantillas.png` (Plantillas Curriculares)
    - `docs/evidencias/ACT-010/V07_biblioteca.png` (Biblioteca de Recursos)
+   - `docs/evidencias/ACT-010/V08_experiencias.png` (Banco de Experiencias - Comunidad)
+   - `docs/evidencias/ACT-010/V08_experiencias_mis_experiencias.png` (Banco de Experiencias - Mis Prácticas)
+   - `docs/evidencias/ACT-010/V09_foro.png` (Foro Docente Interactivo)
    - `docs/evidencias/ACT-010/V10_configuracion.png` (Configuración de IA Gemini)
-   Las vistas de Administración, Soporte y Foro cuentan con su trazabilidad de código completa, quedando su captura fotográfica sujeta a datos de prueba adicionales de la base de datos institucional.
+   - `docs/evidencias/ACT-010/V10_administracion_*.png` (Panel de Administración - 4 pestañas)
+   - `docs/evidencias/ACT-010/V12_ayuda.png` (Centro de Ayuda Pedagógica)
+   - `docs/evidencias/ACT-010/V13_soporte.png` (Soporte Técnico Institucional)
+   Todas las vistas operativas cuentan con respaldo visual y trazabilidad de código completa sobre el entorno de producción.
 2. **Dependencia de Clave de API:** La generación en vivo de planes mediante Gemini en el Paso 4 del Wizard y en el Asistente Socrático del Editor requiere una clave de API válida suministrada por el docente en la ventana `/config`. Cuando no se cuenta con clave, el software activa de forma segura los mensajes de contingencia preventiva y andamiaje guiado documentados.
 3. **Persistencia Híbrida:** En ausencia de conectividad a internet con Firebase Firestore, el sistema commuta automáticamente a persistencia local reactiva mediante `localStorage`, garantizando que el docente nunca pierda el trabajo realizado en sus planes de clase.
 

@@ -278,6 +278,52 @@ La ventana despliega un entorno cálido con estética Glassmorphism marfil trans
 
 ---
 
+### Ventana 08: Banco de Experiencias Pedagógicas (`ExperienciasPage.jsx`)
+
+#### Imágenes reales de las 2 Vistas Principales
+
+| Vista 1: Experiencias de la Comunidad | Vista 2: Mis Experiencias Sistematizadas |
+|:---:|:---:|
+| ![Experiencias de la Comunidad](docs/evidencias/ACT-009/V08_experiencias.png) | ![Mis Experiencias Sistematizadas](docs/evidencias/ACT-009/V08_experiencias_mis_experiencias.png) |
+
+#### Objetivo
+Facilitar la sistematización de la práctica docente en el aula y el intercambio reflexivo en comunidad, permitiendo a los profesores documentar el impacto didáctico de sus clases aplicadas, gestionar la privacidad de sus secuencias (privadas o públicas en la comunidad), calificar con rúbricas de 1 a 5 estrellas y retroalimentar colaborativamente las experiencias de otros educadores.
+
+#### Descripción general
+La ventana despliega un entorno de trabajo editorial con paneles esmerilados de cristal translúcido (*Glassmorphism* marfil `rgba(255, 254, 250, 0.86)` con `backdrop-filter: blur(16px)`):
+- **Cabecera Institucional:** Badge *"SISTEMATIZACIÓN DE PRÁCTICA DOCENTE"* con icono de destello (`Sparkles`), título H1 *"Experiencias Pedagógicas"*, subtítulo orientador sobre el impacto formativo en el aula y píldora con el contador dinámico (`1 Experiencia registrada` / `Experiencias registradas` con icono `FileCheck`).
+- **Selector Editorial de Pestañas:**
+  - *Mis Experiencias Sistematizadas* (icono `Sparkles`): Filtra las secuencias didácticas del docente autenticado cuyo estado sea `'Sistematizado'` o `'Biblioteca'`.
+  - *Experiencias de la Comunidad* (icono `Globe`): Consulta en Firestore todas las secuencias pedagógicas públicas (`estado === 'Biblioteca'`) compartidas por otros profesores.
+- **Barra de Búsqueda de Cristal:** Input con icono `Search` y placeholder *"Buscar por tema, materia o autor..."* para filtrado en tiempo real sobre títulos, metadatos y autores.
+- **Cuadrícula de Experiencias Docentes (`.mgmt-card`):**
+  - *Insignia de Privacidad y Fecha:* Badge superior indicando `Pública en Comunidad` (icono `Globe`) o `Sistematización Privada` (icono `Lock`), acompañado de la fecha formateada en español (icono `Calendar`, ej. *16 de oct de 2026*).
+  - *Título y Autoría:* Título H2 formal de la práctica (ej. *"Pensamiento Computacional"*) y firma de autor (*"Por: Tú (Docente)"* o nombre del profesor).
+  - *Metadatos Curriculares:* Asignatura (*Tecnología e Informática* con `BookOpen`), grado escolar (*8vo* con `GraduationCap`) y distintivo perimetral (*"Destacada"* con icono `Heart` en verde salvia).
+  - *Bloque de Calificación y Retroalimentación:* Fila horizontal que muestra 5 estrellas vectoriales (`Star`) coloreadas según el promedio, puntaje numérico (ej. `5 / 5.0`), conteo de evaluadores (*1 docente*), y botón interactivo *"Ver / Calificar"* con icono `MessageSquare`.
+  - *Botonera de Acción según Pestaña:*
+    - Pestaña **Mis Experiencias Sistematizadas**: Botón primario *"Editar"* (icono `Edit3`, redirige al editor `/editor?id={id}`), botón de privacidad *"Hacer Privada"* / *"Publicar"* (icono `Lock` / `Globe`), y botón destructivo con icono de papelera (`Trash2`).
+    - Pestaña **Experiencias de la Comunidad**: Botón primario *"Ver Experiencia"* (abre la secuencia en el editor) y botón secundario *"Calificar ({num})"* con icono de estrella dorada (`Star`).
+- **Modales Integrados:**
+  - *ConfirmModal.jsx:* Diálogo modal accesible para confirmar la eliminación definitiva de una experiencia.
+  - *CalificacionExperienciaModal.jsx:* Diálogo interactivo para calificar de 1 a 5 estrellas, redactar comentarios cualitativos y registrar la evaluación pedagógica en la base de datos.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Banco de Experiencias Pedagógicas (`ExperienciasPage.jsx`) |
+| **Imagen** | Capturas reales de ambas pestañas: [`docs/evidencias/ACT-009/V08_experiencias.png`](docs/evidencias/ACT-009/V08_experiencias.png) y [`docs/evidencias/ACT-009/V08_experiencias_mis_experiencias.png`](docs/evidencias/ACT-009/V08_experiencias_mis_experiencias.png). Iconografía Lucide: `Sparkles`, `Globe`, `Lock`, `Trash2`, `Edit3`, `Search`, `Heart`, `Calendar`, `GraduationCap`, `BookOpen`, `FileCheck`, `Star`, `MessageSquare`, `Compass`, `Loader2`. |
+| **Texto** | • Badge: *"SISTEMATIZACIÓN DE PRÁCTICA DOCENTE"*.<br>• Título H1: *"Experiencias Pedagógicas"* (fuente `Lora`, 28px).<br>• Subtítulo: *"Sistematiza el impacto didáctico de tus clases en el aula y descubre prácticas transformadoras compartidas por otros educadores de la comunidad."*<br>• Píldora: *"1 Experiencia registrada"*.<br>• Pestañas: *"Mis Experiencias Sistematizadas"*, *"Experiencias de la Comunidad"*.<br>• Placeholder del buscador: *"Buscar por tema, materia o autor..."*<br>• Metadatos en tarjetas: *"Pública en Comunidad"*, *"16 de oct de 2026"*, *"Pensamiento Computacional"*, *"Por: Tú (Docente)"*, *"Tecnología e Informática"*, *"8vo"*, *"Destacada"*.<br>• Bloque de evaluación: *"5 / 5.0 (1 docente)"*, *"Ver / Calificar"*.<br>• Botones: *"Editar"*, *"Hacer Privada"*, *"Ver Experiencia"*, *"Calificar (1)"*. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Transición de conmutación suave entre pestañas (*Mis Experiencias* vs *Comunidad*).<br>• Desvanecimiento al filtrar experiencias en tiempo real por búsqueda de texto.<br>• Efecto hover de elevación (`translateY(-2px)`) y realce perimetral en cada tarjeta de experiencia.<br>• Animación interactiva de relleno de estrellas al calificar en el modal. |
+| **Acciones del usuario** | • Conmutar entre las pestañas *"Mis Experiencias Sistematizadas"* y *"Experiencias de la Comunidad"*.<br>• Escribir en el buscador para filtrar en vivo por título, materia o autor.<br>• Clic en *"Ver Experiencia"* o clic en el cuerpo de la tarjeta: abre la secuencia didáctica en `/editor`.<br>• Clic en *"Editar"* (pestaña propia): abre la secuencia en modo edición en `/editor?id={id}`.<br>• Clic en *"Hacer Privada"* / *"Publicar"*: conmuta el estado entre `'Sistematizado'` y `'Biblioteca'` en Firestore.<br>• Clic en el icono de papelera (`Trash2`): abre el diálogo de confirmación segura `ConfirmModal`.<br>• Clic en *"Ver / Calificar"* o *"Calificar (n)"*: abre el modal `CalificacionExperienciaModal` para valorar y comentar entre pares pedagógicos. |
+| **Botones** | • Botones de pestaña con estética Glassmorphism (`Sparkles`, `Globe`).<br>• Botón primario *"Editar"* en pestaña personal (fondo `#183630`, icono `Edit3`).<br>• Botón *"Hacer Privada"* / *"Publicar"* (icono `Lock` / `Globe`).<br>• Botón de icono destructivo *"Eliminar"* (color rojo, icono `Trash2`).<br>• Botón primario *"Ver Experiencia"* en pestaña de comunidad.<br>• Botón secundario *"Calificar"* con icono de estrella dorada (`Star`).<br>• Botón de texto *"Ver / Calificar"* en el bloque de puntuación (`MessageSquare`). |
+| **Navegación** | • Clic en *"Editar"* o *"Ver Experiencia"* redirige a `/editor` con la experiencia cargada.<br>• Dock lateral izquierdo para navegar a cualquier otro módulo del ecosistema INSPIRATEC. |
+
+---
+
 ### Ventana 10: Configuración de Inteligencia Artificial Gemini (`ConfigPage.jsx`)
 
 #### Imagen de la ventana
@@ -539,7 +585,6 @@ La ventana presenta un layout asimétrico equilibrado en dos columnas con tratam
 
 ### Ventanas Restantes del Sistema (Inventario Completo)
 
-- **Ventana 08: Banco de Experiencias (`ExperienciasPage.jsx`):** Muro colaborativo donde los docentes consultan secuencias exitosas publicadas por colegas, con botones de valoración reflexiva (*"Útil"*, *"Innovador"*) y réplicas constructivas.
 - **Ventana 14: Acerca de INSPIRATEC (`AboutPage.jsx`):** Ficha institucional del software, justificación basada en MODESEC y créditos del equipo de desarrollo.
 - **Ventana 15: Autenticación (`AuthPage.jsx`):** Formulario para inicio de sesión y registro de docentes con Firebase Auth y botón de acceso rápido con Google OAuth.
 

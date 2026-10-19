@@ -139,9 +139,23 @@
 - **Soporte Técnico Institucional (`/soporte`):** Se documentó el formulario de radicación de tickets (asunto, descripción, envío seguro a Firestore), paneles de autodiagnóstico de IA y privacidad, y vista de confirmación exitosa.
 - Se incorporaron las 4 capturas fotográficas reales en `docs/evidencias/ACT-009/` y `docs/evidencias/ACT-010/` (`V07_biblioteca.png`, `V09_foro.png`, `V12_ayuda.png`, `V13_soporte.png`), y los 4 mockups correspondientes en `docs/diseno-interface/mockups/` (`mockup-biblioteca.png`, `mockup-foro.png`, `mockup-ayuda.png`, `mockup-soporte.png`).
 
+### 14. Registro y Sistematización de la Ventana de Experiencias Pedagógicas (ACT-007, ACT-009, ACT-010)
+- **Banco de Experiencias Pedagógicas (`/experiencias`):** Se auditó e integró formalmente la vista de sistematización de la práctica docente en el aula y de intercambio reflexivo en comunidad, documentando sus 2 vistas operativas:
+  1. *Mis Experiencias Sistematizadas:* Vista personal donde el docente administra sus secuencias didácticas sistematizadas (`estado === 'Sistematizado'` o `'Biblioteca'`), con acciones de edición directa (`/editor?id={id}`), alternancia de privacidad (*"Hacer Privada"* / *"Publicar"*) y eliminación segura con `ConfirmModal.jsx`.
+  2. *Experiencias de la Comunidad:* Vista colectiva abierta donde se exploran las secuencias públicas (`estado === 'Biblioteca'`) de otros colegas docentes, con metadatos curriculares (asignatura, grado, distintivo *"Destacada"*), evaluación cuantitativa de 1 a 5 estrellas con promedio en tiempo real, botón *"Ver Experiencia"* y apertura del modal interactivo `CalificacionExperienciaModal.jsx` para valorar y comentar entre pares.
+- **Trazabilidad y Evidencias:**
+  - Se incorporaron las 2 capturas reales en `docs/evidencias/ACT-009/` y `docs/evidencias/ACT-010/` (`V08_experiencias.png` y `V08_experiencias_mis_experiencias.png`).
+  - Se generó e integró el mockup de alta fidelidad `docs/diseno-interface/mockups/mockup-experiencias.png`, elevando el inventario oficial a 17 mockups evaluados bajo las Tres Reglas de Oro de Theo Mandel.
+  - Se actualizó el formato MODESEC de 9 campos en `DESCRIPCION_VENTANAS.md` y la matriz técnica de 6 columnas en `GUION_TECNICO_MULTIMEDIAL.md`.
+- **Alineación con los 7 Hábitos de Stephen Covey:**
+  - *Hábito 2 (Empezar con un fin en mente):* Se diseñó el flujo de sistematización con el objetivo explícito de que la práctica docente en el aula trascienda la planificación teórica y se convierta en conocimiento transferible y replicable.
+  - *Hábito 4 (Pensar en Ganar/Ganar):* La comunidad docente se enriquece mutuamente mediante la retroalimentación cualitativa y el sistema de calificación por estrellas, donde compartir buenas prácticas eleva el nivel pedagógico colectivo.
+  - *Hábito 6 (Sinergizar):* La alternancia entre la práctica individual y la vitrina comunitaria crea un espacio sinérgico donde secuencias didácticas destacadas pueden ser adaptadas y calibradas por múltiples educadores.
+
 ---
 
 ## Acuerdos y Próximos Compromisos
 1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-007, ACT-009, ACT-010, ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
 2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.
 3. **María Soto y María Ubarne (Product Owners):** Validar la experiencia de usuario y realizar las pruebas con docentes de muestra para la recolección del índice SUS.
+
