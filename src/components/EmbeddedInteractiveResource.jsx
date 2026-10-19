@@ -122,20 +122,39 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
     <div 
       className="generatable-resource-wrapper"
       style={{
-        margin: '20px 0',
-        padding: '20px 24px',
-        borderRadius: '18px',
-        backgroundColor: 'rgba(255, 255, 255, 0.85)',
-        border: '1.5px solid rgba(49, 91, 84, 0.22)',
-        boxShadow: '0 8px 24px rgba(16, 36, 32, 0.06)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        boxSizing: 'border-box',
+        width: '100%',
+        maxWidth: '100%',
+        overflow: 'hidden',
         transition: 'all 0.2s ease'
       }}
     >
       {/* Cabecera y Sugerencia Interactiva */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '14px', marginBottom: htmlContent ? '16px' : '12px' }}>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+      <div 
+        className="generatable-resource-header"
+        style={{ 
+          display: 'flex', 
+          alignItems: 'flex-start', 
+          justifyContent: 'space-between', 
+          flexWrap: 'wrap',
+          gap: '12px', 
+          marginBottom: htmlContent ? '16px' : '12px',
+          width: '100%',
+          boxSizing: 'border-box'
+        }}
+      >
+        <div 
+          className="generatable-resource-info"
+          style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            alignItems: 'flex-start',
+            minWidth: 0,
+            flex: '1 1 240px',
+            maxWidth: '100%',
+            boxSizing: 'border-box'
+          }}
+        >
           <div 
             style={{ 
               width: '36px', 
@@ -151,11 +170,21 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
           >
             <Sparkles size={18} />
           </div>
-          <div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#315B54', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px' }}>
+          <div style={{ minWidth: 0, flex: 1, maxWidth: '100%' }}>
+            <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#315B54', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px', wordBreak: 'break-word' }}>
               Sugerencia de Recurso Interactivo
             </div>
-            <div style={{ fontSize: '15px', fontWeight: 600, color: '#142B25', lineHeight: '1.45' }}>
+            <div 
+              className="generatable-resource-prompt"
+              style={{ 
+                fontSize: '14.5px', 
+                fontWeight: 600, 
+                color: '#142B25', 
+                lineHeight: '1.45',
+                wordBreak: 'break-word',
+                overflowWrap: 'anywhere'
+              }}
+            >
               "{cleanPrompt}"
             </div>
           </div>
@@ -168,21 +197,23 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
             className="btn btn-primary generate-resource-button"
             onClick={handleGenerate}
             style={{
-              padding: '9px 18px',
-              fontSize: '13.5px',
+              padding: '9px 16px',
+              fontSize: '13px',
               fontWeight: 700,
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '8px',
-              flexShrink: 0,
               backgroundColor: '#315B54',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '10px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxSizing: 'border-box',
+              lineHeight: '1.3'
             }}
           >
-            <Sparkles size={15} /> 🎨 Generar Recurso Interactivo
+            <Sparkles size={15} style={{ flexShrink: 0 }} /> <span>🎨 Generar Recurso Interactivo</span>
           </button>
         )}
       </div>
@@ -268,6 +299,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
 
           {/* Barra de Acciones del Recurso */}
           <div 
+            className="generatable-resource-actions"
             style={{ 
               display: 'flex', 
               flexWrap: 'wrap', 
@@ -276,10 +308,12 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
               gap: '10px', 
               marginTop: '14px',
               paddingTop: '12px',
-              borderTop: '1px solid rgba(49, 91, 84, 0.12)'
+              borderTop: '1px solid rgba(49, 91, 84, 0.12)',
+              width: '100%',
+              boxSizing: 'border-box'
             }}
           >
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            <div className="generatable-resource-btn-group" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', width: '100%', boxSizing: 'border-box' }}>
               <button
                 type="button"
                 className="btn btn-outline"

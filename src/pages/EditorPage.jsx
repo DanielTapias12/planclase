@@ -1506,11 +1506,11 @@ export default function EditorPage() {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                           {recursosAnexos.map((recurso, idx) => (
                             <div key={idx} style={{ backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                              <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'var(--bg-surface)' }}>
+                              <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', backgroundColor: 'var(--bg-surface)' }}>
                                 <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '15px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  <MonitorPlay size={16} style={{ color: 'var(--primary-sage)' }} /> {recurso.title}
+                                  <MonitorPlay size={16} style={{ color: 'var(--primary-sage)', flexShrink: 0 }} /> <span>{recurso.title}</span>
                                 </h4>
-                                <div style={{ display: 'flex', gap: '8px' }}>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                                   <button 
                                     className="btn-outline" 
                                     onClick={() => {

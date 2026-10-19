@@ -37,22 +37,17 @@ export default function MaterialesGenerablesSection({
     <section 
       className="materiales-generables-section"
       style={{
-        marginTop: '36px',
-        marginBottom: '28px',
-        padding: '24px 28px',
-        borderRadius: '20px',
-        backgroundColor: 'rgba(255, 255, 255, 0.75)',
-        border: '1.5px solid rgba(49, 91, 84, 0.22)',
-        boxShadow: '0 8px 24px rgba(16, 36, 32, 0.05)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)'
+        boxSizing: 'border-box',
+        width: '100%',
+        maxWidth: '100%',
+        overflow: 'hidden'
       }}
       aria-labelledby="titulo-materiales-generables"
     >
       {/* Encabezado y descripción pedagógica */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="materiales-generables-header-wrap" style={{ marginBottom: '18px', width: '100%', boxSizing: 'border-box' }}>
+        <div className="materiales-generables-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '8px', width: '100%', boxSizing: 'border-box' }}>
+          <div className="materiales-generables-title-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, maxWidth: '100%' }}>
             <div 
               style={{ 
                 width: '32px', 
@@ -62,20 +57,24 @@ export default function MaterialesGenerablesSection({
                 color: '#142B25', 
                 display: 'flex', 
                 alignItems: 'center', 
-                justifyContent: 'center' 
+                justifyContent: 'center',
+                flexShrink: 0
               }}
             >
               <Sparkles size={18} />
             </div>
             <h3 
               id="titulo-materiales-generables"
+              className="materiales-generables-title"
               style={{ 
                 margin: 0, 
                 fontSize: '19px', 
                 fontWeight: 700, 
                 color: '#142B25', 
                 fontFamily: 'var(--font-heading)',
-                letterSpacing: '-0.01em'
+                letterSpacing: '-0.01em',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word'
               }}
             >
               Materiales didácticos para tu clase
@@ -84,6 +83,7 @@ export default function MaterialesGenerablesSection({
 
           {recursosAnexos && recursosAnexos.length > 0 && (
             <span 
+              className="materiales-generables-badge"
               style={{
                 fontSize: '12px',
                 fontWeight: 700,
@@ -94,7 +94,8 @@ export default function MaterialesGenerablesSection({
                 borderRadius: '12px',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px'
+                gap: '5px',
+                flexShrink: 0
               }}
             >
               <CheckCircle2 size={13} />
@@ -102,17 +103,19 @@ export default function MaterialesGenerablesSection({
             </span>
           )}
         </div>
-        <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.6', color: '#3D5A53' }}>
+        <p style={{ margin: 0, fontSize: '13.5px', lineHeight: '1.6', color: '#3D5A53', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
           A partir de tu plan de clase, puedes crear materiales didácticos interactivos adaptados a los momentos de la sesión. Una vez generado y anexado un material a este plan, queda guardado y no se volverá a duplicar.
         </p>
       </div>
 
       {/* Grid de tarjetas de materiales didácticos */}
       <div 
+        className="materiales-generables-grid"
         style={{ 
           display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', 
-          gap: '16px' 
+          width: '100%',
+          maxWidth: '100%',
+          boxSizing: 'border-box'
         }}
       >
         {recomendacionesActivas.map((rec) => {
@@ -123,22 +126,29 @@ export default function MaterialesGenerablesSection({
           return (
             <div 
               key={rec.id}
+              className={`material-generable-card ${yaAnexado ? 'is-anexado' : ''}`}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                padding: '20px',
+                padding: '18px',
                 borderRadius: '16px',
                 backgroundColor: yaAnexado ? 'rgba(240, 246, 243, 0.95)' : '#FFFFFF',
                 border: yaAnexado ? '1.5px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(49, 91, 84, 0.16)',
                 boxShadow: yaAnexado ? '0 2px 10px rgba(16, 185, 129, 0.08)' : '0 2px 8px rgba(0, 0, 0, 0.03)',
                 transition: 'all 0.2s ease',
-                position: 'relative'
+                position: 'relative',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
+                minWidth: 0,
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word'
               }}
             >
               <div>
                 {/* Cabecera de la tarjeta: Tipo, estado de anexo y botón descartar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <div className="material-generable-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', gap: '8px', flexWrap: 'wrap', width: '100%', boxSizing: 'border-box' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <span 
                       style={{
