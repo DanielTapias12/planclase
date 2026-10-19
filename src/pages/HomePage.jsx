@@ -78,7 +78,7 @@ export default function HomePage() {
 
   return (
     <div className="home-full-immersive-view">
-      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
+      <div className="home-content-container" style={{ maxWidth: '1360px', margin: '0 auto', padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
         
         {/* 1 y 2. Panel Editorial de Bienvenida y Acciones Principales */}
         <section 

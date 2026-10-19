@@ -1140,6 +1140,21 @@ h6 {
     padding: 14px 24px 8px !important;
   }
 
+  /* Contenedores de página con ancho armónico idéntico a ADN Pedagógico para eliminar el espacio muerto */
+  .mgmt-container,
+  .home-content-container,
+  .wizard-container,
+  .adn-container,
+  .editor-view,
+  .foro-page-container {
+    width: 100% !important;
+    max-width: 1360px !important;
+    margin: 0 auto !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    box-sizing: border-box !important;
+  }
+
   /* Estados colapsados de la barra lateral */
   .app-sidebar-lateral.collapsed .sidebar-brand-header {
     padding: 16px 8px;
@@ -1577,7 +1592,7 @@ h6 {
    ENHANCED WIZARD & CHOICE CARDS SYSTEM
    ======================================================== */
 .wizard-container {
-  max-width: 1060px;
+  max-width: 1360px;
   width: 100%;
   margin: 0 auto;
   padding: 16px 20px 36px;
@@ -3421,7 +3436,7 @@ h6 {
 
 .mgmt-container {
   width: 100%;
-  max-width: 1060px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: 16px clamp(16px, 2.5vw, 24px) 36px;
   box-sizing: border-box;
@@ -5884,8 +5899,9 @@ h6 {
   }
 
   .mgmt-container,
-  .home-content-container {
-    max-width: 1060px;
+  .home-content-container,
+  .wizard-container {
+    max-width: 1360px;
   }
 
   .editor-view {

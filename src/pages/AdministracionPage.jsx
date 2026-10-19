@@ -133,7 +133,7 @@ export default function AdministracionPage() {
       <div 
         className="mgmt-container" 
         style={{ 
-          maxWidth: '1060px', 
+          maxWidth: '1360px', 
           width: '100%', 
           margin: '0 auto', 
           padding: '24px clamp(16px, 3.5vw, 28px) 52px',
@@ -195,7 +195,7 @@ export default function AdministracionPage() {
     <div 
       className="mgmt-container" 
       style={{ 
-        maxWidth: '1060px', 
+        maxWidth: '1360px', 
         width: '100%', 
         margin: '0 auto',
         boxSizing: 'border-box', 
