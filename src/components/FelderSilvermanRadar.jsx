@@ -69,15 +69,17 @@ export default function FelderSilvermanRadar({ dimensiones, className = '' }) {
         flexDirection: 'column', 
         alignItems: 'center', 
         width: '100%', 
-        maxWidth: '460px', 
-        margin: '0 auto' 
+        maxWidth: '440px', 
+        margin: '0 auto',
+        boxSizing: 'border-box',
+        overflow: 'hidden'
       }}
     >
       <svg
-        viewBox="0 0 460 460"
+        viewBox="-35 -20 530 500"
         role="img"
         aria-labelledby="fs-radar-title fs-radar-desc"
-        style={{ width: '100%', height: 'auto', overflow: 'visible' }}
+        style={{ width: '100%', height: 'auto', display: 'block', maxWidth: '100%' }}
       >
         <title id="fs-radar-title">Gráfico radial de gradientes pedagógicos (Felder-Silverman)</title>
         <desc id="fs-radar-desc">
