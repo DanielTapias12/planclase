@@ -128,21 +128,21 @@ export default function ExperienciasPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '18px',
-          padding: '22px 28px',
-          marginBottom: '20px',
-          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+          padding: '16px 22px',
+          marginBottom: '12px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
           <div>
-            <div className="editorial-badge">
+            <div className="editorial-badge" style={{ marginBottom: '8px' }}>
               <Sparkles size={14} color="#2B524A" />
               <span>Sistematización de Práctica Docente</span>
             </div>
-            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+            <h1 className="mgmt-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
               Experiencias Pedagógicas
             </h1>
-            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
+            <p className="mgmt-subtitle" style={{ fontSize: '14.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.55', fontWeight: 500 }}>
               Sistematiza el impacto didáctico de tus clases en el aula y descubre prácticas transformadoras compartidas por otros educadores de la comunidad.
             </p>
           </div>
@@ -164,23 +164,23 @@ export default function ExperienciasPage() {
         WebkitBackdropFilter: 'blur(16px)',
         border: '1px solid rgba(255, 255, 255, 0.95)',
         borderRadius: '14px',
-        padding: '5px',
-        marginBottom: '24px',
+        padding: '4px',
+        marginBottom: '12px',
         gap: '6px',
-        boxShadow: '0 6px 20px rgba(16, 36, 32, 0.08)',
+        boxShadow: '0 4px 14px rgba(16, 36, 32, 0.06)',
         flexWrap: 'wrap'
       }}>
         <button 
           onClick={() => { setActiveTab('Mis Experiencias'); setSearchTerm(''); }}
           style={{ 
-            padding: '9px 18px', 
+            padding: '7px 16px', 
             borderRadius: '10px',
             border: 'none', 
             backgroundColor: activeTab === 'Mis Experiencias' ? '#183630' : 'transparent',
             color: activeTab === 'Mis Experiencias' ? '#FFFFFF' : '#243630',
             fontWeight: activeTab === 'Mis Experiencias' ? 700 : 500,
             cursor: 'pointer',
-            fontSize: '13.5px',
+            fontSize: '13px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -193,14 +193,14 @@ export default function ExperienciasPage() {
         <button 
           onClick={() => { setActiveTab('Comunidad'); setSearchTerm(''); }}
           style={{ 
-            padding: '9px 18px', 
+            padding: '7px 16px', 
             borderRadius: '10px',
             border: 'none', 
             backgroundColor: activeTab === 'Comunidad' ? '#183630' : 'transparent',
             color: activeTab === 'Comunidad' ? '#FFFFFF' : '#243630',
             fontWeight: activeTab === 'Comunidad' ? 700 : 500,
             cursor: 'pointer',
-            fontSize: '13.5px',
+            fontSize: '13px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -221,9 +221,9 @@ export default function ExperienciasPage() {
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.94)',
-            borderRadius: '18px',
-            padding: '12px 18px',
-            marginBottom: '26px',
+            borderRadius: '16px',
+            padding: '10px 16px',
+            marginBottom: '12px',
             boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
           }}
         >

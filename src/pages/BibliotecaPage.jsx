@@ -100,21 +100,21 @@ export default function BibliotecaPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '18px',
-          padding: '22px 28px',
-          marginBottom: '20px',
-          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+          padding: '16px 22px',
+          marginBottom: '12px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
           <div>
-            <div className="editorial-badge">
+            <div className="editorial-badge" style={{ marginBottom: '8px' }}>
               <Library size={14} color="#2B524A" />
               <span>Recursos Didácticos Abiertos</span>
             </div>
-            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+            <h1 className="mgmt-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
               Biblioteca Comunitaria
             </h1>
-            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
+            <p className="mgmt-subtitle" style={{ fontSize: '14.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.55', fontWeight: 500 }}>
               Explora, consulta y clona secuencias didácticas compartidas abiertamente por la red de docentes. Adapta cualquier experiencia a las necesidades de tu contexto escolar.
             </p>
           </div>
@@ -136,9 +136,9 @@ export default function BibliotecaPage() {
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '18px',
-          padding: '12px 18px',
-          marginBottom: '26px',
+          borderRadius: '16px',
+          padding: '10px 16px',
+          marginBottom: '12px',
           boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >

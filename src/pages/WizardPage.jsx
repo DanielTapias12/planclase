@@ -333,14 +333,14 @@ export default function WizardPage() {
   return (
     <div className="wizard-container">
       {/* Migas de Pan (Breadcrumbs) para orientación jerárquica */}
-      <div style={{ marginBottom: '14px' }}>
+      <div style={{ marginBottom: '8px' }}>
         <Breadcrumbs items={breadcrumbsItems} />
       </div>
 
       {/* 1. Panel Editorial de Cabecera y Stepper */}
       <section className="planificador-header-panel">
         <div className="planificador-header">
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '8px' }}>
             <div className="editorial-badge" style={{ margin: 0 }}>
               <Sparkles size={14} color="#2B524A" />
               <span>Secuencia Didáctica Guiada</span>

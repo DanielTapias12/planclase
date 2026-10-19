@@ -187,21 +187,21 @@ export default function PlantillasPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '18px',
-          padding: '22px 28px',
-          marginBottom: '20px',
-          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+          padding: '16px 22px',
+          marginBottom: '12px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
           <div>
-            <div className="editorial-badge">
+            <div className="editorial-badge" style={{ marginBottom: '8px' }}>
               <Layers size={14} color="#2B524A" />
               <span>Arquitectura Curricular y Modelos</span>
             </div>
-            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+            <h1 className="mgmt-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
               Mis Estructuras de Clase
             </h1>
-            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
+            <p className="mgmt-subtitle" style={{ fontSize: '14.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.55', fontWeight: 500 }}>
               Crea y administra formatos pedagógicos personalizados para que la IA se adapte a tu institución y respete los momentos didácticos institucionales.
             </p>
           </div>
@@ -220,14 +220,15 @@ export default function PlantillasPage() {
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 gap: '8px', 
-                minHeight: '42px', 
-                padding: '10px 20px',
+                minHeight: '38px', 
+                padding: '8px 16px',
                 backgroundColor: '#183630',
                 color: '#FFFFFF',
                 boxShadow: '0 4px 14px rgba(20, 42, 38, 0.20)',
                 borderRadius: '10px',
                 fontWeight: 600,
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '13.5px'
               }}
             >
               <Plus size={16} /> Nueva Estructura
@@ -245,14 +246,15 @@ export default function PlantillasPage() {
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.94)',
-            borderRadius: '24px',
-            boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)',
-            marginBottom: '32px'
+            borderRadius: '20px',
+            padding: '18px 22px',
+            boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
+            marginBottom: '14px'
           }} 
           aria-labelledby="nueva-estructura-title"
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', borderBottom: '1px solid rgba(49, 91, 84, 0.16)', paddingBottom: '16px' }}>
-            <h2 id="nueva-estructura-title" style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', color: '#142B25', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', borderBottom: '1px solid rgba(49, 91, 84, 0.16)', paddingBottom: '10px' }}>
+            <h2 id="nueva-estructura-title" style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', color: '#142B25', margin: 0, display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}>
               <Plus size={18} /> Diseñar Nueva Estructura Pedagógica
             </h2>
             <button 

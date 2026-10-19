@@ -182,7 +182,7 @@ export default function MisPlanesPage() {
     <div className="mgmt-container">
       
       {/* Migas de Pan para orientación jerárquica */}
-      <div style={{ marginBottom: '14px' }}>
+      <div style={{ marginBottom: '8px' }}>
         <Breadcrumbs items={[
           { label: 'Inicio', href: '/home', onClick: (e) => { e.preventDefault(); navigate('/home'); } },
           { label: 'Mis Planes de Clase' }
@@ -198,21 +198,21 @@ export default function MisPlanesPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '18px',
-          padding: '22px 28px',
-          marginBottom: '20px',
-          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+          padding: '16px 22px',
+          marginBottom: '12px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
           <div>
-            <div className="editorial-badge">
+            <div className="editorial-badge" style={{ marginBottom: '8px' }}>
               <BookOpen size={14} color="#2B524A" />
               <span>Repositorio Curricular Personal</span>
             </div>
-            <h1 className="mgmt-title" style={{ fontSize: '34px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 12px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+            <h1 className="mgmt-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
               Mis Planes de Clase
             </h1>
-            <p className="mgmt-subtitle" style={{ fontSize: '15.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.65', fontWeight: 500 }}>
+            <p className="mgmt-subtitle" style={{ fontSize: '14.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.55', fontWeight: 500 }}>
               Gestiona, edita y organiza tus secuencias pedagógicas sincronizadas en la nube. Reabre borradores, publica en la biblioteca comunitaria o sistematiza tus experiencias.
             </p>
           </div>

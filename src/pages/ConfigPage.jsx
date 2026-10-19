@@ -51,7 +51,7 @@ export default function ConfigPage() {
   };
 
   return (
-    <div className="mgmt-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '24px clamp(16px, 3.5vw, 28px) 52px' }}>
+    <div className="mgmt-container" style={{ maxWidth: '900px', margin: '0 auto', padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
       
       {/* Cabecera del Módulo */}
       <header 
@@ -62,26 +62,26 @@ export default function ConfigPage() {
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
           borderRadius: '18px',
-          padding: '22px 28px',
-          marginBottom: '20px',
-          boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+          padding: '16px 22px',
+          marginBottom: '12px',
+          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
         }}
       >
         <div className="mgmt-header-info">
-          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '16px', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {activeTab === 'ia' ? <Key size={28} /> : <Compass size={28} />}
+          <div className="mgmt-header-icon" style={{ backgroundColor: 'rgba(71, 122, 114, 0.16)', color: '#183630', borderRadius: '14px', width: '46px', height: '46px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {activeTab === 'ia' ? <Key size={24} /> : <Compass size={24} />}
           </div>
           <div>
-            <div className="editorial-badge">
+            <div className="editorial-badge" style={{ marginBottom: '8px' }}>
               <Sparkles size={13} color="#2B524A" />
               <span>
                 {activeTab === 'ia' ? 'Conectividad e Inteligencia Artificial' : 'Perfil Docente & Mediación DUA'}
               </span>
             </div>
-            <h1 className="mgmt-title" style={{ fontSize: '32px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 10px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
+            <h1 className="mgmt-title" style={{ fontSize: '28px', fontFamily: 'var(--font-heading)', color: '#142B25', margin: '0 0 6px 0', fontWeight: 700, letterSpacing: '-0.015em', lineHeight: '1.25' }}>
               {activeTab === 'ia' ? 'Configuración de Inteligencia Artificial' : 'Autodiagnóstico Pedagógico (Felder-Silverman)'}
             </h1>
-            <p className="mgmt-subtitle" style={{ fontSize: '15px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.6', fontWeight: 500 }}>
+            <p className="mgmt-subtitle" style={{ fontSize: '14.5px', color: '#243630', maxWidth: '720px', margin: 0, lineHeight: '1.55', fontWeight: 500 }}>
               {activeTab === 'ia' 
                 ? 'Administra tu clave privada BYOK (Bring Your Own Key) para conectar los servicios de Gemini con máxima velocidad y privacidad.'
                 : 'Explora tus tendencias pedagógicas en 4 dimensiones continuas mediante un gráfico radial interactivo basado en Felder-Silverman.'
@@ -107,14 +107,14 @@ export default function ConfigPage() {
       <div 
         className="mgmt-filter-bar" 
         style={{ 
-          marginBottom: '24px', 
-          padding: '8px 12px', 
+          marginBottom: '12px', 
+          padding: '6px 10px', 
           backgroundColor: 'rgba(255, 254, 250, 0.86)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.94)',
-          borderRadius: '16px',
-          boxShadow: '0 8px 24px rgba(16, 36, 32, 0.06)',
+          borderRadius: '14px',
+          boxShadow: '0 6px 20px rgba(16, 36, 32, 0.05)',
           display: 'flex',
           gap: '8px',
           flexWrap: 'wrap'
@@ -129,9 +129,9 @@ export default function ConfigPage() {
           onClick={() => setActiveTab('ia')}
           className={`btn-outline ${activeTab === 'ia' ? 'active' : ''}`}
           style={{ 
-            padding: '9px 20px', 
-            fontSize: '14px', 
-            borderRadius: '12px',
+            padding: '7px 16px', 
+            fontSize: '13.5px', 
+            borderRadius: '10px',
             backgroundColor: activeTab === 'ia' ? '#142B25' : 'rgba(255, 255, 255, 0.90)',
             color: activeTab === 'ia' ? '#FFFFFF' : '#142B25',
             borderColor: activeTab === 'ia' ? '#142B25' : 'rgba(49, 91, 84, 0.18)',
@@ -144,7 +144,7 @@ export default function ConfigPage() {
             transition: 'all 0.2s ease'
           }}
         >
-          <Key size={16} />
+          <Key size={15} />
           <span>Inteligencia Artificial (API Key)</span>
         </button>
 
@@ -155,9 +155,9 @@ export default function ConfigPage() {
           onClick={() => setActiveTab('estilos')}
           className={`btn-outline ${activeTab === 'estilos' ? 'active' : ''}`}
           style={{ 
-            padding: '9px 20px', 
-            fontSize: '14px', 
-            borderRadius: '12px',
+            padding: '7px 16px', 
+            fontSize: '13.5px', 
+            borderRadius: '10px',
             backgroundColor: activeTab === 'estilos' ? '#142B25' : 'rgba(255, 255, 255, 0.90)',
             color: activeTab === 'estilos' ? '#FFFFFF' : '#142B25',
             borderColor: activeTab === 'estilos' ? '#142B25' : 'rgba(49, 91, 84, 0.18)',
@@ -170,7 +170,7 @@ export default function ConfigPage() {
             transition: 'all 0.2s ease'
           }}
         >
-          <Compass size={16} />
+          <Compass size={15} />
           <span>Autodiagnóstico Felder-Silverman</span>
         </button>
       </div>
@@ -186,18 +186,18 @@ export default function ConfigPage() {
             transition={{ duration: 0.2 }}
             className="mgmt-card" 
             style={{ 
-              padding: '36px 36px',
+              padding: '20px 24px',
               backgroundColor: 'rgba(255, 254, 250, 0.88)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               border: '1px solid rgba(255, 255, 255, 0.94)',
-              borderRadius: '24px',
-              boxShadow: '0 12px 36px rgba(16, 36, 32, 0.10)'
+              borderRadius: '20px',
+              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <Sparkles size={18} style={{ color: 'var(--primary-active)' }} />
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '20px', color: '#142B25', margin: 0, fontWeight: 700 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <Sparkles size={17} style={{ color: 'var(--primary-active)' }} />
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '18px', color: '#142B25', margin: 0, fontWeight: 700 }}>
                 Google Gemini API Key
               </h2>
             </div>

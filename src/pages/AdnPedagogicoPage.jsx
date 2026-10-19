@@ -271,7 +271,7 @@ export default function AdnPedagogicoPage() {
 
   if (loading) {
     return (
-      <div className="adn-container" style={{ padding: '24px clamp(16px, 3.5vw, 28px) 52px' }}>
+      <div className="adn-container" style={{ padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
         <PageLoadingState 
           icon={Dna}
           badge="Identidad Curricular"
@@ -290,12 +290,12 @@ export default function AdnPedagogicoPage() {
       
       {/* 1. Header con Identidad Pedagógica y Soporte Administrador / Docente */}
       <header className="adn-hero-card">
-        <div style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px' }}>
+        <div style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
           
           <div style={{ maxWidth: '720px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '14px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
               <div className="adn-badge-pill">
-                <Dna size={14} style={{ color: '#4ADE80' }} />
+                <Dna size={13} style={{ color: '#4ADE80' }} />
                 <span>Identidad Docente & Memoria Contextual</span>
               </div>
 
@@ -306,28 +306,28 @@ export default function AdnPedagogicoPage() {
                 gap: '6px',
                 background: isAdmin ? 'rgba(234, 179, 8, 0.22)' : 'rgba(74, 222, 128, 0.18)',
                 color: isAdmin ? '#FEF08A' : '#BBF7D0',
-                padding: '5px 12px',
+                padding: '4px 10px',
                 borderRadius: '999px',
-                fontSize: '11.5px',
+                fontSize: '11px',
                 fontWeight: 700,
                 border: isAdmin ? '1px solid rgba(234, 179, 8, 0.4)' : '1px solid rgba(74, 222, 128, 0.35)'
               }}>
-                {isAdmin ? <Shield size={13} /> : <UserCheck size={13} />}
+                {isAdmin ? <Shield size={12} /> : <UserCheck size={12} />}
                 <span>{isAdmin ? 'Modo Administrador Curricular' : 'Modo Docente Titular'}</span>
               </div>
             </div>
 
-            <h1 style={{ fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 800, margin: '0 0 10px', color: '#FFFDF9', lineHeight: 1.25, letterSpacing: '-0.02em' }}>
+            <h1 style={{ fontSize: 'clamp(20px, 2.2vw, 26px)', fontWeight: 800, margin: '0 0 6px', color: '#FFFDF9', lineHeight: 1.25, letterSpacing: '-0.02em' }}>
               Mi ADN Pedagógico & Estudio Transversal
             </h1>
-            <p style={{ fontSize: '13.5px', color: '#D1E7DD', margin: 0, lineHeight: 1.6, maxWidth: '680px' }}>
+            <p style={{ fontSize: '13px', color: '#D1E7DD', margin: 0, lineHeight: 1.55, maxWidth: '680px' }}>
               Tu huella profesional de enseñanza. Inspiratec registra automáticamente las metodologías más exitosas en tus clases, 
               tus recursos didácticos predilectos y conecta ejes transversales en cada nuevo plan generado con IA.
             </p>
           </div>
 
           {/* Acciones principales: Sincronizar y Guardar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
               <button
                 type="button"

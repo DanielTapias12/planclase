@@ -78,7 +78,7 @@ export default function HomePage() {
 
   return (
     <div className="home-full-immersive-view">
-      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '24px clamp(16px, 3.5vw, 28px) 52px' }}>
+      <div className="home-content-container" style={{ maxWidth: '1060px', margin: '0 auto', padding: '16px clamp(16px, 2.5vw, 24px) 36px' }}>
         
         {/* 1 y 2. Panel Editorial de Bienvenida y Acciones Principales */}
         <section 
@@ -89,9 +89,9 @@ export default function HomePage() {
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.94)',
             borderRadius: '18px',
-            padding: '24px 30px',
-            marginBottom: '20px',
-            boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+            padding: '18px 24px',
+            marginBottom: '12px',
+            boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
           }}
         >
           {/* Badge institucional */}
@@ -99,26 +99,26 @@ export default function HomePage() {
             display: 'inline-flex', 
             alignItems: 'center', 
             gap: '8px', 
-            padding: '5px 14px', 
+            padding: '4px 12px', 
             backgroundColor: 'rgba(71, 122, 114, 0.14)', 
             borderRadius: '999px', 
             color: '#1C3A34', 
-            fontSize: '11.5px', 
+            fontSize: '11px', 
             fontWeight: '700', 
             textTransform: 'uppercase', 
             letterSpacing: '0.08em', 
-            marginBottom: '16px'
+            marginBottom: '10px'
           }}>
-            <Sparkles size={14} color="#2B524A" />
+            <Sparkles size={13} color="#2B524A" />
             Espacio Curricular Docente
           </div>
 
           {/* Título de bienvenida */}
           <h1 style={{ 
-            fontSize: '34px', 
+            fontSize: '28px', 
             fontFamily: 'var(--font-heading)', 
             color: '#142B25', 
-            margin: '0 0 12px 0',
+            margin: '0 0 8px 0',
             fontWeight: 700,
             letterSpacing: '-0.015em',
             lineHeight: '1.25'
@@ -129,17 +129,17 @@ export default function HomePage() {
           {/* Descripción editorial */}
           <p style={{ 
             color: '#243630', 
-            fontSize: '15.5px', 
+            fontSize: '14.5px', 
             maxWidth: '720px', 
-            margin: '0 0 26px 0',
-            lineHeight: '1.65',
+            margin: '0 0 16px 0',
+            lineHeight: '1.55',
             fontWeight: 500
           }}>
             Diseña secuencias didácticas fundamentadas, rigurosas y adaptadas a tu contexto escolar con el soporte de inteligencia artificial pedagógica y principios DUA.
           </p>
 
           {/* Acciones principales */}
-          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <button 
               type="button"
               className="btn btn-primary"
@@ -189,9 +189,9 @@ export default function HomePage() {
             </button>
           </div>
 
-          <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '999px', backgroundColor: 'rgba(22, 163, 74, 0.12)', border: '1px solid rgba(22, 163, 74, 0.25)', fontSize: '12px', color: '#166534', fontWeight: 600 }}>
-              <Dna size={14} style={{ color: '#16A34A' }} />
+          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '5px 12px', borderRadius: '999px', backgroundColor: 'rgba(22, 163, 74, 0.12)', border: '1px solid rgba(22, 163, 74, 0.25)', fontSize: '11.5px', color: '#166534', fontWeight: 600 }}>
+              <Dna size={13} style={{ color: '#16A34A' }} />
               <span>
                 Metodología Institucional:{' '}
                 <strong style={{ color: '#142B25' }}>{userProfile?.metodologiaInstitucional || 'Aprendizaje Basado en Proyectos (ABP)'}</strong>
@@ -204,11 +204,11 @@ export default function HomePage() {
                 background: 'none',
                 border: 'none',
                 color: '#166534',
-                fontSize: '12px',
+                fontSize: '11.5px',
                 fontWeight: 700,
                 textDecoration: 'underline',
                 cursor: 'pointer',
-                padding: '4px 6px'
+                padding: '2px 4px'
               }}
               title="Actualizar la metodología institucional o proyecto transversal de tu colegio"
             >
@@ -218,18 +218,18 @@ export default function HomePage() {
 
           {!apiKey && (
             <div style={{ 
-              marginTop: '20px', 
+              marginTop: '12px', 
               display: 'flex', 
               alignItems: 'center', 
-              gap: '10px', 
-              fontSize: '12.5px', 
+              gap: '8px', 
+              fontSize: '12px', 
               color: 'var(--color-state-warning)', 
               backgroundColor: 'rgba(234, 88, 12, 0.08)', 
-              padding: '9px 14px', 
+              padding: '7px 12px', 
               borderRadius: '8px',
               border: '1px solid rgba(234, 88, 12, 0.2)'
             }}>
-              <AlertTriangle size={15} style={{ flexShrink: 0 }} />
+              <AlertTriangle size={14} style={{ flexShrink: 0 }} />
               <span>
                 Para activar la asistencia automatizada de IA, registra tu clave en{' '}
                 <button 
@@ -258,8 +258,8 @@ export default function HomePage() {
           style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '16px', 
-            marginBottom: '26px' 
+            gap: '12px', 
+            marginBottom: '12px' 
           }}
         >
           {/* Métrica: Planes Guardados */}
@@ -269,10 +269,10 @@ export default function HomePage() {
               backgroundColor: 'rgba(255, 254, 250, 0.88)', 
               backdropFilter: 'blur(14px)',
               WebkitBackdropFilter: 'blur(14px)',
-              padding: '22px 26px', 
-              borderRadius: '18px', 
+              padding: '14px 20px', 
+              borderRadius: '16px', 
               border: '1px solid rgba(255, 255, 255, 0.94)', 
-              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
+              boxShadow: '0 6px 18px rgba(16, 36, 32, 0.06)',
               cursor: 'pointer',
               transition: 'all 0.18s ease',
               display: 'flex',
@@ -283,8 +283,8 @@ export default function HomePage() {
           >
             <div>
               <p style={{ 
-                margin: '0 0 6px 0', 
-                fontSize: '11.5px', 
+                margin: '0 0 4px 0', 
+                fontSize: '11px', 
                 fontWeight: '700', 
                 color: '#435750', 
                 textTransform: 'uppercase', 
@@ -293,7 +293,7 @@ export default function HomePage() {
                 Mis Planes Guardados
               </p>
               <div style={{ 
-                fontSize: '28px', 
+                fontSize: '24px', 
                 fontWeight: '700', 
                 color: '#142B25', 
                 fontFamily: 'var(--font-heading)',
@@ -301,21 +301,21 @@ export default function HomePage() {
               }}>
                 {planesCount || 0}
               </div>
-              <p style={{ margin: '6px 0 0 0', fontSize: '13px', color: '#275249', fontWeight: 600 }}>
+              <p style={{ margin: '4px 0 0 0', fontSize: '12.5px', color: '#275249', fontWeight: 600 }}>
                 Explorar historial curricular &rarr;
               </p>
             </div>
             <div style={{ 
-              width: '44px', 
-              height: '44px', 
-              borderRadius: '12px', 
+              width: '40px', 
+              height: '40px', 
+              borderRadius: '10px', 
               backgroundColor: 'rgba(71, 122, 114, 0.12)', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
               color: '#275249'
             }}>
-              <FileText size={20} />
+              <FileText size={18} />
             </div>
           </div>
 
@@ -326,10 +326,10 @@ export default function HomePage() {
               backgroundColor: 'rgba(255, 254, 250, 0.88)', 
               backdropFilter: 'blur(14px)',
               WebkitBackdropFilter: 'blur(14px)',
-              padding: '22px 26px', 
-              borderRadius: '18px', 
+              padding: '14px 20px', 
+              borderRadius: '16px', 
               border: '1px solid rgba(255, 255, 255, 0.94)', 
-              boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)',
+              boxShadow: '0 6px 18px rgba(16, 36, 32, 0.06)',
               cursor: 'pointer',
               transition: 'all 0.18s ease',
               display: 'flex',
@@ -340,8 +340,8 @@ export default function HomePage() {
           >
             <div>
               <p style={{ 
-                margin: '0 0 6px 0', 
-                fontSize: '11.5px', 
+                margin: '0 0 4px 0', 
+                fontSize: '11px', 
                 fontWeight: '700', 
                 color: '#435750', 
                 textTransform: 'uppercase', 
@@ -350,37 +350,37 @@ export default function HomePage() {
                 Asistente Pedagógico (Gemini)
               </p>
               <div style={{ 
-                fontSize: '14.5px', 
+                fontSize: '14px', 
                 fontWeight: '600', 
                 color: apiKey ? 'var(--color-state-success)' : 'var(--color-state-warning)', 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: '7px'
+                gap: '6px'
               }}>
                 <span style={{ 
-                  width: '9px', 
-                  height: '9px', 
+                  width: '8px', 
+                  height: '8px', 
                   borderRadius: '50%', 
                   backgroundColor: apiKey ? 'var(--color-state-success)' : 'var(--color-state-warning)',
                   display: 'inline-block' 
                 }} />
                 {apiKey ? 'Servicio activo y verificado' : 'Configuración de clave requerida'}
               </div>
-              <p style={{ margin: '6px 0 0 0', fontSize: '13px', color: '#275249', fontWeight: 600 }}>
+              <p style={{ margin: '4px 0 0 0', fontSize: '12.5px', color: '#275249', fontWeight: 600 }}>
                 Administrar credenciales y modelo &rarr;
               </p>
             </div>
             <div style={{ 
-              width: '44px', 
-              height: '44px', 
-              borderRadius: '12px', 
+              width: '40px', 
+              height: '40px', 
+              borderRadius: '10px', 
               backgroundColor: 'rgba(71, 122, 114, 0.12)', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
               color: '#275249'
             }}>
-              <Settings size={20} />
+              <Settings size={18} />
             </div>
           </div>
         </section>
@@ -393,22 +393,22 @@ export default function HomePage() {
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             border: '1px solid rgba(255, 255, 255, 0.94)',
-            borderRadius: '22px',
-            padding: '32px 34px',
-            boxShadow: '0 10px 30px rgba(16, 36, 32, 0.08)'
+            borderRadius: '20px',
+            padding: '20px 24px',
+            boxShadow: '0 8px 24px rgba(16, 36, 32, 0.08)'
           }}
         >
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'flex-end', 
-            marginBottom: '20px',
+            marginBottom: '12px',
             flexWrap: 'wrap',
-            gap: '12px'
+            gap: '10px'
           }}>
             <div>
               <h2 style={{ 
-                fontSize: '22px', 
+                fontSize: '20px', 
                 fontFamily: 'var(--font-heading)', 
                 color: 'var(--color-brand-active)', 
                 margin: '0 0 4px 0',
@@ -416,7 +416,7 @@ export default function HomePage() {
               }}>
                 Modelos de Secuencia Curricular
               </h2>
-              <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', margin: 0 }}>
+              <p style={{ fontSize: '13.5px', color: 'var(--color-text-secondary)', margin: 0 }}>
                 Estructuras pedagógicas reales listas para transferir al planificador.
               </p>
             </div>
@@ -424,8 +424,8 @@ export default function HomePage() {
               type="button" 
               className="btn btn-secondary" 
               style={{ 
-                padding: '8px 16px', 
-                fontSize: '13.5px', 
+                padding: '7px 14px', 
+                fontSize: '13px', 
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 gap: '6px' 
@@ -441,20 +441,20 @@ export default function HomePage() {
               backgroundColor: 'var(--color-surface-base)',
               border: '1px dashed var(--color-border-subtle)',
               borderRadius: 'var(--radius-md)',
-              padding: '36px 24px',
+              padding: '28px 20px',
               textAlign: 'center'
             }}>
-              <Layers size={32} style={{ color: 'var(--color-text-muted)', marginBottom: '12px' }} />
-              <h3 style={{ fontSize: '16px', color: 'var(--color-text-primary)', margin: '0 0 6px 0' }}>
+              <Layers size={28} style={{ color: 'var(--color-text-muted)', marginBottom: '8px' }} />
+              <h3 style={{ fontSize: '15px', color: 'var(--color-text-primary)', margin: '0 0 4px 0' }}>
                 No hay plantillas curriculares adicionales
               </h3>
-              <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', margin: '0 0 16px 0', maxWidth: '460px', marginLeft: 'auto', marginRight: 'auto' }}>
+              <p style={{ fontSize: '13.5px', color: 'var(--color-text-secondary)', margin: '0 0 12px 0', maxWidth: '460px', marginLeft: 'auto', marginRight: 'auto' }}>
                 Puedes crear estructuras personalizadas o importar modelos en la sección de Plantillas.
               </p>
               <button 
                 type="button" 
                 className="btn btn-primary"
-                style={{ fontSize: '13.5px', padding: '8px 16px' }}
+                style={{ fontSize: '13px', padding: '7px 14px' }}
                 onClick={() => navigate('/plantillas')}
               >
                 Ir a Plantillas
@@ -465,8 +465,8 @@ export default function HomePage() {
               className="home-models-grid"
               style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', 
-                gap: '18px' 
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+                gap: '12px' 
               }}
             >
               {plantillasDisponibles.slice(0, 6).map((tpl) => (
