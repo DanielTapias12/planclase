@@ -53,9 +53,10 @@ function AppContent() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem('inspiratec_sidebar_collapsed') === 'true';
+      const saved = localStorage.getItem('inspiratec_sidebar_collapsed');
+      if (saved !== null) return saved === 'true';
     }
-    return false;
+    return true; // Predeterminado colapsado para abrirse por encima del contenido como overlay
   });
 
   const [topUtilitiesCollapsed, setTopUtilitiesCollapsed] = useState(() => {
@@ -75,6 +76,11 @@ function AppContent() {
     });
   };
 
+  const handleNavClick = () => {
+    setMobileMenuOpen(false);
+    setSidebarCollapsed(true);
+  };
+
   const toggleTopUtilities = () => {
     setTopUtilitiesCollapsed(prev => {
       const next = !prev;
@@ -89,6 +95,7 @@ function AppContent() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
+    setSidebarCollapsed(true);
   }, [location.pathname]);
 
 
@@ -154,7 +161,7 @@ function AppContent() {
                 <NavLink 
                   to="/home" 
                   className="sidebar-brand-link" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={handleNavClick}
                   title="Ir al Inicio de INSPIRATEC"
                 >
                   <div className="sidebar-brand-icon">
@@ -180,7 +187,7 @@ function AppContent() {
                 <button
                   type="button"
                   className="sidebar-close-btn-mobile"
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={handleNavClick}
                   aria-label="Cerrar menú"
                 >
                   <X size={20} />
@@ -199,7 +206,7 @@ function AppContent() {
                     id="nav-inicio"
                     end
                     title="Inicio"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Home size={18} />
@@ -211,7 +218,7 @@ function AppContent() {
                     id="nav-planificador"
                     end
                     title="Planificador de Clases"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Sparkles size={18} />
@@ -222,7 +229,7 @@ function AppContent() {
                     to="/mis-planes"
                     id="nav-mis-planes"
                     title="Mis Planes de Clase"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <FileText size={18} />
@@ -234,7 +241,7 @@ function AppContent() {
                     to="/adn-pedagogico"
                     id="nav-adn-pedagogico"
                     title="Mi ADN Pedagógico & Estudio Transversal"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Dna size={18} />
@@ -245,7 +252,7 @@ function AppContent() {
                     to="/plantillas"
                     id="nav-plantillas"
                     title="Plantillas Curriculares"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <BookOpen size={18} />
@@ -257,7 +264,7 @@ function AppContent() {
                       to="/administracion"
                       id="nav-administracion"
                       title="Panel de Administración"
-                      onClick={() => setMobileMenuOpen(false)}
+                      onClick={handleNavClick}
                       className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                     >
                       <Shield size={18} />
@@ -273,7 +280,7 @@ function AppContent() {
                   <NavLink
                     to="/biblioteca"
                     title="Biblioteca Comunitaria"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Library size={18} />
@@ -283,7 +290,7 @@ function AppContent() {
                   <NavLink
                     to="/experiencias"
                     title="Experiencias Sistematizadas"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Compass size={18} />
@@ -293,7 +300,7 @@ function AppContent() {
                   <NavLink
                     to="/foro"
                     title="Foro Docente"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <MessageSquare size={18} />
@@ -308,7 +315,7 @@ function AppContent() {
                   <NavLink
                     to="/ayuda"
                     title="Ayuda y Guías"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <HelpCircle size={18} />
@@ -318,7 +325,7 @@ function AppContent() {
                   <NavLink
                     to="/soporte"
                     title="Soporte Técnico"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <LifeBuoy size={18} />
@@ -328,7 +335,7 @@ function AppContent() {
                   <NavLink
                     to="/acerca"
                     title="Acerca de INSPIRATEC"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Info size={18} />
@@ -342,7 +349,7 @@ function AppContent() {
                   <NavLink
                     to="/config"
                     title="Configuración IA"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={handleNavClick}
                     className={({ isActive }) => isActive ? 'sidebar-nav-item active' : 'sidebar-nav-item'}
                   >
                     <Settings size={18} />

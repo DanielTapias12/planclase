@@ -363,8 +363,14 @@ h6 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.sidebar-scrollable-nav::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .sidebar-nav-group {
@@ -1054,89 +1060,13 @@ h6 {
   }
 }
 
-/* --- 2. TABLET (768px - 1024px): RAIL LATERAL COMPACTO DE 70PX --- */
-@media (min-width: 768px) and (max-width: 1024px) {
+/* --- 2. TABLETS Y ESCRITORIO (>= 769px): MENÚ LATERAL CON OVERLAY FLOTANTE SOBRE EL CONTENIDO --- */
+@media (min-width: 769px) {
   .mobile-bottom-nav {
     display: none !important;
   }
 
   .mobile-header-bar {
-    display: none !important;
-  }
-
-  .sidebar-backdrop {
-    display: none !important;
-  }
-
-  .app-sidebar-lateral {
-    display: flex !important;
-    position: fixed !important;
-    top: 14px !important;
-    left: 14px !important;
-    bottom: 14px !important;
-    width: 70px !important;
-    max-width: 70px !important;
-    height: calc(100vh - 28px) !important;
-    max-height: calc(100vh - 28px) !important;
-    transform: translateX(0) !important;
-    border-radius: 20px !important;
-    z-index: 950 !important;
-    overflow-x: hidden !important;
-    padding: 12px 0 !important;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35) !important;
-  }
-
-  .sidebar-brand-header {
-    padding: 10px 0 14px !important;
-    justify-content: center !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
-  }
-
-  .sidebar-brand-link {
-    justify-content: center !important;
-    gap: 0 !important;
-  }
-
-  .sidebar-brand-texts {
-    display: none !important;
-  }
-
-  .sidebar-collapse-toggle-btn,
-  .sidebar-close-btn-mobile {
-    display: none !important;
-  }
-
-  .sidebar-group-label {
-    display: none !important;
-  }
-
-  .sidebar-nav-item {
-    justify-content: center !important;
-    width: 48px !important;
-    height: 48px !important;
-    min-height: 48px !important;
-    min-width: 48px !important;
-    margin: 4px auto !important;
-    padding: 0 !important;
-    border-radius: 12px !important;
-    position: relative !important;
-  }
-
-  .sidebar-nav-item span:not(.sidebar-counter-badge) {
-    display: none !important;
-  }
-
-  .sidebar-counter-badge {
-    position: absolute !important;
-    top: 4px !important;
-    right: 4px !important;
-    font-size: 9.5px !important;
-    min-width: 16px !important;
-    height: 16px !important;
-    padding: 0 4px !important;
-  }
-
-  .sidebar-footer-institutional {
     display: none !important;
   }
 
@@ -1144,35 +1074,19 @@ h6 {
     display: none !important;
   }
 
-  .app-shell-main {
-    padding-left: 96px !important;
-    min-width: 0 !important;
-  }
-
-  .app-top-utilities-bar {
-    display: flex !important;
-    padding: 14px 24px 8px !important;
-  }
-}
-
-/* --- 3. ESCRITORIO (>= 1025px): SIDEBAR PERSISTENTE DE 260PX --- */
-@media (min-width: 1025px) {
-  .mobile-bottom-nav {
+  .sidebar-close-btn-mobile {
     display: none !important;
   }
 
-  .mobile-header-bar {
-    display: none !important;
-  }
-
+  /* Backdrop oscuro y sutil cuando el menú se expande sobre el contenido */
   .sidebar-backdrop {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(10, 28, 23, 0.35);
+    background: rgba(10, 28, 23, 0.45);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: 940;
+    z-index: 1040;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.22s ease;
@@ -1180,20 +1094,24 @@ h6 {
 
   .sidebar-backdrop.desktop-expanded {
     display: block !important;
-    opacity: 1;
-    pointer-events: auto;
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 
+  /* Sidebar flotante fijo que se abre por encima del contenido */
   .app-sidebar-lateral {
+    display: flex !important;
     position: fixed !important;
     top: 16px !important;
-    left: 18px !important;
+    left: 16px !important;
     bottom: 16px !important;
     height: calc(100vh - 32px) !important;
     max-height: calc(100vh - 32px) !important;
     margin: 0 !important;
-    z-index: 950 !important;
+    border-radius: 20px !important;
+    z-index: 1050 !important;
     transform: translateX(0) !important;
+    transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease !important;
   }
 
   .app-sidebar-lateral.collapsed {
@@ -1203,19 +1121,26 @@ h6 {
 
   .app-sidebar-lateral:not(.collapsed) {
     width: 254px !important;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.52), 0 4px 16px rgba(16, 36, 32, 0.25) !important;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65), 0 4px 16px rgba(16, 36, 32, 0.35) !important;
   }
 
+  /* El contenido mantiene siempre su margen fijo sin saltos; el menú se abre por encima */
   .app-shell-main {
-    padding-left: 284px !important;
+    padding-left: 88px !important;
     min-width: 0 !important;
-    transition: padding-left 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: none !important;
   }
 
   .app-shell-main.sidebar-is-collapsed {
-    padding-left: 96px !important;
+    padding-left: 88px !important;
   }
 
+  .app-top-utilities-bar {
+    display: flex !important;
+    padding: 14px 24px 8px !important;
+  }
+
+  /* Estados colapsados de la barra lateral */
   .app-sidebar-lateral.collapsed .sidebar-brand-header {
     padding: 16px 8px;
     flex-direction: column;
@@ -3322,10 +3247,7 @@ h6 {
 
 @media (min-width: 992px) {
   .editor-view {
-    padding-left: clamp(100px, 8.5vw, 130px) !important;
-    padding-right: clamp(28px, 4vw, 54px) !important;
-    padding-top: 26px !important;
-    padding-bottom: 64px !important;
+    padding: 20px 24px 64px !important;
     box-sizing: border-box !important;
   }
 
@@ -4096,10 +4018,7 @@ h6 {
 /* En escritorio, despeja con holgura el sidebar lateral colapsado fijo (66px + 18px = 84px) */
 @media (min-width: 992px) {
   .foro-page-container {
-    padding-left: clamp(100px, 8vw, 120px) !important;
-    padding-right: clamp(24px, 3.5vw, 48px) !important;
-    padding-top: 16px !important;
-    padding-bottom: 36px !important;
+    padding: 16px 24px 36px !important;
   }
 }
 
@@ -5971,8 +5890,7 @@ h6 {
 
   .editor-view {
     max-width: 1360px;
-    padding-left: clamp(100px, 8.5vw, 130px) !important;
-    padding-right: clamp(28px, 4vw, 54px) !important;
+    padding: 20px 24px 64px !important;
   }
 
   .editor-doc-table-wrapper {
@@ -6076,16 +5994,13 @@ h6 {
   max-width: 1360px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 20px 80px;
+  padding: 16px 20px 48px;
   box-sizing: border-box;
 }
 
 @media (min-width: 992px) {
   .adn-container {
-    padding-left: clamp(100px, 8.5vw, 130px) !important;
-    padding-right: clamp(28px, 4vw, 54px) !important;
-    padding-top: 16px !important;
-    padding-bottom: 40px !important;
+    padding: 16px 24px 40px !important;
   }
 }
 
@@ -6135,17 +6050,25 @@ h6 {
   display: flex;
   gap: 8px;
   border-bottom: 2px solid rgba(49, 91, 84, 0.14);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: thin;
+  padding-bottom: 4px;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
   width: 100%;
   box-sizing: border-box;
+}
+
+.adn-tabs-nav::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .adn-tab-item {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 8px;
   padding: 10px 18px;
   border: 1px solid rgba(255, 255, 255, 0.85);
