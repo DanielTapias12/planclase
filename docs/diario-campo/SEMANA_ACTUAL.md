@@ -132,6 +132,15 @@
 
 ---
 
+### 13. Consolidación de Módulos Comunitarios y de Soporte: Biblioteca, Foro, Ayuda y Soporte (ACT-007, ACT-009, ACT-010)
+- **Biblioteca Comunitaria (`/biblioteca`):** Se formalizó el repositorio público de secuencias didácticas abiertas, documentando el buscador temático, selector de grado escolar, tarjetas de planes compartidos (ej. *Pensamiento Computacional*), modal de vista previa Markdown con tecla `Escape` y botón de clonación directa al planificador.
+- **Foro Docente Interactivo (`/foro`):** Se inventarió el espacio comunitario dialógico con sus 3 columnas (Vistas de navegación y categorías a la izquierda, cuadrícula central de hilos de debate con ordenación por fecha y réplicas, y panel derecho con normas de participación profesional bajo Ley 1581).
+- **Centro de Ayuda Pedagógica (`/ayuda`):** Se registraron los 5 acordeones interactivos colapsables (Planificación, Almacenamiento, Plantillas, Inclusión DUA y BYOK Gemini), buscador de guías y botón de enlace a soporte.
+- **Soporte Técnico Institucional (`/soporte`):** Se documentó el formulario de radicación de tickets (asunto, descripción, envío seguro a Firestore), paneles de autodiagnóstico de IA y privacidad, y vista de confirmación exitosa.
+- Se incorporaron las 4 capturas fotográficas reales en `docs/evidencias/ACT-009/` y `docs/evidencias/ACT-010/` (`V07_biblioteca.png`, `V09_foro.png`, `V12_ayuda.png`, `V13_soporte.png`), y los 4 mockups correspondientes en `docs/diseno-interface/mockups/` (`mockup-biblioteca.png`, `mockup-foro.png`, `mockup-ayuda.png`, `mockup-soporte.png`).
+
+---
+
 ## Acuerdos y Próximos Compromisos
 1. **Zoe Peñata (Scrum Master):** Monitorear la ejecución del plan de acción derivado de la evaluación, verificar entregables de ACT-007, ACT-009, ACT-010, ACT-011, ACT-012, ACT-014 y ACT-015, y preparar la entrega de la Semana 10.
 2. **Daniel Tapias y Luis Caldera (Frontend Developers):** Mantener la integridad del frontend, el paso exitoso de las 7 suites de pruebas y la estabilidad de la iconografía vectorial y el sistema Glassmorphism.

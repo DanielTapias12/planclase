@@ -242,30 +242,39 @@ Interfaz de pantalla dividida (*split-screen*) con editor Markdown enriquecido a
 
 ---
 
-### Ventana 07: Biblioteca de Recursos y Materiales Didácticos (`BibliotecaPage.jsx`)
+### Ventana 07: Biblioteca Comunitaria (`BibliotecaPage.jsx`)
 
 #### Imagen de la ventana
-![Biblioteca de Recursos](docs/evidencias/ACT-009/V07_biblioteca.png)
+![Biblioteca Comunitaria](docs/evidencias/ACT-009/V07_biblioteca.png)
 
 #### Objetivo
-Brindar acceso a un repositorio de guías curriculares del MEN y generar materiales interactivos digitales (juegos HTML5, crucigramas, fichas DUA) listos para el aula con síntesis de voz accesible.
+Ofrecer un repositorio público y abierto de secuencias didácticas compartidas por la comunidad docente, permitiendo buscar, filtrar por nivel de grado escolar, inspeccionar en vista previa mediante modal Markdown y clonar cualquier plan curricular directamente al planificador personal.
 
 #### Descripción general
-Panel con dos pestañas de trabajo (*Recursos Abiertos* y *Generador de Materiales*). Incluye buscadores, filtros temáticos y la consola para compilar y previsualizar juegos educativos en un modal seguro.
+La ventana despliega un entorno cálido con estética Glassmorphism marfil translúcido sobre el fondo dinámico:
+- **Cabecera Institucional:** Badge *"RECURSOS DIDÁCTICOS ABIERTOS"* con icono de libros (`Library`), título H1 *"Biblioteca Comunitaria"*, síntesis explicativa sobre la red de docentes y píldora con el contador dinámico (`1 Recurso disponible`).
+- **Barra de Búsqueda y Filtrado:** Input de texto amplio con placeholder *"Buscar por tema, asignatura o autor..."* acompañado a la derecha de un menú desplegable con icono de embudo (`Filter`) para acotar por ciclo escolar (*Todos los grados*, *1ro* a *11mo*).
+- **Cuadrícula de Planes Compartidos:** Tarjetas de diseño esmerilado que exponen:
+  - Insignia de estado *"Plan Compartido"* e indicador de adopción (*0 usos* con icono `Download`).
+  - Título formal de la secuencia (ej. *"Pensamiento Computacional"* en fuente `Lora`).
+  - Autoría (*Por: Docente* con icono `User`).
+  - Metadatos curriculares: Asignatura (*Tecnología e Informática* con `BookOpen`) y grado (*8vo* con `GraduationCap`).
+  - Botonera de acción inferior: Botón secundario *"Previsualizar"* (icono `Eye`) y botón primario *"Usar Plan"* (fondo `#183630`, icono `Copy`).
+- **Modal de Vista Previa Extendido (`previewPlan`):** Cuadro de diálogo modal accesible con portal que renderiza el documento completo en Markdown GFM con tablas, objetivos y rúbricas, con botón de cierre `X` y soporte para tecla `Escape`.
 
 #### Tabla de elementos
 
 | Elemento | Descripción |
 |---|---|
-| **Nombre de la ventana** | Biblioteca Comunitaria y Generador de Materiales Didácticos |
-| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V07_biblioteca.png`](docs/evidencias/ACT-009/V07_biblioteca.png). Iconos Lucide: `Library`, `Play`, `Filter`, `Download`, `Volume2`. |
-| **Texto** | Catálogo de materiales didácticos, descripciones de guías pedagógicas, fichas técnicas y etiquetas de grado escolar. |
-| **Audio** | **Síntesis de voz accesible en español:** La Web Speech API (`SpeechSynthesisUtterance`) lee las consignas y preguntas en voz alta dentro de los juegos didácticos generados para estudiantes con dificultades lectoras o discapacidad visual. |
+| **Nombre de la ventana** | Biblioteca Comunitaria (Recursos Didácticos Abiertos) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V07_biblioteca.png`](docs/evidencias/ACT-009/V07_biblioteca.png). Iconografía Lucide: `Library`, `Search`, `Filter`, `Download`, `User`, `BookOpen`, `GraduationCap`, `Eye`, `Copy`, `X`. |
+| **Texto** | • Badge: *"RECURSOS DIDÁCTICOS ABIERTOS"*.<br>• Título H1: *"Biblioteca Comunitaria"* (fuente `Lora`, 28px).<br>• Subtítulo: *"Explora, consulta y clona secuencias didácticas compartidas abiertamente por la red de docentes. Adapta cualquier experiencia a las necesidades de tu contexto escolar."*<br>• Píldora: *"1 Recurso disponible"*.<br>• Buscador: *"Buscar por tema, asignatura o autor..."*<br>• Selector de grado: *"Todos los grados"*, opciones de 1ro a 11mo.<br>• Metadatos en tarjeta: *"Plan Compartido"*, *"0 usos"*, *"Pensamiento Computacional"*, *"Por: Docente"*, *"Tecnología e Informática"*, *"8vo"*.<br>• Botones en tarjeta: *"Previsualizar"*, *"Usar Plan"*. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
 | **Video** | No se identificaron archivos de video en esta ventana. |
-| **Animación** | Animaciones interactivas en los juegos educativos generados (rotación de tarjetas en flashcards 3D, retroalimentación en crucigramas). |
-| **Acciones del usuario** | Filtrar recursos por grado o área, seleccionar un tipo de material didáctico interactivo, presionar "Compilar y Probar" para abrir el visor en modal y activar la lectura por voz. |
-| **Botones** | *"Recursos"*, *"Generador"*, *"Compilar y Probar Recurso"*, *"Descargar HTML"* y botón de narración por voz (`Volume2`). |
-| **Navegación** | Apertura del visor modal `MaterialModal.jsx` y navegación global mediante el menú lateral. |
+| **Animación** | • Transición suave de filtrado en tiempo real al escribir en la barra de búsqueda o cambiar de grado escolar.<br>• Efecto hover de elevación y resaltado perimetral en cada tarjeta de recurso.<br>• Apertura suave con desenfoque de fondo en el modal de previsualización. |
+| **Acciones del usuario** | • Escribir en el buscador para filtrar en vivo por tema, materia o autor.<br>• Seleccionar un grado escolar en el desplegable de opciones.<br>• Clic en *"Previsualizar"*: abre el modal con la secuencia renderizada en Markdown y bloquea el scroll del body.<br>• Clic en *"Usar Plan"*: clona la secuencia didáctica mediante `loadPlan()` en el store activo y redirige al planificador `/`.<br>• Presionar tecla `Escape` o clic en `X` para cerrar el modal de previsualización. |
+| **Botones** | • Selector desplegable de grados escolares con icono `Filter`.<br>• Botón secundario *"Previsualizar"* (icono `Eye`).<br>• Botón primario *"Usar Plan"* (fondo `#183630`, color blanco, icono `Copy`).<br>• Botón de cierre `X` en el modal de vista previa. |
+| **Navegación** | • Clic en *"Usar Plan"* redirige a `/` (Planificador) con el contenido precargado para su adaptación.<br>• Dock lateral izquierdo para navegar a cualquier otro módulo del ecosistema. |
 
 ---
 
@@ -420,12 +429,117 @@ La ventana presenta un encabezado translúcido esmerilado (*Glassmorphism* marfi
 
 ---
 
+### Ventana 09: Foro Docente Interactivo (`ForoPage.jsx`)
+
+#### Imagen de la ventana
+![Foro Docente Interactivo](docs/evidencias/ACT-009/V09_foro.png)
+
+#### Objetivo
+Brindar un espacio asíncrono y estructurado de diálogo pedagógico, intercambio de experiencias de aula y resolución colaborativa de retos curriculares entre docentes, categorizado por líneas temáticas prioritarias y regulado por normas de participación profesional.
+
+#### Descripción general
+La interfaz presenta un diseño enriquecido con paneles colapsables laterales y estética Glassmorphism:
+- **Cabecera Institucional:** Badge *"COMUNIDAD ACADÉMICA DE APRENDIZAJE"*, título H1 *"Foro Docente"*, subtítulo dialógico y botón de acción destacada *"+ Nueva discusión"* (fondo verde oscuro `#183630`).
+- **Barra de Herramientas y Filtros:** Buscador en tiempo real (*"Buscar por tema, palabra clave o autor..."*), píldoras de conteo (*2 temas*, *0 respuestas*, *0 guardadas*), selector de categorías temáticas (*Todas (2)*, *Innovación pedagógica*, *Inteligencia artificial en educación*, *Estrategias didácticas 2*, *Evaluación del aprendizaje*, *Inclusión y DUA*), y botones conmutadores para ocultar o mostrar las columnas laterales (*Ocultar Categorías*, *Ocultar Contexto*).
+- **Panel Lateral Izquierdo (Vistas de Navegación):** Segmentación por filtros personales: *Todas las discusiones (2)*, *Mis publicaciones (1)*, *Mis participaciones (0)*, *Sin responder (2)*, *Guardadas o favoritas (0)*, complementado por la lista vertical de categorías con iconos representativos.
+- **Área Central de Discusión:** Selector de ordenación (*Más recientes*, *Más comentadas*, *Más valoradas*), listado de tarjetas de debates comunitarios:
+  - Debate 1: *"Buena estructura"* por Daniel Camilo Tapias Ulloa (Admin), hace 5 días, categoría *Estrategias didácticas*, con acciones para guardar en favoritos (`Bookmark`), compartir enlace (`Share2`), eliminar (`Trash2`) y botón primario *"Participar →"*.
+  - Debate 2: *"gergetertyrt"* por Docente Anónimo (Admin), 4 de oct de 2026, categoría *Estrategias didácticas*, con acciones y botón *"Participar →"*.
+- **Panel Lateral Derecho (Contexto y Normas):** Tarjeta con las *Normas de Participación* (Diálogo constructivo, Privacidad y ética bajo Ley 1581, Colaboración abierta), resumen de temas destacados y etiquetas interactivas inferiores (*Inclusión y DUA*, *IA en Educación*, *STEAM*, *Rúbricas*).
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Foro Docente Interactivo (`ForoPage.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V09_foro.png`](docs/evidencias/ACT-009/V09_foro.png). Iconografía Lucide: `MessagesSquare`, `PlusCircle`, `Search`, `PanelLeftClose`, `PanelRightClose`, `Clock`, `ShieldCheck`, `Bookmark`, `Share2`, `Trash2`, `Send`, `Sparkles`, `Layers`, `Award`. |
+| **Texto** | • Badge: *"COMUNIDAD ACADÉMICA DE APRENDIZAJE"*.<br>• Título H1: *"Foro Docente"* (fuente `Lora`, 28px).<br>• Subtítulo: *"Espacio de diálogo pedagógico, intercambio de experiencias y resolución colaborativa de retos curriculares."*<br>• Botón superior: *"+ Nueva discusión"*.<br>• Buscador: *"Buscar por tema, palabra clave o autor..."*<br>• Conteo: *"2 temas"*, *"0 respuestas"*, *"0 guardadas"*.<br>• Categorías: *Todas (2)*, *Innovación pedagógica*, *Inteligencia artificial en educación*, *Estrategias didácticas 2*, *Evaluación del aprendizaje*, *Inclusión y DUA*.<br>• Vistas de navegación: *Todas las discusiones*, *Mis publicaciones*, *Mis participaciones*, *Sin responder*, *Guardadas*.<br>• Normas de participación: Diálogo constructivo, Privacidad y ética, Colaboración abierta. |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Transición suave de colapso y expansión en los paneles laterales izquierdo y derecho.<br>• Desvanecimiento al filtrar debates por categoría temática o búsqueda en vivo.<br>• Microanimación hover de elevación en tarjetas de discusión y botones de acción. |
+| **Acciones del usuario** | • Clic en *"+ Nueva discusión"*: abre el modal de publicación con categoría, título y cuerpo.<br>• Escribir en el buscador para filtrar temas por palabra clave, autor o texto.<br>• Clic en las etiquetas de categoría para acotar el listado de hilos.<br>• Conmutar botones *"Ocultar Categorías"* y *"Ocultar Contexto"* para maximizar el área de lectura.<br>• Seleccionar una vista en el panel lateral (*Mis publicaciones*, *Sin responder*, etc.).<br>• Cambiar el orden de hilos mediante el selector desplegable (*Más recientes*).<br>• Clic en *"Participar"* para desplegar las respuestas y publicar réplicas.<br>• Clic en el icono de guardar (`Bookmark`) para archivar el hilo en favoritos.<br>• Clic en compartir (`Share2`) para copiar el enlace directo al portapapeles.<br>• Clic en eliminar (`Trash2`) con confirmación segura si es autor o administrador. |
+| **Botones** | • Botón primario *"+ Nueva discusión"* (fondo `#183630`, color blanco).<br>• Botones conmutadores de layout: *"Ocultar Categorías"* y *"Ocultar Contexto"*.<br>• Botones tipo píldora de categorías temáticas.<br>• Botones de acción en cada debate: *"Participar →"*, `Bookmark`, `Share2`, `Trash2`. |
+| **Navegación** | • Apertura del hilo interactivo y réplicas en la misma vista.<br>• Dock lateral izquierdo para navegar a cualquier otro módulo de INSPIRATEC. |
+
+---
+
+### Ventana 12: Centro de Ayuda Pedagógica (`AyudaPage.jsx`)
+
+#### Imagen de la ventana
+![Centro de Ayuda Pedagógica](docs/evidencias/ACT-009/V12_ayuda.png)
+
+#### Objetivo
+Proveer andamiaje conceptual, operativo y procedimental al docente usuario, resolviendo inquietudes frecuentes mediante acordeones interactivos categorizados (Planificación, Almacenamiento, Plantillas, DUA, Configuración IA) y facilitando un enlace directo hacia la mesa de soporte técnico.
+
+#### Descripción general
+La ventana presenta un diseño limpio, sereno y estructurado en torno al autoservicio docente:
+- **Cabecera Institucional:** Badge *"BASE DE CONOCIMIENTO Y GUÍAS"* con icono de ayuda (`HelpCircle`), título H1 *"Centro de Ayuda Pedagógica"*, subtítulo orientador y dos píldoras de estado (*5 Guías Oficiales* con icono `BookOpen` y *Soporte Disponible* con icono `LifeBuoy`).
+- **Barra de Búsqueda de Guías:** Input accesible con placeholder *"Buscar por tema: DUA, plantillas, descargar Word, generar clase..."* para filtrado en tiempo real de preguntas y respuestas.
+- **Directorio de Acordeones Desplegables:** Lista de preguntas estructuradas por categoría, con iconos representativos y control colapsable suave (`ChevronDown` / `ChevronUp`):
+  1. *PLANIFICACIÓN:* "¿Cómo genero mi primer plan de clase?" (Guía paso a paso en 4 fases tripartitas).
+  2. *ALMACENAMIENTO:* "¿Cómo guardo, descargo y comparto mis secuencias?" (Formatos Word, PDF y biblioteca).
+  3. *PLANTILLAS:* "¿Qué son las plantillas y para qué sirven?" (Momentos didácticos institucionales).
+  4. *INCLUSIÓN DUA:* "¿Qué son los ajustes razonables y el enfoque DUA?" (Pautas CAST y PIAR).
+  5. *CONFIGURACIÓN:* "¿Cómo configuro mi propia clave de Inteligencia Artificial (BYOK)?" (Google Gemini y privacidad local).
+- **Sección Inferior de Asistencia:** Banner institucional *"¿Aún necesitas ayuda o reportar un caso? Nuestro equipo técnico docente está disponible para orientarte..."* acompañado del botón *"Contactar a Soporte Técnico"*.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Centro de Ayuda Pedagógica (`AyudaPage.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V12_ayuda.png`](docs/evidencias/ACT-009/V12_ayuda.png). Iconografía Lucide: `HelpCircle`, `BookOpen`, `LifeBuoy`, `Search`, `Sparkles`, `FileText`, `Compass`, `CheckCircle2`, `ChevronDown`, `ChevronUp`. |
+| **Texto** | • Badge: *"BASE DE CONOCIMIENTO Y GUÍAS"*.<br>• Título H1: *"Centro de Ayuda Pedagógica"* (fuente `Lora`, 28px).<br>• Subtítulo: *"Resuelve tus dudas sobre el asistente de secuencias didácticas, plantillas curriculares y adaptaciones de aula con IA."*<br>• Píldoras: *"5 Guías Oficiales"*, *"Soporte Disponible"*.<br>• Buscador: *"Buscar por tema: DUA, plantillas, descargar Word, generar clase..."*<br>• Categorías en acordeones: *Planificación*, *Almacenamiento*, *Plantillas*, *Inclusión DUA*, *Configuración*.<br>• Preguntas formuladas: Generación de primer plan, guardado y descarga, uso de plantillas, DUA/PIAR, y configuración BYOK de Gemini.<br>• Banner inferior: *"¿Aún necesitas ayuda o reportar un caso?"* |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Transición suave de expansión y colapso en el contenido de cada acordeón (`transition: max-height, opacity`).<br>• Rotación de 180° en los chevrones indicadores al abrir o cerrar una pregunta.<br>• Filtrado instantáneo con desvanecimiento de preguntas al escribir en la barra de búsqueda. |
+| **Acciones del usuario** | • Escribir en el buscador para filtrar guías por texto o concepto pedagógico.<br>• Clic en la barra de cualquier pregunta para desplegar u ocultar su respuesta explicativa.<br>• Clic en *"Contactar a Soporte Técnico"*: redirige automáticamente a `/soporte`. |
+| **Botones** | • Barras interactivas de acordeón clicables con efecto hover.<br>• Botón secundario de asistencia *"Contactar a Soporte Técnico"* (icono `LifeBuoy`). |
+| **Navegación** | • Redirección directa hacia la ventana `/soporte` al pulsar el botón de contacto.<br>• Dock lateral izquierdo para navegar a cualquier otro módulo del ecosistema. |
+
+---
+
+### Ventana 13: Soporte Técnico Institucional (`SoportePage.jsx`)
+
+#### Imagen de la ventana
+![Soporte Técnico Institucional](docs/evidencias/ACT-009/V13_soporte.png)
+
+#### Objetivo
+Canalizar de manera formal y confidencial las solicitudes de asistencia técnica, fallos de generación de IA o dudas de configuración docente, garantizando un tiempo de respuesta inferior a 24 horas y protegiendo los datos bajo la Ley 1581 de 2012.
+
+#### Descripción general
+La ventana presenta un layout asimétrico equilibrado en dos columnas con tratamiento Glassmorphism:
+- **Cabecera Institucional:** Badge *"MESA DE AYUDA Y SOPORTE TÉCNICO"* con icono de salvavidas (`LifeBuoy`), título H1 *"Soporte Técnico Institucional"*, subtítulo de acompañamiento y dos píldoras de compromiso (*Respuesta en < 24h* con icono `Clock` y *Atención Directa* con icono `MessageSquare`).
+- **Columna Izquierda (Formulario de Ticket):**
+  - Encabezado: *"Crear Nuevo Ticket de Asistencia"*.
+  - Campo *"Asunto del caso *"*: input de texto con placeholder *"Ej.: Error al exportar plan a Word o clave de IA"*.
+  - Campo *"Descripción detallada del problema *"*: área de texto amplia con placeholder *"Describe qué ocurrió, qué pasos estabas realizando y cualquier mensaje de error que hayas observado..."*.
+  - Texto orientador: *"Incluye detalles como la materia o si el problema ocurre en un dispositivo específico."*
+  - Botón de envío: *"Enviar Solicitud"* con icono de avión de papel (`Send`).
+- **Columna Derecha (Paneles Informativos y de Seguridad):**
+  - Tarjeta *"¿Falla la generación con IA?"*: Guía rápida con icono de chispas (`Sparkles`) para verificar la clave API de Google Gemini en Configuración IA y obtener credenciales gratuitas en Google AI Studio.
+  - Tarjeta *"Protección de tus Datos"*: Aviso de privacidad con icono de advertencia (`AlertCircle`) que certifica la confidencialidad de la solicitud conforme a la Ley 1581 de 2012 (Habeas Data).
+- **Vista de Confirmación (`enviado === true`):** Pantalla de confirmación con icono verde de éxito (`CheckCircle2`), mensaje de recepción formal y botón *"Enviar otra solicitud"*.
+
+#### Tabla de elementos
+
+| Elemento | Descripción |
+|---|---|
+| **Nombre de la ventana** | Soporte Técnico Institucional (`SoportePage.jsx`) |
+| **Imagen** | Captura real: [`docs/evidencias/ACT-009/V13_soporte.png`](docs/evidencias/ACT-009/V13_soporte.png). Iconografía Lucide: `LifeBuoy`, `Clock`, `MessageSquare`, `Send`, `Sparkles`, `AlertCircle`, `CheckCircle2`, `Loader2`. |
+| **Texto** | • Badge: *"MESA DE AYUDA Y SOPORTE TÉCNICO"*.<br>• Título H1: *"Soporte Técnico Institucional"* (fuente `Lora`, 28px).<br>• Subtítulo: *"¿Tienes dificultades con el asistente de IA, generación de planes o configuración de tu cuenta? Estamos aquí para acompañarte."*<br>• Píldoras: *"Respuesta en < 24h"*, *"Atención Directa"*.<br>• Formulario: *"Crear Nuevo Ticket de Asistencia"*, *"Asunto del caso *"*, *"Descripción detallada del problema *"*, placeholder de contexto.<br>• Tarjeta IA: Verificación de clave API de Google Gemini en Configuración IA.<br>• Tarjeta Datos: Confidencialidad bajo Ley 1581 de 2012.<br>• Vista de éxito: *"¡Ticket Enviado con Éxito!"* |
+| **Audio** | No se identificaron archivos de audio en esta ventana. |
+| **Video** | No se identificaron archivos de video en esta ventana. |
+| **Animación** | • Spinner animado en el botón al procesar el envío (`Loader2`).<br>• Transición de desvanecimiento hacia la tarjeta de confirmación de éxito tras el guardado en Firestore.<br>• Efecto hover de realce de borde y elevación en las tarjetas laterales informativas. |
+| **Acciones del usuario** | • Diligenciar el campo de asunto del ticket.<br>• Redactar la descripción detallada del fallo o consulta técnica en el textarea.<br>• Clic en *"Enviar Solicitud"*: despacha el ticket a la colección `tickets` de Firestore.<br>• Clic en *"Enviar otra solicitud"* en la pantalla de éxito para restablecer el formulario. |
+| **Botones** | • Botón primario *"Enviar Solicitud"* (fondo gris/verde petróleo, icono `Send`).<br>• Botón *"Enviar otra solicitud"* en la pantalla de éxito. |
+| **Navegación** | • Los tickets enviados se reflejan de inmediato en la pestaña de tickets de `/administracion`.<br>• Dock lateral izquierdo para navegar a cualquier otro módulo del ecosistema. |
+
+---
+
 ### Ventanas Restantes del Sistema (Inventario Completo)
 
 - **Ventana 08: Banco de Experiencias (`ExperienciasPage.jsx`):** Muro colaborativo donde los docentes consultan secuencias exitosas publicadas por colegas, con botones de valoración reflexiva (*"Útil"*, *"Innovador"*) y réplicas constructivas.
-- **Ventana 09: Foro Docente (`ForoPage.jsx`):** Espacio de discusión temática organizado por categorías (Evaluación, DUA, Metodologías Activas) para resolver dudas de aula y debatir la Guía 30 del MEN.
-- **Ventana 12: Centro de Ayuda (`AyudaPage.jsx`):** Acordeones colapsables con preguntas frecuentes (FAQ), tutoriales de uso del asistente y glosario pedagógico.
-- **Ventana 13: Soporte Técnico (`SoportePage.jsx`):** Formulario para registrar problemas técnicos, incidencias con la IA y diagnóstico automático de red/navegador.
 - **Ventana 14: Acerca de INSPIRATEC (`AboutPage.jsx`):** Ficha institucional del software, justificación basada en MODESEC y créditos del equipo de desarrollo.
 - **Ventana 15: Autenticación (`AuthPage.jsx`):** Formulario para inicio de sesión y registro de docentes con Firebase Auth y botón de acceso rápido con Google OAuth.
 

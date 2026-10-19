@@ -313,25 +313,27 @@ La ventana **Plantillas Curriculares** (`/plantillas`) ofrece un repositorio ofi
 
 ---
 
-### VENTANA 7 — Biblioteca Comunitaria y Generador de Materiales Didácticos (`BibliotecaPage.jsx`)
+### VENTANA 7 — Biblioteca Comunitaria (`BibliotecaPage.jsx`)
 
 #### 7.1 Captura de Pantalla Real
-![Biblioteca de Recursos y Materiales](docs/evidencias/ACT-010/V07_biblioteca.png)
+![Biblioteca Comunitaria](docs/evidencias/ACT-010/V07_biblioteca.png)
 
 #### 7.2 Descripción Funcional y Arquitectura Visual
-La **Biblioteca de Recursos** (`/biblioteca`) integra dos módulos de alto impacto educativo:
-1. **Repositorio de Recursos Curriculares Abiertos:** Búsqueda y filtrado de guías, documentos MEN y secuencias de referencia.
-2. **Generador y Visor de Materiales Didácticos Interactivos:** Herramienta que genera juegos educativos en HTML5, crucigramas, cuestionarios interactivos y fichas DUA ejecutables en un `iframe` seguro, dotados de síntesis de voz mediante la **Web Speech API** (`window.speechSynthesis`), permitiendo lectura accesible de consignas a estudiantes con diversidad funcional.
+La ventana **Biblioteca Comunitaria** (`/biblioteca`) constituye el repositorio público de secuencias didácticas abiertas compartidas por el colectivo docente. Permite explorar planes de clase validados en aula, filtrarlos en tiempo real por término de búsqueda y por ciclo escolar, visualizarlos en un modal accesible renderizado en Markdown con soporte de cierre por tecla `Escape`, y clonar cualquier secuencia curricular directamente al planificador personal mediante `loadPlan()`.
 
-#### 7.3 Registro Técnico de Elementos
+#### 7.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Biblioteca** | Pestañas de Navegación "Recursos" vs "Generador" | Selector de dos pestañas para alternar entre el catálogo de archivos y el motor interactivo. | Contenedor tabulado con clases `.tab-item.active` | Cambia el estado visual entre el repositorio de documentos y la fábrica de juegos. | `onClick` actualiza `activeTab`. |
-| **Biblioteca** | Generador de Materiales Didácticos | Formulario para elegir tipo de recurso interactivo (Trivia, Crucigrama, Ficha DUA, Juego de Emparejamiento). | Formulario interactivo con selectores temáticos | Configura los parámetros didácticos del recurso digital a compilar. | `onChange` en selectores; `onSubmit` del formulario. |
-| **Biblioteca** | Botón "Compilar y Probar Recurso" | Botón de acción con icono de reproductor que genera el código interactivo. | Botón HTML `<button>` / Icono `<Play size={16}>` | Compila el script HTML5/JS del juego y abre el modal `MaterialModal.jsx`. | `onClick` compila y abre el diálogo emergente. |
-| **Biblioteca** | Síntesis de Voz Web Speech API | Sistema de accesibilidad auditiva embebido en los recursos generados para narrar preguntas. | API nativa del navegador / `SpeechSynthesisUtterance` | Reproduce con voz sintética la consigna del ejercicio para alumnos no lectores o con discapacidad visual. | Evento de interacción con el botón parlante del juego dentro del `iframe`. |
-| **Biblioteca** | Filtros de Grado y Asignatura | Menús desplegables para acotar la búsqueda de materiales en el repositorio. | Selectores de formulario accesibles | Filtra la cuadrícula de recursos pedagógicos disponibles. | `onChange`. |
+| **Biblioteca** | Badge "Recursos Didácticos Abiertos" | Insignia superior que contextualiza el repositorio de acceso libre. | Badge Glassmorphism / Icono `<Library size={14}>` | Elemento visual identificador de la sección. | Estático. |
+| **Biblioteca** | Píldora de Recursos Disponibles | Contador en la cabecera (*"1 Recurso disponible"*). | Contenedor cápsula / Icono `<BookOpen size={14}>` | Muestra el total de planes públicos obtenidos desde Firestore. | Reactivo a `recursos.length`. |
+| **Biblioteca** | Buscador de Secuencias | Campo de búsqueda en tiempo real por tema, materia o autor. | Input HTML `<input type="text">` con icono `<Search size={16}>` | Filtra instantáneamente la cuadrícula de recursos comunitarios. | `onChange` actualiza `searchTerm`. |
+| **Biblioteca** | Selector de Grado Escolar | Menú desplegable con opciones desde *Todos los grados* hasta *11mo*. | Control `<select>` estilizado con icono `<Filter size={15}>` | Acota los planes visibles según el ciclo escolar seleccionado. | `onChange` actualiza `selectedGrade`. |
+| **Biblioteca** | Tarjeta de Plan Compartido | Contenedor Glassmorphism para la secuencia (ej. *"Pensamiento Computacional"*). | Tarjeta esmerilada con bisel blanco de 1px | Expone título, autoría, asignatura, grado y número de usos. | Estático con efecto hover. |
+| **Biblioteca** | Botón "Previsualizar" | Botón secundario para inspeccionar el contenido completo del plan. | Botón HTML `<button>` / Icono `<Eye size={15}>` | Carga el plan en `previewPlan` y abre el modal con bloqueo de scroll. | `onClick`. |
+| **Biblioteca** | Botón "Usar Plan" | Botón primario verde oscuro para transferir la secuencia al wizard. | Botón HTML `<button>` / Icono `<Copy size={15}>`, fondo `#183630` | Ejecuta `loadPlan(plan)`, asigna nuevo ID y redirige a `/`. | `onClick`. |
+| **Biblioteca** | Modal de Vista Previa Markdown | Diálogo emergente con renderizado estructurado mediante `ReactMarkdown`. | Componente modal con `createPortal` | Muestra el plan completo con tablas didácticas y rúbricas. | Renderizado condicionado a `previewPlan`. |
+| **Biblioteca** | Escape Key Handler | Listener de teclado para cerrar el modal de previsualización. | Event listener global `window.addEventListener('keydown')` | Cierra `previewPlan` y restaura el scroll del body. | `keydown` con `e.key === 'Escape'`. |
 
 ---
 
@@ -353,17 +355,31 @@ La ventana **Experiencias** (`/experiencias`) es el muro formativo comunitario d
 
 ### VENTANA 9 — Foro Docente Interactivo (`ForoPage.jsx`)
 
-#### 9.1 Descripción Funcional y Arquitectura Visual
-El **Foro Docente** (`/foro`) es una plataforma dialógica estructurada para resolver inquietudes curriculares, compartir reflexiones sobre la Guía 30 del MEN y debatir adaptaciones de aula. Permite crear nuevos hilos, categorizarlos por temática (Evaluación, DUA, Robótica, Convivencia) y mantener respuestas jerárquicas.
+#### 9.1 Captura de Pantalla Real
+![Foro Docente Interactivo](docs/evidencias/ACT-010/V09_foro.png)
 
-#### 9.2 Registro Técnico de Elementos
+#### 9.2 Descripción Funcional y Arquitectura Visual
+El **Foro Docente** (`/foro`) es una plataforma dialógica estructurada para resolver inquietudes curriculares, compartir reflexiones sobre la Guía 30 del MEN y debatir adaptaciones de aula en comunidad. Integra tres columnas operativas: vistas de navegación personalizadas a la izquierda, cuadrícula central de hilos de discusión interactivos y panel lateral derecho con normas de convivencia pedagógica y temas prioritarios.
+
+#### 9.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Foro** | Botón "Crear Nuevo Tema de Debate" | Botón primario en la cabecera del foro para redactar una nueva consulta pedagógica. | Botón HTML `<button>` / Icono `<Plus size={16}>` | Abre el formulario modal de publicación con título, categoría y cuerpo. | `onClick`. |
-| **Foro** | Categorías Temáticas | Barra lateral o superior con etiquetas de filtrado (MEN, DUA, ABP, Herramientas TIC). | Lista de botones tipo tag | Filtra los debates del foro según la categoría pedagógica seleccionada. | `onClick`. |
-| **Foro** | Lista de Hilos de Discusión | Listado de temas con título, autor, cantidad de réplicas, fecha y etiqueta de estado. | Tabla o cuadrícula accesible de temas | Permite seleccionar un hilo para ver el intercambio de mensajes completo. | `onClick` sobre el título del hilo. |
-| **Foro** | Formulario de Respuesta Rápida | Campo de texto al pie de cada debate para aportar comentarios con formato básico. | Control `<textarea>` con botón de envío | Publica la respuesta en el hilo activo y actualiza el contador comunitario. | `onSubmit` del formulario de réplica. |
+| **Foro** | Badge "Comunidad Académica" | Insignia superior identificadora del entorno comunitario de diálogo. | Badge Glassmorphism / Icono `<MessagesSquare size={14}>` | Elemento visual identificador del espacio dialógico. | Estático. |
+| **Foro** | Botón "+ Nueva discusión" | Botón primario en la cabecera para abrir el modal de redacción de temas. | Botón HTML `<button>` / Icono `<PlusCircle size={16}>`, fondo `#183630` | Abre el modal accesible para publicar una nueva consulta o debate. | `onClick`. |
+| **Foro** | Buscador de Debates | Campo de texto con icono de lupa para filtrar por tema, palabra clave o autor. | Input HTML `<input type="text">` con icono `<Search size={16}>` | Filtra dinámicamente los hilos de discusión según el término. | `onChange` actualiza `searchTerm`. |
+| **Foro** | Píldoras Métricas de Actividad | Tres contadores de resumen: *"2 temas"*, *"0 respuestas"*, *"0 guardadas"*. | Píldoras translúcidas con iconos (`MessageSquare`, `CornerDownRight`, `Bookmark`) | Exponen el volumen de actividad e interacción comunitaria. | Reactivo al estado local de hilos. |
+| **Foro** | Píldoras de Categorías Temáticas | Botones de filtro: *Todas (2)*, *Innovación pedagógica*, *IA en educación*, *Estrategias didácticas*, *Evaluación*, *DUA*. | Botones tabulados con iconos vectoriales y badges numéricos | Filtra los debates desplegados según la línea pedagógica. | `onClick` actualiza `selectedCategoria`. |
+| **Foro** | Botón "Ocultar Categorías" | Botón conmutador para colapsar o expandir la columna lateral izquierda. | Botón HTML `<button>` / Icono `<PanelLeftClose size={15}>` | Oculta la barra de navegación para ampliar el espacio de lectura. | `onClick` conmuta `showLeftSidebar`. |
+| **Foro** | Botón "Ocultar Contexto" | Botón conmutador para colapsar o expandir la columna lateral derecha. | Botón HTML `<button>` / Icono `<PanelRightClose size={15}>` | Oculta las normas de participación para centrar la atención. | `onClick` conmuta `showRightSidebar`. |
+| **Foro** | Vistas de Navegación Lateral | Menú con 5 filtros: *Todas las discusiones*, *Mis publicaciones*, *Mis participaciones*, *Sin responder*, *Guardadas*. | Lista interactiva con badges numéricos de conteo | Segmenta los debates según la relación del usuario con cada hilo. | `onClick` actualiza `activeFilter`. |
+| **Foro** | Selector de Ordenación | Menú desplegable: *Más recientes*, *Más comentadas*, *Más valoradas*. | Control `<select>` estilizado con icono `<SlidersHorizontal size={14}>` | Reordena cronológica o cuantitativamente las tarjetas de temas. | `onChange` actualiza `sortBy`. |
+| **Foro** | Tarjeta de Hilo de Discusión | Contenedor Glassmorphism con autor, rol, antigüedad, título y categoría. | Tarjeta esmerilada con avatar circular y badge de categoría | Presenta la síntesis de la consulta o propuesta pedagógica. | Estático con efecto hover. |
+| **Foro** | Botón "Participar →" | Botón verde oscuro en cada hilo para desplegar las réplicas y comentar. | Botón HTML `<button>` / Icono `<ArrowRight size={14}>` | Abre el hilo de conversación completo y el formulario de respuesta. | `onClick`. |
+| **Foro** | Botón de Guardar en Favoritos | Icono de marcador para archivar un debate en la sección de favoritos. | Botón de icono `<Bookmark size={15}>` | Añade o remueve el tema del listado personal de guardados. | `onClick`. |
+| **Foro** | Botón de Compartir | Icono de nodo para copiar el enlace directo al portapapeles. | Botón de icono `<Share2 size={15}>` | Copia la URL del hilo y muestra alerta toast confirmando la copia. | `onClick`. |
+| **Foro** | Botón de Eliminar | Icono de papelera visible para autores del hilo o administradores. | Botón de icono `<Trash2 size={15}>` | Despliega modal de confirmación segura antes de borrar el tema. | `onClick`. |
+| **Foro** | Panel Normas de Participación | Tarjeta derecha con lineamientos éticos: Diálogo constructivo, Privacidad (Ley 1581) y Colaboración. | Contenedor de cristal con icono `<ShieldCheck size={16}>` | Instruye al docente sobre las pautas de interacción profesional. | Estático de lectura. |
 
 ---
 
@@ -442,36 +458,49 @@ Su arquitectura se articula en:
 
 ---
 
-### VENTANA 12 — Centro de Ayuda y Preguntas Frecuentes (`AyudaPage.jsx`)
+### VENTANA 12 — Centro de Ayuda Pedagógica (`AyudaPage.jsx`)
 
-#### 12.1 Descripción Funcional y Arquitectura Visual
-La ventana de **Ayuda** (`/ayuda`) provee andamiaje conceptual y operativo al usuario. Incluye un glosario interactivo de términos pedagógicos (DUA, PIAR, DBA, Competencias MEN), guías paso a paso para el uso del generador y del editor, y una sección de preguntas frecuentes organizadas en acordeones colapsables accesibles.
+#### 12.1 Captura de Pantalla Real
+![Centro de Ayuda Pedagógica](docs/evidencias/ACT-010/V12_ayuda.png)
 
-#### 12.2 Registro Técnico de Elementos
+#### 12.2 Descripción Funcional y Arquitectura Visual
+La ventana de **Centro de Ayuda** (`/ayuda`) provee andamiaje conceptual y procedimental inmediato al docente usuario. Incluye buscador reactivo de temas frecuentes, acordeones interactivos colapsables categorizados por ámbitos curriculares (Planificación, Almacenamiento, Plantillas, DUA, Configuración) y un enlace institucional directo hacia la mesa de soporte técnico.
+
+#### 12.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Ayuda** | Buscador de Preguntas Frecuentes | Campo de texto superior con icono de búsqueda para localizar dudas comunes. | Input `<input type="search">` con icono `<Search size={16}>` | Filtra los ítems del acordeón según el término ingresado por el usuario. | `onChange` actualiza el filtro de texto. |
-| **Ayuda** | Acordeones Colapsables (FAQ) | Lista de preguntas desplegables sobre DUA, configuración de Gemini, guardado y PDF. | Componente `<details>` o acordeón interactivo accesible | Expande u oculta la respuesta explicativa con animación suave de apertura. | `onClick` sobre la cabecera de la pregunta conmuta el estado `open`. |
-| **Ayuda** | Glosario de Términos MODESEC / MEN | Tarjetas informativas con definiciones precisas de DUA, Transposición Didáctica y DBA. | Contenedores de texto estructurado con borde fino | Facilita la comprensión de los fundamentos teóricos del software educativo. | Estático con scroll de lectura. |
-| **Ayuda** | Enlace Directo a Soporte Técnico | Botón de redirección hacia el canal de asistencia en caso de no resolver la inquietud. | Botón secundario con icono `<LifeBuoy size={15}>` | Redirige al usuario hacia la ventana `/soporte`. | `onClick`. |
+| **Ayuda** | Badge "Base de Conocimiento" | Insignia superior que contextualiza el repositorio de ayuda formativa. | Badge Glassmorphism / Icono `<HelpCircle size={14}>` | Elemento visual identificador de la sección. | Estático. |
+| **Ayuda** | Píldora "5 Guías Oficiales" | Contador en la cabecera con el total de tutoriales y guías del sistema. | Píldora translúcida con icono `<BookOpen size={14}>` | Informa la amplitud del acervo de autoayuda pedagógica. | Estático (`preguntas.length`). |
+| **Ayuda** | Píldora "Soporte Disponible" | Indicador de disponibilidad del canal de soporte técnico docente. | Píldora translúcida con icono `<LifeBuoy size={14}>` | Comunica al usuario la existencia de asistencia humana activa. | Estático. |
+| **Ayuda** | Buscador de Guías | Campo de texto superior para filtrar preguntas y respuestas en tiempo real. | Input HTML `<input type="text">` con icono `<Search size={16}>` | Filtra los acordeones según el término ingresado por el usuario. | `onChange` actualiza `searchTerm`. |
+| **Ayuda** | Acordeones Colapsables | Preguntas desplegables (Planificación, Almacenamiento, Plantillas, DUA, Gemini). | Contenedores interactivos con icono `<ChevronDown>` / `<ChevronUp>` | Expande o contrae la respuesta explicativa con animación suave. | `onClick` actualiza `expandedIndex`. |
+| **Ayuda** | Categorías Temáticas | Badges identificadores en cada pregunta (*Planificación*, *Almacenamiento*, etc.). | Badges Glassmorphism con iconos temáticos | Segmenta las dudas comunes según la fase del flujo de trabajo. | Estático dentro del acordeón. |
+| **Ayuda** | Botón "Contactar a Soporte" | Botón al pie de la página para canalizar dudas complejas o incidencias. | Botón HTML `<button>` / Icono `<LifeBuoy size={15}>` | Redirige al docente directamente hacia la ventana `/soporte`. | `onClick` ejecuta `navigate('/soporte')`. |
 
 ---
 
 ### VENTANA 13 — Soporte Técnico Institucional (`SoportePage.jsx`)
 
-#### 13.1 Descripción Funcional y Arquitectura Visual
-La ventana de **Soporte** (`/soporte`) brinda un canal formal para reportar fallos técnicos, errores de conectividad o solicitar asistencia de uso. Incluye un formulario estructurado con validación de campos, selector de severidad de la incidencia y diagnóstico automático de red y navegador.
+#### 13.1 Captura de Pantalla Real
+![Soporte Técnico Institucional](docs/evidencias/ACT-010/V13_soporte.png)
 
-#### 13.2 Registro Técnico de Elementos
+#### 13.2 Descripción Funcional y Arquitectura Visual
+La ventana de **Soporte Técnico** (`/soporte`) brinda un canal formal y seguro para reportar incidencias operativas, dificultades con la API de IA o solicitar acompañamiento metodológico. Integra un formulario validado con envío a Firestore, paneles de autodiagnóstico de IA y de protección de datos conforme a la **Ley 1581 de 2012 (Habeas Data)**, y una pantalla de confirmación exitosa con restablecimiento del formulario.
+
+#### 13.3 Registro Técnico de Elementos (Formato Institucional de 6 Columnas)
 
 | Ventana | Elemento | Descripción | Formato / Fuente | Acción | Evento |
 |---|---|---|---|---|---|
-| **Soporte** | Campo "Asunto del Reporte" | Input de texto para titular el problema técnico o la sugerencia de mejora. | Input HTML `<input type="text" required>` | Recoge la síntesis del problema experimentado por el usuario. | `onChange`. |
-| **Soporte** | Selector de Severidad / Tipo | Menú desplegable: "Consulta de Uso", "Fallo Visual", "Error de IA", "Bloqueo Crítico". | Control `<select>` | Categoriza la urgencia del reporte para priorizar la atención técnica. | `onChange`. |
-| **Soporte** | Área de Texto "Descripción Detallada" | Campo multilinea para explicar paso a paso cómo reproducir el problema. | Control `<textarea rows="4" required>` | Captura el detalle del incidente y las circunstancias en que ocurrió. | `onChange`. |
-| **Soporte** | Panel de Diagnóstico Automático | Caja informativa que detecta el navegador, sistema operativo y estado de la red. | Lectura de `navigator.userAgent` y `navigator.onLine` | Informa al equipo de desarrollo los metadatos técnicos del entorno del usuario. | Detección automática al montar la vista. |
-| **Soporte** | Botón "Enviar Reporte de Incidencia" | Botón primario para despachar el formulario con feedback visual de envío. | Botón HTML `<button type="submit">` / Icono `<Send size={16}>` | Valida los campos, envía el registro a la base de datos y muestra confirmación. | `onSubmit` del formulario. |
+| **Soporte** | Badge "Mesa de Ayuda" | Insignia superior que contextualiza el canal de asistencia técnica. | Badge Glassmorphism / Icono `<LifeBuoy size={14}>` | Elemento visual identificador del servicio de soporte. | Estático. |
+| **Soporte** | Píldoras de Compromiso | Indicadores de nivel de servicio: *"Respuesta en < 24h"* y *"Atención Directa"*. | Contenedores translúcidos con iconos (`Clock`, `MessageSquare`) | Comunica al docente los tiempos y modalidad de atención técnica. | Estático. |
+| **Soporte** | Campo "Asunto del caso" | Input de texto obligatorio para titular la consulta o incidencia técnica. | Input HTML `<input type="text" required>` | Captura el resumen del problema experimentado por el docente. | `onChange` actualiza `asunto`. |
+| **Soporte** | Textarea "Descripción del problema" | Área de texto amplia obligatoria para detallar los pasos y mensajes de error. | Control HTML `<textarea rows="5" required>` | Recoge la narración detallada del fallo o requerimiento pedagógico. | `onChange` actualiza `desc`. |
+| **Soporte** | Botón "Enviar Solicitud" | Botón de envío con icono de avión y spinner de carga durante el despacho. | Botón HTML `<button>` / Iconos `<Send size={15}>` / `<Loader2>` | Valida campos, envía el ticket a Firestore mediante `addTicket()` y conmuta vista. | `onClick` / `onSubmit`. |
+| **Soporte** | Tarjeta "¿Falla la generación con IA?" | Panel informativo lateral con instrucciones para validar la clave Gemini. | Contenedor Glassmorphism / Icono `<Sparkles size={16}>` | Asiste al docente en la verificación de credenciales en Configuración IA. | Estático de lectura. |
+| **Soporte** | Tarjeta "Protección de tus Datos" | Panel informativo lateral que certifica el resguardo bajo Ley 1581 de 2012. | Contenedor Glassmorphism / Icono `<AlertCircle size={16}>` | Garantiza que las consultas docentes se manejan bajo estricta confidencialidad. | Estático de lectura. |
+| **Soporte** | Pantalla de Éxito de Envío | Vista de confirmación con icono verde de chequeo (`CheckCircle2`). | Contenedor centrado condicionado a `enviado === true` | Confirma la radicación formal del ticket y orienta sobre la notificación. | Reactivo al resolver la promesa de envío. |
+| **Soporte** | Botón "Enviar otra solicitud" | Botón en la pantalla de éxito para resetear el formulario. | Botón HTML `<button>` con estilo primario | Limpia `asunto`, `desc` y restablece `enviado = false`. | `onClick`. |
 
 ---
 

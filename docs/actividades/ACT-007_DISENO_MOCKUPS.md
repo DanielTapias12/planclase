@@ -36,7 +36,7 @@ Los mockups de alta fidelidad cierran la brecha entre el modelo conceptual (diag
 
 ## 4. Productos y Mockups Entregados
 
-Los 12 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
+Los 16 mockups de alta fidelidad representativos del ecosistema fueron archivados en `docs/diseno-interface/mockups/`:
 
 1. **`mockup-inicio.png`:** Ventana de Inicio (`/home`), bienvenida personalizada, indicadores de estado y modelos.
 2. **`mockup-planificador.png`:** Planificador de Clases (`/`), asistente secuencial en 4 fases tripartitas con memoria de ADN pedagógico.
@@ -50,6 +50,10 @@ Los 12 mockups de alta fidelidad representativos del ecosistema fueron archivado
 10. **`mockup-admin-directorio.png`:** Panel de Administración — Directorio de Docentes (`/administracion`), búsqueda, filtros por nivel y cifrado Habeas Data.
 11. **`mockup-admin-adn-colectivo.png`:** Panel de Administración — ADN Pedagógico Colectivo (`/administracion`), diagnóstico declarada vs aplicada, caja DUA institucional y banco probado.
 12. **`mockup-admin-tickets.png`:** Panel de Administración — Tickets de Soporte (`/administracion`), gestión interactiva y resolución de solicitudes docentes.
+13. **`mockup-biblioteca.png`:** Biblioteca Comunitaria (`/biblioteca`), recursos didácticos abiertos, filtrado por grado y clonación.
+14. **`mockup-foro.png`:** Foro Docente Interactivo (`/foro`), diálogo pedagógico, vistas de navegación y categorías temáticas.
+15. **`mockup-ayuda.png`:** Centro de Ayuda Pedagógica (`/ayuda`), base de conocimiento, acordeones interactivos y FAQ.
+16. **`mockup-soporte.png`:** Soporte Técnico Institucional (`/soporte`), mesa de ayuda, formulario de tickets y protección Ley 1581.
 
 ---
 

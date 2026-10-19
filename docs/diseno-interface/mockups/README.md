@@ -30,6 +30,10 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
 | **`mockup-admin-directorio.png`** | Administración — Directorio | `/administracion` | Registro de claustro docente, filtros por nivel y protección Habeas Data. |
 | **`mockup-admin-adn-colectivo.png`** | Administración — ADN Colectivo | `/administracion` | Diagnóstico declarada vs aplicada, caja DUA institucional y banco probado. |
 | **`mockup-admin-tickets.png`** | Administración — Tickets Soporte | `/administracion` | Gestión y resolución en tiempo real de incidencias y dudas pedagógicas. |
+| **`mockup-biblioteca.png`** | Biblioteca Comunitaria | `/biblioteca` | Repositorio abierto de secuencias didácticas compartidas, filtro por grado y clonación. |
+| **`mockup-foro.png`** | Foro Docente Interactivo | `/foro` | Comunidad académica de aprendizaje, debate pedagógico y categorización temática. |
+| **`mockup-ayuda.png`** | Centro de Ayuda Pedagógica | `/ayuda` | Base de conocimiento, acordeones interactivos colapsables y FAQ de uso. |
+| **`mockup-soporte.png`** | Soporte Técnico Institucional | `/soporte` | Mesa de ayuda, formulario de tickets con validación y protección Ley 1581. |
 
 ---
 
@@ -117,4 +121,26 @@ En correspondencia con los requerimientos de la actividad, se consolidaron los 4
   - **Tipografía:** Asunto de ticket en `Lora` (20px, bold), metadatos y cuerpo en `DM Sans` (14px).
   - **Iconos:** `MessageSquare`, `Send`, `Clock`, `ShieldAlert`.
   - **Botones:** Botón primario *"Responder"* con icono `Send`.
+
+### 3.8 Mockups 11 a 14 — Biblioteca, Foro, Ayuda y Soporte
+- **`mockup-biblioteca.png` (Biblioteca Comunitaria):**
+  - **Colores:** Badge verde esmeralda translúcido, tarjetas en cristal blanco con bisel de 1px, botón primario verde bosque `#183630`.
+  - **Tipografía:** Título H1 `Lora` (28px), títulos de recursos en `Lora` (20px, bold), metadatos en `DM Sans` (13px).
+  - **Iconos:** `Library`, `Search`, `Filter`, `Download`, `User`, `BookOpen`, `GraduationCap`, `Eye`, `Copy`.
+  - **Botones:** Selector desplegable de grados, botones *"Previsualizar"* y *"Usar Plan"*.
+- **`mockup-foro.png` (Foro Docente Interactivo):**
+  - **Colores:** Badges categoriales multicolor armonizados (`#315B54`, `#D4AF37`, `#2B524A`, `#10B981`), botón primario verde oscuro `#183630`.
+  - **Tipografía:** Título H1 `Lora` (28px), títulos de debates en `Lora` (20px, bold), textos en `DM Sans` (14px).
+  - **Iconos:** `MessagesSquare`, `PlusCircle`, `Search`, `PanelLeftClose`, `PanelRightClose`, `Clock`, `ShieldCheck`, `Bookmark`, `Share2`, `Trash2`, `Send`.
+  - **Botones:** Botón *"+ Nueva discusión"*, toggles de paneles laterales, filtros de categoría y botones *"Participar →"*.
+- **`mockup-ayuda.png` (Centro de Ayuda Pedagógica):**
+  - **Colores:** Acordeones en cristal marfil con borde blanco, chevrones indicadores de rotación suave, botón de soporte en verde salvia.
+  - **Tipografía:** Título H1 `Lora` (28px), preguntas en `Lora` (18px, bold), explicaciones en `DM Sans` (14px).
+  - **Iconos:** `HelpCircle`, `BookOpen`, `LifeBuoy`, `Search`, `Sparkles`, `FileText`, `Compass`, `ChevronDown`, `ChevronUp`.
+  - **Botones:** Acordeones colapsables interactivos y botón *"Contactar a Soporte Técnico"*.
+- **`mockup-soporte.png` (Soporte Técnico Institucional):**
+  - **Colores:** Formulario en cristal blanco con inputs de bisel suave, paneles informativos de IA y privacidad con badges redondeados.
+  - **Tipografía:** Título H1 `Lora` (28px), subtítulo en `DM Sans` (15px), etiquetas de formulario en `DM Sans` (14px, semibold).
+  - **Iconos:** `LifeBuoy`, `Clock`, `MessageSquare`, `Send`, `Sparkles`, `AlertCircle`, `CheckCircle2`.
+  - **Botones:** Botón primario *"Enviar Solicitud"* con icono `Send`.
 
