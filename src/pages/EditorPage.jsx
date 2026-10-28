@@ -45,8 +45,8 @@ import { formatCurricularMarkdown } from '../services/export/curricularMarkdownF
 import { formatMathForWeb } from '../utils/mathFormatter';
 import { Breadcrumbs } from '../components/ui/Breadcrumbs';
 import StructuredPlanDocument from '../components/StructuredPlanDocument';
-import MaterialesGenerablesSection from '../components/MaterialesGenerablesSection';
-import { recomendarMaterialesDidacticos } from '../utils/materialRecommender';
+import RecursosPanel from '../components/RecursosPanel';
+import SesionesPanel from '../components/sesiones/SesionesPanel';
 
 export default function EditorPage() {
   const { 
@@ -126,11 +126,6 @@ export default function EditorPage() {
   const [generatingRecId, setGeneratingRecId] = useState(null);
   const [currentGeneratingTypeKey, setCurrentGeneratingTypeKey] = useState(null);
 
-  // Recomendaciones contextuales de materiales didácticos bajo demanda (2 a 4 opciones)
-  const recomendaciones = useMemo(() => {
-    if (!planGenerado) return [];
-    return recomendarMaterialesDidacticos(currentMetadata, planGenerado);
-  }, [currentMetadata, planGenerado]);
   
   // Estado de visibilidad del co-docente IA con persistencia local
   const [isChatOpen, setIsChatOpen] = useState(() => {
@@ -173,6 +168,7 @@ export default function EditorPage() {
   const [modalTitle, setModalTitle] = useState('');
   const [modalContentHtml, setModalContentHtml] = useState('');
   const [isGeneratingMaterial, setIsGeneratingMaterial] = useState(false);
+  const [materialError, setMaterialError] = useState('');
   const [isExportingPdf, setIsExportingPdf] = useState(false);
   const [isExportingWord, setIsExportingWord] = useState(false);
   
@@ -401,32 +397,109 @@ export default function EditorPage() {
     }
   };
 
-  const handleGenerateMaterial = async (type, title, contextoEspecifico = '', recId = null) => {
-    if (!apiKey) {
-      alert("Configura tu API Key primero.");
+  const [sesionConstructor, setSesionConstructor] = useState(null); // 'evaluacion' | 'clase' | null
+
+  const handleGenerarRecurso = async (def) => {
+    // Evaluaciones y clases con QR no son archivos HTML: abren su propio constructor
+    if (def.accion) {
+      setSesionConstructor(def.accion);
       return;
     }
-    setGeneratingRecId(recId);
-    setModalTitle(title);
+    if (!apiKey) {
+      setModalTitle(def.nombre);
+      setModalContentHtml('');
+      setMaterialError('Configura tu API Key en Configuración para generar recursos.');
+      setIsGeneratingMaterial(false);
+      setIsModalOpen(true);
+      return;
+    }
+    setGeneratingRecId(def.typeKey);
+    setModalTitle(def.nombre);
     setIsModalOpen(true);
     setIsGeneratingMaterial(true);
     setModalContentHtml('');
+    setMaterialError('');
 
     try {
-      const html = await generateComplementaryMaterial(apiKey, planGenerado, type, contextoEspecifico);
+      const html = await generateComplementaryMaterial(apiKey, planGenerado, def.typeKey, '');
+      const existentes = (recursosAnexos || []).filter(r => r.typeKey === def.typeKey).length;
+      const title = existentes > 0 ? `${def.nombre} (${existentes + 1})` : def.nombre;
+      const recurso = {
+        id: `${def.typeKey}_${Date.now()}`,
+        typeKey: def.typeKey,
+        title,
+        tipo: def.nombre,
+        html,
+        anexadoAt: new Date().toISOString()
+      };
+      setModalTitle(title);
       setModalContentHtml(html);
+      addRecursoAnexo(recurso);
+      if (planId) {
+        try {
+          await updatePlanInDB(planId, planGenerado, [...(recursosAnexos || []), recurso]);
+        } catch (err) {
+          console.error('Error al guardar el recurso en el plan:', err);
+        }
+      }
     } catch (e) {
-      setModalContentHtml(`<div style="color:var(--error-color); text-align:center; padding:24px;">Error: ${e.message}</div>`);
+      setMaterialError(e.message || 'No fue posible generar el recurso.');
     } finally {
       setIsGeneratingMaterial(false);
       setGeneratingRecId(null);
     }
   };
 
-  const handleGenerarRecomendacion = async (rec) => {
-    await handleGenerateMaterial(rec.typeKey, rec.nombre, rec.contextoEspecifico, rec.id);
+  const handleAbrirRecurso = (recurso) => {
+    setModalTitle(recurso.title);
+    setModalContentHtml(recurso.html);
+    setMaterialError('');
+    setIsGeneratingMaterial(false);
+    setIsModalOpen(true);
   };
 
+  const handleDescargarRecurso = (recurso) => {
+    const blob = new Blob([recurso.html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(recurso.title || 'recurso').replace(/[^\w\-áéíóúñÁÉÍÓÚÑ]+/g, '_')}.html`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  };
+
+  const handleQuitarRecurso = async (idx) => {
+    removeRecursoAnexo(idx);
+    const updated = (recursosAnexos || []).filter((_, i) => i !== idx);
+    if (planId) {
+      try {
+        await updatePlanInDB(planId, planGenerado, updated);
+      } catch (e) {
+        console.error('Error al quitar el recurso del plan:', e);
+      }
+    }
+  };
+
+  const sesionesPanelProps = {
+    abrir: sesionConstructor,
+    onCerrarConstructor: () => setSesionConstructor(null),
+    planGenerado,
+    planId,
+    tema: currentMetadata?.tema || '',
+    apiKey,
+    userId: userId || auth.currentUser?.uid || null,
+    recursosAnexos: recursosAnexos || []
+  };
+
+  const recursosPanelProps = {
+    recursosAnexos: recursosAnexos || [],
+    isGenerating: isGeneratingMaterial,
+    generatingKey: generatingRecId,
+    onGenerate: handleGenerarRecurso,
+    onOpen: handleAbrirRecurso,
+    onDownload: handleDescargarRecurso,
+    onRemove: handleQuitarRecurso
+  };
   const downloadMaterialHtml = () => {
     const blob = new Blob([modalContentHtml], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
@@ -501,130 +574,6 @@ export default function EditorPage() {
   }
 
 
-  const getMaterialOptions = () => {
-    const materia = currentMetadata?.materia || wizardData?.materia || 'General';
-    const isTech = materia.toLowerCase().includes('tecnolog') || materia.toLowerCase().includes('informát');
-    const isMath = materia.toLowerCase().includes('matemát') || materia.toLowerCase().includes('algebra');
-    const isScience = materia.toLowerCase().includes('natural') || materia.toLowerCase().includes('ciencias');
-    const isSocial = materia.toLowerCase().includes('social') || materia.toLowerCase().includes('historia');
-    const isEnglish = materia.toLowerCase().includes('inglés') || materia.toLowerCase().includes('ingles');
-    const isLanguage = materia.toLowerCase().includes('lengua') || materia.toLowerCase().includes('español');
-
-    // Nombres y propósitos adaptados según la disciplina del plan
-    let tallerLabel = 'Taller de Contexto Real';
-    let tallerDesc = 'Problemas prácticos aplicados a la vida cotidiana';
-    let casoLabel = 'Estudio de Caso';
-    let casoDesc = 'Situación problémica contextualizada';
-
-    if (isTech) {
-      tallerLabel = 'Guía de Práctica / Taller Digital';
-      tallerDesc = 'Práctica interactiva de lógica, algoritmos y herramientas digitales';
-      casoLabel = 'Estudio de Caso Tecnológico';
-      casoDesc = 'Dilema ético, ciberseguridad o desafío de innovación';
-    } else if (isMath) {
-      tallerLabel = 'Taller de Modelación y Contexto Real';
-      tallerDesc = 'Resolución de problemas contextualizados paso a paso';
-      casoLabel = 'Estudio de Caso Matemático';
-      casoDesc = 'Análisis de datos del entorno y razonamiento cuantitativo';
-    } else if (isScience) {
-      tallerLabel = 'Guía de Indagación y Laboratorio';
-      tallerDesc = 'Experimentación guiada y observación del fenómeno';
-      casoLabel = 'Estudio de Fenómeno Ambiental';
-      casoDesc = 'Investigación del entorno natural y sustentabilidad';
-    } else if (isSocial) {
-      tallerLabel = 'Taller de Análisis de Fuentes Históricas';
-      tallerDesc = 'Indagación crítica y contrastación testimonial';
-      casoLabel = 'Estudio de Caso Sociocultural';
-      casoDesc = 'Dilema ciudadano, memoria y convivencia';
-    } else if (isEnglish) {
-      tallerLabel = 'Reading & Practical Workshop';
-      tallerDesc = 'Comprensión textual y tareas comunicativas auténticas';
-      casoLabel = 'Communicative Case & Role-Play';
-      casoDesc = 'Situación real de interacción discursiva en inglés';
-    } else if (isLanguage) {
-      tallerLabel = 'Taller de Comprensión y Producción Textual';
-      tallerDesc = 'Lectura crítica y creación guiada de tipologías textuales';
-      casoLabel = 'Análisis Crítico y Caso Literario';
-      casoDesc = 'Reflexión del discurso y análisis de personajes';
-    }
-
-    // Catálogo integral de TODOS los 8 materiales didácticos de Inspiratec
-    const catalog = [
-      {
-        id: 'sopa',
-        label: 'Sopa de Letras Temática',
-        desc: 'Búsqueda interactiva de términos clave con cronómetro y feedback',
-        icon: <Puzzle size={16} />
-      },
-      {
-        id: 'diapositivas',
-        label: 'Presentación Interactiva (Diapositivas)',
-        desc: 'Secuencia visual en diapositivas con notas docentes y pantalla completa',
-        icon: <MonitorPlay size={16} />
-      },
-      {
-        id: 'juegos',
-        label: 'Trivia y Juego Gamificado',
-        desc: 'Reto interactivo con audio sintetizado, marcadores y preguntas por rondas',
-        icon: <Sparkles size={16} />
-      },
-      {
-        id: 'preguntas',
-        label: isMath ? 'Quiz Interactivo con Pistas' : 'Cuestionario de Evaluación Formativa',
-        desc: 'Evaluación formativa con comprobación inmediata y pistas DUA',
-        icon: <HelpCircle size={16} />
-      },
-      {
-        id: 'rubrica',
-        label: 'Rúbrica Socioformativa Analítica',
-        desc: 'Matriz con niveles MEN (Superior a Bajo) y ponderación en tiempo real',
-        icon: <ListChecks size={16} />
-      },
-      {
-        id: 'flashcards',
-        label: 'Flashcards Conceptuales 3D',
-        desc: 'Tarjetas de memorización activa con giro tridimensional animado',
-        icon: <BookOpen size={16} />
-      },
-      {
-        id: 'taller_contexto',
-        label: tallerLabel,
-        desc: tallerDesc,
-        icon: <FileText size={16} />
-      },
-      {
-        id: 'estudio_caso',
-        label: casoLabel,
-        desc: casoDesc,
-        icon: <FileCode size={16} />
-      }
-    ];
-
-    // Verificar si ya fue generado y anexado a este plan específico
-    return catalog.map(item => {
-      const anexado = (recursosAnexos || []).some(anexo => {
-        if (!anexo) return false;
-        const aTitle = (anexo.title || anexo.nombre || '').toLowerCase();
-        const aKey = (anexo.typeKey || '').toLowerCase();
-        const aTipo = (anexo.tipo || '').toLowerCase();
-
-        if (item.id === 'sopa' && (aTitle.includes('sopa') || aKey.includes('sopa') || aTipo.includes('sopa') || aKey.includes('wordsearch'))) return true;
-        if (item.id === 'diapositivas' && (aTitle.includes('diapositiva') || aTitle.includes('presentación') || aTitle.includes('presentacion') || aKey.includes('slides') || aTipo.includes('diapositiva'))) return true;
-        if (item.id === 'juegos' && (aTitle.includes('trivia') || aTitle.includes('juego') || aKey.includes('juegos') || aKey.includes('game'))) return true;
-        if (item.id === 'preguntas' && (aTitle.includes('pregunta') || aTitle.includes('cuestionario') || aTitle.includes('quiz') || aKey.includes('preguntas') || aKey.includes('cuestionario'))) return true;
-        if (item.id === 'rubrica' && (aTitle.includes('rúbrica') || aTitle.includes('rubrica') || aKey.includes('rubrica'))) return true;
-        if (item.id === 'flashcards' && (aTitle.includes('flashcard') || aTitle.includes('tarjeta') || aKey.includes('flashcards'))) return true;
-        if (item.id === 'taller_contexto' && (aTitle.includes('taller') || aTitle.includes('guía de práctica') || aKey.includes('taller'))) return true;
-        if (item.id === 'estudio_caso' && (aTitle.includes('estudio de caso') || aTitle.includes('caso') || aKey.includes('caso'))) return true;
-        return aTitle === item.label.toLowerCase();
-      });
-
-      return {
-        ...item,
-        anexado
-      };
-    });
-  };
 
   const breadcrumbsItems = [
     { label: 'Inicio', href: '/home', onClick: (e) => { e.preventDefault(); navigate('/home'); } },
@@ -807,134 +756,16 @@ export default function EditorPage() {
             <PlusCircle size={16} /> <span>Nuevo</span>
           </button>
 
-          {/* Menú Dropdown para Materiales Didácticos */}
-          <div ref={materialMenuRef} style={{ position: 'relative', zIndex: 120 }}>
-            <button 
-              className="btn btn-primary" 
-              style={{ 
-                minHeight: '40px', 
-                padding: '8px 18px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px',
-                fontSize: '13.5px'
-              }} 
-              onClick={() => setShowMaterialMenu(!showMaterialMenu)}
-              aria-expanded={showMaterialMenu}
-              aria-haspopup="true"
-            >
-              <Sparkles size={15} /> 
-              <span>Material Didáctico</span> 
-              <ChevronDown size={14} />
-            </button>
-            
-            {showMaterialMenu && (
-              <div className="editor-material-dropdown-menu">
-                <div style={{ padding: '14px 18px', backgroundColor: 'rgba(71, 122, 114, 0.10)', borderBottom: '1px solid rgba(49, 91, 84, 0.12)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E3B34', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                      Catálogo Completo de Materiales Didácticos
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#477A72', fontWeight: 600, marginTop: '2px' }}>
-                      Adaptados a: {currentMetadata?.materia || wizardData?.materia || 'tu clase'}
-                    </div>
-                  </div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#1A4D43', background: '#FFFFFF', padding: '3px 8px', borderRadius: '10px', border: '1px solid rgba(49, 91, 84, 0.15)' }}>
-                    8 de 8
-                  </span>
-                </div>
-                
-                <div style={{ padding: '6px 0' }}>
-                  {getMaterialOptions().map(opt => (
-                    <button 
-                      key={opt.id}
-                      disabled={opt.anexado}
-                      onClick={() => { 
-                        if (!opt.anexado) {
-                          handleGenerateMaterial(opt.id, opt.label); 
-                          setShowMaterialMenu(false); 
-                          setActiveDocumentView('materiales');
-                        }
-                      }}
-                      style={{ 
-                        width: '100%', 
-                        textAlign: 'left', 
-                        padding: '11px 18px', 
-                        background: opt.anexado ? 'rgba(241, 245, 249, 0.65)' : 'none', 
-                        border: 'none', 
-                        borderBottom: '1px solid rgba(49, 91, 84, 0.06)', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'space-between',
-                        gap: '12px', 
-                        cursor: opt.anexado ? 'not-allowed' : 'pointer', 
-                        color: opt.anexado ? '#94A3B8' : '#142B25', 
-                        fontSize: '13px',
-                        transition: 'background-color 0.15s ease',
-                        opacity: opt.anexado ? 0.75 : 1
-                      }}
-                      onMouseOver={(e) => {
-                        if (!opt.anexado) e.currentTarget.style.backgroundColor = 'rgba(71, 122, 114, 0.1)';
-                      }}
-                      onMouseOut={(e) => {
-                        if (!opt.anexado) e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
-                      title={opt.anexado ? "Este material ya fue generado y anexado a este plan" : `Generar ${opt.label}`}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-                        <span style={{ color: opt.anexado ? '#94A3B8' : '#315B54', display: 'flex', alignItems: 'center' }}>
-                          {opt.icon}
-                        </span>
-                        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-                          <span style={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {opt.label}
-                          </span>
-                          <span style={{ fontSize: '11px', color: opt.anexado ? '#94A3B8' : '#64748B', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                            {opt.desc}
-                          </span>
-                        </div>
-                      </div>
-
-                      {opt.anexado ? (
-                        <span style={{ 
-                          fontSize: '11px', 
-                          fontWeight: 700, 
-                          color: '#059669', 
-                          backgroundColor: '#ECFDF5', 
-                          padding: '3px 8px', 
-                          borderRadius: '999px',
-                          border: '1px solid #A7F3D0',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          ✓ Anexado
-                        </span>
-                      ) : (
-                        <span style={{ fontSize: '11px', color: '#315B54', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                          + Crear
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Acceso directo para alternar la vista a Materiales Didácticos */}
-                <div style={{ padding: '10px 14px', backgroundColor: 'rgba(71, 122, 114, 0.08)', borderTop: '1px solid rgba(49, 91, 84, 0.12)' }}>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    style={{ width: '100%', fontSize: '12px', padding: '7px 12px', justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '6px' }}
-                    onClick={() => {
-                      setActiveDocumentView('materiales');
-                      setShowMaterialMenu(false);
-                    }}
-                  >
-                    <Layers size={13} />
-                    <span>Ver sección interactiva en documento</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* Acceso a Recursos */}
+          <button
+            type="button"
+            className="btn btn-primary"
+            style={{ minHeight: '40px', padding: '8px 18px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13.5px' }}
+            onClick={() => setActiveDocumentView('materiales')}
+          >
+            <Sparkles size={15} />
+            <span>Recursos</span>
+          </button>
 
         </div>
       </header>
@@ -961,10 +792,10 @@ export default function EditorPage() {
           type="button"
           className={`editor-doc-view-btn ${activeDocumentView === 'materiales' ? 'active' : ''}`}
           onClick={() => setActiveDocumentView('materiales')}
-          title="Ver y generar materiales didácticos interactivos adaptados al plan"
+          title="Generar y ver los recursos HTML del plan"
         >
           <Sparkles size={15} /> 
-          <span>Material Didáctico</span>
+          <span>Recursos</span>
           {recursosAnexos && recursosAnexos.length > 0 && (
             <span className="editor-view-badge-count">{recursosAnexos.length}</span>
           )}
@@ -1061,100 +892,11 @@ export default function EditorPage() {
               </div>
             ) : (
               <div style={{ maxWidth: '1020px', width: '100%', margin: '0 auto', padding: '8px 4px', boxSizing: 'border-box' }}>
-                {/* 1. Modo Vista Exclusiva de Materiales Didácticos */}
+                {/* 1. Vista exclusiva de Recursos */}
                 {activeDocumentView === 'materiales' && (
                   <div className="editor-materials-standalone-view">
-                    <MaterialesGenerablesSection
-                      recomendaciones={recomendaciones}
-                      onGenerarMaterial={handleGenerarRecomendacion}
-                      isGenerating={isGeneratingMaterial}
-                      generatingId={generatingRecId}
-                      recursosAnexos={recursosAnexos}
-                      onVerMaterial={(rec) => {
-                        const match = (recursosAnexos || []).find(a => (a.title || '').toLowerCase().includes((rec.typeKey || '').toLowerCase()));
-                        if (match) {
-                          setModalTitle(match.title);
-                          setModalContentHtml(match.html);
-                          setIsGeneratingMaterial(false);
-                          setIsModalOpen(true);
-                        }
-                      }}
-                    />
-
-                    {/* Render de Materiales Anexos (Iframes interactivos aislados) */}
-                    {recursosAnexos && recursosAnexos.length > 0 && (
-                      <div style={{ marginTop: '28px', borderTop: '2px dashed var(--border-color)', paddingTop: '20px' }}>
-                        <h3 style={{ color: 'var(--primary-active)', fontSize: '20px', marginBottom: '16px', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <MonitorPlay size={20} /> Recursos Didácticos Anexos ({recursosAnexos.length})
-                        </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                          {recursosAnexos.map((recurso, idx) => (
-                            <div key={idx} style={{ backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                              <div style={{ padding: '12px 18px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', backgroundColor: 'var(--bg-surface)' }}>
-                                <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '14.5px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  <MonitorPlay size={16} style={{ color: 'var(--primary-sage)' }} /> {recurso.title}
-                                </h4>
-                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                  <button 
-                                    className="btn-outline" 
-                                    onClick={() => {
-                                      setModalTitle(recurso.title);
-                                      setModalContentHtml(recurso.html);
-                                      setIsGeneratingMaterial(false);
-                                      setIsModalOpen(true);
-                                    }}
-                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px' }}
-                                    title="Ver en ventana emergente con fondo desenfocado"
-                                  >
-                                    <Maximize2 size={13} /> Ver en Ventana
-                                  </button>
-                                  <button 
-                                    className="btn" 
-                                    onClick={() => {
-                                      const blob = new Blob([recurso.html], { type: 'text/html' });
-                                      const url = URL.createObjectURL(blob);
-                                      const a = document.createElement('a');
-                                      a.href = url;
-                                      a.download = `${recurso.title.replace(/ /g, '_')}.html`;
-                                      a.click();
-                                    }}
-                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px', backgroundColor: 'var(--primary-sage)' }}
-                                  >
-                                    <Download size={13} /> Descargar
-                                  </button>
-                                  <button 
-                                    className="btn-outline" 
-                                    onClick={async () => {
-                                      removeRecursoAnexo(idx);
-                                      const updated = (recursosAnexos || []).filter((_, i) => i !== idx);
-                                      if (planId) {
-                                        try {
-                                          await updatePlanInDB(planId, planGenerado, updated);
-                                        } catch (e) {
-                                          console.error("Error al remover anexo en Firestore:", e);
-                                        }
-                                      }
-                                    }}
-                                    style={{ padding: '5px 10px', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '5px', color: '#DC2626', borderColor: 'rgba(220, 38, 38, 0.35)' }}
-                                    title="Desanexar material de este plan"
-                                  >
-                                    <Trash2 size={13} /> Quitar
-                                  </button>
-                                </div>
-                              </div>
-                              <div style={{ padding: 0, height: '420px', width: '100%', backgroundColor: '#FFF' }}>
-                                <iframe 
-                                  srcDoc={recurso.html}
-                                  sandbox="allow-scripts"
-                                  style={{ width: '100%', height: '100%', border: 'none' }}
-                                  title={recurso.title}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    <RecursosPanel {...recursosPanelProps} />
+                    <SesionesPanel {...sesionesPanelProps} />
                   </div>
                 )}
 
@@ -1476,102 +1218,12 @@ export default function EditorPage() {
                   />
                 )}
 
-                {/* 3. Apartado de Materiales al final cuando se visualiza 'todo' */}
+                {/* 3. Recursos al final cuando se visualiza 'todo' */}
                 {!isEditMode && activeDocumentView === 'todo' && (
-                  <>
-                    {/* Apartado pedagógico: Materiales que puedes generar */}
-                    <MaterialesGenerablesSection
-                      recomendaciones={recomendaciones}
-                      onGenerarMaterial={handleGenerarRecomendacion}
-                      isGenerating={isGeneratingMaterial}
-                      generatingId={generatingRecId}
-                      recursosAnexos={recursosAnexos}
-                      onVerMaterial={(rec) => {
-                        const match = (recursosAnexos || []).find(a => (a.title || '').toLowerCase().includes((rec.typeKey || '').toLowerCase()));
-                        if (match) {
-                          setModalTitle(match.title);
-                          setModalContentHtml(match.html);
-                          setIsGeneratingMaterial(false);
-                          setIsModalOpen(true);
-                        }
-                      }}
-                    />
-
-                    {/* Render de Materiales Anexos (Iframes aislados) */}
-                    {recursosAnexos && recursosAnexos.length > 0 && (
-                      <div style={{ marginTop: '44px', borderTop: '2px dashed var(--border-color)', paddingTop: '32px' }}>
-                        <h3 style={{ color: 'var(--primary-active)', fontSize: '22px', marginBottom: '20px', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <MonitorPlay size={22} /> Recursos Didácticos Anexos
-                        </h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                          {recursosAnexos.map((recurso, idx) => (
-                            <div key={idx} style={{ backgroundColor: 'var(--surface-card)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-                              <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', backgroundColor: 'var(--bg-surface)' }}>
-                                <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '15px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                  <MonitorPlay size={16} style={{ color: 'var(--primary-sage)', flexShrink: 0 }} /> <span>{recurso.title}</span>
-                                </h4>
-                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                  <button 
-                                    className="btn-outline" 
-                                    onClick={() => {
-                                      setModalTitle(recurso.title);
-                                      setModalContentHtml(recurso.html);
-                                      setIsGeneratingMaterial(false);
-                                      setIsModalOpen(true);
-                                    }}
-                                    style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                    title="Ver en ventana emergente con fondo desenfocado"
-                                  >
-                                    <Maximize2 size={13} /> Ver en Ventana
-                                  </button>
-                                  <button 
-                                    className="btn" 
-                                    onClick={() => {
-                                      const blob = new Blob([recurso.html], { type: 'text/html' });
-                                      const url = URL.createObjectURL(blob);
-                                      const a = document.createElement('a');
-                                      a.href = url;
-                                      a.download = `${recurso.title.replace(/ /g, '_')}.html`;
-                                      a.click();
-                                    }}
-                                    style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--primary-sage)' }}
-                                  >
-                                    <Download size={13} /> Descargar HTML
-                                  </button>
-                                  <button 
-                                    className="btn-outline" 
-                                    onClick={async () => {
-                                      removeRecursoAnexo(idx);
-                                      const updated = (recursosAnexos || []).filter((_, i) => i !== idx);
-                                      if (planId) {
-                                        try {
-                                          await updatePlanInDB(planId, planGenerado, updated);
-                                        } catch (e) {
-                                          console.error("Error al remover anexo en Firestore:", e);
-                                        }
-                                      }
-                                    }}
-                                    style={{ padding: '6px 12px', fontSize: '12.5px', display: 'flex', alignItems: 'center', gap: '6px', color: '#DC2626', borderColor: 'rgba(220, 38, 38, 0.35)' }}
-                                    title="Desanexar material de este plan"
-                                  >
-                                    <Trash2 size={13} /> Quitar
-                                  </button>
-                                </div>
-                              </div>
-                              <div style={{ padding: 0, height: '400px', width: '100%', backgroundColor: '#FFF' }}>
-                                <iframe 
-                                  srcDoc={recurso.html}
-                                  sandbox="allow-scripts"
-                                  style={{ width: '100%', height: '100%', border: 'none' }}
-                                  title={recurso.title}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </>
+                  <div style={{ marginTop: '36px' }}>
+                    <RecursosPanel {...recursosPanelProps} />
+                    <SesionesPanel {...sesionesPanelProps} />
+                  </div>
                 )}
               </div>
             )}
@@ -1984,7 +1636,7 @@ export default function EditorPage() {
                 <Sparkles size={18} style={{ color: '#D4AF37' }} /> {modalTitle}
               </h3>
               <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                {!isGeneratingMaterial && (
+                {!isGeneratingMaterial && modalContentHtml && !materialError && (
                   <>
                     {!recursosAnexos.some(r => r.title === modalTitle) && (
                       <button onClick={handleAnexarAlPlan} className="editor-btn-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '7px 14px', fontSize: '13px' }}>
@@ -2012,9 +1664,13 @@ export default function EditorPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', color: 'var(--text-secondary)', gap: '16px', padding: '48px', textAlign: 'center' }}>
                   <Loader2 size={44} className="spin" style={{ color: 'var(--primary-sage)' }} />
                   <div>
-                    <h4 style={{ color: 'var(--text-main)', fontSize: '16px', marginBottom: '6px' }}>Elaborando material pedagógico interactivo</h4>
-                    <p style={{ fontSize: '13.5px', maxWidth: '420px', margin: '0 auto' }}>Generando código HTML accesible y autónomo según los contenidos de tu secuencia...</p>
+                    <h4 style={{ color: 'var(--text-main)', fontSize: '16px', marginBottom: '6px' }}>Generando material</h4>
+                    <p style={{ fontSize: '13.5px', margin: '0 auto' }}>Puede tardar hasta un minuto.</p>
                   </div>
+                </div>
+              ) : materialError ? (
+                <div role="alert" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '48px', textAlign: 'center', color: 'var(--error-color)' }}>
+                  {materialError}
                 </div>
               ) : (
                 <iframe 

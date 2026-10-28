@@ -62,9 +62,9 @@ export default function WizardStep1Basicos({
               )}
             </div>
             <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>
-              La IA adaptará las dinámicas de inicio, evaluación formativa y recursos a tu estilo probado en aula.{' '}
+              {' '}
               <Link to="/adn-pedagogico" target="_blank" style={{ color: '#1A4D43', fontWeight: 600, textDecoration: 'underline', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                Ver o ajustar mi ADN <ExternalLink size={11} />
+                Ajustar mi ADN <ExternalLink size={11} />
               </Link>
             </p>
           </div>
@@ -102,30 +102,26 @@ export default function WizardStep1Basicos({
               onChange={handleChange} 
               className={fieldErrors.tema ? 'input-error' : ''}
               aria-invalid={fieldErrors.tema ? 'true' : 'false'}
-              aria-describedby={fieldErrors.tema ? 'error-tema' : 'help-tema'}
+              aria-describedby={fieldErrors.tema ? 'error-tema' : undefined}
               placeholder={
                 wizardData.materia === 'Matemáticas' 
-                  ? "Ej.: Suma de fracciones con distinto denominador y reparto equitativo" 
+                  ? "Ej.: Suma de fracciones" 
                   : wizardData.materia === 'Ciencias Naturales'
-                  ? "Ej.: Fotosíntesis, respiración celular y transferencia de energía en ecosistemas"
+                  ? "Ej.: La fotosíntesis"
                   : wizardData.materia === 'Ciencias Sociales'
-                  ? "Ej.: Civilizaciones prehispánicas: organización social y manejo del territorio muisca"
+                  ? "Ej.: Los muiscas"
                   : (wizardData.materia === 'Lengua Castellana' || wizardData.materia === 'Lenguaje (Español)')
-                  ? "Ej.: El cuento de misterio: estructura narrativa y creación de atmósfera" 
+                  ? "Ej.: El cuento de misterio" 
                   : wizardData.materia === 'Inglés' 
-                  ? "Ej.: Verb To Be (Present Simple in Context)" 
-                  : "Ej.: Introducción a la programación por bloques con Scratch"
+                  ? "Ej.: Verb To Be" 
+                  : "Ej.: Algoritmos"
               } 
             />
             {fieldErrors.tema ? (
               <div id="error-tema" className="field-error-message" role="alert">
                 <AlertCircle size={14} /> {fieldErrors.tema}
               </div>
-            ) : (
-              <div id="help-tema" className="planificador-help">
-                El tema orienta las actividades, los objetivos y los recursos generados.
-              </div>
-            )}
+            ) : null}
           </div>
 
           <div className="input-group" style={{ margin: 0 }}>
@@ -165,13 +161,9 @@ export default function WizardStep1Basicos({
             </select>
             {wizardData.formatoInstrucciones ? (
               <div className="planificador-help" style={{ color: 'var(--primary-active)', fontWeight: 600 }}>
-                ✓ Formato propio cargado por el docente activo (prevalece estructuralmente sobre el genérico).
+                ✓ Formato propio cargado
               </div>
-            ) : (
-              <div className="planificador-help">
-                Estructura curricular alineada con las orientaciones didácticas del MEN.
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -226,9 +218,6 @@ export default function WizardStep1Basicos({
             placeholder="Ej.: 30" 
             min="1" 
           />
-          <div className="planificador-help">
-            Permite ajustar la viabilidad de actividades grupales y dinámicas cooperativas.
-          </div>
         </div>
       </div>
 
@@ -265,9 +254,6 @@ export default function WizardStep1Basicos({
                 <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#1E293B' }}>
                   Plan Transversal / Interdisciplinar Articulado
                 </span>
-                <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>
-                  Conecta competencias de dos disciplinas alrededor de un proyecto o reto institucional.
-                </p>
               </div>
             </div>
 
@@ -349,7 +335,7 @@ export default function WizardStep1Basicos({
 
               <div>
                 <label htmlFor="wizard-reto-contextual" style={{ display: 'block', fontSize: '12.5px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
-                  Reto o Pregunta Problémica del Entorno Guía (Opcional)
+                  Reto o pregunta guía (opcional)
                 </label>
                 <input
                   id="wizard-reto-contextual"
@@ -357,12 +343,9 @@ export default function WizardStep1Basicos({
                   name="retoContextual"
                   value={wizardData.retoContextual || ''}
                   onChange={handleChange}
-                  placeholder="Ej.: ¿Cómo reducir el desperdicio de agua en el colegio diseñando un sensor y tablas de análisis?"
+                  placeholder="Ej.: ¿Cómo reducir el desperdicio de agua en el colegio?"
                   style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', boxSizing: 'border-box' }}
                 />
-                <div style={{ fontSize: '11.5px', color: '#166534', marginTop: '4px' }}>
-                  💡 La IA entrelazará los DBA y estándares de {wizardData.materia} y el área secundaria alrededor de este reto.
-                </div>
               </div>
             </div>
           )}
@@ -382,7 +365,7 @@ export default function WizardStep1Basicos({
             }}
             style={{ marginBottom: '8px' }}
           >
-            <option value="">Seleccionar un perfil de aula o recursos frecuentes...</option>
+            <option value="">Perfil de aula</option>
             {wizardData.materia === 'Matemáticas' ? (
               <>
                 <option value="A. Aula Tradicional: Tablero, marcadores, cuadernos, regla y compás.">A. Aula Tradicional: Tablero, marcadores, cuadernos, regla y compás.</option>
@@ -437,19 +420,15 @@ export default function WizardStep1Basicos({
             onChange={handleChange} 
             className={fieldErrors.recursos ? 'input-error' : ''}
             aria-invalid={fieldErrors.recursos ? 'true' : 'false'}
-            aria-describedby={fieldErrors.recursos ? 'error-recursos' : 'help-recursos'}
-            placeholder="Describe o complementa los recursos disponibles (ej.: 15 computadores, proyector, guías impresas, kit robótico o material reciclable)..."
+            aria-describedby={fieldErrors.recursos ? 'error-recursos' : undefined}
+            placeholder="Ej.: 15 computadores, proyector"
             style={{ minHeight: '85px' }}
           />
           {fieldErrors.recursos ? (
             <div id="error-recursos" className="field-error-message" role="alert">
               <AlertCircle size={14} /> {fieldErrors.recursos}
             </div>
-          ) : (
-            <div id="help-recursos" className="planificador-help">
-              La IA adaptará las dinámicas según si el entorno cuenta con conectividad alta, media o es desconectado (unplugged).
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

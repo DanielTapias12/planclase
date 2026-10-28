@@ -39,7 +39,12 @@ export default function AuthPage() {
     setError(null);
     try {
       if (isLogin) {
-        await loginUser(formData.email, formData.password);
+        const loggedUser = await loginUser(formData.email, formData.password);
+        if (loggedUser?.uid) {
+          localStorage.setItem(`inspiratec_bienvenida_completada_${loggedUser.uid}`, 'true');
+          localStorage.removeItem(`inspiratec_just_registered_${loggedUser.uid}`);
+        }
+        sessionStorage.removeItem('inspiratec_just_registered');
       } else {
         if (!formData.aceptaTerminos) {
           throw new Error('Debes aceptar los Términos y Condiciones y la Política de Protección de Datos (Ley 1581 de 2012) para registrarte.');
@@ -51,7 +56,7 @@ export default function AuthPage() {
           ? (formData.otraMetodologia || 'Aprendizaje Activo Personalizado').trim()
           : (formData.metodologiaInstitucional || 'Aprendizaje Basado en Proyectos (ABP)');
 
-        await registerUser(
+        const newUser = await registerUser(
           formData.nombre,
           formData.institucion,
           formData.nivel,
@@ -61,6 +66,12 @@ export default function AuthPage() {
           formData.aceptaTerminos,
           metodologiaFinal
         );
+
+        // Señalizar que el usuario se acaba de registrar para abrir el tutorial una única vez
+        if (newUser?.uid) {
+          sessionStorage.setItem('inspiratec_just_registered', newUser.uid);
+          localStorage.setItem(`inspiratec_just_registered_${newUser.uid}`, 'true');
+        }
       }
       navigate('/home');
     } catch (err) {
@@ -386,7 +397,7 @@ export default function AuthPage() {
                       value={formData.otraMetodologia} 
                       onChange={handleChange} 
                       required 
-                      placeholder="Ej. Pedagogía Dialogante, Waldorf, Holística..." 
+                      placeholder="Ej.: Pedagogía dialogante" 
                       style={{ padding: '12px 14px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.4)', fontSize: '14px', backgroundColor: 'rgba(255, 255, 255, 0.9)', color: '#0F172A' }} 
                     />
                   </div>

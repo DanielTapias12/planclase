@@ -93,6 +93,7 @@ export const registerUser = async (nombre, institucion, nivel, email, password, 
     termsAccepted: Boolean(termsAccepted),
     termsAcceptedAt: new Date().toISOString(),
     rol: 'Docente',
+    bienvenidaCompletada: false,
     createdAt: new Date().toISOString()
   };
 

@@ -15,14 +15,14 @@ export default function WizardStep2Metodologia({
           <Compass size={16} /> Metodología de Enseñanza
         </div>
         <div className="input-group" style={{ margin: 0 }}>
-          <label htmlFor="wizard-metodologia">Metodología prioritaria para la secuencia</label>
+          <label htmlFor="wizard-metodologia">Metodología</label>
           <select 
             id="wizard-metodologia"
             name="metodologiaSTEAM" 
             value={wizardData.metodologiaSTEAM} 
             onChange={handleChange}
           >
-            <option value="">Selecciona una metodología...</option>
+            <option value="">Seleccionar</option>
             <option value="Clase magistral">Clase magistral</option>
             <option value="Aprendizaje activo">Aprendizaje activo</option>
             <option value="Aprendizaje práctico">Aprendizaje práctico</option>
@@ -44,9 +44,6 @@ export default function WizardStep2Metodologia({
             <option value="Pensamiento Computacional">Pensamiento Computacional</option>
             <option value="Otra (describir en objetivos/contenido)">Otra (describir en objetivos/contenido)</option>
           </select>
-          <div className="planificador-help">
-            La metodología guía el tipo de dinámicas (fases de inicio, desarrollo y cierre).
-          </div>
         </div>
       </div>
 
@@ -75,18 +72,15 @@ export default function WizardStep2Metodologia({
         )}
 
         <div className="input-group" style={{ margin: 0 }}>
-          <label htmlFor="wizard-objetivos">¿Qué competencias o desempeños deseas que logren los estudiantes?</label>
+          <label htmlFor="wizard-objetivos">Objetivos</label>
           <textarea 
             id="wizard-objetivos"
             name="objetivos" 
             value={wizardData.objetivos} 
             onChange={handleChange} 
-            placeholder="Ej.: Comprender el concepto de variable mediante retos prácticos, o diseñar un algoritmo sencillo para resolver una situación cotidiana..." 
+            placeholder="Ej.: Comprender el concepto de variable" 
             style={{ minHeight: '120px' }}
           />
-          <div className="planificador-help">
-            Puedes redactarlos libremente o pulsar "Sugerir con IA" para obtener una propuesta basada en la metodología seleccionada.
-          </div>
         </div>
       </div>
     </div>

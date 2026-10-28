@@ -103,9 +103,6 @@ export default function MaterialesGenerablesSection({
             </span>
           )}
         </div>
-        <p style={{ margin: 0, fontSize: '13.5px', lineHeight: '1.6', color: '#3D5A53', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-          A partir de tu plan de clase, puedes crear materiales didácticos interactivos adaptados a los momentos de la sesión. Una vez generado y anexado un material a este plan, queda guardado y no se volverá a duplicar.
-        </p>
       </div>
 
       {/* Grid de tarjetas de materiales didácticos */}

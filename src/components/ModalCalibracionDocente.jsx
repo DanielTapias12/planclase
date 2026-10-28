@@ -236,7 +236,7 @@ export default function ModalCalibracionDocente() {
                 value={otraMetodologia}
                 onChange={(e) => setOtraMetodologia(e.target.value)}
                 required
-                placeholder="Ej. Pedagogía Dialogante, Waldorf, Holística..."
+                placeholder="Ej.: Pedagogía dialogante"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
@@ -292,7 +292,7 @@ export default function ModalCalibracionDocente() {
                 value={otroEjeTransversal}
                 onChange={(e) => setOtroEjeTransversal(e.target.value)}
                 required
-                placeholder="Ej. Proyecto de Educación Sexual (PESCC), Lectoescritura (PILEO), Cátedra de Paz..."
+                placeholder="Ej.: Cátedra de Paz"
                 style={{
                   width: '100%',
                   padding: '10px 14px',

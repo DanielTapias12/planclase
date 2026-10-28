@@ -231,7 +231,7 @@ export default function ExperienciasPage() {
             <Search size={16} style={{ color: 'var(--text-secondary)' }} />
             <input 
               type="text" 
-              placeholder="Buscar por tema, materia o autor..." 
+              placeholder="Buscar" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="mgmt-search-input"

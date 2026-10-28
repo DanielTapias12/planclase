@@ -122,7 +122,7 @@ export default function AyudaPage() {
           <Search size={16} color="var(--primary-sage)" />
           <input 
             type="text" 
-            placeholder="Buscar por tema: DUA, plantillas, descargar Word, generar clase..." 
+            placeholder="Buscar" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mgmt-search-input"

@@ -155,7 +155,7 @@ export default function SoportePage() {
               <input 
                 id="soporte-asunto"
                 type="text" 
-                placeholder="Ej.: Error al exportar plan a Word o clave de IA" 
+                placeholder="Asunto" 
                 value={asunto}
                 onChange={(e) => setAsunto(e.target.value)}
                 className="wizard-input"
@@ -174,7 +174,7 @@ export default function SoportePage() {
               </label>
               <textarea 
                 id="soporte-desc"
-                placeholder="Describe qué ocurrió, qué pasos estabas realizando y cualquier mensaje de error que hayas observado..." 
+                placeholder="¿Qué ocurrió?" 
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
                 className="wizard-textarea"

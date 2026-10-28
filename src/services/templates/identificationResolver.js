@@ -14,11 +14,11 @@
  */
 
 export const DEFAULT_IDENTIFICATION = {
-  institucion: 'Institución Educativa Técnica Distrital',
-  docente: 'Equipo de Matemáticas',
-  grado: '10°',
-  area: 'Matemáticas',
-  duracionTexto: '90 minutos (1 sesión continua)'
+  institucion: '',
+  docente: '',
+  grado: '',
+  area: '',
+  duracionTexto: ''
 };
 
 /**
@@ -142,8 +142,8 @@ export function resolveRealIdentification(wizardData = {}, userProfile = null) {
     duracionTexto = DEFAULT_IDENTIFICATION.duracionTexto;
   }
 
-  const metodologia = (wizardData.metodologiaSTEAM || wizardData.metodologia || '').trim() || 'Aprendizaje Activo';
-  const recursos = (wizardData.recursos || '').trim() || 'Materiales de aula y ambiente de aprendizaje';
+  const metodologia = (wizardData.metodologiaSTEAM || wizardData.metodologia || '').trim() || '';
+  const recursos = (wizardData.recursos || '').trim();
 
   return {
     institucion,
@@ -168,14 +168,17 @@ export function resolveRealIdentification(wizardData = {}, userProfile = null) {
  * @returns {string} Bloque Markdown formateado con negrillas uniformes.
  */
 export function formatIdentificationMarkdown(realData) {
-  return `### Identificación
-- **Institución Educativa:** ${realData.institucion}
-- **Docente:** ${realData.docente}
-- **Grado:** ${realData.grado}
-- **Área / Asignatura:** ${realData.area}
-- **Duración:** ${realData.duracionTexto}
-- **Metodología:** ${realData.metodologia || 'Aprendizaje Activo'}
-- **Recursos:** ${realData.recursos || 'Materiales de aula y ambiente disponible'}`;
+  // Solo se escriben los datos que el docente realmente proporcionó
+  const rows = [
+    ['Institución Educativa', realData.institucion],
+    ['Docente', realData.docente],
+    ['Grado', realData.grado],
+    ['Área / Asignatura', realData.area],
+    ['Duración', realData.duracionTexto],
+    ['Metodología', realData.metodologia],
+    ['Recursos', realData.recursos]
+  ].filter(([, v]) => v && String(v).trim() !== '');
+  return ['### Identificación', ...rows.map(([k, v]) => `- **${k}:** ${v}`)].join('\n');
 }
 
 /**

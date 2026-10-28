@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node src/utils/test_functional_audit.mjs && node src/utils/test_felder_silverman.mjs && node src/utils/test_curricular_graph.mjs && node src/utils/test_socratic_chat.mjs && node src/utils/test_material_recommender.mjs && node src/utils/test_structured_plan_editor.mjs && node src/utils/test_html_materials.mjs",
+    "test": "node src/utils/test_functional_audit.mjs && node src/utils/test_felder_silverman.mjs && node src/utils/test_curricular_graph.mjs && node src/utils/test_socratic_chat.mjs && node src/utils/test_material_recommender.mjs && node src/utils/test_structured_plan_editor.mjs && node src/utils/test_html_materials.mjs && node src/utils/test_men_alignment.mjs && node src/utils/test_resources.mjs && node src/utils/test_sessions.mjs && node src/utils/test_identification_defaults.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "lucide-react": "^1.51.0",
     "marked": "^18.1.1",
     "pdfmake": "^0.3.11",
+    "qrcode": "^1.5.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-markdown": "^10.1.0",

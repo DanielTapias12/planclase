@@ -94,8 +94,11 @@ ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile
 
 ### Fundamentación Curricular
 - **Componente:** (Indicar el componente según las Orientaciones del MEN: Naturaleza y evolución de la tecnología, Apropiación y uso de la tecnología, Solución de problemas con tecnología, o Tecnología y sociedad)
-- **Competencia:** (Competencia curricular a desarrollar)
+- **Competencia del componente:** (Competencia que el MEN plantea para ese componente, tomada internamente del grupo de grados oficial que incluye el grado de la clase y redactada para ese grado)
+- **Articulación con otros componentes:** (Los componentes son interconectados: indica qué otro componente se toca, si aplica)
 - **Evidencia de aprendizaje:** (Desempeño o manifestación observable del aprendizaje)
+- **Proceso de diseño o pensamiento computacional:** (Si el componente es Solución de problemas: necesidad o problema, búsqueda de información, ideas y selección, prototipo o simulación, evaluación y mejora. Si es informática: problema, descomposición, algoritmo, prueba y depuración, con o sin computador)
+- **Dimensión ética, de seguridad y ambiental:** (Responsabilidad, privacidad, seguridad, sostenibilidad o equidad de acceso pertinentes al tema)
 - **Contenidos:** (Contenidos conceptuales, procedimentales y actitudinales abordados en la clase)
 - **Criterios de evaluación:** (Criterios claros de valoración del aprendizaje y desempeño)
 
@@ -267,7 +270,9 @@ ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile
 ### B. Fundamentación curricular
 - **Objetivo de aprendizaje**: (Redacta el objetivo formativo matemático con claridad y precisión)
 - **Competencias matemáticas por desarrollar**: (Comunicación, razonamiento, modelación, formulación/resolución de problemas, ejercitación de procedimientos)
-- **Estándar de competencia pertinente**: (Estándar oficial real del MEN para el grado y pensamiento matemático, sin inventar códigos)
+- **Estándar de competencia pertinente**: (Estándar oficial real del MEN del pensamiento matemático, tomado internamente del grupo de grados oficial que incluye el grado de la clase; no escribas el rango de grados, solo el estándar, sin inventar códigos)
+- **Procesos generales de la actividad matemática**: (Cuáles se desarrollan y en qué momento: formular y resolver problemas, modelar, comunicar, razonar, formular/comparar/ejercitar procedimientos)
+- **Contexto de la situación problema**: (De la vida diaria, de otras ciencias o de las matemáticas mismas)
 - **DBA correspondiente al grado, cuando aplique**: (DBA oficial de Matemáticas si es pertinente al grado y tema, o "No aplica / No especificado". NO inventes códigos DBA ficticios)
 - **Saberes previos necesarios**: (Conocimientos matemáticos anteriores indispensables)
 - **Desempeños o evidencias esperadas**: (Acciones observables donde el estudiante evidencia su razonamiento y comprensión)
@@ -463,7 +468,10 @@ ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile
 ### B. Fundamentación curricular
 - **Propósito de aprendizaje**: (Propósito científico y formativo claro de la clase)
 - **Competencias científicas pertinentes**: (Uso comprensivo del conocimiento científico, explicación de fenómenos, indagación)
-- **Estándar de competencia**: (Estándar oficial del MEN para Ciencias Naturales según grado y entorno vivo/físico/CTS, sin inventar códigos)
+- **Estándar de competencia**: (Estándar oficial del MEN para Ciencias Naturales tomado internamente del grupo de grados oficial que incluye el grado de la clase y del entorno; no escribas el rango de grados, sin inventar códigos)
+- **Entorno de los conocimientos propios**: (Entorno vivo, entorno físico o Ciencia, tecnología y sociedad)
+- **Me aproximo al conocimiento como científico(a) natural**: (Capacidades de indagación que se ejercitan: observar, preguntar, formular hipótesis, registrar, analizar, comunicar)
+- **Compromisos personales y sociales**: (Acción de cuidado de sí mismo, de los demás o del ambiente, o uso responsable del conocimiento científico)
 - **DBA correspondiente al grado, cuando aplique**: (DBA oficial de Ciencias Naturales si aplica al grado y tema, o "No aplica / No especificado". NO inventes códigos DBA ficticios)
 - **Aprendizajes previos**: (Conocimientos y vivencias previas que fundamentan el nuevo aprendizaje)
 - **Evidencias de aprendizaje**: (Desempeños observables donde el estudiante razona sobre evidencias científicas)
@@ -663,7 +671,8 @@ ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile
 ### B. Fundamentación curricular
 - **Propósito comunicativo y de aprendizaje**: (Intención formativa y comunicativa explícita de la clase)
 - **Competencias o procesos del lenguaje**: (Semántica, sintáctica, pragmática, discursiva o literaria)
-- **Estándar de competencia pertinente**: (Estándar oficial del MEN para Lengua Castellana según ciclo y grado, sin inventar códigos)
+- **Factor y estándar de competencia**: (Factor de los Estándares Básicos del Lenguaje —producción textual, comprensión e interpretación textual, literatura, medios de comunicación y otros sistemas simbólicos, o ética de la comunicación— y estándar tomado internamente del grupo de grados oficial que incluye el grado de la clase; no escribas el rango de grados, sin inventar códigos)
+- **Situación comunicativa real**: (Quién comunica, a quién, para qué y en qué situación de uso; enfoque semántico-comunicativo)
 - **DBA correspondiente al grado, cuando aplique**: (DBA oficial de Lenguaje correspondiente al grado, o "No aplica / No especificado". NO inventes códigos DBA ficticios)
 - **Saberes previos**: (Experiencias lectoras, saberes discursivos y conocimientos de lengua previos)
 - **Evidencias de aprendizaje**: (Manifestaciones comunicativas y producciones observables)
@@ -886,7 +895,8 @@ export const FORMATO_INGLES = {
 ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile))}
 - **Unidad temática o situación comunicativa:** (Especificar la situación comunicativa en contexto, ej: Describing daily routines, Ordering food at a restaurant, Talking about past vacations, etc.)
 - **Tema y contexto de uso del inglés:** ${wizardData.tema} (Definir el propósito y contexto de uso comunicativo real)
-- **Nivel de competencia esperado, cuando esté definido:** (Nivel estimado según el ciclo y currículo escolar: A1 Acceso, A2 Plataforma, B1 Pre-intermedio, alineado con MCER / MEN)
+- **Nivel MCER esperado:** (Obligatorio: A1, A2 o B1 coherente con el grado de la clase según la progresión de la Guía 22; la meta nacional es B1 en grado 11)
+- **Habilidades que se desarrollan:** (Listening, speaking, reading, writing e interacción, con el objetivo "can do")
 
 ### B. Fundamentación curricular
 - **Objetivo comunicativo de la clase**: (Qué podrán comunicar o expresar los estudiantes en inglés al finalizar la sesión en situaciones contextualizadas)
@@ -1102,7 +1112,10 @@ ${formatIdentificationMarkdown(resolveRealIdentification(wizardData, userProfile
 ### B. Fundamentación curricular
 - **Eje articulador MEN:** (Indicar: Relaciones con la historia y las culturas, Relaciones espaciales y ambientales, o Relaciones ético-políticas)
 - **Competencia o aprendizaje esperado:** (Competencia curricular de Ciencias Sociales a desarrollar)
-- **Estándar básico de competencia:** (Estándar pertinente de la Guía 7 del MEN)
+- **Estándar básico de competencia:** (Estándar pertinente de la Guía 7 del MEN tomado internamente del grupo de grados oficial que incluye el grado de la clase; no escribas el rango de grados, sin inventar códigos)
+- **Me aproximo al conocimiento como científico(a) social:** (Habilidades de indagación social que se ejercitan: formular preguntas, usar fuentes, contrastar perspectivas, argumentar)
+- **Competencias a desarrollar:** (Cognitivas, procedimentales, interpersonales e integradoras)
+- **Compromisos personales y sociales / competencias ciudadanas:** (Convivencia y paz, participación y responsabilidad democrática, pluralidad e identidad; Cátedra de la Paz cuando el tema lo permita)
 - **DBA de Ciencias Sociales:** (Derecho Básico de Aprendizaje aplicable a este grado)
 - **Saberes previos:** (Nociones previas o representaciones cotidianas que se activarán)
 - **Evidencias de aprendizaje:** (Desempeño o manifestación observable del pensamiento social)

@@ -320,6 +320,10 @@ export const updatePlanStatus = async (planId, updateData) => {
 };
 
 export const deletePlantillaFromDB = async (plantillaId) => {
+  if (!plantillaId || (typeof plantillaId === 'string' && (plantillaId.startsWith('generico_') || plantillaId === '1'))) {
+    console.warn("Intento de eliminar un formato predeterminado protegido:", plantillaId);
+    return;
+  }
   try {
     await deleteDoc(doc(db, "plantillas", plantillaId));
   } catch(e) {
@@ -356,10 +360,14 @@ export const getGlobalStats = async () => {
     const planesSnap = await getDocs(collection(db, "planes"));
     
     let experienciasCount = 0;
+    let estudiantesImpactados = 0;
     let planesPorUsuario = {};
 
     planesSnap.forEach(doc => {
       const data = doc.data();
+      // Solo se suman los estudiantes que el docente declaró en cada plan
+      const declarados = parseInt(data.numEstudiantes, 10);
+      if (Number.isFinite(declarados) && declarados > 0) estudiantesImpactados += declarados;
       if(data.estado === 'Sistematizado' || data.estado === 'Biblioteca') {
         experienciasCount++;
       }
@@ -372,7 +380,7 @@ export const getGlobalStats = async () => {
       totalUsers: usersSnap.size,
       totalPlanes: planesSnap.size,
       totalExperiencias: experienciasCount,
-      estudiantesImpactados: planesSnap.size * 25, // Estimado de 25 por plan
+      estudiantesImpactados,
       planesPorUsuario,
       allPlanes: planesSnap.docs.map(d => ({ id: d.id, ...d.data() }))
     };
@@ -387,90 +395,6 @@ export const getGlobalStats = async () => {
 // =======================
 const LOCAL_FORO_KEY = 'inspiratec_foro_cache';
 
-const DEFAULT_FORO_SEEDS = [
-  {
-    id: 'seed-foro-1',
-    titulo: 'Estrategias para implementar el marco DUA en ciencias y matemáticas',
-    texto: 'Estimados colegas, en la institución hemos comenzado a articular el Diseño Universal para el Aprendizaje (DUA) con las secuencias didácticas de aula. Sin embargo, en grados como 7mo y 8vo a veces nos cuesta diseñar múltiples formas de representación sin sobrecargar los tiempos de clase de 90 minutos.\n\n¿Qué metodologías o recursos interactivos les han funcionado mejor para flexibilizar la presentación de conceptos abstractos?',
-    categoria: 'Inclusión y DUA',
-    etiquetas: ['DUA', 'Ciencias', 'Flexibilización', 'Secundaria'],
-    nombre: 'Prof. Carlos Ramírez',
-    rol: 'Docente de Ciencias',
-    userId: 'docente_carlos_1',
-    destacado: true,
-    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    respuestas: [
-      {
-        id: 'r-seed-1',
-        nombre: 'Dra. Elena Gómez',
-        rol: 'Admin',
-        userId: 'admin_elena',
-        texto: 'Hola Carlos. Una estrategia potente es usar estaciones de aprendizaje de 15 minutos: una estación táctil/concreta, una digital o visual (como simulaciones PhET) y una de discusión guiada. Permite que los estudiantes elijan su canal de acceso principal sin cambiar el objetivo curricular.',
-        date: new Date(Date.now() - 3600000 * 3).toISOString()
-      },
-      {
-        id: 'r-seed-2',
-        nombre: 'Lic. Andrés Restrepo',
-        rol: 'Docente',
-        userId: 'docente_andres_2',
-        texto: 'Totalmente de acuerdo con Elena. En matemáticas nos sirvió además incorporar el co-docente de INSPIRATEC para que sugiera rúbricas formativas diferenciadas por niveles de complejidad.',
-        date: new Date(Date.now() - 3600000 * 1).toISOString()
-      }
-    ]
-  },
-  {
-    id: 'seed-foro-2',
-    titulo: 'Integración ética y pedagógica de IA Generativa en las aulas de bachillerato',
-    texto: 'Abro este debate para conocer cómo están orientando a los estudiantes de 10mo y 11mo grado en el uso de herramientas de inteligencia artificial. No queremos caer en la prohibición punitiva, sino orientar la IA hacia el desarrollo del pensamiento crítico, la verificación de fuentes y la producción textual propia.\n\n¿Tienen lineamientos o acuerdos de aula que les hayan dado buenos resultados?',
-    categoria: 'Inteligencia artificial en educación',
-    etiquetas: ['IA Educativa', 'Ética Digital', 'Pensamiento Crítico', 'Bachillerato'],
-    nombre: 'Lic. Mariana Vargas',
-    rol: 'Docente de Lenguaje',
-    userId: 'docente_mariana_3',
-    destacado: true,
-    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 7).toISOString(),
-    respuestas: [
-      {
-        id: 'r-seed-3',
-        nombre: 'Daniel Tapias',
-        rol: 'Admin',
-        userId: 'admin_danieltapias',
-        texto: 'Excelente iniciativa, Mariana. En INSPIRATEC promovemos el enfoque de la IA como un "co-docente" o espejo cognitivo: se le pide al estudiante que analice los sesgos de la respuesta generada y justifique qué partes reformularía con sus propias palabras.',
-        date: new Date(Date.now() - 3600000 * 8).toISOString()
-      }
-    ]
-  },
-  {
-    id: 'seed-foro-3',
-    titulo: 'Diseño de proyectos STEAM con materiales de bajo costo y reciclables',
-    texto: 'Comparto una experiencia de aula en 5to de primaria: creamos prototipos de filtración de agua caseros articulando Ciencias Naturales, Matemáticas (cálculo de caudales) y Tecnología. El costo fue mínimo y el compromiso de los niños fue altísimo.\n\n¿Quién se suma a crear un repositorio abierto de rúbricas para evaluar este tipo de proyectos?',
-    categoria: 'Innovación pedagógica',
-    etiquetas: ['STEAM', 'Aprendizaje Basado en Proyectos', 'Primaria', 'Sostenibilidad'],
-    nombre: 'Prof. Javier Morales',
-    rol: 'Docente',
-    userId: 'docente_javier_4',
-    destacado: false,
-    createdAt: new Date(Date.now() - 3600000 * 36).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 20).toISOString(),
-    respuestas: []
-  },
-  {
-    id: 'seed-foro-4',
-    titulo: '¿Cómo dosificar los tiempos de clase cuando las actividades prácticas se alargan?',
-    texto: 'Colegas, me pasa con frecuencia en Tecnología e Informática que la fase de desarrollo se extiende más de lo planeado y la actividad de cierre o metacognición termina reducida a 2 minutos. ¿Qué pautas utilizan para mantener la disciplina temporal sin cortar abruptamente la indagación de los estudiantes?',
-    categoria: 'Preguntas y ayuda entre docentes',
-    etiquetas: ['Gestión del Tiempo', 'Momentos de Clase', 'Evaluación Formativa'],
-    nombre: 'Lic. Patricia Ospina',
-    rol: 'Docente de Tecnología',
-    userId: 'docente_patricia_5',
-    destacado: false,
-    createdAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-    updatedAt: new Date(Date.now() - 3600000 * 48).toISOString(),
-    respuestas: []
-  }
-];
 
 const getForoStorage = () => {
   if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
@@ -533,13 +457,13 @@ export const getForoMessages = async () => {
     }
   });
 
-  // 3. Semilla inicial si aún no existen discusiones registradas
-  if (mergedMap.size === 0) {
-    DEFAULT_FORO_SEEDS.forEach(seed => {
-      mergedMap.set(seed.id, seed);
-      saveLocalForoMessage(seed);
-    });
-  }
+  // 3. Descartar discusiones de ejemplo que versiones anteriores guardaron en caché local
+  Array.from(mergedMap.keys()).forEach(id => {
+    if (String(id).startsWith('seed-foro')) {
+      mergedMap.delete(id);
+      removeLocalForoMessage(id);
+    }
+  });
 
   const allMsgs = Array.from(mergedMap.values());
   

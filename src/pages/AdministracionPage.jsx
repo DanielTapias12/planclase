@@ -386,9 +386,6 @@ export default function AdministracionPage() {
                 <span style={{ fontSize: '12px', color: '#16A34A', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 600 }}>
                   <TrendingUp size={14} /> +100% Cuentas
                 </span>
-                <svg width="70" height="24" viewBox="0 0 70 24" fill="none">
-                  <path d="M2 20L18 16L34 18L50 8L68 4" stroke="#315B54" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
               </div>
             </div>
 
@@ -422,9 +419,6 @@ export default function AdministracionPage() {
                 <span style={{ fontSize: '12px', color: '#2B453E', fontWeight: 500 }}>
                   Promedio: <strong>{promedioPlanesPorDocente}</strong>/docente
                 </span>
-                <svg width="70" height="24" viewBox="0 0 70 24" fill="none">
-                  <path d="M2 18L20 14L38 12L54 6L68 2" stroke="#477A72" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
               </div>
             </div>
 
@@ -458,9 +452,6 @@ export default function AdministracionPage() {
                 <span style={{ fontSize: '12px', color: '#2B453E', fontWeight: 500 }}>
                   Comunidad activa
                 </span>
-                <svg width="70" height="24" viewBox="0 0 70 24" fill="none">
-                  <path d="M2 22L20 18L36 10L52 14L68 6" stroke="#2B524A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
               </div>
             </div>
 
@@ -492,11 +483,8 @@ export default function AdministracionPage() {
               </p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: '12px', color: '#166534', fontWeight: 600 }}>
-                  Estudiantes en aula
+                  Estudiantes declarados en planes
                 </span>
-                <svg width="70" height="24" viewBox="0 0 70 24" fill="none">
-                  <path d="M2 20L18 12L34 14L50 6L68 2" stroke="#16A34A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
               </div>
             </div>
 
@@ -744,7 +732,7 @@ export default function AdministracionPage() {
                 <Search size={16} color="var(--primary-sage)" />
                 <input 
                   type="text" 
-                  placeholder="Buscar docente por nombre, email o colegio..."
+                  placeholder="Buscar docente"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="mgmt-search-input"
@@ -1696,7 +1684,7 @@ export default function AdministracionPage() {
                   <Search size={15} color="var(--primary-sage)" />
                   <input 
                     type="text" 
-                    placeholder="Filtrar por nombre, colegio o modelo..."
+                    placeholder="Filtrar"
                     value={searchDnaTerm}
                     onChange={(e) => setSearchDnaTerm(e.target.value)}
                     className="mgmt-search-input"
@@ -2086,7 +2074,7 @@ export default function AdministracionPage() {
                   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                     <input 
                       type="text" 
-                      placeholder="Escribir respuesta al docente..." 
+                      placeholder="Respuesta" 
                       value={replyText[t.id] || ''}
                       onChange={(e) => setReplyText({ ...replyText, [t.id]: e.target.value })}
                       className="wizard-input"

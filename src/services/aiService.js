@@ -2,15 +2,12 @@ import { resolveEffectiveTemplate } from './templates/genericTemplates';
 import { resolveRealIdentification, injectRealIdentificationIntoPlan } from './templates/identificationResolver';
 import { useAppStore } from '../store/useAppStore';
 import { getPedagogicalDna, formatDnaPromptDirective } from './pedagogicalDnaService';
-import { 
-  buildPresentationHtml, 
-  generateGamifiedQuizHTML,
-  generateInteractiveQuestionsHTML, 
-  generateWordsearchHTML, 
-  generateInteractiveRubricHTML, 
-  generateInteractiveFlashcardsHTML, 
-  injectShareBarIntoHtml 
-} from './materials/index.js';
+import { injectShareBarIntoHtml } from './materials/index.js';
+import { generateCreativeHtml } from './materials/creativeHtml.js';
+import { getResourceDef, resolveResourceKey } from './materials/resourceCatalog.js';
+import { buildAulaInteractivaHtml, AULA_CONTENT_SCHEMA } from './materials/aulaInteractiva.js';
+import { buildMenDirective, checkMenAlignment } from './templates/menFrameworks.js';
+import { normalizeQuestions } from './sessions/sessionLogic.js';
 
 /**
  * AI Service para INSPIRATEC
@@ -116,14 +113,6 @@ export const callGeminiApi = async (apiKey, requestBody, maxRetriesPerModel = 2)
   throw new Error(`Error en el servicio de IA: ${lastError?.message || 'No fue posible conectar con ningún modelo de Gemini.'}`);
 };
 
-const REGLAS_MEN = {
-  "Tecnología e Informática": "Debes basarte en las Orientaciones Generales para la Educación en Tecnología de Colombia (Guía 30 MEN). Enfatiza en pensamiento computacional, uso responsable de TIC y solución de problemas tecnológicos.",
-  "Matemáticas": "Debes basarte en los Estándares Básicos de Competencias y DBA de Matemáticas de Colombia. El plan debe enfatizar el razonamiento, la modelación y la resolución de problemas (pensamientos numérico, espacial, métrico, aleatorio y variacional).",
-  "Ciencias Naturales": "Debes basarte en los Estándares Básicos de Competencias en Ciencias Naturales y DBA de Colombia. Enfatiza en la indagación científica, la comprensión de fenómenos y el análisis riguroso de evidencias empíricas.",
-  "Lengua Castellana": "Debes basarte en los Estándares Básicos de Competencias y DBA de Lenguaje de Colombia. Enfócate en comprensión y producción textual, oralidad, procesos discursivos y enfoque semántico-comunicativo.",
-  "Inglés": "Debes basarte en los Estándares Básicos de Competencias en Lenguas Extranjeras: Inglés (Guía 22 MEN), los DBA de Inglés de Colombia y el Marco Común Europeo de Referencia para las Lenguas (MCER). Enfócate en el desarrollo de la competencia comunicativa (dimensiones lingüística, pragmática y sociolingüística). Selecciona las habilidades pertinentes para el objetivo de la sesión (Listening, Speaking, Reading, Writing) e incorpora vocabulario, expresiones funcionales y estructuras contextualizadas según el grado y nivel de los estudiantes, articulando las fases Warm-up, Presentation, Practice, Production y Wrap-up cuando sean pedagógicamente pertinentes."
-};
-
 /**
  * Prueba de conexión a la API de Gemini
  */
@@ -144,7 +133,7 @@ export const testApiConnection = async (apiKey) => {
  * Sugerencia de objetivos de aprendizaje basada en el contexto curricular
  */
 export const suggestObjectives = async (apiKey, wizardData) => {
-  const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
+  const reglas = buildMenDirective(wizardData.materia, wizardData.grado);
   const prompt = `Como experto pedagogo alineado con los lineamientos oficiales del MEN de Colombia, sugiere propósitos y objetivos de aprendizaje (1 o 2 párrafos cortos y precisos) para una clase con el siguiente contexto:
 Tema: ${wizardData.tema}
 Grado: ${wizardData.grado}
@@ -169,7 +158,7 @@ Responde SOLO con el texto de los objetivos formativos coherentes con las orient
  * Sugerencia de estándares MEN y DBA
  */
 export const suggestStandards = async (apiKey, wizardData) => {
-  const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
+  const reglas = buildMenDirective(wizardData.materia, wizardData.grado);
   const prompt = `Como experto curricular en Colombia, sugiere qué competencias, estándares MEN y DBA aplican para esta clase:
 Tema: ${wizardData.tema}
 Grado: ${wizardData.grado}
@@ -217,16 +206,17 @@ export const generatePlan = async (apiKey, wizardData, customTemplates = [], use
 
   const orientacionDisciplinar = `
 ORIENTACIÓN DIDÁCTICA Y DISCIPLINAR CRÍTICA:
-1. SELECCIÓN PERTINENTE: Los apartados disciplinares (por ejemplo: DBA, representaciones matemáticas específicas, errores frecuentes, precauciones de seguridad de laboratorio, género textual, tipos de evidencias o herramientas digitales/manipulativas) NO deben ser campos obligatorios universales mecánicos. Selecciona y desarrolla ÚNICAMENTE los apartados que sean directamente pertinentes al objetivo formativo de la clase, el grado escolar (${realData.grado || 'del nivel'}), el contexto real y los recursos disponibles (${wizardData.recursos || 'especificados'}). Si un apartado no aplica al tema concreto, no lo fuerces.
+1. SELECCIÓN PERTINENTE: Los elementos exigidos en la ALINEACIÓN CON EL MEN son obligatorios y deben verse en el plan. Los demás apartados disciplinares (por ejemplo: DBA cuando no exista para el grado, representaciones matemáticas específicas, errores frecuentes, precauciones de seguridad de laboratorio, género textual, tipos de evidencias o herramientas digitales/manipulativas) NO deben ser campos obligatorios universales mecánicos. Selecciona y desarrolla ÚNICAMENTE los apartados que sean directamente pertinentes al objetivo formativo de la clase, el grado escolar (${realData.grado || 'del nivel'}), el contexto real y los recursos disponibles (${wizardData.recursos || 'especificados'}). Si un apartado no aplica al tema concreto, no lo fuerces.
 2. RIGOR CURRICULAR SIN INVENTAR: NO inventes estándares ni códigos ficticios de DBA. Fundaméntate estrictamente en los referentes reales y vigentes del Ministerio de Educación Nacional de Colombia (MEN) y Colombia Aprende. Si no dispones del código exacto de un DBA, describe el aprendizaje formativo real sin crear números inventados.
 3. DATOS DE IDENTIFICACIÓN REALES: En la sección '### Identificación', debes transcribir fielmente los datos reales provistos sin modificarlos ni reemplazarlos por texto ficticio o nombres de ejemplo.
 4. ORGANIZACIÓN PEDAGÓGICA Y TIEMPOS: Presenta una estructura coherente y jerárquica con instrucciones concretas, diferenciando las orientaciones del docente y las acciones esperadas de los estudiantes. Si se indican tiempos por fase, asegúrate de que sean realistas y que la suma de los momentos corresponda exactamente a la duración disponible (${realData.duracionTexto}).
 5. NOTACIÓN MATEMÁTICA Y FÓRMULAS: En caso de incluir fórmulas, ecuaciones o expresiones de cálculo, utiliza delimitadores estándar ($...$ o $$...$$) o símbolos matemáticos directos (×, ÷, ±, ², ³). No utilices barras invertidas duplicadas ni escapes de código innecesarios.
+5b. INNOVACIÓN Y CREATIVIDAD (OBLIGATORIO): Diseña una clase original, no una plantilla repetida. Elige una situación-reto, historia o misión que enganche al grupo y proponla desde el inicio; evita el esquema predecible "explicación del docente, ejercicio y cierre". Propón al menos una experiencia distinta (por ejemplo: investigación de campo, juego de roles, laboratorio casero, reto de diseño, debate, creación de un producto, estaciones, aprendizaje desconectado o gamificado) acorde al tema, al grado y a los recursos disponibles. Incluye trabajo en equipo real: define roles rotativos con funciones concretas, un producto o decisión colectiva y una forma de evaluar tanto el resultado como la colaboración. Si el docente indicó metodología, recursos u objetivos, respétalos y llévalos a un diseño creativo; no inventes datos que el docente no dio.
 6. FORMATO DE RESPUESTA: Entrega directamente el documento pedagógico estructurado en Markdown legible. NO envuelvas todo el plan en bloques de código con triple comilla invertida (\`\`\`markdown).
-7. RECURSOS GENERABLES POR LA IA: Solo cuando sea estrictamente necesario para visualizar un concepto pedagógico complejo (como un diagrama de flujo, una infografía del hardware, un esquema de una red, una simulación o un modelo interactivo), puedes sugerir un recurso visual interactivo en la mediación o recursos de la clase. Formatea la sugerencia así: [GENERATE_IMAGE: "una descripción detallada del recurso pedagógico interactivo a generar"].
+7. RECURSOS GENERABLES POR LA IA (OBLIGATORIO): Cada vez que el plan indique que se va a usar, proyectar, mostrar o sugerir un recurso digital o visual (por ejemplo: un paso a paso, una animación, un simulador, un diagrama, una infografía, un juego, un OVA, una línea de tiempo, una actividad interactiva), debes escribir justo en esa celda o línea el marcador [GENERATE_IMAGE: "descripción detallada del recurso"]. La plataforma lo convertirá en un botón para que el docente genere ese recurso en HTML, CSS y JavaScript, lo vea en pantalla y lo descargue. Incluye entre 1 y 3 marcadores por plan, en los momentos de la secuencia donde más aporten (inicio/motivación, desarrollo y práctica). Prefiere recursos tipo OVA o simulador que funcionen en un solo archivo HTML y sirvan para proyectar y compartir con estudiantes. NO sugieras videos externos, imágenes de internet ni software que requiera instalación. La descripción dentro del marcador debe explicar qué muestra, qué pasos o interacciones tiene y qué debe aprender el estudiante (ejemplo: [GENERATE_IMAGE: "Simulador paso a paso de cómo preparar un sándwich para explicar algoritmos: el estudiante ordena los pasos, ve el resultado y descubre qué pasa si cambia el orden"]). No uses comillas dobles dentro de la descripción.
 `;
 
-  const reglas = REGLAS_MEN[wizardData.materia] || REGLAS_MEN["Tecnología e Informática"];
+  const reglas = buildMenDirective(wizardData.materia, realData.grado || wizardData.grado);
   const prompt = `Actúa como un planificador experto en el área de ${wizardData.materia}. Tus lineamientos legales son: ${reglas}. Genera un plan de clase estructurado en formato Markdown con la siguiente información:
 Tema: ${wizardData.tema}
 Institución: ${realData.institucion}
@@ -234,9 +224,9 @@ Institución: ${realData.institucion}
 Grado: ${realData.grado}
 Docente: ${realData.docente}
 Duración: ${realData.duracionTexto}
-Estudiantes: ${wizardData.numEstudiantes || '30'}
+Estudiantes: ${wizardData.numEstudiantes || 'No especificado'}
 Recursos: ${wizardData.recursos}
-Metodología: ${wizardData.metodologiaSTEAM || 'Aprendizaje Activo'}
+Metodología: ${wizardData.metodologiaSTEAM || 'Libre: elige la más pertinente y creativa para el tema'}
 Objetivos: ${wizardData.objetivos}
 Estándares MEN: ${Array.isArray(wizardData.estandaresMEN) ? wizardData.estandaresMEN.join(', ') : (wizardData.estandaresMEN || '')}
 Inclusión (DUA): ${Array.isArray(wizardData.inclusion) ? wizardData.inclusion.join(', ') : ''} ${wizardData.otrasNecesidades || ''}
@@ -249,14 +239,44 @@ ${formatInstructions}`;
   try {
     const planText = await callGeminiApi(apiKey, {
       contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
+      generationConfig: { temperature: 1, maxOutputTokens: 16384 }
     });
-    
-    let cleaned = (planText || '').trim();
-    if (cleaned.startsWith('```markdown')) {
-      cleaned = cleaned.replace(/^```markdown\s*/i, '').replace(/```\s*$/i, '');
-    } else if (cleaned.startsWith('```')) {
-      cleaned = cleaned.replace(/^```\s*/i, '').replace(/```\s*$/i, '');
+
+    const stripFences = (txt) => {
+      let out = (txt || '').trim();
+      if (out.startsWith('```markdown')) {
+        out = out.replace(/^```markdown\s*/i, '').replace(/```\s*$/i, '');
+      } else if (out.startsWith('```')) {
+        out = out.replace(/^```\s*/i, '').replace(/```\s*$/i, '');
+      }
+      return out;
+    };
+
+    let cleaned = stripFences(planText);
+
+    // Verificación de alineación con el MEN: si faltan elementos exigidos para el área, se corrige una vez
+    const { faltantes } = checkMenAlignment(cleaned, wizardData.materia);
+    if (faltantes.length > 0) {
+      try {
+        const repairPrompt = `Eres un revisor curricular del Ministerio de Educación Nacional de Colombia. El siguiente plan de clase de ${wizardData.materia} (grado ${realData.grado || wizardData.grado}) no evidencia estos elementos exigidos por los referentes oficiales: ${faltantes.join('; ')}.
+
+${reglas}
+
+Devuelve el plan COMPLETO integrando esos elementos dentro de la estructura y los encabezados existentes (no cambies el orden de las secciones ni elimines contenido, marcadores [GENERATE_IMAGE: "..."] ni datos de identificación). Responde solo con el plan en Markdown, sin bloques de código.
+
+PLAN:
+${cleaned}`;
+        const repaired = stripFences(await callGeminiApi(apiKey, {
+          contents: [{ parts: [{ text: repairPrompt }] }],
+          generationConfig: { temperature: 0.4, maxOutputTokens: 16384 }
+        }));
+        // Solo se acepta la corrección si conserva la extensión del plan y reduce las carencias
+        if (repaired.length >= cleaned.length * 0.85 && checkMenAlignment(repaired, wizardData.materia).faltantes.length < faltantes.length) {
+          cleaned = repaired;
+        }
+      } catch (repairError) {
+        console.warn('[INSPIRATEC] No se pudo completar la alineación con el MEN:', repairError.message);
+      }
     }
 
     // Inyección de garantía: asegura que la sección de Identificación refleje los datos reales del usuario
@@ -366,8 +386,8 @@ Aplica esta instrucción: ${instruccion}`;
  * Extrae metadatos pedagógicos del plan de clase para contextualizar materiales
  */
 const extractPlanMetadata = (planMarkdown = '') => {
-  let title = 'Secuencia Didáctica';
-  let subject = 'Informática y Tecnología';
+  let title = '';
+  let subject = '';
   let grade = '';
 
   const titleMatch = planMarkdown.match(/#\s*(?:Plan de Clase:?|Secuencia Didáctica:?)\s*([^\n\r]+)/i) ||
@@ -387,354 +407,144 @@ const extractPlanMetadata = (planMarkdown = '') => {
 };
 
 /**
- * Generación de material complementario (rúbricas, diapositivas, quizzes, juegos, flashcards)
- * Garantiza interactividad autónoma (offline), audio sintetizado, temporizadores,
- * navegación por teclado y barra universal de compartir e imprimir.
+ * Generación de un recurso HTML del catálogo (ver materials/resourceCatalog.js).
+ * Todo recurso es diseñado a medida por la IA a partir del plan de clase; si la IA falla se
+ * informa el error y NO se entrega contenido de reemplazo.
+ * El tipo "aula_interactiva" parte de una plantilla base de pizarra que la IA solo llena con contenido.
  */
 export const generateComplementaryMaterial = async (apiKey, planActual, type, contextoEspecifico = '') => {
   const meta = extractPlanMetadata(planActual);
-  const normalizedType = (type || '').toLowerCase();
+  const typeKey = resolveResourceKey(type);
+  const def = getResourceDef(typeKey);
+  const brief = def?.brief
+    || `Un recurso interactivo con una función didáctica clara para el tema de la clase${typeKey ? ` (tipo: ${typeKey})` : ''}.`;
 
-  // 1. DIAPOSITIVAS / PRESENTACIÓN PEDAGÓGICA INTERACTIVA
-  if (normalizedType === 'diapositivas' || normalizedType === 'presentacion' || normalizedType === 'slides' || normalizedType === 'ova') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, genera el contenido para unas Diapositivas de Presentación pedagógicas (entre 4 y 6 diapositivas).
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "${meta.title}",
-  "subject": "${meta.subject}",
-  "grade": "${meta.grade}",
-  "slides": [
-    {
-      "title": "Título claro de la diapositiva",
-      "subtitle": "Subtítulo o pregunta orientadora",
-      "content": ["Punto clave 1", "Punto clave 2", "Punto clave 3"],
-      "notes": "Consejo o nota pedagógica para el docente durante la explicación"
-    }
-  ]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 }
-      });
-      const cleanJson = res.replace(/^\`\`\`json\s*/i, '').replace(/^\`\`\`\s*/i, '').replace(/\`\`\`\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return buildPresentationHtml({
-        title: parsed.title || meta.title,
-        subject: parsed.subject || meta.subject,
-        grade: parsed.grade || meta.grade,
-        slides: Array.isArray(parsed.slides) ? parsed.slides : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de diapositivas local:', err.message);
-      return buildPresentationHtml({
-        title: meta.title,
-        subject: meta.subject,
-        grade: meta.grade
-      });
-    }
-  }
-
-  // 2. PREGUNTAS / CUESTIONARIO FORMATIVO INTERACTIVO (con pistas DUA y retroalimentación)
-  if (normalizedType === 'preguntas' || normalizedType === 'cuestionario') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, genera un Banco de 4 a 5 Preguntas Formativas de selección múltiple con pistas DUA y retroalimentación pedagógica.
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "Cuestionario: ${meta.title}",
-  "subject": "${meta.subject}",
-  "grade": "${meta.grade}",
-  "questions": [
-    {
-      "question": "¿Pregunta pedagógica contextualizada con el tema?",
-      "options": ["Opción correcta y fundamentada", "Opción distractora creíble 1", "Opción distractora creíble 2", "Opción distractora creíble 3"],
-      "correctIndex": 0,
-      "hint": "Pista pedagógica DUA para orientar el razonamiento del estudiante.",
-      "explanation": "Explicación detallada de por qué esta es la respuesta correcta y qué concepto valida."
-    }
-  ]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 }
-      });
-      const cleanJson = res.replace(/^\`\`\`json\s*/i, '').replace(/^\`\`\`\s*/i, '').replace(/\`\`\`\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return generateInteractiveQuestionsHTML({
-        title: parsed.title || `Cuestionario: ${meta.title}`,
-        subject: parsed.subject || meta.subject,
-        grade: parsed.grade || meta.grade,
-        questions: Array.isArray(parsed.questions) ? parsed.questions : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de preguntas local:', err.message);
-      return generateInteractiveQuestionsHTML({
-        title: `Cuestionario: ${meta.title}`,
-        subject: meta.subject,
-        grade: meta.grade
-      });
-    }
-  }
-
-  // 3. JUEGOS / TRIVIA GAMIFICADA (con sonido Web Audio, temporizador, rachas y medallas)
-  if (normalizedType === 'juegos' || normalizedType === 'juego' || normalizedType === 'game' || normalizedType === 'trivia' || normalizedType === 'quiz') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, genera una Trivia Gamificada interactiva de 5 retos rápidos de selección múltiple para jugar en clase.
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "Juego Trivia: ${meta.title}",
-  "subject": "${meta.subject}",
-  "questions": [
-    {
-      "question": "¿Reto o pregunta lúdica de comprobación?",
-      "options": ["Respuesta correcta", "Distractor 1", "Distractor 2", "Distractor 3"],
-      "correctIndex": 0,
-      "feedback": "¡Genial! Breve mensaje de felicitación y concepto clave aprendido."
-    }
-  ]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 }
-      });
-      const cleanJson = res.replace(/^\`\`\`json\s*/i, '').replace(/^\`\`\`\s*/i, '').replace(/\`\`\`\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return generateGamifiedQuizHTML({
-        title: parsed.title || `Juego Trivia: ${meta.title}`,
-        subject: parsed.subject || meta.subject,
-        questions: Array.isArray(parsed.questions) ? parsed.questions : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de juego trivia local:', err.message);
-      return generateGamifiedQuizHTML({
-        title: `Juego Trivia: ${meta.title}`,
-        subject: meta.subject
-      });
-    }
-  }
-
-  // 4. SOPA DE LETRAS TEMÁTICA INTERACTIVA
-  if (normalizedType === 'sopa' || normalizedType === 'sopa_letras' || normalizedType === 'wordsearch') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, extrae entre 8 y 10 conceptos o palabras clave fundamentales para una Sopa de Letras educativa.
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "Sopa de Letras: ${meta.title}",
-  "subject": "${meta.subject}",
-  "words": ["PALABRA1", "PALABRA2", "PALABRA3", "PALABRA4", "PALABRA5", "PALABRA6", "PALABRA7", "PALABRA8"]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.5, maxOutputTokens: 2048 }
-      });
-      const cleanJson = res.replace(/^\`\`\`json\s*/i, '').replace(/^\`\`\`\s*/i, '').replace(/\`\`\`\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return generateWordsearchHTML({
-        title: parsed.title || `Sopa de Letras: ${meta.title}`,
-        subject: parsed.subject || meta.subject,
-        words: Array.isArray(parsed.words) ? parsed.words : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de sopa de letras local:', err.message);
-      return generateWordsearchHTML({
-        title: `Sopa de Letras: ${meta.title}`,
-        subject: meta.subject
-      });
-    }
-  }
-
-  // 4. RÚBRICA ANALÍTICA INTERACTIVA
-  if (normalizedType === 'rubrica' || normalizedType === 'rubricas') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, genera una Rúbrica Analítica de Evaluación formativa con 3 o 4 criterios esenciales.
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "Rúbrica: ${meta.title}",
-  "subject": "${meta.subject}",
-  "grade": "${meta.grade}",
-  "criteria": [
-    {
-      "name": "Nombre del criterio evaluativo",
-      "weight": 30,
-      "levels": {
-        "superior": "Descriptor de desempeño superior (5.0)",
-        "alto": "Descriptor de desempeño alto (4.0)",
-        "basico": "Descriptor de desempeño básico (3.2)",
-        "bajo": "Descriptor de desempeño bajo (2.0)"
-      }
-    }
-  ]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 }
-      });
-      const cleanJson = res.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return generateInteractiveRubricHTML({
-        title: parsed.title || `Rúbrica: ${meta.title}`,
-        subject: parsed.subject || meta.subject,
-        grade: parsed.grade || meta.grade,
-        criteria: Array.isArray(parsed.criteria) ? parsed.criteria : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de rúbrica local:', err.message);
-      return generateInteractiveRubricHTML({
-        title: `Rúbrica: ${meta.title}`,
-        subject: meta.subject,
-        grade: meta.grade
-      });
-    }
-  }
-
-  // 5. FLASHCARDS 3D INTERACTIVAS
-  if (normalizedType === 'flashcards') {
-    try {
-      const prompt = `Basado en el siguiente plan de clase, genera entre 5 y 8 Flashcards de vocabulario y conceptos clave interactivos.
-Devuelve ÚNICAMENTE un objeto JSON válido con este formato:
-{
-  "title": "Flashcards: ${meta.title}",
-  "subject": "${meta.subject}",
-  "grade": "${meta.grade}",
-  "cards": [
-    {
-      "front": "Término o concepto",
-      "back": "Definición clara, contextualizada y comprensible",
-      "category": "Categoría conceptual"
-    }
-  ]
-}
-${contextoEspecifico ? `Instrucciones adicionales: ${contextoEspecifico}` : ''}
-PLAN DE CLASE:
-${planActual}`;
-
-      const res = await callGeminiApi(apiKey, {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 }
-      });
-      const cleanJson = res.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      return generateInteractiveFlashcardsHTML({
-        title: parsed.title || `Flashcards: ${meta.title}`,
-        subject: parsed.subject || meta.subject,
-        grade: parsed.grade || meta.grade,
-        cards: Array.isArray(parsed.cards) ? parsed.cards : []
-      });
-    } catch (err) {
-      console.warn('[INSPIRATEC] Fallback a generador de flashcards local:', err.message);
-      return generateInteractiveFlashcardsHTML({
-        title: `Flashcards: ${meta.title}`,
-        subject: meta.subject,
-        grade: meta.grade
-      });
-    }
-  }
-
-  // 6. OTROS MATERIALES (Infografía, Simulación, Taller de Contexto, Guía, etc.)
-  let materialPrompt = '';
-  if (normalizedType === 'taller_contexto') {
-    materialPrompt = `genera un Taller de Contexto Real interactivo con 5 problemas prácticos aplicados a la vida cotidiana. Incluye campos de entrada, botones interactivos para 'Verificar solución / Pista' y retroalimentación explicativa paso a paso.`;
-  } else if (normalizedType === 'infografia') {
-    materialPrompt = `genera una Infografía Interactiva explicativa con diagramas visuales en SVG o CSS, tarjetas desplegables tipo acordeón y botones interactivos para explorar cada fase conceptual.`;
-  } else if (normalizedType === 'simulacion') {
-    materialPrompt = `genera una Simulación Interactiva en HTML5 Canvas o SVG dinámico con controles funcionales (deslizadores de parámetros, botones de reproducir, pausar y reiniciar) que permitan al estudiante experimentar directamente con las variables del tema.`;
-  } else if (normalizedType === 'reading') {
-    materialPrompt = `genera un ejercicio interactivo de Reading Comprehension con texto en inglés, preguntas interactivas con comprobación inmediata y glosario flotante de términos clave.`;
-  } else if (normalizedType === 'guia_modelacion') {
-    materialPrompt = `genera una Guía de Modelación Matemática paso a paso interactiva con visualizadores geométricos o numéricos y comprobación de respuestas.`;
-  } else {
-    materialPrompt = `genera un recurso interactivo autónomo con interfaz moderna, botones con addEventListener funcionales y retroalimentación en pantalla.`;
-  }
-
-  const systemInstruction = `Eres un desarrollador web experto. Tu objetivo es crear un recurso educativo interactivo, visualmente atractivo y 100% funcional en un único archivo HTML.
-Debes escribir todo el código CSS y JavaScript puro dentro del mismo archivo sin librerías externas por CDN.
-El recurso debe ser completamente funcional e interactivo para estudiantes y docentes.
-IMPORTANTE: Usa document.getElementById(...).addEventListener('click', ...) dentro de una etiqueta <script> al final del body para garantizar que los eventos funcionen siempre y no fallen por scope.
-Devuelve ÚNICAMENTE el código HTML completo desde <!DOCTYPE html> hasta </html>.`;
-
-  const prompt = `${systemInstruction}
-  
-Crea un recurso educativo en HTML para: ${materialPrompt}
-${contextoEspecifico ? `\nInstrucciones específicas: ${contextoEspecifico}\n` : ''}
-TEMA: ${meta.title} | ÁREA: ${meta.subject} | GRADO: ${meta.grade}
-
-PLAN DE CLASE:
-${planActual}`;
+  const context = [
+    meta.title && `Tema: ${meta.title}`,
+    meta.subject && `Área: ${meta.subject}`,
+    meta.grade && `Grado: ${meta.grade}`,
+    contextoEspecifico && `Indicaciones específicas: ${contextoEspecifico}`,
+    `PLAN DE CLASE:\n${planActual}`
+  ].filter(Boolean).join('\n');
 
   try {
-    let htmlResult = await callGeminiApi(apiKey, {
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
-    });
-    htmlResult = htmlResult.replace(/^```html\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
-    return injectShareBarIntoHtml(htmlResult, { title: meta.title, subject: meta.subject, grade: meta.grade });
+    let html;
+    if (def?.plantilla && typeKey === 'aula_interactiva') {
+      html = await generateAulaInteractiva(apiKey, context, meta);
+    } else {
+      html = await generateCreativeHtml({ callApi: callGeminiApi, apiKey, brief, typeKey, context });
+    }
+    return injectShareBarIntoHtml(html, { title: meta.title, subject: meta.subject, grade: meta.grade });
   } catch (error) {
-    throw new Error('Error al generar material: ' + error.message);
+    throw new Error('Error al generar el recurso: ' + error.message);
   }
 };
 
+/** Pide a la IA solo el contenido del aula (JSON) y lo vuelca en la plantilla de pizarra. */
+async function generateAulaInteractiva(apiKey, context, meta) {
+  const prompt = `Eres diseñador instruccional. A partir del plan de clase, prepara el CONTENIDO de un aula interactiva (pizarra digital para proyectar). No escribas HTML.
+${AULA_CONTENT_SCHEMA}
+
+${context}`;
+
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const text = await callGeminiApi(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.8, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+    });
+    try {
+      const json = JSON.parse(text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim());
+      return buildAulaInteractivaHtml({
+        ...json,
+        titulo: json.titulo || meta.title,
+        area: meta.subject,
+        grado: meta.grade
+      });
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw new Error(`La IA no entregó un contenido válido para el aula (${lastError?.message}). Intenta de nuevo.`);
+}
+
 /**
- * Genera un recurso educativo interactivo, visualmente atractivo y autónomo en un único archivo HTML
- * a partir de una descripción detallada (simulaciones, infografías, diagramas de flujo, esquemas).
- * 
+ * Genera un recurso educativo interactivo a medida (OVA, simulador, juego, infografía) a partir
+ * de la descripción que la IA dejó en el plan de clase.
+ *
  * @param {string} apiKey - Clave API de Google AI Studio / Gemini
  * @param {string} prompt - Descripción del recurso pedagógico interactivo a generar
- * @returns {Promise<string>} Código HTML completo listo para embeber en un iframe o descargar con barra de compartir
+ * @param {Object} [planContext] - tema, grado y área del plan
+ * @returns {Promise<string>} HTML completo listo para embeber en un iframe o descargar
  */
-export const generateHtmlResource = async (apiKey, prompt) => {
+export const generateHtmlResource = async (apiKey, prompt, planContext = {}) => {
   if (!apiKey || apiKey.trim() === '') {
     throw new Error('API Key no configurada. Por favor, ingresa tu clave en Configuración.');
   }
 
-  const systemInstruction = `Eres un desarrollador web experto. Tu objetivo es crear un recurso educativo interactivo, visualmente atractivo y completamente funcional en un único archivo HTML.
-Debes utilizar HTML5, CSS moderno y JavaScript nativo autocontenido.
-El resultado debe ser un archivo HTML portable que funcione sin conexión.
-Asegúrate de que el diseño sea responsivo, limpio y educativo.
-Usa addEventListener en el JavaScript para la interactividad. No dependas de librerías externas.
-Devuelve ÚNICAMENTE el código HTML completo, comenzando con <!DOCTYPE html> y terminando con </html>. Sin bloques markdown.`;
+  const context = [
+    planContext.tema && `Tema de la clase: ${planContext.tema}`,
+    planContext.grado && `Grado: ${planContext.grado}`,
+    planContext.area && `Área: ${planContext.area}`
+  ].filter(Boolean).join('\n');
 
   try {
-    const responseText = await callGeminiApi(apiKey, {
-      contents: [{ 
-        parts: [{ 
-          text: `${systemInstruction}\n\nCrea un recurso educativo interactivo en HTML basado en esta descripción: "${prompt}".` 
-        }] 
-      }],
-      generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
-    });
-
-    let htmlContent = (responseText || '').trim();
-    if (htmlContent.startsWith('```html')) htmlContent = htmlContent.substring(7);
-    else if (htmlContent.startsWith('```')) htmlContent = htmlContent.substring(3);
-    if (htmlContent.endsWith('```')) htmlContent = htmlContent.substring(0, htmlContent.length - 3);
-    htmlContent = htmlContent.trim();
-
-    return injectShareBarIntoHtml(htmlContent, {
+    const html = await generateCreativeHtml({ callApi: callGeminiApi, apiKey, brief: prompt, context });
+    return injectShareBarIntoHtml(html, {
       title: prompt.slice(0, 45),
-      subject: 'Recurso Pedagógico Interactivo'
+      subject: planContext.area || ''
     });
   } catch (error) {
     throw new Error('Error al generar recurso interactivo: ' + error.message);
   }
 };
 
+/**
+ * Genera las preguntas de una evaluación a partir del plan de clase.
+ * Devuelve preguntas en el formato del constructor (con la respuesta correcta); si la IA falla
+ * se lanza un error, nunca se entregan preguntas de relleno.
+ *
+ * @param {Object} opciones - { cantidad, tipos: ['opcion','vf','abierta'], dificultad }
+ */
+export const generateEvaluationQuestions = async (apiKey, planActual, opciones = {}) => {
+  const cantidad = Math.max(1, Math.min(30, parseInt(opciones.cantidad, 10) || 8));
+  const tipos = (opciones.tipos && opciones.tipos.length ? opciones.tipos : ['opcion', 'vf']);
+  const dificultad = opciones.dificultad || 'mixta';
+  const meta = extractPlanMetadata(planActual);
+
+  const prompt = `Eres un docente experto en evaluación formativa. Con base EXCLUSIVAMENTE en el siguiente plan de clase, redacta ${cantidad} preguntas para evaluar si los estudiantes comprendieron lo que se trabajó en la clase.
+Tipos permitidos: ${tipos.join(', ')} (opcion = selección múltiple con una sola respuesta correcta; vf = verdadero o falso; abierta = respuesta escrita corta).
+Dificultad: ${dificultad}. Nivel adecuado al grado${meta.grade ? ` ${meta.grade}` : ''}. Varía las preguntas: recordar, comprender, aplicar y analizar. Evita ambigüedades, las opciones incorrectas deben ser plausibles y no inventes datos que no estén en el plan.
+Devuelve ÚNICAMENTE un arreglo JSON (sin markdown) con objetos así:
+[
+  { "tipo": "opcion", "enunciado": "texto", "opciones": ["A", "B", "C", "D"], "correcta": 0, "puntos": 1 },
+  { "tipo": "vf", "enunciado": "afirmación", "correcta": true, "puntos": 1 },
+  { "tipo": "abierta", "enunciado": "pregunta", "criterio": "qué debería incluir una buena respuesta", "puntos": 2 }
+]
+"correcta" en opcion es el índice de la opción correcta (desde 0).
+
+PLAN DE CLASE:
+${planActual}`;
+
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const text = await callGeminiApi(apiKey, {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.7, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+      });
+      const json = JSON.parse(text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim());
+      const lista = Array.isArray(json) ? json : (Array.isArray(json?.preguntas) ? json.preguntas : []);
+      const { preguntas, clave } = normalizeQuestions(lista.filter(q => tipos.includes(q?.tipo)));
+      // Se devuelve en el formato editable (con la respuesta) para que el docente pueda revisar y ajustar
+      return preguntas.map(q => ({
+        ...q,
+        correcta: q.tipo === 'vf' ? clave[q.id] === 0 : (q.tipo === 'opcion' ? clave[q.id] : undefined),
+        criterio: q.tipo === 'abierta' ? (clave[q.id] || '') : undefined
+      }));
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw new Error(`La IA no entregó preguntas válidas (${lastError?.message}). Intenta de nuevo.`);
+};

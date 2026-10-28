@@ -11,17 +11,12 @@ import {
   Loader2, 
   Save, 
   Check, 
-  BookOpen, 
-  Users, 
-  Layers, 
   Eye, 
   VolumeX, 
   Accessibility, 
   ShieldCheck, 
   AlertCircle,
-  Clock,
-  RotateCcw,
-  Compass
+  RotateCcw
 } from 'lucide-react';
 
 import ConfirmModal from '../components/ConfirmModal';
@@ -53,8 +48,6 @@ export default function WizardPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState(null);
   const [saveFeedback, setSaveFeedback] = useState(null);
-  const [generationPhase, setGenerationPhase] = useState(0);
-  const [progressPercent, setProgressPercent] = useState(18);
   const [isSuggestingObj, setIsSuggestingObj] = useState(false);
   const [isSuggestingStd, setIsSuggestingStd] = useState(false);
   const [suggestionError, setSuggestionError] = useState(null);
@@ -236,57 +229,6 @@ export default function WizardPage() {
     setShowClearModal(false);
   };
 
-  useEffect(() => {
-    let phaseTimer;
-    let progressTimer;
-    if (isGenerating) {
-      setGenerationPhase(0);
-      setProgressPercent(16);
-
-      progressTimer = setInterval(() => {
-        setProgressPercent((prev) => {
-          if (prev >= 94) return 94;
-          const jump = Math.max(1, Math.floor((95 - prev) / 7));
-          return prev + jump;
-        });
-      }, 550);
-
-      phaseTimer = setInterval(() => {
-        setGenerationPhase((prev) => {
-          if (prev < 3) return prev + 1;
-          return prev;
-        });
-      }, 3200);
-    }
-
-    return () => {
-      clearInterval(phaseTimer);
-      clearInterval(progressTimer);
-    };
-  }, [isGenerating]);
-
-  const generationPhases = [
-    {
-      title: "Interpretando requerimientos curriculares y audiencia",
-      detail: `Sintonizando ${wizardData?.materia || 'área curricular'}, grado ${wizardData?.grado || 'asignado'} y enfoque metodológico.`,
-      icon: <BookOpen size={15} />
-    },
-    {
-      title: "Estructurando momentos didácticos (Inicio, Desarrollo, Cierre)",
-      detail: `Dosificando tiempos de clase (${wizardData?.duracion || 'sesión'}) y articulando actividades con metodología ${wizardData?.metodologiaSTEAM || 'activa'}.`,
-      icon: <Layers size={15} />
-    },
-    {
-      title: "Tejiendo principios y apoyos de Inclusión (DUA)",
-      detail: "Integrando representaciones múltiples, flexibilizaciones y ajustes razonables.",
-      icon: <ShieldCheck size={15} />
-    },
-    {
-      title: "Sintonizando co-docente didáctico y evaluación formativa",
-      detail: "Configurando criterios de evaluación, rúbricas y sugerencias didácticas interactivas.",
-      icon: <Sparkles size={15} />
-    }
-  ];
 
   const stepsInfo = [
     { num: 1, title: 'Información básica', desc: 'Contexto de tu clase para construir una planificación pertinente.' },
@@ -407,7 +349,7 @@ export default function WizardPage() {
         {/* Encabezado de la Fase Actual */}
         <div className="wizard-section-header">
           <h3 className="wizard-section-title">
-            Fase {step}: {stepsInfo[step - 1].title}
+            {stepsInfo[step - 1].title}
           </h3>
           <p className="wizard-section-desc">
             {stepsInfo[step - 1].desc}
@@ -611,110 +553,9 @@ export default function WizardPage() {
                   Tejiendo tu Secuencia Didáctica
                 </h3>
 
-                <p style={{
-                  fontSize: '14.5px',
-                  lineHeight: '1.5',
-                  color: '#3D5A53',
-                  marginBottom: '18px',
-                  maxWidth: '540px',
-                  margin: '0 auto 18px auto'
-                }}>
-                  Diseñando momentos de aprendizaje alineados a tu contexto institucional y a los referentes curriculares.
+                <p style={{ fontSize: '14.5px', color: '#3D5A53', margin: '0 auto', maxWidth: '420px' }}>
+                  Esto puede tardar unos segundos.
                 </p>
-
-                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '22px' }}>
-                  <span className="editor-meta-tag">
-                    <BookOpen size={13} /> {wizardData?.tema || 'Tema de la clase'}
-                  </span>
-                  <span className="editor-meta-tag">
-                    <Users size={13} /> Grado: {wizardData?.grado || 'Sin grado'}
-                  </span>
-                  <span className="editor-meta-tag">
-                    <Layers size={13} /> {wizardData?.materia || 'General'}
-                  </span>
-                  <span className="editor-meta-tag">
-                    <Clock size={13} /> {wizardData?.duracion || '90 min'}
-                  </span>
-                </div>
-
-                <div className="wizard-generating-progress-track">
-                  <div 
-                    className="wizard-generating-progress-bar"
-                    style={{ width: `${progressPercent}%` }}
-                  />
-                </div>
-
-                <div className="wizard-generating-phases">
-                  {generationPhases.map((phase, idx) => {
-                    const isCompleted = generationPhase > idx;
-                    const isActive = generationPhase === idx;
-
-                    return (
-                      <div 
-                        key={idx}
-                        className={`wizard-generating-phase-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
-                      >
-                        <div 
-                          className="wizard-generating-phase-icon"
-                          style={{
-                            backgroundColor: isCompleted 
-                              ? '#10B981' 
-                              : isActive 
-                              ? '#315B54' 
-                              : 'rgba(71, 122, 114, 0.15)',
-                            color: isCompleted || isActive ? '#FFFFFF' : '#477A72'
-                          }}
-                        >
-                          {isCompleted ? (
-                            <Check size={16} />
-                          ) : isActive ? (
-                            <Loader2 size={16} className="spin" />
-                          ) : (
-                            <span>{idx + 1}</span>
-                          )}
-                        </div>
-
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ 
-                            fontSize: '13.5px', 
-                            fontWeight: isActive ? 700 : 600, 
-                            color: isActive ? '#142B25' : isCompleted ? '#234B43' : '#64748B',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px'
-                          }}>
-                            {phase.title}
-                          </div>
-                          <div style={{ 
-                            fontSize: '12px', 
-                            color: isActive ? '#3D5A53' : '#94A3B8',
-                            marginTop: '2px',
-                            lineHeight: '1.4'
-                          }}>
-                            {phase.detail}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <div style={{
-                  padding: '12px 16px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.65)',
-                  borderRadius: '14px',
-                  border: '1px solid rgba(255, 255, 255, 0.9)',
-                  fontSize: '12.5px',
-                  color: '#477A72',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  fontStyle: 'italic'
-                }}>
-                  <Compass size={15} />
-                  <span>"El Diseño Universal para el Aprendizaje maximiza la autonomía de cada estudiante en el aula."</span>
-                </div>
               </div>
             ) : (
               <div>

@@ -7,52 +7,39 @@ import {
   DEFAULT_IDENTIFICATION 
 } from '../services/templates/identificationResolver.js';
 
-console.log('--- INICIO DE PRUEBAS DE ACEPTACIÓN: IDENTIFICACIÓN POR DEFECTO Y EXCLUSIÓN DE GRUPO/PERIODO ---');
+console.log('--- PRUEBAS: IDENTIFICACIÓN SIN DATOS INVENTADOS Y EXCLUSIÓN DE GRUPO/PERIODO ---');
 
-// 1. Verificación de valores por defecto cuando no hay perfil ni datos
-console.log('1. Verificando valores predeterminados sin perfil ni formulario...');
-
+// 1. Sin perfil ni formulario NO se inventa ningún dato
+console.log('1. Verificando que no se inventan datos cuando faltan...');
 const resDefault = resolveRealIdentification({}, null);
+assert.strictEqual(resDefault.institucion, '');
+assert.strictEqual(resDefault.docente, '');
+assert.strictEqual(resDefault.grado, '');
+assert.strictEqual(resDefault.area, '');
+assert.strictEqual(resDefault.duracionTexto, '');
+assert.strictEqual(DEFAULT_IDENTIFICATION.institucion, '');
+assert.strictEqual(resDefault.grupo, undefined);
+assert.strictEqual(resDefault.periodo, undefined);
+console.log('✓ Prueba 1 superada.');
 
-assert.strictEqual(resDefault.institucion, 'Institución Educativa Técnica Distrital', 'Institución por defecto debe ser Técnica Distrital');
-assert.strictEqual(resDefault.docente, 'Equipo de Matemáticas', 'Docente por defecto debe ser Equipo de Matemáticas');
-assert.strictEqual(resDefault.grado, '10°', 'Grado por defecto debe ser 10°');
-assert.strictEqual(resDefault.area, 'Matemáticas', 'Área por defecto debe ser Matemáticas');
-assert.strictEqual(resDefault.duracionTexto, '90 minutos (1 sesión continua)', 'Duración por defecto debe ser 90 minutos (1 sesión continua)');
-assert.strictEqual(resDefault.grupo, undefined, 'Grupo NO debe estar presente en los datos consolidados');
-assert.strictEqual(resDefault.periodo, undefined, 'Periodo NO debe estar presente en los datos consolidados');
+// 2. El bloque Markdown solo contiene los datos proporcionados
+console.log('2. Verificando bloque Markdown solo con datos reales...');
+const mdVacio = formatIdentificationMarkdown(resDefault);
+assert.strictEqual(mdVacio, '### Identificación');
+const mdParcial = formatIdentificationMarkdown({ ...resDefault, docente: 'Ana Pérez', grado: '11mo' });
+assert(mdParcial.includes('- **Docente:** Ana Pérez'));
+assert(mdParcial.includes('- **Grado:** 11mo'));
+assert(!mdParcial.includes('Institución'));
+assert(!mdParcial.includes('Grupo') && !mdParcial.includes('Periodo'));
+console.log('✓ Prueba 2 superada.');
 
-console.log('✓ Prueba 1 superada: Valores predeterminados institucionales y curriculares verificados.');
-
-// 2. Verificación del bloque formateado en Markdown
-console.log('2. Verificando formato canónico Markdown...');
-
-const mdBlock = formatIdentificationMarkdown(resDefault);
-console.log('Bloque generado:\n' + mdBlock);
-
-assert(mdBlock.includes('- **Institución Educativa:** Institución Educativa Técnica Distrital'), 'Debe incluir Institución Educativa');
-assert(mdBlock.includes('- **Docente:** Equipo de Matemáticas'), 'Debe incluir Docente');
-assert(mdBlock.includes('- **Grado:** 10°'), 'Debe incluir Grado sin grupo');
-assert(mdBlock.includes('- **Área / Asignatura:** Matemáticas'), 'Debe incluir Área / Asignatura');
-assert(mdBlock.includes('- **Duración:** 90 minutos (1 sesión continua)'), 'Debe incluir Duración');
-assert(mdBlock.includes('- **Metodología:** Aprendizaje Activo'), 'Debe incluir Metodología');
-assert(mdBlock.includes('- **Recursos:** Materiales de aula y ambiente de aprendizaje'), 'Debe incluir Recursos');
-
-assert(!mdBlock.includes('Grupo'), 'El bloque Markdown NO debe contener Grupo');
-assert(!mdBlock.includes('Periodo'), 'El bloque Markdown NO debe contener Periodo');
-assert(!mdBlock.includes('10-A'), 'El bloque Markdown NO debe contener 10-A');
-
-console.log('✓ Prueba 2 superada: Bloque Markdown estrictamente formateado y limpio.');
-
-// 3. Verificación de inyección y eliminación radical de grupo y periodo
-console.log('3. Verificando limpieza e inyección en un plan con residuos antiguos de grupo y periodo...');
-
+// 3. Limpieza de residuos de grupo y periodo con datos reales
+console.log('3. Verificando limpieza de grupo y periodo...');
 const planConResiduos = `
-# PLAN DE CLASE — MATEMÁTICAS
+# PLAN DE CLASE
 
 ### Identificación
-- **Institución:** Institución Educativa Técnica del Contexto | Sede: Principal
-- **Área:** Matemáticas | Asignatura: Álgebra
+- **Institución:** Colegio X | Sede: Principal
 - **Grado y Grupo:** 10° (10-A) — 36 estudiantes
 - **Tutor (IE):** Docente Titular | Docente en formación: Docente Planificador
 - **Periodo Académico:** Segundo Periodo
@@ -61,27 +48,14 @@ const planConResiduos = `
 ### B. Fundamentación curricular
 - **Objetivo de aprendizaje:** Comprender sistemas de ecuaciones lineales...
 `;
-
-const planLimpio = injectRealIdentificationIntoPlan(planConResiduos, resDefault);
-console.log('Plan inyectado y depurado:\n' + planLimpio);
-
-assert(!planLimpio.includes('Grupo'), 'No debe quedar ninguna mención de Grupo');
-assert(!planLimpio.includes('10-A'), 'No debe quedar la mención de 10-A');
-assert(!planLimpio.includes('Periodo'), 'No debe quedar ninguna mención de Periodo');
-assert(!planLimpio.includes('Segundo Periodo'), 'No debe quedar Segundo Periodo');
-assert(!planLimpio.includes('Sede'), 'No debe quedar Sede');
-assert(!planLimpio.includes('Tutor'), 'No debe quedar Tutor');
-assert(!planLimpio.includes('Docente en formación'), 'No debe quedar Docente en formación');
-assert(!planLimpio.includes('Fecha de aplicación'), 'No debe quedar Fecha de aplicación');
-
-assert(planLimpio.includes('- **Institución Educativa:** Institución Educativa Técnica Distrital'));
-assert(planLimpio.includes('- **Docente:** Equipo de Matemáticas'));
-assert(planLimpio.includes('- **Grado:** 10°'));
-assert(planLimpio.includes('- **Área / Asignatura:** Matemáticas'));
-assert(planLimpio.includes('- **Duración:** 90 minutos (1 sesión continua)'));
+const datosReales = { institucion: 'Colegio Real', docente: 'Ana Pérez', grado: '10°', area: 'Matemáticas', duracionTexto: '90 minutos', metodologia: '', recursos: '' };
+const planLimpio = injectRealIdentificationIntoPlan(planConResiduos, datosReales);
+['Grupo', '10-A', 'Periodo', 'Sede', 'Tutor', 'Docente en formación', 'Fecha de aplicación'].forEach(w => assert(!planLimpio.includes(w), `No debe quedar ${w}`));
+assert(planLimpio.includes('- **Institución Educativa:** Colegio Real'));
+assert(planLimpio.includes('- **Docente:** Ana Pérez'));
 assert(planLimpio.includes('### B. Fundamentación curricular'));
+console.log('✓ Prueba 3 superada.');
 
-console.log('✓ Prueba 3 superada: Residuos de grupo y periodo eliminados radicalmente sin alterar el contenido formativo.');
 
 // 4. Verificación de respeto a datos reales del perfil del usuario cuando están presentes
 console.log('4. Verificando que prevalece la información registrada por el usuario si la tiene...');
@@ -135,7 +109,7 @@ const mockWizardIng = { tema: 'Daily Routines', materia: 'Inglés', metodologiaS
 const promptIng = FORMATO_INGLES.generarPromptInstrucciones(mockWizardIng, null);
 assert(promptIng.includes('Unidad temática o situación comunicativa'), 'Inglés debe incluir unidad temática o situación comunicativa');
 assert(promptIng.includes('Tema y contexto de uso del inglés'), 'Inglés debe incluir tema y contexto de uso del inglés');
-assert(promptIng.includes('Nivel de competencia esperado, cuando esté definido'), 'Inglés debe incluir nivel de competencia esperado');
+assert(promptIng.includes('Nivel MCER esperado'), 'Inglés debe incluir nivel de competencia esperado');
 assert(promptIng.includes('- **Metodología:** Communicative Approach'), 'Inglés debe incluir Metodología en identificación');
 
 console.log('✓ Prueba 5 superada: Estructuras y especificidades disciplinares de cada área estrictamente conservadas.');

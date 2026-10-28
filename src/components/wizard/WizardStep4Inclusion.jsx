@@ -10,11 +10,8 @@ export default function WizardStep4Inclusion({
     <div>
       <div className="wizard-group">
         <div className="wizard-group-title">
-          <Accessibility size={16} /> Condiciones para Ajustes Razonables (DUA)
+          <Accessibility size={16} /> Inclusión (DUA)
         </div>
-        <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-          Selecciona si en tu grupo hay estudiantes con condiciones que requieran ajustes de representación, expresión o compromiso:
-        </p>
 
         <div className="wizard-choice-grid">
           {inclusionOptions.map((opt) => {
@@ -47,21 +44,18 @@ export default function WizardStep4Inclusion({
 
       <div className="wizard-group">
         <div className="wizard-group-title">
-          <HelpCircle size={16} /> Necesidades Específicas Adicionales
+          <HelpCircle size={16} /> Otras necesidades
         </div>
         <div className="input-group" style={{ margin: 0 }}>
-          <label htmlFor="wizard-otras-necesidades">Otra condición particular o necesidad pedagógica (Opcional)</label>
+          <label htmlFor="wizard-otras-necesidades">Otra condición (opcional)</label>
           <input 
             id="wizard-otras-necesidades"
             type="text" 
             name="otrasNecesidades" 
             value={wizardData.otrasNecesidades || ''} 
             onChange={handleChange} 
-            placeholder="Ej.: Trastorno del Espectro Autista (TEA), TDAH, o baja conectividad domiciliaria" 
+            placeholder="Ej.: TDAH" 
           />
-          <div className="planificador-help">
-            La Inteligencia Artificial incorporará adaptaciones DUA y apoyos pertinentes directamente en el plan generado.
-          </div>
         </div>
       </div>
     </div>

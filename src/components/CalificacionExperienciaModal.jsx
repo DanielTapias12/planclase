@@ -379,7 +379,7 @@ export default function CalificacionExperienciaModal({
                 <textarea
                   value={comentario}
                   onChange={(e) => setComentario(e.target.value)}
-                  placeholder="Comparte cómo fue la vivencia con los estudiantes: ¿Qué momentos funcionaron mejor? ¿Realizaste adaptaciones DUA, de tiempo o recursos? Sugerencias para otros colegas..."
+                  placeholder="¿Cómo te fue?"
                   rows={3}
                   maxLength={600}
                   style={{

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
+import { updateUserPedagogicalProfile } from '../services/authService';
 import './BienvenidaNarrativa.css';
 import { 
   Lightbulb, 
@@ -129,24 +130,35 @@ const SCENES = [
 export default function BienvenidaNarrativa() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { userId } = useAppStore();
+  const { userId, userProfile } = useAppStore();
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentScene, setCurrentScene] = useState(0);
   const containerRef = useRef(null);
 
-  // Comprobar si la bienvenida debe mostrarse en la primera visita a /home
+  // Comprobar si la bienvenida debe mostrarse:
+  // ÚNICAMENTE 1 sola vez y exclusivamente cuando el usuario se registra
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || userId === 'anon') return;
 
     const storageKey = `inspiratec_bienvenida_completada_${userId}`;
     const alreadyCompleted = localStorage.getItem(storageKey);
 
-    // Si el usuario está en /home y aún no ha visto la bienvenida, abrirla automáticamente
-    if (location.pathname === '/home' && !alreadyCompleted) {
+    // Si ya fue completada localmente o en el perfil de Firestore, jamás abrir automáticamente
+    if (alreadyCompleted === 'true' || userProfile?.bienvenidaCompletada === true) {
+      return;
+    }
+
+    // El tutorial solo debe aparecer 1 sola vez y es cuando el usuario se registra
+    const isJustRegistered = 
+      sessionStorage.getItem('inspiratec_just_registered') === userId ||
+      localStorage.getItem(`inspiratec_just_registered_${userId}`) === 'true';
+
+    // Si está en /home Y acaba de registrarse, mostrarlo una única vez
+    if (location.pathname === '/home' && isJustRegistered) {
       setIsOpen(true);
     }
-  }, [userId, location.pathname]);
+  }, [userId, userProfile?.bienvenidaCompletada, location.pathname]);
 
   // Manejar evento global para reapertura manual (desde Ayuda, Menú o Footer)
   useEffect(() => {
@@ -167,10 +179,14 @@ export default function BienvenidaNarrativa() {
   // Si no está abierta o no estamos en /home, no renderizar nada
   const isVisible = isOpen && location.pathname === '/home';
 
-  // Registrar finalización y cerrar la experiencia
+  // Registrar finalización y cerrar la experiencia definitivamente
   const handleCompleteAndClose = useCallback(() => {
-    if (userId) {
+    if (userId && userId !== 'anon') {
       localStorage.setItem(`inspiratec_bienvenida_completada_${userId}`, 'true');
+      localStorage.removeItem(`inspiratec_just_registered_${userId}`);
+      sessionStorage.removeItem('inspiratec_just_registered');
+      // Persistir en Firestore para que no vuelva a aparecer en ningún dispositivo
+      updateUserPedagogicalProfile(userId, { bienvenidaCompletada: true }).catch(() => {});
     }
     setIsOpen(false);
   }, [userId]);

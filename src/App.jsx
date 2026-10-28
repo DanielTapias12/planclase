@@ -19,6 +19,7 @@ import AyudaPage from './pages/AyudaPage';
 import AdministracionPage from './pages/AdministracionPage';
 import AboutPage from './pages/AboutPage';
 import AuthPage from './pages/AuthPage';
+import StudentSessionPage from './pages/StudentSessionPage';
 import HomePage from './pages/HomePage';
 import AdnPedagogicoPage from './pages/AdnPedagogicoPage';
 import BienvenidaNarrativa from './components/BienvenidaNarrativa';
@@ -123,6 +124,14 @@ function AppContent() {
           style={{ backgroundImage: `linear-gradient(180deg, rgba(20, 42, 38, 0.22) 0%, rgba(20, 42, 38, 0.08) 32%, rgba(20, 42, 38, 0.26) 100%), url('${ambientBg}')` }}
           aria-hidden="true" 
         />
+
+        {/* Orbes Líquidos Dinámicos Globales (Liquid Glass Ambient System) */}
+        <div className="liquid-ambient-container global-layout" aria-hidden="true">
+          <div className="liquid-blob liquid-blob-1" />
+          <div className="liquid-blob liquid-blob-2" />
+          <div className="liquid-blob liquid-blob-3" />
+          <div className="liquid-blob liquid-blob-4" />
+        </div>
 
         {/* Experiencia Narrativa Inmersiva de Bienvenida (11 escenas) */}
         <BienvenidaNarrativa />
@@ -578,7 +587,11 @@ function App() {
 
   return (
     <BrowserRouter>
-      {!userId ? <AuthPage /> : <AppContent />}
+      <Routes>
+        {/* Pública: los estudiantes entran por QR sin cuenta */}
+        <Route path="/s/:code" element={<StudentSessionPage />} />
+        <Route path="*" element={!userId ? <AuthPage /> : <AppContent />} />
+      </Routes>
     </BrowserRouter>
   );
 }

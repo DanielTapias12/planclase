@@ -132,17 +132,14 @@ export const adaptPlanDocument = ({
 
   // 3. Metadatos del docente e institución (reales)
   let docente = (wizard.docente || plan.docente || userProfile?.nombre || '').trim();
-  if (!docente || docente === 'Docente' || docente === 'Docente Planificador') {
-    docente = 'Equipo de Matemáticas';
+  if (docente === 'Docente' || docente === 'Docente Planificador') {
+    docente = '';
   }
 
   let institucion = (wizard.institucion || plan.institucion || userProfile?.institucion || '').trim();
-  if (!institucion || institucion === 'Institución Educativa Técnica del Contexto') {
-    institucion = 'Institución Educativa Técnica Distrital';
-  }
 
-  let sede = (wizard.sede || plan.sede || userProfile?.sede || 'Principal').trim();
-  let tutor = (wizard.tutor || plan.tutor || userProfile?.tutor || 'Docente Titular del Área').trim();
+  let sede = (wizard.sede || plan.sede || userProfile?.sede || '').trim();
+  let tutor = (wizard.tutor || plan.tutor || userProfile?.tutor || '').trim();
   let asignatura = (wizard.asignatura || plan.asignatura || '').trim();
   let grupo = '';
 

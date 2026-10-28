@@ -24,17 +24,21 @@ import { useAppStore } from '../store/useAppStore';
  * visualizarlo en un iframe aislado seguro, descargarlo como archivo .html o anexarlo al plan.
  */
 export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recurso Pedagógico Interactivo' }) {
-  const { apiKey, addRecursoAnexo, planId } = useAppStore();
+  const { apiKey, addRecursoAnexo, recursosAnexos, activePlanMetadata } = useAppStore();
   const componentId = useId();
-
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [htmlContent, setHtmlContent] = useState('');
-  const [error, setError] = useState(null);
-  const [isAnexado, setIsAnexado] = useState(false);
-  const [isFullscreenModalOpen, setIsFullscreenModalOpen] = useState(false);
 
   // Limpiar el prompt de comillas accidentales
   const cleanPrompt = (prompt || '').replace(/^["'\s]+|["'\s]+$/g, '').trim();
+
+  // Si el recurso ya fue generado antes, se recupera del plan para que "quede ahí"
+  const savedResource = (recursosAnexos || []).find(r => r.prompt === cleanPrompt && r.html);
+
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedHtml, setHtmlContent] = useState('');
+  const htmlContent = generatedHtml || savedResource?.html || '';
+  const [error, setError] = useState(null);
+  const [isAnexado, setIsAnexado] = useState(false);
+  const [isFullscreenModalOpen, setIsFullscreenModalOpen] = useState(false);
 
   const handleGenerate = async () => {
     if (!apiKey) {
@@ -46,8 +50,20 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
     setError(null);
 
     try {
-      const generatedHtml = await generateHtmlResource(apiKey, cleanPrompt);
-      setHtmlContent(generatedHtml);
+      const html = await generateHtmlResource(apiKey, cleanPrompt, {
+        tema: activePlanMetadata?.tema,
+        grado: activePlanMetadata?.grado,
+        area: activePlanMetadata?.area
+      });
+      setHtmlContent(html);
+      // Se anexa automáticamente al plan para que persista al guardar
+      addRecursoAnexo({
+        title: cleanPrompt.length > 50 ? `${cleanPrompt.slice(0, 50)}...` : cleanPrompt,
+        prompt: cleanPrompt,
+        html,
+        tipo: 'Recurso Interactivo Embebido',
+        anexadoAt: new Date().toISOString()
+      });
     } catch (err) {
       console.error('[INSPIRATEC] Error al generar recurso interactivo:', err);
       setError(err.message || 'No fue posible generar el recurso interactivo. Intenta nuevamente.');
@@ -109,6 +125,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
     if (!htmlContent) return;
     const nuevoRecurso = {
       title: cleanPrompt.length > 50 ? `${cleanPrompt.slice(0, 50)}...` : cleanPrompt,
+      prompt: cleanPrompt,
       html: htmlContent,
       tipo: 'Recurso Interactivo Embebido',
       anexadoAt: new Date().toISOString()
@@ -172,7 +189,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
           </div>
           <div style={{ minWidth: 0, flex: 1, maxWidth: '100%' }}>
             <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#315B54', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '2px', wordBreak: 'break-word' }}>
-              Sugerencia de Recurso Interactivo
+              Recurso sugerido
             </div>
             <div 
               className="generatable-resource-prompt"
@@ -213,7 +230,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
               lineHeight: '1.3'
             }}
           >
-            <Sparkles size={15} style={{ flexShrink: 0 }} /> <span>🎨 Generar Recurso Interactivo</span>
+            <Sparkles size={15} style={{ flexShrink: 0 }} /> <span>Generar recurso</span>
           </button>
         )}
       </div>
@@ -238,7 +255,7 @@ export default function EmbeddedInteractiveResource({ prompt = '', title = 'Recu
             Generando recurso interactivo...
           </h4>
           <p style={{ margin: 0, fontSize: '13px', color: '#576864', textAlign: 'center', maxWidth: '440px' }}>
-            La IA está construyendo un archivo HTML autónomo con estilos modernos, interactividad con JavaScript y diseño responsivo.
+            Puede tardar hasta un minuto.
           </p>
         </div>
       )}

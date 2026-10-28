@@ -146,7 +146,7 @@ export default function BibliotecaPage() {
           <Search size={16} style={{ color: 'var(--text-secondary)' }} />
           <input 
             type="text" 
-            placeholder="Buscar por tema, asignatura o autor..." 
+            placeholder="Buscar" 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="mgmt-search-input"

@@ -42,7 +42,7 @@ export default function WizardStep3Estandares({
       <div className="wizard-group">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div className="wizard-group-title" style={{ margin: 0 }}>
-            <BookOpen size={16} /> Estándares y Referentes Curriculares
+            <BookOpen size={16} /> Estándares y referentes
           </div>
 
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -108,18 +108,15 @@ export default function WizardStep3Estandares({
         )}
 
         <div className="input-group" style={{ margin: 0 }}>
-          <label htmlFor="wizard-estandares">Estándares Básicos de Competencias (MEN), DBA u objetivos curriculares</label>
+          <label htmlFor="wizard-estandares">Estándares, DBA o referentes</label>
           <textarea 
             id="wizard-estandares"
             name="estandaresMEN" 
             value={Array.isArray(wizardData.estandaresMEN) ? wizardData.estandaresMEN.join('\n') : (wizardData.estandaresMEN || '')} 
             onChange={(e) => updateWizardData({ estandaresMEN: [e.target.value] })} 
-            placeholder="Ej.: [MEN-SOL-3.1] Estructuras de control y programación visual: Utilizo condicionales (si/entonces), bucles y variables en entornos de programación por bloques..."
-            style={{ minHeight: '200px' }}
+            placeholder="Ej.: Estructuras de control en programación por bloques"
+            style={{ minHeight: '140px' }}
           />
-          <div className="planificador-help">
-            Explora el <strong>Grafo de Prerrequisitos</strong> para conectar competencias previas y posteriores de la Guía 30 del MEN, o usa el asistente de IA para sugerir estándares según el tema y grado escolar.
-          </div>
         </div>
       </div>
 
@@ -172,7 +169,7 @@ export default function WizardStep3Estandares({
                   <span>Modelo Ontológico del Dominio (STI Caro 2015 / Guía 30 MEN)</span>
                 </div>
                 <h2 id="graph-modal-title" style={{ fontFamily: 'var(--font-heading)', fontSize: '22px', color: '#142B25', margin: 0, fontWeight: 700 }}>
-                  Grafo Interactivo de Prerrequisitos Curriculares
+                  Grafo de prerrequisitos
                 </h2>
               </div>
 
@@ -187,9 +184,6 @@ export default function WizardStep3Estandares({
               </button>
             </div>
 
-            <p style={{ fontSize: '14px', color: '#2B453E', lineHeight: '1.5', margin: 0 }}>
-              Explora la red de prerrequisitos conceptuales de Tecnología e Informática. Selecciona un nodo para identificar qué saberes previos requiere el estudiante y haz clic en <strong>"Incorporar al Plan de Clase"</strong> para cargarlo directamente.
-            </p>
 
             {/* Componente del Grafo SVG */}
             <CurricularGraphView

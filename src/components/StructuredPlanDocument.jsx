@@ -417,19 +417,24 @@ export default function StructuredPlanDocument({
                 {...props} 
               />
             ),
-            p: ({ children, ...props }) => (
-              <p 
-                style={{ 
-                  fontSize: '14.5px', 
-                  lineHeight: '1.65', 
-                  color: '#1C1917', 
-                  marginBottom: '10px' 
-                }} 
-                {...props} 
-              >
-                {processInteractiveChildren(children)}
-              </p>
-            ),
+            p: ({ children, node: _node, ...props }) => {
+              const processed = processInteractiveChildren(children);
+              // Un <div> (recurso embebido) no puede ir dentro de <p>
+              const Tag = processed !== children ? 'div' : 'p';
+              return (
+                <Tag
+                  style={{
+                    fontSize: '14.5px',
+                    lineHeight: '1.65',
+                    color: '#1C1917',
+                    marginBottom: '10px'
+                  }}
+                  {...props}
+                >
+                  {processed}
+                </Tag>
+              );
+            },
             ul: ({ ...props }) => (
               <ul 
                 style={{ 
@@ -487,8 +492,10 @@ export default function StructuredPlanDocument({
             th: ({ ...props }) => (
               <th style={{ backgroundColor: '#EDF3F1', color: '#142B25', fontWeight: 700, padding: '10px 14px', borderBottom: '1.5px solid #CBD5E1', textAlign: 'left' }} {...props} />
             ),
-            td: ({ ...props }) => (
-              <td style={{ padding: '10px 14px', borderBottom: '1px solid #E2E8F0', verticalAlign: 'top', color: '#1C1917', lineHeight: '1.55' }} {...props} />
+            td: ({ children, ...props }) => (
+              <td style={{ padding: '10px 14px', borderBottom: '1px solid #E2E8F0', verticalAlign: 'top', color: '#1C1917', lineHeight: '1.55' }} {...props}>
+                {processInteractiveChildren(children)}
+              </td>
             )
           }}
         >
@@ -837,7 +844,7 @@ export default function StructuredPlanDocument({
                   <AutoResizingTextarea
                     value={block.text || ''}
                     onChange={(e) => updateBlock(idx, { text: e.target.value })}
-                    placeholder="Escribe el texto pedagógico..."
+                    placeholder="Texto"
                     style={{
                       fontSize: '15px',
                       lineHeight: '1.7',

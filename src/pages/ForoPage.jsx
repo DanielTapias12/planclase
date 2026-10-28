@@ -513,7 +513,7 @@ export default function ForoPage() {
             <input 
               type="text" 
               className="foro-search-input"
-              placeholder="Buscar por tema, palabra clave o autor..."
+              placeholder="Buscar"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label="Buscar conversaciones en el foro"
@@ -1176,7 +1176,7 @@ export default function ForoPage() {
                   <form onSubmit={handleSendReply}>
                     <textarea 
                       className="wizard-textarea foro-reply-textarea"
-                      placeholder="Escribe tu reflexión, sugerencia metodológica o respuesta fundamentada para los colegas..."
+                      placeholder="Tu respuesta"
                       value={replyText}
                       onChange={handleReplyChange}
                       rows={4}
@@ -1333,13 +1333,10 @@ export default function ForoPage() {
                     id="new-foro-titulo"
                     type="text"
                     required
-                    placeholder="Ej.: ¿Cómo adaptar actividades de modelación matemática para el marco DUA?"
+                    placeholder="Título"
                     value={newDiscussionData.titulo}
                     onChange={(e) => setNewDiscussionData({ ...newDiscussionData, titulo: e.target.value })}
                   />
-                  <div className="planificador-help">
-                    Formula un título descriptivo que invite a la reflexión pedagógica entre pares.
-                  </div>
                 </div>
 
                 {/* Categoría Temática */}
@@ -1365,7 +1362,7 @@ export default function ForoPage() {
                     id="new-foro-texto"
                     required
                     rows={6}
-                    placeholder="Describe el reto, la experiencia o la inquietud metodológica en detalle. Menciona el grado o contexto si resulta relevante..."
+                    placeholder="Cuéntanos"
                     value={newDiscussionData.texto}
                     onChange={(e) => setNewDiscussionData({ ...newDiscussionData, texto: e.target.value })}
                     className="wizard-textarea"
@@ -1379,7 +1376,7 @@ export default function ForoPage() {
                   <input 
                     id="new-foro-etiquetas"
                     type="text"
-                    placeholder="Ej.: DUA, Matemáticas, 7mo, Evaluación formativa"
+                    placeholder="Etiquetas separadas por coma"
                     value={newDiscussionData.etiquetas}
                     onChange={(e) => setNewDiscussionData({ ...newDiscussionData, etiquetas: e.target.value })}
                   />

@@ -771,7 +771,7 @@ export default function AdnPedagogicoPage() {
                     setCustomDinamicaInput('');
                   }
                 }}
-                placeholder="Escribe tu propia dinámica (ej.: Debate socrático de roles)..."
+                placeholder="Otra dinámica"
               />
               <button
                 type="button"
@@ -857,7 +857,7 @@ export default function AdnPedagogicoPage() {
                     setCustomEvaluacionInput('');
                   }
                 }}
-                placeholder="Escribe tu estilo de evaluación (ej.: Dianas metacognitivas diacrónicas)..."
+                placeholder="Otro estilo de evaluación"
               />
               <button
                 type="button"
@@ -943,7 +943,7 @@ export default function AdnPedagogicoPage() {
                     setCustomDuaInput('');
                   }
                 }}
-                placeholder="Escribe un principio o apoyo DUA (ej.: Lectores de pantalla y subtitulado en vivo)..."
+                placeholder="Otro apoyo DUA"
               />
               <button
                 type="button"
@@ -977,7 +977,7 @@ export default function AdnPedagogicoPage() {
                 ...prev,
                 cajaHerramientas: { ...prev.cajaHerramientas, notasClave: e.target.value }
               }))}
-              placeholder="Ej.: Me funciona iniciar con dinámicas desconectadas y retos tangibles antes de pasar a la teoría. Priorizo el trabajo cooperativo y la evaluación formativa sin estrés."
+              placeholder="Cuéntanos cómo enseñas"
               style={{
                 width: '100%',
                 padding: '16px',
@@ -1074,7 +1074,7 @@ export default function AdnPedagogicoPage() {
                     setCustomEjeInput('');
                   }
                 }}
-                placeholder="Escribe tu proyecto transversal (ej.: Cátedra de Paz y Memoria Histórica)..."
+                placeholder="Otro proyecto"
               />
               <button
                 type="button"
@@ -1142,7 +1142,7 @@ export default function AdnPedagogicoPage() {
                     ...prev,
                     matrizTransversalidad: { ...prev.matrizTransversalidad, retoEntornoHabitual: e.target.value }
                   }))}
-                  placeholder="Ej.: Sostenibilidad ambiental y optimización de recursos en la escuela"
+                  placeholder="Ej.: Sostenibilidad ambiental"
                   style={{
                     width: '100%',
                     padding: '12px 14px',
@@ -1220,7 +1220,7 @@ export default function AdnPedagogicoPage() {
                       required
                       value={newResourceTitle}
                       onChange={(e) => setNewResourceTitle(e.target.value)}
-                      placeholder="Ej.: Trivia gamificada de fracciones con audio"
+                      placeholder="Nombre del material"
                       style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '13.5px', boxSizing: 'border-box' }}
                     />
                   </div>
@@ -1267,7 +1267,7 @@ export default function AdnPedagogicoPage() {
                     type="text"
                     value={newResourceNote}
                     onChange={(e) => setNewResourceNote(e.target.value)}
-                    placeholder="Ej.: Excelente para motivar la participación de estudiantes tímidos al cierre."
+                    placeholder="Comentario"
                     style={{ width: '100%', padding: '10px 12px', borderRadius: '10px', border: '1px solid #CBD5E1', fontSize: '13.5px', boxSizing: 'border-box' }}
                   />
                 </div>

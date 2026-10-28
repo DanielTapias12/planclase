@@ -5,9 +5,9 @@ export const INITIAL_WIZARD_DATA = {
   tema: '',
   formato: 'Formato genérico de Matemáticas',
   formatoInstrucciones: '',
-  institucion: 'Institución Educativa Técnica Distrital',
+  institucion: '',
   sede: '',
-  docente: 'Equipo de Matemáticas',
+  docente: '',
   tutor: '',
   asignatura: 'Matemáticas',
   grupo: '',
@@ -16,7 +16,7 @@ export const INITIAL_WIZARD_DATA = {
   materia: 'Matemáticas',
   duracion: '90 minutos (1 sesión continua)',
   sesiones: '1',
-  numEstudiantes: '36',
+  numEstudiantes: '',
   recursos: '',
   metodologiaSTEAM: '',
   objetivos: '',
@@ -56,7 +56,7 @@ export const useAppStore = create(
       recursosAnexos: [],
       addRecursoAnexo: (recurso) => set((state) => {
         const list = Array.isArray(state.recursosAnexos) ? state.recursosAnexos : [];
-        const filtered = list.filter(r => r.title !== recurso.title);
+        const filtered = list.filter(r => (r.prompt && recurso.prompt) ? r.prompt !== recurso.prompt : r.title !== recurso.title);
         return { 
           recursosAnexos: [...filtered, recurso], 
           estadoCambios: true, 
